@@ -228,6 +228,13 @@
         updateHeader();
         updateMiniWidget();
         renderCartPage();
+        try {
+            var proceed = document.getElementById('proceed-to-checkout');
+            if (proceed && !proceed._wired) {
+                proceed.addEventListener('click', function(){ window.location.href = 'checkout.html'; });
+                proceed._wired = true;
+            }
+        } catch(e){}
     }
 
     // Intercept product form submissions (single product)

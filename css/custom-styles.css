@@ -39,7 +39,7 @@
 .variations td.value {
     padding: 2px !important;
     margin: 0 !important;
-    line-height: 1 !important;
+    line-height: 0.5 !important;
     vertical-align: middle !important;
     display: table-cell !important;
     gap: 10px;

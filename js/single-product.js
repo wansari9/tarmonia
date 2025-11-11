@@ -206,7 +206,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (priceElement) {
-            priceElement.innerHTML = `<span class="woocommerce-Price-amount amount">${product.price}</span>`;
+            // Initial placeholder; will be replaced by updatePrice() using PRODUCT_PRICING map
+            priceElement.innerHTML = '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">RM</span>0.00</span>';
         } else {
             console.warn("Price element not found.");
         }
@@ -522,32 +523,10 @@ if (wcBreadcrumbs && product.name) {
     // Assuming the price is displayed in a span or similar element with the ID 'pa_price'
     const priceDisplayId = "pa_price";
 
-    // Function to calculate and update the price
-    function updatePrice() {
-        const weightDropdown = document.getElementById(weightDropdownId);
-        const priceDisplay = document.getElementById(priceDisplayId); // Updated to reflect the <span> element
-
-        if (!weightDropdown || !priceDisplay) {
-            console.error("Error: Weight or Price display element not found.");
-            return; // Stop if elements are missing
-        }
-
-        const selectedWeight = weightDropdown.value;
-
-        if (productId && productPricing[productId]) {
-            const pricing = productPricing[productId];
-            const weightPrice = pricing.weight[selectedWeight] || 0; // Default to 0 if not found
-
-            const totalPrice = weightPrice.toFixed(2);
-
-            // Update the price display
-            priceDisplay.textContent = `RM${totalPrice}`; // Set the text content of the <span>
-        } else {
-            console.warn(`Product ID ${productId} not found in pricing data.`);
-            // Handle the case where the product ID is not found
-            priceDisplay.textContent = "RM0.00"; // Default to $0.00
-        }
-    }
+    // Function to calculate and update the price (single source of truth)
+    // Uses PRODUCT_PRICING map if available, falling back to local productPricing
+    // and the currently selected Weight/Fat dropdown values
+    // The formatted price is written to #pa_price and to the main .price element
 
     // Attach event listeners to the weight and fat dropdowns
     const weightDropdownElement = document.getElementById(weightDropdownId);
@@ -566,42 +545,67 @@ if (wcBreadcrumbs && product.name) {
     }
 
     // Call updatePrice() initially to set the default price
+    function updatePrice() {
+        const weightDropdownElement = document.getElementById(weightDropdownId);
+        const fatDropdownElement = document.getElementById(fatDropdownId);
+        const priceDisplayElement = document.getElementById("pa_price");
+        const mainPriceElement = document.querySelector('.price .woocommerce-Price-amount');
+
+        if (!priceDisplayElement && !mainPriceElement) return;
+
+        const selectedWeight = weightDropdownElement ? weightDropdownElement.value : '';
+        const selectedFat = fatDropdownElement ? fatDropdownElement.value : '';
+
+        var baseMap =
+            (window.PRODUCT_PRICING && window.PRODUCT_PRICING[Number(productId)] && window.PRODUCT_PRICING[Number(productId)].weight)
+            || (productPricing[productId] && productPricing[productId].weight)
+            || {};
+        // Derive key from dropdown (option values are slugged). Try to match original keys case-insensitively.
+        function resolveWeight(slug){
+            if (!slug) return null;
+            var target = slug.replace(/-/g,'');
+            var match = Object.keys(baseMap).find(function(k){ return k.replace(/\s+/g,'').toLowerCase() === target.toLowerCase(); });
+            return match || null;
+        }
+        var weightKey = resolveWeight(selectedWeight);
+        var price = 0;
+        if (weightKey){ price = baseMap[weightKey]; }
+        if (!price){ // fallback to first entry
+            var first = Object.keys(baseMap)[0];
+            if (first) price = baseMap[first];
+        }
+        if (price){
+            var formatted = 'RM' + Number(price).toFixed(2);
+            if (priceDisplayElement) priceDisplayElement.textContent = formatted;
+            if (mainPriceElement) mainPriceElement.innerHTML = '<span class="woocommerce-Price-currencySymbol">RM</span>' + Number(price).toFixed(2);
+        } else {
+            if (priceDisplayElement) priceDisplayElement.textContent = 'Price unavailable';
+        }
+    }
+    // Initialize price on load
     updatePrice();
 
+    // Handle Add to Cart
     const addToCartButton = document.querySelector('.add-to-cart-button');
-
     if (addToCartButton) {
-        addToCartButton.addEventListener('click', function (event) {
-            event.preventDefault();
+        addToCartButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const qtyInput = document.querySelector('input[name="quantity"]');
+            const qty = parseInt(qtyInput && qtyInput.value, 10) || 1;
+            const priceDisplayElement = document.getElementById('pa_price');
+            const mainPriceElement = document.querySelector('.price .woocommerce-Price-amount');
+            const priceText = (priceDisplayElement && priceDisplayElement.textContent) || (mainPriceElement && mainPriceElement.textContent) || 'RM0.00';
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
+            const titleEl = document.querySelector('.product_title.entry-title');
+            const title = titleEl ? titleEl.textContent.trim() : 'Product';
+            const imgEl = document.querySelector('.woocommerce-main-image img');
+            const image = imgEl ? imgEl.src : '';
+            const weightSel = document.getElementById('pa_weight');
+            const fatSel = document.getElementById('pa_fat');
+            const weight = weightSel ? weightSel.options[weightSel.selectedIndex].text : '';
+            const fat = fatSel ? fatSel.options[fatSel.selectedIndex].text : '';
 
-            const productIdField = document.querySelector('input[name="product_id"]');
-            const productId = productIdField ? productIdField.value : productId;
-            const quantityField = document.querySelector('input[name="quantity"]');
-            const quantity = quantityField ? parseInt(quantityField.value || '1', 10) : 1;
-
-            const weightDropdown = document.getElementById('pa_weight');
-            const fatDropdown = document.getElementById('pa_fat');
-            const weight = weightDropdown ? weightDropdown.value : '';
-            const fat = fatDropdown ? fatDropdown.value : '';
-
-            // Parse RM price correctly
-            const priceDisplay = document.getElementById('pa_price');
-            let price = 0;
-            if (priceDisplay) {
-                price = parseFloat(priceDisplay.textContent.replace(/[^0-9.]/g, '')) || 0;
-            }
-
-            // Build unified cart item schema compatible with local-cart.js
-            const productObj = products[productId];
-            const cartItem = {
-                id: productId,
-                title: productObj ? productObj.name : (productDescriptions[productId] ? productDescriptions[productId].split(' ')[0] : 'Product'),
-                qty: quantity,
-                weight: weight,
-                fat: fat,
-                price: price,
-                image: productObj ? (productObj.image || productObj.images) : ''
-            };
+            const cartItem = { id: Number(productId), productId: Number(productId), title, price, qty, image, weight, fat };
 
             let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             // Merge if already exists
@@ -632,5 +636,6 @@ if (wcBreadcrumbs && product.name) {
         console.error('Add to Cart button not found.');
     }
 
-    document.querySelector('input[name="product_id"]').value = productId;
+    const hiddenProductId = document.querySelector('input[name="product_id"]');
+    if (hiddenProductId) hiddenProductId.value = productId;
 });
