@@ -353,29 +353,8 @@ function dairy_farm_ready_actions() {
 		return false;
 	});
 	// Added to cart
-	jQuery('body').bind('added_to_cart', function() {
-		"use strict";
-		// Update amount on the cart button
-		var total = jQuery('.widget_shopping_cart').eq(0).find('.total .amount').text();
-		if (total != undefined) {
-			jQuery('.top_panel_cart_button .cart_summa').text(total);
-		}
-		// Update count items on the cart button
-		var cnt = 0;
-		jQuery('.widget_shopping_cart_content').eq(0).find('.cart_list li').each(function() {
-			var q = jQuery(this).find('.quantity').html().split(' ', 2);
-			if (!isNaN(q[0]))
-				cnt += Number(q[0]);
-		});
-		var items = jQuery('.top_panel_cart_button .cart_items').eq(0).text().split(' ', 2);
-		items[0] = cnt;
-		jQuery('.top_panel_cart_button .cart_items').text(items[0]+' '+items[1]);
-		// Update data-attr on button
-		jQuery('.top_panel_cart_button').data({
-			'items': cnt ? cnt : 0,
-			'summa': total ? total : 0
-		});
-	});
+	// Disable legacy WooCommerce added_to_cart handler (client-side cart takes over)
+	jQuery('body').off('added_to_cart');
 	// Show cart 
 	jQuery('.top_panel_middle .top_panel_cart_button, .header_mobile .top_panel_cart_button').on('click', function(e) {
 		"use strict";

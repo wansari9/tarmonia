@@ -908,6 +908,9 @@
 <script type='text/javascript' src='js/vendor/woo/accounting.min.js'></script>
 <script type='text/javascript' src='js/vendor/woo/price-slider.min.js'></script>
 <script type="text/javascript" src="js/shop.js"></script>
+<script type="text/javascript" src="js/product-data.js"></script>
+<script type="text/javascript" src="js/shop-price-range.js"></script>
+<script type="text/javascript" src="js/local-cart.js"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         const sortOrder = document.getElementById('sortOrder');
@@ -919,22 +922,24 @@
             const products = Array.from(productList.children);
 
             products.sort((a, b) => {
-                const priceA = parseFloat(a.querySelector('.price .woocommerce-Price-amount').textContent.replace('RM', '').trim());
-                const priceB = parseFloat(b.querySelector('.price .woocommerce-Price-amount').textContent.replace('RM', '').trim());
+                const aMin = parseFloat(a.dataset.lowestPrice || '0');
+                const aMax = parseFloat(a.dataset.highestPrice || aMin || '0');
+                const bMin = parseFloat(b.dataset.lowestPrice || '0');
+                const bMax = parseFloat(b.dataset.highestPrice || bMin || '0');
 
                 if (selectedValue === 'price') {
-                    // Sort by price: low to high
-                    return priceA - priceB;
+                    // Sort by min price: low to high
+                    return aMin - bMin;
                 } else if (selectedValue === 'price-desc') {
-                    // Sort by price: high to low
-                    return priceB - priceA;
+                    // Sort by max price: high to low
+                    return bMax - aMax;
                 }
                 return 0;
             });
 
-            // Clear the product list and re-append products with updated classes
-            productList.innerHTML = '';
-products.forEach(product => productList.appendChild(product));
+        // Clear the product list and re-append products with updated classes
+        productList.innerHTML = '';
+        products.forEach(product => productList.appendChild(product));
         });
     });
 </script>

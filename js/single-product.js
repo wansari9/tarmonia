@@ -574,46 +574,62 @@ if (wcBreadcrumbs && product.name) {
         addToCartButton.addEventListener('click', function (event) {
             event.preventDefault();
 
-            // Capture Product ID and Quantity
-            const productId = document.querySelector('input[name="product_id"]').value;
-            const quantity = document.querySelector('input[name="quantity"]').value;
+            const productIdField = document.querySelector('input[name="product_id"]');
+            const productId = productIdField ? productIdField.value : productId;
+            const quantityField = document.querySelector('input[name="quantity"]');
+            const quantity = quantityField ? parseInt(quantityField.value || '1', 10) : 1;
 
-            // Capture Selected Options (Weight and Fat)
             const weightDropdown = document.getElementById('pa_weight');
             const fatDropdown = document.getElementById('pa_fat');
             const weight = weightDropdown ? weightDropdown.value : '';
             const fat = fatDropdown ? fatDropdown.value : '';
 
-            // Get the price (using the variable from the price code you had before)
+            // Parse RM price correctly
             const priceDisplay = document.getElementById('pa_price');
             let price = 0;
             if (priceDisplay) {
-                price = parseFloat(priceDisplay.textContent.replace('$', ''));
+                price = parseFloat(priceDisplay.textContent.replace(/[^0-9.]/g, '')) || 0;
             }
 
-            // Create Cart Item Object
+            // Build unified cart item schema compatible with local-cart.js
+            const productObj = products[productId];
             const cartItem = {
-                productId: productId,
-                quantity: quantity,
+                id: productId,
+                title: productObj ? productObj.name : (productDescriptions[productId] ? productDescriptions[productId].split(' ')[0] : 'Product'),
+                qty: quantity,
                 weight: weight,
                 fat: fat,
-                price: price, // Save the price.
+                price: price,
+                image: productObj ? (productObj.image || productObj.images) : ''
             };
 
-            // Get Existing Cart Items from localStorage (or initialize an empty array)
             let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-            // Add the New Item to the Cart Array
-            cartItems.push(cartItem);
-
-            // Save the Updated Cart Array to localStorage
+            // Merge if already exists
+            const existing = cartItems.find(it => (it.id || it.productId) == cartItem.id);
+            if (existing) {
+                existing.qty = (existing.qty || existing.quantity || 1) + cartItem.qty;
+                existing.price = cartItem.price; // update latest price variant
+                existing.title = cartItem.title; // ensure title stored
+                existing.image = cartItem.image || existing.image;
+                existing.weight = weight || existing.weight;
+                existing.fat = fat || existing.fat;
+            } else {
+                cartItems.push(cartItem);
+            }
             localStorage.setItem('cart', JSON.stringify(cartItems));
 
-            // Redirect to Cart Page
-            window.location.href = 'cart.html';
+            // Simple feedback
+            addToCartButton.textContent = 'Added';
+            addToCartButton.classList.add('added');
+            setTimeout(() => {
+                addToCartButton.textContent = 'Add to Cart';
+                addToCartButton.classList.remove('added');
+                // Redirect user back to shop page per requirement
+                window.location.href = 'shop.html';
+            }, 800);
         });
     } else {
-        console.error("Add to Cart button not found.");
+        console.error('Add to Cart button not found.');
     }
 
     document.querySelector('input[name="product_id"]').value = productId;

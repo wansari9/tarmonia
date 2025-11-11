@@ -13,26 +13,18 @@ document.addEventListener('DOMContentLoaded', function () {
         return 0;
     }
 
-    function setLowestPrice() {
+    // Lowest price now set by shop-price-range.js after computing variant range.
+    // Keep a fallback in case that script not loaded.
+    function fallbackLowestPrice() {
         products.forEach(product => {
-            const priceAmounts = product.querySelectorAll('.price .woocommerce-Price-amount');
-            let lowestPrice = Infinity;
-
-            priceAmounts.forEach(priceElement => {
-                try {
-                    const priceText = priceElement.textContent;
-                    const price = parsePrice(priceText);
-                    lowestPrice = Math.min(lowestPrice, price);
-                } catch (error) {
-                    console.error("Error parsing price:", error);
-                }
-            });
-
-            product.dataset.lowestPrice = lowestPrice === Infinity ? 0 : lowestPrice;
+            if (product.dataset.lowestPrice) return; // already set
+            const priceElement = product.querySelector('.price .woocommerce-Price-amount');
+            if (!priceElement) return;
+            var price = parsePrice(priceElement.textContent);
+            product.dataset.lowestPrice = isNaN(price)?0:price;
         });
     }
-
-    setLowestPrice();
+    fallbackLowestPrice();
 
     function filterByMaxPrice() {
         let maxPrice = parseFloat(maxPriceInput.value) || Infinity;
@@ -66,18 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Remove legacy redirect-on-click. Let local-cart.js intercept and add to localStorage.
     const buttons = document.querySelectorAll('.add_to_cart_button');
     buttons.forEach(button => {
         button.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent default link behavior
-            const productId = this.getAttribute('data-product_id');
-            const baseUrl = this.getAttribute('href'); // Assuming the href contains the base URL
-
-            if (productId && baseUrl) {
-                window.location.href = `${baseUrl}?product_id=${productId}`;
-            } else {
-                console.warn("Missing product ID or base URL for add to cart button.");
-            }
+            event.preventDefault();
+            // No redirect here; local-cart.js will capture and add
         });
     });
 
@@ -91,28 +77,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const products = Array.from(productContainer.children);
 
             if (this.value === "price") {
-                // Sort products by price (low to high)
+                // Sort products by min price (low to high)
                 products.sort((a, b) => {
-                    const priceElementsA = a.querySelectorAll(".price .woocommerce-Price-amount");
-                    const priceElementsB = b.querySelectorAll(".price .woocommerce-Price-amount");
-
-                    // Get the first price if multiple exist
-                    const priceA = parseFloat(priceElementsA[0].textContent.replace("RM", "").trim());
-                    const priceB = parseFloat(priceElementsB[0].textContent.replace("RM", "").trim());
-
-                    return priceA - priceB;
+                    const aMin = parseFloat(a.dataset.lowestPrice || '0');
+                    const bMin = parseFloat(b.dataset.lowestPrice || '0');
+                    return aMin - bMin;
                 });
             } else if (this.value === "price-desc") {
-                // Sort products by price (high to low)
+                // Sort products by max price (high to low)
                 products.sort((a, b) => {
-                    const priceElementsA = a.querySelectorAll(".price .woocommerce-Price-amount");
-                    const priceElementsB = b.querySelectorAll(".price .woocommerce-Price-amount");
-
-                    // Get the first price if multiple exist
-                    const priceA = parseFloat(priceElementsA[0].textContent.replace("RM", "").trim());
-                    const priceB = parseFloat(priceElementsB[0].textContent.replace("RM", "").trim());
-
-                    return priceB - priceA;
+                    const aMax = parseFloat(a.dataset.highestPrice || a.dataset.lowestPrice || '0');
+                    const bMax = parseFloat(b.dataset.highestPrice || b.dataset.lowestPrice || '0');
+                    return bMax - aMax;
                 });
             }
 
