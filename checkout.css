@@ -1,0 +1,810 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Roboto", sans-serif; /* Changed font to Roboto */
+    height: 100vh;
+    width: 100%;
+    margin: 0px auto;
+    
+    background-color: #ffffff; /* Added a light background for contrast */
+    color: #4E5150;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+
+    header {
+        position: relative; /* Allow positioning of child elements */
+        display: flex;
+        justify-content: space-between; /* Space out the "Checkout" heading and "Go Back" button */
+        align-items: center; /* Align items vertically */
+      
+        
+        > h3 {
+            margin: 0; /* Remove default margin */
+            font-family: "Lora", serif; /* Changed header font to Lora */
+            font-size: 50px;
+            color: #FEC321;
+            font-weight: 500;
+            margin-left: 20px;
+        }
+    }
+
+    main {
+        height: 85%;
+        display: flex;
+column-gap: 50px;
+        flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+        justify-content: center ;
+        align-items: flex-start; /* Align the top of the left and right sections */
+        
+        .checkout-form  {
+            width: 50%;
+            max-width: 100%;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+            align-items: flex-start; /* Align the form content to the left */
+
+            form {
+                background-color: #fff7d5;
+                height: 720px;
+                padding: 10px; /* Increased padding for better spacing */
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+                transition: transform 0.2s ease-in-out; /* Added hover effect */
+            }
+
+            form:hover {
+                transform: scale(1.02); /* Slight zoom on hover */
+            }
+
+            h6 {
+                color: #997E33;
+                font-size: 30px;
+                font-weight: 500;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .form-control  {
+                margin: 10px 0px;
+                position: relative;
+
+                label:not([for="checkout-checkbox"]) {
+                    display: block;
+                    font-size: 18px;
+                    font-weight: 300;
+                    margin-bottom: 2px;
+                    font-family: Georgia, 'Times New Roman', Times, serif;
+                }
+
+                input:not([type="checkbox"]) {
+                    width: 100%;
+                    padding: 10px 10px 10px 40px;
+                    border-radius: 10px;
+                    height: 50px;
+                    outline: none;
+                    border: .2px solid #4e515085;
+                    font-size: 15px;
+                    font-weight: thin;
+
+                    &::placeholder {
+                        font-size: 10px;
+                        font-weight: 500;
+                    }
+                }
+
+                label[for="checkout-checkbox"] {
+                    font-size: 15px;
+                    font-weight: 500;
+                    line-height: 10px;
+                }
+
+                > div {
+                    position: relative;
+
+                    span.fa {
+                        position: absolute;
+                        top: 50%;
+                        left: 0%;
+                        transform: translate(15px, -50%);
+                    }
+                }
+            }
+
+            .form-group {
+                display: flex;
+                column-gap: 25px;
+            }
+
+            .checkbox-control {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+            }
+
+            .form-control-btn {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                button {
+                    padding: 10px 25px;
+                    font-size: 20px;
+                    color: #fff;
+                    background: #FEC321;
+                    border: 0;
+                    border-radius: 7px;
+                    letter-spacing: .5px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                button:hover{
+                    background-color: #967212;
+                }
+            }
+        }
+
+        .checkout-details {
+            width: 40%;
+            max-width: 100%;
+            
+            box-sizing: border-box; /* Include padding and border in width calculation */
+
+            .checkout-details-inner {
+                background: #fff7d5;
+                border-radius: 10px;
+                padding: 10px; /* Increased padding for better spacing */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+
+                .checkout-lists {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 15px;
+                    margin-bottom: 40px;
+
+                    .card {
+                        width: 100%;
+                        display: flex;
+                        column-gap: 210px;
+                        border: 1px solid #ddd; /* Added border for better separation */
+                        border-radius: 10px;
+                        padding: 10px; /* Added padding for better spacing */
+                        transition: box-shadow 0.2s ease-in-out; /* Added hover effect */
+
+                        .card-image {
+                            width: 35%;
+
+                            img {
+                                width: 100%;
+                                object-fit: fill;
+                                border-radius: 10px;
+                            }
+                        }
+
+                        .card-details {
+                            display: flex;
+                            flex-direction: column;
+
+                            .card-name {
+                                font-family: 'Times New Roman', Times, serif;
+                                font-size: 20px;
+                                font-weight: 500;
+                            }
+                            .card-price {
+                                font-size: 18px;
+                                font-weight: 500;
+                                color: #F2994A;
+                                margin-top: 5px;
+
+                                span {
+                                    color: #4E5150;
+                                    text-decoration: line-through;
+                                    margin-left: 10px;
+                                }
+                            }
+                            .card-wheel {
+                                margin-top: 17px;
+                                border: .2px solid #4e515085;
+                                width: 129px;
+                                padding: 8px 8px;
+                                border-radius: 10px;
+                                font-size: 12px;
+                                display: flex;
+                                justify-content: space-between;
+
+                                button {
+                                    background: #E0E0E0;
+                                    color: #828282;
+                                    width: 15px;
+                                    height: 15px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    border: 0;
+                                    cursor: pointer;
+                                    border-radius: 3px;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                    }
+
+                    .card:hover {
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Highlight card on hover */
+                    }
+                }
+
+                .checkout-shipping, .checkout-total {
+                    display: flex;
+                    font-size: 30px;
+                    padding: 5px 0px;
+                    border-top: 1px solid #BDBDBD;
+                    justify-content: space-between;
+
+                    p {
+                        font-size: 15px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        height: 5%;
+        color: #BDBDBD;
+        display: -ms-grid;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 500; /* Made footer text slightly bolder */
+        text-align: center; /* Centered footer text */
+        padding: 10px 0; /* Added padding for better spacing */
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+}
+
+#msform {
+    width: 100%; /* Ensure the form takes up the full width */
+ 
+    text-align: center;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden; /* Prevent content overflow */
+    height: 650px;
+}
+
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    box-sizing: border-box;
+    width: 80%;
+    margin: 0 10%;
+    position: relative;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth transitions */
+    align-items: flex-start; /* Align fieldset content to the left */
+    text-align: left; /* Ensure text aligns to the left */
+    display: flex;
+    flex-direction: column; /* Keep inputs stacked vertically */
+    align-items: center; /* Center-align the content */
+}
+
+#msform fieldset:not(:first-of-type) {
+    display: none;
+    border-radius: 5px;
+}
+
+#msform input, #msform textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat, arial, verdana;
+    color: #2C3E50;
+    font-size: 13px;
+    height: 50px;
+}
+
+#msform .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+#msform .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+#msform fieldset:first-of-type {
+    display: block; /* Show the first fieldset */
+    opacity: 1; /* Make the first fieldset fully visible */
+    border-radius: 10px;
+}
+
+#msform fieldset:first-of-type .next {
+    display: block; /* Ensure the button is block-level */
+    margin: 20px auto; /* Center-align the button horizontally */
+    text-align: center; /* Center the text inside the button */
+    height: 40px;
+}
+#msform fieldset input{
+    font-size: 13px;
+}
+
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    counter-reset: step; /* Use CSS counters to number the steps */
+    display: flex; /* Use flexbox for proper alignment */
+    justify-content: space-between; /* Space out the steps evenly */
+    padding: 0;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: black; /* Default color for inactive steps */
+    text-transform: uppercase;
+    font-size: 12px;
+    width: 33.33%; /* Each step takes up equal width */
+    text-align: center; /* Center-align the text */
+    position: relative;
+}
+
+#progressbar li:before {
+    content: counter(step); /* Display the step number */
+    counter-increment: step;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    font-size: 14px;
+    color: #333;
+    background: #fff; /* Default background for inactive steps */
+    border-radius: 50%; /* Make it circular */
+    margin: 0 auto 10px auto; /* Center the circle */
+}
+
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #fff; /* Default color for inactive connectors */
+    position: absolute;
+    top: 15px; /* Align with the center of the circle */
+    left: -50%; /* Extend to the left */
+    z-index: -1; /* Place behind the circles */
+}
+
+#progressbar li:first-child:after {
+    content: none; /* Remove the connector before the first step */
+}
+
+#progressbar li.active:before {
+    background: #FEC321; /* Active step background color */
+    color: white; /* Active step text color */
+}
+
+#progressbar li.active:after {
+    background: #FEC321; /* Active connector color */
+}
+
+#msform fieldset p, #msform fieldset input {
+    width: 100%; /* Ensure full width for inputs and labels */
+    text-align: left; /* Align text to the left */
+    margin-left: 0; /* Remove any auto margins */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+}
+
+#msform fieldset h2, #msform fieldset h3 {
+    font-family: "Lora", serif; /* Changed fieldset titles to Lora */
+    text-align: center; /* Center-align the titles */
+    margin: 10px 0; /* Add spacing around the titles */
+    color:#997E33;
+    margin-bottom: 15px;
+}
+
+#msform fieldset .previous, #msform fieldset .next {
+    display: inline-block; /* Ensure buttons are inline */
+    margin: 0 10px; /* Add horizontal spacing between buttons */
+}
+
+#msform fieldset:nth-of-type(2) .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform fieldset:nth-of-type(2) .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    height: 40px;
+    display: inline-block;
+}
+
+#msform fieldset:nth-of-type(2) .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+#msform fieldset:nth-of-type(3) .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform fieldset:nth-of-type(3) .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    align-self: center;
+    height: 40px;
+}
+
+#msform fieldset:nth-of-type(3) .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column; /* Stack the options vertically */
+    gap: 15px; /* Add spacing between options */
+    margin-bottom: 20px; /* Add spacing below the payment options */
+    padding: 10px; /* Add padding for better spacing */
+    border: 1px solid #ddd; /* Add a border for better separation */
+    border-radius: 5px; /* Slightly round the corners */
+    background-color: #f9f9f9; /* Light background for contrast */
+    align-items: flex-start; /* Align all items to the left */
+    text-align: left; /* Ensure text aligns to the left */
+}
+
+.payment-options label {
+    font-family: "Roboto", sans-serif; /* Changed payment option labels to Roboto */
+    font-size: 16px; /* Set a readable font size */
+    font-weight: 500; /* Make the text slightly bold */
+    color: #4E5150; /* Use a neutral text color */
+    display: flex; /* Align the radio button and text */
+    align-items: center; /* Vertically center the content */
+    gap: 10px; /* Add spacing between the radio button and text */
+    cursor: pointer; /* Change the cursor to indicate interactivity */
+    width: 100%; /* Ensure labels take up full width */
+    margin-left: 0; /* Move labels to the very left */
+}
+
+.payment-options input[type="radio"] {
+    accent-color: #FEC321; /* Customize the radio button color */
+    cursor: pointer; /* Indicate that the radio button is clickable */
+    transform: scale(1.2); /* Slightly enlarge the radio button for better visibility */
+    margin-right: 10px; /* Add spacing between the radio button and the label text */
+    align-self: center; /* Ensure the radio button is vertically aligned with the text */
+    
+}
+
+.checkout-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #243b52;
+}
+
+.checkout-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.checkout-option {
+    background-color: #fafbfd;
+    border: 2px solid #fafbfd;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    text-align: center; /* Center text inside the box */
+    cursor: pointer;
+    transition: 0.25s ease;
+    border-radius: 8px;
+}
+
+.checkout-option:hover {
+    background-color: #f2f1ff;
+    border-color: #f2f1ff;
+}
+
+.checkout-options input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.checkout-options input[type="radio"]:checked + .checkout-option {
+    background-color: #fef7e4; /* Highlight the selected box */
+    border-color: #FEC321; /* Change the border color for the selected box */
+    outline: 2px solid #FEC321; /* Add an outline for the selected option */
+    color: black; /* Change text color for better contrast */
+}
+
+.fake-checkbox {
+    height: 1rem;
+    width: 1rem;
+    background: #ffffff;
+    border: 1px solid #dbe0e7;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.fake-checkbox .fa-check {
+    color: #fff;
+    transform: translateY(-3px) scale(0.8);
+}
+
+.checkout-options input[type="checkbox"] {
+    display: none;
+}
+
+.checkout-options input[type="checkbox"]:checked + .checkout-option .fake-checkbox {
+    background-color: #6d67ff;
+    border-color: #6d67ff;
+}
+
+.checkout-options input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
+    background-color: #6d67ff;
+    border-color: #6d67ff;
+}
+
+.checkout-option .checkout-option-name {
+    flex: 1;
+    padding: 0.25rem 1rem;
+}
+
+.checkout-option-price {
+    font-size: 14px;
+    color: #7bc700;
+    background-color: #f9ffe7;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+}
+
+.checkout-options input[type="checkbox"]:checked + .checkout-option .checkout-option-price {
+    color: #6d67ff;
+    background-color: #f2f1ff;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #d4dfe8;
+    margin: 1rem 0;
+}
+
+.checkout-cost-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.text--red {
+    font-weight: bold;
+    font-size: 24px;
+    color: #ff6240;
+}
+
+.checkout-button {
+    background: #93e900;
+    color: white;
+    border: 0;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.checkout-button:hover {
+    background: #84c80f;
+}
+
+#total.changed {
+    animation: flashNumber 0.25s;
+}
+
+@keyframes flashNumber {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        width: 80%;
+
+        main {
+            column-gap: 70px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        width: 92%;
+
+        main {
+            flex-direction: column-reverse;
+            height: auto;
+            margin-bottom: 50px;
+            padding: 0 10px; /* Add padding to prevent content from touching edges */
+
+            .checkout-form {
+                width: 100%;
+                margin-top: 35px;
+                margin: 0 auto; /* Center elements */
+            }
+
+            .checkout-details {
+                width: 100%;
+                margin: 0 auto; /* Center elements */
+            }
+        }
+
+        footer {
+            height: 10%;
+        }
+    }
+}
+
+.payment-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #4E5150; /* Neutral color for icons */
+    transition: color 0.3s ease;
+}
+
+.checkout-options input[type="radio"]:checked + .checkout-option .payment-icon {
+    color: #FEC321; /* Highlight icon color when selected */
+}
+
+#state-dropdown {
+    width: 100%; /* Match the width of other input fields */
+    padding: 10px; /* Match padding of other input fields */
+    border-radius: 5px; /* Match border radius of other input fields */
+    height: 50px; /* Allow the dropdown to adjust height dynamically */
+    max-height: 120px; /* Limit the height to show only a few options */
+    outline: none; /* Remove default outline */
+    border: 1px solid #ccc; /* Match border style of other input fields */
+    font-size: 13px; /* Match font size of other input fields */
+    font-family: "Poppins", sans-serif; /* Match font family */
+    box-sizing: border-box; /* Include padding and border in width calculation */
+    background-color: #ffffff; /* Ensure consistent background color */
+    color: #2C3E50; /* Match text color */
+    margin-bottom:10px;
+    justify-content: center;
+    max-height: 50px; /* Match the height of other input fields */
+    overflow-y: auto; /* Enable vertical scrolling for the dropdown */
+    font-weight: bold;
+}
+
+#state-dropdown option {
+    font-size: 12px; /* Reduce font size for smaller options */
+    padding: 5px; /* Adjust padding for smaller options */
+    height:100px;
+}
+
+.go-back-box {
+    position: static; /* Remove absolute positioning */
+    margin-right: 20px; /* Add spacing from the left edge */
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FEC321;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.go-back-box:hover {
+    background-color: #967212;
+}
+
+.state-city-container {
+    display: flex;
+    gap: 20px; /* Add spacing between State and City */
+    margin-bottom: 10px;
+}
+
+.state-container, .city-container {
+    flex: 1; /* Allow both State and City to take equal width */
+}
+
+.state-container p, .city-container p {
+    font-family: "Roboto", sans-serif; /* Changed labels to Roboto */
+    margin-bottom: 5px; /* Add spacing below the labels */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.state-city-container {
+    display: flex;
+    gap: 10px; /* Add spacing between the state dropdown and city input */
+    align-items: center; /* Align the city input with the state dropdown */
+    margin-bottom: 10px;
+}
+
+#city-input {
+    flex: 1; /* Allow the city input to take up remaining space */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #4E5150;
+    outline: none;
+}
+
+.checkout-bg {
+    background-image: url('./images/background-checkout.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

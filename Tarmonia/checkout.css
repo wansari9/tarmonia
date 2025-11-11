@@ -1,0 +1,885 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Roboto", sans-serif; /* Changed font to Roboto */
+    height: 100vh;
+    width: 100%;
+    margin: 0px auto;
+    
+    background-color: #ffffff; /* Added a light background for contrast */
+    color: #4E5150;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+
+    header {
+        display: flex; /* Use flexbox for alignment */
+        align-items: center; /* Vertically center the content */
+        justify-content: space-between; /* Space out the elements */
+        padding: 20px 40px; /* Add padding for better spacing */
+        position: relative; /* Ensure proper positioning */
+        padding-bottom: 30px;
+    }
+
+    .tarmonia-logo {
+        position: absolute; /* Position the logo absolutely */
+        left: 50%; /* Center horizontally */
+        width: 40%;
+        transform: translateX(-50%); /* Adjust for centering */
+        max-width: 250px; /* Reduce the maximum width of the logo */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .go-back-link {
+        z-index: 1; /* Ensure the button stays above other elements */
+    }
+
+    main {
+        height: 85%;
+        display: flex;
+        column-gap: 50px;
+        flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+        justify-content: center ;
+        align-items: flex-start; /* Align the top of the left and right sections */
+        flex-direction: row-reverse; /* Switch the positions of the forms */
+        
+        .checkout-form  {
+            width: 50%;
+            max-width: 100%;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+            align-items: flex-start; /* Align the form content to the left */
+            order: 2; /* Place the MS form second */
+
+            form {
+                background-color: #fff7d5;
+                height: 720px;
+                padding: 10px; /* Increased padding for better spacing */
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+                transition: transform 0.2s ease-in-out; /* Added hover effect */
+            }
+
+            form:hover {
+                transform: scale(1.02); /* Slight zoom on hover */
+            }
+
+            h6 {
+                color: #997E33;
+                font-size: 30px;
+                font-weight: 500;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .form-control  {
+                margin: 10px 0px;
+                position: relative;
+
+                label:not([for="checkout-checkbox"]) {
+                    display: block;
+                    font-size: 18px;
+                    font-weight: 300;
+                    margin-bottom: 2px;
+                    font-family: Georgia, 'Times New Roman', Times, serif;
+                }
+
+                input:not([type="checkbox"]) {
+                    width: 100%;
+                    padding: 10px 10px 10px 40px;
+                    border-radius: 10px;
+                    height: 50px;
+                    outline: none;
+                    border: .2px solid #4e515085;
+                    font-size: 15px;
+                    font-weight: thin;
+
+                    &::placeholder {
+                        font-size: 10px;
+                        font-weight: 500;
+                    }
+                }
+
+                label[for="checkout-checkbox"] {
+                    font-size: 15px;
+                    font-weight: 500;
+                    line-height: 10px;
+                }
+
+                > div {
+                    position: relative;
+
+                    span.fa {
+                        position: absolute;
+                        top: 50%;
+                        left: 0%;
+                        transform: translate(15px, -50%);
+                    }
+                }
+            }
+
+            .form-group {
+                display: flex;
+                column-gap: 25px;
+            }
+
+            .checkbox-control {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+            }
+
+            .form-control-btn {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                button {
+                    padding: 10px 25px;
+                    font-size: 20px;
+                    color: #fff;
+                    background: #FEC321;
+                    border: 0;
+                    border-radius: 7px;
+                    letter-spacing: .5px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                button:hover{
+                    background-color: #967212;
+                }
+            }
+        }
+
+        .checkout-details {
+            width: 40%;
+            max-width: 100%;
+            order: 1; /* Place checkout details first */
+            
+            box-sizing: border-box; /* Include padding and border in width calculation */
+
+            .checkout-details-inner {
+                background: #fff7d5;
+                border-radius: 10px;
+                padding: 10px;
+                padding-top: 30px; /* Increased padding for better spacing */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+                position: relative; /* Ensure the Go Back button is positioned relative to this container */
+
+                .checkout-lists {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 15px;
+                    margin-bottom: 40px;
+
+                    .card {
+                        display: flex;
+                        flex-direction: row; /* Ensure the image and text are side by side */
+                        align-items: center; /* Align items vertically */
+                        gap: 15px; /* Add spacing between the image and text */
+                        border: 1px solid #ddd; /* Add a border for better separation */
+                        border-radius: 10px;
+                        padding: 10px; /* Add padding for better spacing */
+                        overflow: hidden; /* Prevent content overflow */
+                        box-sizing: border-box; /* Include padding and border in width calculation */
+                    }
+
+                    .card:hover {
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Highlight card on hover */
+                    }
+                }
+
+                .checkout-shipping, .checkout-total {
+                    display: flex;
+                    font-size: 30px;
+                    padding: 5px 0px;
+                    border-top: 1px solid #BDBDBD;
+                    justify-content: space-between;
+
+                    p {
+                        font-size: 15px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        height: 5%;
+        color: #BDBDBD;
+        display: -ms-grid;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 500; /* Made footer text slightly bolder */
+        text-align: center; /* Centered footer text */
+        padding: 10px 0; /* Added padding for better spacing */
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+}
+
+#msform {
+    width: 100%; /* Adjusted width for better fit */
+    margin: 0 auto; /* Center the form */
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+#msform fieldset {
+    width: 100%; /* Ensure fieldsets take up the full width of the form */
+    max-width: 600px; /* Set a maximum width for better readability */
+    margin: 0 auto; /* Center the fieldsets */
+    border: none; /* Remove border color */
+    box-sizing: border-box;
+    text-align: left; /* Align text to the left */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#msform fieldset:not(:first-of-type) {
+    display: none;
+    border-radius: 5px;
+}
+
+#msform input, #msform textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat, arial, verdana;
+    color: #2C3E50;
+    font-size: 13px;
+    height: 50px;
+}
+
+#msform .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+#msform .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+#msform fieldset:first-of-type {
+    display: block; /* Show the first fieldset */
+    opacity: 1; /* Make the first fieldset fully visible */
+    border-radius: 10px;
+}
+
+#msform fieldset:first-of-type .next {
+    display: block; /* Ensure the button is block-level */
+    margin: 20px auto; /* Center-align the button horizontally */
+    text-align: center; /* Center the text inside the button */
+    height: 40px;
+}
+#msform fieldset input{
+    font-size: 13px;
+}
+
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    counter-reset: step; /* Use CSS counters to number the steps */
+    display: flex; /* Use flexbox for proper alignment */
+    justify-content: space-between; /* Space out the steps evenly */
+    padding: 0;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: black; /* Default color for inactive steps */
+    text-transform: uppercase;
+    font-size: 12px;
+    width: 33.33%; /* Each step takes up equal width */
+    text-align: center; /* Center-align the text */
+    position: relative;
+  
+}
+
+
+#progressbar li:before {
+    content: counter(step); /* Display the step number */
+    counter-increment: step;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    font-size: 14px;
+    color: #333;
+    background: #fff; /* Default background for inactive steps */
+    border-radius: 50%; /* Make it circular */
+    margin: 0 auto 10px auto; /* Center the circle */
+}
+
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #fff; /* Default color for inactive connectors */
+    position: absolute;
+    top: 15px; /* Align with the center of the circle */
+    left: -50%; /* Extend to the left */
+    z-index: -1; /* Place behind the circles */
+}
+
+#progressbar li:first-child:after {
+    content: none; /* Remove the connector before the first step */
+}
+
+#progressbar li.active:before {
+    background: #FEC321; /* Active step background color */
+    color: white; /* Active step text color */
+}
+
+#progressbar li.active:after {
+    background: #FEC321; /* Active connector color */
+}
+
+#msform fieldset p, #msform fieldset input {
+    width: 100%; /* Ensure full width for inputs and labels */
+    text-align: left; /* Align text to the left */
+    margin-left: 0; /* Remove any auto margins */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+}
+
+#msform fieldset h2, #msform fieldset h3 {
+    font-family: "Lora", serif; /* Changed fieldset titles to Lora */
+    text-align: center; /* Center-align the titles */
+    margin: 10px 0; /* Add spacing around the titles */
+    color:#997E33;
+    margin-bottom: 15px;
+}
+
+#msform fieldset .previous, #msform fieldset .next {
+    display: inline-block; /* Ensure buttons are inline */
+    margin: 0 10px; /* Add horizontal spacing between buttons */
+}
+
+#msform fieldset:nth-of-type(2) .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform fieldset:nth-of-type(2) .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    height: 40px;
+    display: inline-block;
+}
+
+#msform fieldset:nth-of-type(2) .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+#msform fieldset:nth-of-type(3) .action-buttons {
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add spacing above the buttons */
+}
+
+#msform fieldset:nth-of-type(3) .action-button {
+    width: 120px; /* Set a consistent width for buttons */
+    background: #FEC321;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    align-self: center;
+    height: 40px;
+}
+
+#msform fieldset:nth-of-type(3) .action-button:hover {
+    background: #997E33; /* Slightly darker green for hover */
+    transition: background 0.3s ease-in-out;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column; /* Stack the options vertically */
+    gap: 15px; /* Add spacing between options */
+    margin-bottom: 20px; /* Add spacing below the payment options */
+    padding: 10px; /* Add padding for better spacing */
+    border: 1px solid #ddd; /* Add a border for better separation */
+    border-radius: 5px; /* Slightly round the corners */
+    background-color: #f9f9f9; /* Light background for contrast */
+    align-items: flex-start; /* Align all items to the left */
+    text-align: left; /* Ensure text aligns to the left */
+}
+
+.payment-options label {
+    font-family: "Roboto", sans-serif; /* Changed payment option labels to Roboto */
+    font-size: 16px; /* Set a readable font size */
+    font-weight: 500; /* Make the text slightly bold */
+    color: #4E5150; /* Use a neutral text color */
+    display: flex; /* Align the radio button and text */
+    align-items: center; /* Vertically center the content */
+    gap: 10px; /* Add spacing between the radio button and text */
+    cursor: pointer; /* Change the cursor to indicate interactivity */
+    width: 100%; /* Ensure labels take up full width */
+    margin-left: 0; /* Move labels to the very left */
+}
+
+.payment-options input[type="radio"] {
+    accent-color: #FEC321; /* Customize the radio button color */
+    cursor: pointer; /* Indicate that the radio button is clickable */
+    transform: scale(1.2); /* Slightly enlarge the radio button for better visibility */
+    margin-right: 10px; /* Add spacing between the radio button and the label text */
+    align-self: center; /* Ensure the radio button is vertically aligned with the text */
+    
+}
+
+.checkout-title {
+    font-size: 36px; /* Increased font size */
+    font-weight: bold;
+    text-align: left; /* Align text to the left */
+    margin-bottom: 20px; /* Add spacing below the title */
+    color: #FEC321; /* Neutral color for the title */
+}
+
+.checkout-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.checkout-option {
+    width: 300px;
+    background-color: #fafbfd;
+    border: 2px solid #fafbfd;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    text-align: center; /* Center text inside the box */
+    cursor: pointer;
+    transition: 0.25s ease;
+    border-radius: 8px;
+}
+
+.checkout-option:hover {
+    background-color: #f2f1ff;
+    border-color: #f2f1ff;
+}
+
+.checkout-options input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.checkout-options input[type="radio"]:checked + .checkout-option {
+    background-color: #fef7e4; /* Highlight the selected box */
+    border-color: #FEC321; /* Change the border color for the selected box */
+    outline: 2px solid #FEC321; /* Add an outline for the selected option */
+    color: black; /* Change text color for better contrast */
+}
+
+.fake-checkbox {
+    height: 1rem;
+    width: 1rem;
+    background: #ffffff;
+    border: 1px solid #dbe0e7;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.fake-checkbox .fa-check {
+    color: #fff;
+    transform: translateY(-3px) scale(0.8);
+}
+
+.checkout-options input[type="checkbox"] {
+    display: none;
+}
+
+.checkout-options input[type="checkbox"]:checked + .checkout-option .fake-checkbox {
+    background-color: #6d67ff;
+    border-color: #6d67ff;
+}
+
+.checkout-options input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
+    background-color: #6d67ff;
+    border-color: #6d67ff;
+}
+
+.checkout-option .checkout-option-name {
+    flex: 1;
+    padding: 0.25rem 1rem;
+}
+
+.checkout-option-price {
+    font-size: 14px;
+    color: #7bc700;
+    background-color: #f9ffe7;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+}
+
+.checkout-options input[type="checkbox"]:checked + .checkout-option .checkout-option-price {
+    color: #6d67ff;
+    background-color: #f2f1ff;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #d4dfe8;
+    margin: 1rem 0;
+}
+
+.checkout-cost-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.text--red {
+    font-weight: bold;
+    font-size: 24px;
+    color: #ff6240;
+}
+
+.checkout-button {
+    background: #93e900;
+    color: white;
+    border: 0;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.checkout-button:hover {
+    background: #84c80f;
+}
+
+#total.changed {
+    animation: flashNumber 0.25s;
+}
+
+@keyframes flashNumber {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        width: 80%;
+
+        main {
+            column-gap: 70px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        width: 92%;
+
+        main {
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        .checkout-form {
+            order: 1; /* Place the MS form first */
+        }
+
+        .checkout-details {
+            order: 2; /* Place checkout details second */
+        }
+
+        main {
+            flex-direction: column;
+            height: auto;
+            margin-bottom: 50px;
+            padding: 0 10px; /* Add padding to prevent content from touching edges */
+
+            .checkout-form {
+                width: 100%;
+                margin-top: 35px;
+                margin: 0 auto; /* Center elements */
+                order: 1; /* Place the MS form first */
+            }
+
+            .checkout-details {
+                width: 100%;
+                margin: 0 auto; /* Center elements */
+                order: 2; /* Place checkout details second */
+            }
+        }
+
+        footer {
+            height: 10%;
+        }
+    }
+
+    .card-image {
+        width: 70%; /* Reduce image size for mobile */
+        margin: 0 auto; /* Center the image */
+    }
+
+    .go-back-box {
+        position: fixed; /* Make the button fixed to the viewport */
+        top: 10px; /* Add spacing from the top */
+        right: 10px; /* Add spacing from the right */
+        z-index: 1000; /* Ensure it stays above other elements */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card-image {
+        width: 60%; /* Further reduce image size for smaller screens */
+        margin: 0 auto; /* Center the image */
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px;
+    }
+
+    .go-back-link {
+        margin: 0;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .tarmonia-logo {
+        max-width: 350px; /* Increase the maximum width */
+        height: auto; /* Maintain aspect ratio */
+    }
+}
+
+.payment-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #4E5150; /* Neutral color for icons */
+    transition: color 0.3s ease;
+}
+
+.checkout-options input[type="radio"]:checked + .checkout-option .payment-icon {
+    color: #FEC321; /* Highlight icon color when selected */
+}
+
+#state-dropdown {
+    width: 100%; /* Match the width of other input fields */
+    padding: 10px; /* Match padding of other input fields */
+    border-radius: 5px; /* Match border radius of other input fields */
+    height: 50px; /* Allow the dropdown to adjust height dynamically */
+    max-height: 120px; /* Limit the height to show only a few options */
+    outline: none; /* Remove default outline */
+    border: 1px solid #ccc; /* Match border style of other input fields */
+    font-size: 13px; /* Match font size of other input fields */
+    font-family: "Poppins", sans-serif; /* Match font family */
+    box-sizing: border-box; /* Include padding and border in width calculation */
+    background-color: #ffffff; /* Ensure consistent background color */
+    color: #2C3E50; /* Match text color */
+    margin-bottom:10px;
+    justify-content: center;
+    max-height: 50px; /* Match the height of other input fields */
+    overflow-y: auto; /* Enable vertical scrolling for the dropdown */
+    font-weight: bold;
+}
+
+#state-dropdown option {
+    font-size: 12px; /* Reduce font size for smaller options */
+    padding: 5px; /* Adjust padding for smaller options */
+    height:100px;
+}
+
+.go-back-box {
+    position: absolute; /* Position the button within the #msform container */
+    top: 10px; /* Add spacing from the top */
+    right: 10px; /* Add spacing from the right */
+    padding: 10px 20px;
+    background-color: #FEC321;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    width: 110px;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.go-back-box:hover {
+    background-color: #967212;
+}
+
+.go-back-box a {
+    text-decoration: none; /* Remove underline decoration */
+    color: white; /* Ensure text color remains white */
+}
+
+.state-city-container {
+    display: flex;
+    gap: 20px; /* Add spacing between State and City */
+    margin-bottom: 10px;
+    width: 100%; /* Ensure the container takes full width */
+}
+
+.state-container, .city-container {
+    flex: 1; /* Allow both State and City to take equal width */
+}
+
+.state-container p, .city-container p {
+    font-family: "Roboto", sans-serif; /* Changed labels to Roboto */
+    margin-bottom: 5px; /* Add spacing below the labels */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.state-city-container {
+    display: flex;
+    gap: 10px; /* Add spacing between the state dropdown and city input */
+    align-items: center; /* Align the city input with the state dropdown */
+    margin-bottom: 10px;
+}
+
+#state-dropdown, #city-input {
+    width: 100%; /* Ensure the dropdown and input take full width */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #4E5150;
+    outline: none;
+}
+
+#city-input {
+    flex: 1; /* Allow the city input to take up remaining space */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #4E5150;
+    outline: none;
+}
+
+.checkout-bg {
+    background-image: url('./images/background-checkout.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    flex-shrink: 0; /* Prevent the image from shrinking */
+    width: 100px; /* Set a fixed width for the image */
+    height: 100px; /* Set a fixed height for the image */
+    border-radius: 10px; /* Add rounded corners */
+    overflow: hidden; /* Ensure the image stays within the container */
+}
+
+.card-image img {
+    width: 100%; /* Ensure the image fills the container */
+    height: 100%; /* Ensure the image fills the container */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+.card-details {
+    flex: 1; /* Allow the text to take up remaining space */
+    display: flex;
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center-align text vertically */
+    word-wrap: break-word; /* Ensure long words break to fit within the container */
+}
+
+.card-name {
+    font-size: 16px; /* Adjust font size for readability */
+    font-weight: bold;
+    color: #4E5150; /* Neutral text color */
+    margin-bottom: 5px; /* Add spacing below the name */
+}
+
+.card-price {
+    font-size: 14px; /* Adjust font size for readability */
+    color: #F2994A; /* Highlight price */
+}
+
+.go-back-link {
+    position: relative; /* Make it part of the normal flow */
+    top: 0; /* Reset top positioning */
+    left: 0; /* Reset left positioning */
+    background-color: #FEC321; /* Button background color */
+    color: white; /* Button text color */
+    padding: 5px; /* Add padding for better appearance */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the text bold */
+    margin-left: -35px; /* Add margin for spacing */
+}
+
+.go-back-link:hover {
+    background-color: #997E33; /* Darker background on hover */
+    transition: background 0.3s ease-in-out; /* Smooth transition */
+}

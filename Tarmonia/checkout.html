@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="responsive.css"> <!-- Added responsive.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+</head>
+<body>
+    <div class="checkout-bg" style="background: url('./images/background-checkout.png') ">
+        <header>
+            <a href="javascript:history.back()" class="go-back-link">Go Back</a>
+            <img src="./images/Tarmonia-Sustaining-Lives.png" alt="Tarmonia Logo" class="tarmonia-logo">
+        </header>
+
+        <main>
+         
+
+            <section class="checkout-form">
+                
+                <!-- Multistep Form -->
+                <form id="msform">
+                   
+                    <!-- Progressbar -->
+                    <ul id="progressbar">
+                        <li class="active">Contact Information</li>
+                        <li>Shipping Address</li>
+                        <li>Payment</li>
+                    </ul>
+                    <!-- Fieldsets -->
+                    <fieldset>
+                        <h2 class="fs-title">Contact Information</h2>
+                        
+                        <p>First Name</p>
+                        <input type="text" name="fname" placeholder="First Name" />
+                        <p>Last Name</p>
+                        <input type="text" name="lname" placeholder="Last Name" />
+                      
+                        <p>Email</p>
+                        <input type="text" name="email" placeholder="Email" />
+                        <p>Phone</p>
+                        <input type="integer" name="phone number" placeholder="Number" />
+                        <input type="button" name="next" class="next action-button" value="Next" />
+                    </fieldset>   
+                    <fieldset>
+                        <h2 class="fs-title">Shipping Address</h2>
+                       
+                        <p>Address</p>
+                        <input type="text" name="Address" placeholder="Address" />
+                        <div class="state-city-container">
+                            <div class="state-container">
+                                <p>State</p>
+                                <select name="State" id="state-dropdown">
+                                    <option value="" disabled selected>Select your state</option>
+                                    <option value="Pahang">Pahang</option>
+                                    <option value="Perak">Perak</option>
+                                    <option value="Terengganu">Terengganu</option>
+                                    <option value="Perlis">Perlis</option>
+                                    <option value="Selangor">Selangor</option>
+                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                    <option value="Johor">Johor</option>
+                                    <option value="Kelantan">Kelantan</option>
+                                    <option value="Kedah">Kedah</option>
+                                    <option value="Pulau Pinang">Pulau Pinang</option>
+                                    <option value="Melaka">Melaka</option>
+                                    <option value="Sabah">Sabah</option>
+                                    <option value="Sarawak">Sarawak</option>
+                                </select>
+                            </div>
+                            <div class="city-container">
+                                <p>City</p>
+                                <input type="text" name="City" id="city-input" placeholder="City" />
+                            </div>
+                        </div>
+                        <p>Postal Code</p>
+                        <input type="text" name="Postal Code" placeholder="Postal Code" />
+                        <div class="action-buttons">
+                            <input type="button" name="previous" class="previous action-button" value="Previous" />
+                            <input type="button" name="next" class="next action-button" value="Next" />
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Payments</h2>
+
+
+                        <div class="checkout-options padded">
+                            <div>
+                                <input type="radio" id="option-1" name="payment-option" tabindex="0">
+                                <label for="option-1" class="checkout-option rounded text text--dark">
+                                    <i class="fas fa-credit-card payment-icon"></i>
+                                    <span class="checkout-option-name">Credit Card</span>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="option-2" name="payment-option" tabindex="0">
+                                <label for="option-2" class="checkout-option rounded text text--dark">
+                                    <i class="fab fa-paypal payment-icon"></i>
+                                    <span class="checkout-option-name">PayPal</span>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="option-3" name="payment-option" tabindex="0">
+                                <label for="option-3" class="checkout-option rounded text text--dark">
+                                    <i class="fas fa-university payment-icon"></i>
+                                    <span class="checkout-option-name">FPX</span>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="option-4" name="payment-option" tabindex="0">
+                                <label for="option-4" class="checkout-option rounded text text--dark">
+                                    <i class="fas fa-wallet payment-icon"></i>
+                                    <span class="checkout-option-name">Touch 'n Go</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+                        
+                        <div class="action-buttons">
+                            <input type="button" name="previous" class="previous action-button" value="Previous" />
+                            <button type="submit" class="submit action-button">Pay</button>
+                        </div>
+                        
+                    </fieldset>
+                </form>
+            </section>
+
+            <section class="checkout-details">
+                <div class="checkout-details-inner">
+                    <div class="checkout-lists">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="images/Ricotta Salata.jpg" alt="Vintage Backbag">
+                            </div>
+                            <div class="card-details">
+                                <div class="card-name">Riccota Salata</div>
+                                <div class="card-price">$68.99 </div>
+                                <div class="card-wheel">
+                                    <button>-</button>
+                                    <span>1</span>
+                                    <button>+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="images/Tested raw milk.png" alt="Levi Shoes">
+                            </div>
+                            <div class="card-details">
+                                <div class="card-name">Tested Raw Milk</div>
+                                <div class="card-price">$29.99  </div>
+                                <div class="card-wheel">
+                                    <button>-</button>
+                                    <span>1</span>
+                                    <button>+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkout-shipping">
+                        <h6>Shipping</h6>
+                        <p>$19</p>
+                    </div>
+                    <div class="checkout-total">
+                        <h6>Total</h6>
+                        <p>$148.98</p>
+                    </div>
+                </div>
+            </section>
+       
+        </main>
+
+        <footer>
+          
+        </footer>
+    </div>
+    <script>
+        var current_fs, next_fs, previous_fs; // Fieldsets
+        var animating = false; // Prevent quick multi-click glitches
+
+        $(".next").click(function () {
+            if (animating) return false;
+
+            // Find the parent fieldset of the button
+            current_fs = $(this).closest("fieldset");
+            next_fs = current_fs.next();
+
+            // Activate next step on progress bar
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+            // Show the next fieldset and hide the current one
+            current_fs.css({ display: "none" });
+            next_fs.css({ display: "flex" }); // Ensure flex display for proper alignment
+        });
+
+        $(".previous").click(function () {
+            if (animating) return false;
+
+            // Find the parent fieldset of the button
+            current_fs = $(this).closest("fieldset");
+            previous_fs = current_fs.prev();
+
+            // Deactivate current step on progress bar
+            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+            // Show the previous fieldset and hide the current one
+            current_fs.css({ display: "none" });
+            previous_fs.css({ display: "flex" }); // Ensure flex display for proper alignment
+        });
+
+        $("form").submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+            alert("Form submitted successfully!");
+        });
+    </script>
+</body>
+</html>
