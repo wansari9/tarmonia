@@ -1399,3 +1399,20 @@ img.emoji {
     display: flex;
     flex-direction: column;
 }
+
+/* Center the top navigation across the screen */
+.menu_main_nav_area { width: 100%; }
+.menu_main_nav_area .menu_main_nav {
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 0 auto;
+	float: none !important;
+	text-align: center;
+}
+.menu_main_nav_area .menu_main_nav > li {
+	float: none !important;
+	display: inline-flex;
+}
