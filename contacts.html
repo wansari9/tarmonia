@@ -18,6 +18,32 @@
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
+    <style>
+        /* Bring the contact form above the map as an overlay */
+        .sc_googlemap_wrap { position: relative; }
+        #map-container { position: relative; }
+        .sc_googlemap_content { 
+            position: absolute; 
+            top: 40px; 
+            right: 20px; 
+            width: min(92%, 460px);
+            z-index: 1000; 
+            pointer-events: auto; /* allow clicking the form */
+        }
+        .sc_googlemap_content .sc_form_wrap { 
+            background: rgba(255,255,255,0.96); 
+            padding: 16px; 
+            border-radius: 8px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        }
+        /* Keep the map clickable behind the form when activated */
+        #map-iframe { width: 100%; height: 700px; border: 0; }
+        #map-overlay { z-index: 10; }
+        #deactivate-map { z-index: 1100; }
+        @media (max-width: 600px) {
+            .sc_googlemap_content { left: 10px; right: 10px; top: 20px; width: auto; }
+        }
+    </style>
 </head>
 
 <body class="page contactspg body_style_wide body_filled article_style_stretch layout_single-standard template_single-standard scheme_original top_panel_show top_panel_above sidebar_hide sidebar_outer_hide vc_responsive">
@@ -161,12 +187,12 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                            <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
+                                                <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
                                                 <div id="map-container" style="position: relative;">
                                                     <div id="map-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 700px; background: rgba(0,0,0,0.1); z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                                                         <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">Double-click to activate the map</div>
                                                     </div>
-                                                    <button id="deactivate-map" style="position: absolute; top: 86px; right: 20px; z-index: 9999; background: white; padding: 15px 30px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
+                                                    <button id="deactivate-map" style="position: absolute; top: 86px; right: 20px; z-index: 1100; background: white; padding: 10px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
                                                         Cancel Interaction
                                                     </button>
                                                     <iframe 
@@ -176,7 +202,6 @@
                                                         loading="lazy"
                                                         id="map-iframe">
                                                     </iframe>
-                                                    <script type='text/javascript' src='js/custom/map.interaction.js'></script>
                                                 </div>
                                                 <div class="sc_googlemap_content">
                                                     <div id="sc_form_282_wrap" class="sc_form_wrap">
@@ -416,6 +441,34 @@
 
 <!-- Global cart script -->
 <script type='text/javascript' src='js/local-cart.js'></script>
+
+<script>
+// Map activation: allow clicking the map by double-clicking the overlay; keep form above
+document.addEventListener('DOMContentLoaded', function(){
+    var overlay = document.getElementById('map-overlay');
+    var iframe = document.getElementById('map-iframe');
+    var cancelBtn = document.getElementById('deactivate-map');
+
+    function activate(){
+        if (iframe) iframe.style.pointerEvents = 'auto';
+        if (overlay) overlay.style.display = 'none';
+        if (cancelBtn) cancelBtn.style.display = 'block';
+    }
+    function deactivate(){
+        if (iframe) iframe.style.pointerEvents = 'none';
+        if (overlay) overlay.style.display = 'flex';
+        if (cancelBtn) cancelBtn.style.display = 'none';
+    }
+    if (overlay){
+        overlay.addEventListener('dblclick', function(e){ e.preventDefault(); activate(); });
+        // On touch devices, single tap to activate
+        overlay.addEventListener('touchend', function(e){ e.preventDefault(); activate(); }, { passive: false });
+    }
+    if (cancelBtn){
+        cancelBtn.addEventListener('click', function(e){ e.preventDefault(); deactivate(); });
+    }
+});
+</script>
 
 </body>
 </html><script type='text/javascript' src='js/custom/core.messages.js'></script>

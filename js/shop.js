@@ -58,12 +58,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Remove legacy redirect-on-click. Let local-cart.js intercept and add to localStorage.
+    // Allow "Select options" to navigate; only prevent default for real ajax add-to-cart links
     const buttons = document.querySelectorAll('.add_to_cart_button');
     buttons.forEach(button => {
+        // Ensure button href points to PDP with product_id
+        const productEl = button.closest('.product');
+        const pid = productEl && productEl.getAttribute('data-product_id');
+        const label = (button.textContent || '').toLowerCase();
+        if (pid && label.indexOf('select options') !== -1) {
+            button.setAttribute('href', `single-product.html?product_id=${pid}`);
+        }
+
         button.addEventListener('click', function (event) {
-            event.preventDefault();
-            // No redirect here; local-cart.js will capture and add
+            const href = button.getAttribute('href') || '';
+            const isAjaxAdd = button.classList.contains('ajax_add_to_cart') || button.classList.contains('add_to_cart') || href.indexOf('add-to-cart=') !== -1;
+            const isSelectOptions = (button.textContent || '').toLowerCase().indexOf('select options') !== -1;
+            if (isAjaxAdd && !isSelectOptions) {
+                // Static site: prevent navigation for ajax add; local-cart will handle
+                event.preventDefault();
+            } // else let navigation proceed to single-product
         });
     });
 

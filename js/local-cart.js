@@ -49,6 +49,19 @@
         updateUI();
     }
 
+    function removeFromCart(id, variant) {
+        var cart = getCart();
+        var idx = cart.findIndex(function (raw) {
+            var it = normalizeItem(raw);
+            return String(it.id) === String(id) && String(it.variant||'') === String(variant||'');
+        });
+        if (idx !== -1) {
+            cart.splice(idx, 1);
+            saveCart(cart);
+            updateUI();
+        }
+    }
+
     function updateHeader() {
         var cart = getCart().map(normalizeItem);
         var items = cart.reduce(function (s, it) { return s + (it.qty || 1); }, 0);
@@ -166,6 +179,15 @@
         var container = document.getElementById('cart-container') || document.getElementById('cart-items');
         var cart = getCart().map(normalizeItem);
         if (tableBody) {
+            // Ensure header has a remove column
+            try {
+                var headRow = document.querySelector('#cart-table thead tr');
+                if (headRow && headRow.children.length < 5) {
+                    var th = document.createElement('th');
+                    th.textContent = '';
+                    headRow.appendChild(th);
+                }
+            } catch (e) {}
             tableBody.innerHTML = '';
             if (!cart.length) {
                 document.getElementById('empty-cart-message') && (document.getElementById('empty-cart-message').style.display = 'block');
@@ -177,7 +199,8 @@
                 tr.innerHTML = '<td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td>' +
                     '<td>' + (it.qty || 1) + '</td>' +
                     '<td>' + formatPrice(it.price || 0) + '</td>' +
-                    '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>';
+                    '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>' +
+                    '<td><button type="button" class="remove-cart-item" data-id="' + it.id + '" data-variant="' + (it.variant || '') + '" aria-label="Remove ' + (it.title||'item') + '">×</button></td>';
                 tableBody.appendChild(tr);
             });
             // show proceed button
@@ -188,9 +211,13 @@
                 container.innerHTML = '<p>Your cart is currently empty.</p>';
                 return;
             }
-            var html = '<table class="cart-table"><thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>';
+            var html = '<table class="cart-table"><thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th><th></th></tr></thead><tbody>';
             cart.forEach(function (it) {
-                html += '<tr><td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td><td>' + (it.qty || 1) + '</td><td>' + formatPrice(it.price || 0) + '</td><td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td></tr>';
+                html += '<tr><td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td>' +
+                        '<td>' + (it.qty || 1) + '</td>' +
+                        '<td>' + formatPrice(it.price || 0) + '</td>' +
+                        '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>' +
+                        '<td><button type="button" class="remove-cart-item" data-id="' + it.id + '" data-variant="' + (it.variant || '') + '" aria-label="Remove ' + (it.title||'item') + '">×</button></td></tr>';
             });
             html += '</tbody></table>';
             container.innerHTML = html;
@@ -311,6 +338,14 @@
         var legacy = getCart();
         saveCart(legacy.map(normalizeItem));
         updateUI();
+    });
+
+    // Delegated removal handler (works for both cart page modes and mini-cart enhancements if added later)
+    document.addEventListener('click', function(e){
+        var btn = e.target.closest && e.target.closest('.remove-cart-item');
+        if (!btn) return;
+        e.preventDefault();
+        removeFromCart(btn.getAttribute('data-id'), btn.getAttribute('data-variant'));
     });
 
 })();
