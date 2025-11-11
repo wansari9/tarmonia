@@ -14,42 +14,35 @@ body {
     overflow-x: hidden; /* Prevent horizontal overflow */
 
     header {
-        display: flex; /* Use flexbox for alignment */
-        align-items: center; /* Vertically center the content */
-        justify-content: space-between; /* Space out the elements */
-        padding: 20px 40px; /* Add padding for better spacing */
-        position: relative; /* Ensure proper positioning */
-        padding-bottom: 30px;
-    }
-
-    .tarmonia-logo {
-        position: absolute; /* Position the logo absolutely */
-        left: 50%; /* Center horizontally */
-        width: 40%;
-        transform: translateX(-50%); /* Adjust for centering */
-        max-width: 250px; /* Reduce the maximum width of the logo */
-        height: auto; /* Maintain aspect ratio */
-    }
-
-    .go-back-link {
-        z-index: 1; /* Ensure the button stays above other elements */
+        position: relative; /* Allow positioning of child elements */
+        display: flex;
+        justify-content: space-between; /* Space out the "Checkout" heading and "Go Back" button */
+        align-items: center; /* Align items vertically */
+      
+        
+        > h3 {
+            margin: 0; /* Remove default margin */
+            font-family: "Lora", serif; /* Changed header font to Lora */
+            font-size: 50px;
+            color: #FEC321;
+            font-weight: 500;
+            margin-left: 20px;
+        }
     }
 
     main {
         height: 85%;
         display: flex;
-        column-gap: 50px;
+column-gap: 50px;
         flex-wrap: wrap; /* Allow wrapping to prevent overflow */
         justify-content: center ;
         align-items: flex-start; /* Align the top of the left and right sections */
-        flex-direction: row-reverse; /* Switch the positions of the forms */
         
         .checkout-form  {
             width: 50%;
             max-width: 100%;
             box-sizing: border-box; /* Include padding and border in width calculation */
             align-items: flex-start; /* Align the form content to the left */
-            order: 2; /* Place the MS form second */
 
             form {
                 background-color: #fff7d5;
@@ -153,17 +146,14 @@ body {
         .checkout-details {
             width: 40%;
             max-width: 100%;
-            order: 1; /* Place checkout details first */
             
             box-sizing: border-box; /* Include padding and border in width calculation */
 
             .checkout-details-inner {
                 background: #fff7d5;
                 border-radius: 10px;
-                padding: 10px;
-                padding-top: 30px; /* Increased padding for better spacing */
+                padding: 10px; /* Increased padding for better spacing */
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
-                position: relative; /* Ensure the Go Back button is positioned relative to this container */
 
                 .checkout-lists {
                     display: flex;
@@ -172,15 +162,70 @@ body {
                     margin-bottom: 40px;
 
                     .card {
+                        width: 100%;
                         display: flex;
-                        flex-direction: row; /* Ensure the image and text are side by side */
-                        align-items: center; /* Align items vertically */
-                        gap: 15px; /* Add spacing between the image and text */
-                        border: 1px solid #ddd; /* Add a border for better separation */
+                        column-gap: 210px;
+                        border: 1px solid #ddd; /* Added border for better separation */
                         border-radius: 10px;
-                        padding: 10px; /* Add padding for better spacing */
-                        overflow: hidden; /* Prevent content overflow */
-                        box-sizing: border-box; /* Include padding and border in width calculation */
+                        padding: 10px; /* Added padding for better spacing */
+                        transition: box-shadow 0.2s ease-in-out; /* Added hover effect */
+
+                        .card-image {
+                            width: 35%;
+
+                            img {
+                                width: 100%;
+                                object-fit: fill;
+                                border-radius: 10px;
+                            }
+                        }
+
+                        .card-details {
+                            display: flex;
+                            flex-direction: column;
+
+                            .card-name {
+                                font-family: 'Times New Roman', Times, serif;
+                                font-size: 20px;
+                                font-weight: 500;
+                            }
+                            .card-price {
+                                font-size: 18px;
+                                font-weight: 500;
+                                color: #F2994A;
+                                margin-top: 5px;
+
+                                span {
+                                    color: #4E5150;
+                                    text-decoration: line-through;
+                                    margin-left: 10px;
+                                }
+                            }
+                            .card-wheel {
+                                margin-top: 17px;
+                                border: .2px solid #4e515085;
+                                width: 129px;
+                                padding: 8px 8px;
+                                border-radius: 10px;
+                                font-size: 12px;
+                                display: flex;
+                                justify-content: space-between;
+
+                                button {
+                                    background: #E0E0E0;
+                                    color: #828282;
+                                    width: 15px;
+                                    height: 15px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    border: 0;
+                                    cursor: pointer;
+                                    border-radius: 3px;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
                     }
 
                     .card:hover {
@@ -223,22 +268,31 @@ body {
 }
 
 #msform {
-    width: 100%; /* Adjusted width for better fit */
-    margin: 0 auto; /* Center the form */
-    padding-top: 30px;
-    margin-bottom: 30px;
+    width: 100%; /* Ensure the form takes up the full width */
+ 
+    text-align: center;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden; /* Prevent content overflow */
+    height: 650px;
 }
 
 #msform fieldset {
-    width: 100%; /* Ensure fieldsets take up the full width of the form */
-    max-width: 600px; /* Set a maximum width for better readability */
-    margin: 0 auto; /* Center the fieldsets */
-    border: none; /* Remove border color */
+    background: white;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
     box-sizing: border-box;
-    text-align: left; /* Align text to the left */
+    width: 80%;
+    margin: 0 10%;
+    position: relative;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth transitions */
+    align-items: flex-start; /* Align fieldset content to the left */
+    text-align: left; /* Ensure text aligns to the left */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* Keep inputs stacked vertically */
+    align-items: center; /* Center-align the content */
 }
 
 #msform fieldset:not(:first-of-type) {
@@ -317,9 +371,7 @@ body {
     width: 33.33%; /* Each step takes up equal width */
     text-align: center; /* Center-align the text */
     position: relative;
-  
 }
-
 
 #progressbar li:before {
     content: counter(step); /* Display the step number */
@@ -472,11 +524,9 @@ body {
 }
 
 .checkout-title {
-    font-size: 36px; /* Increased font size */
+    font-size: 26px;
     font-weight: bold;
-    text-align: left; /* Align text to the left */
-    margin-bottom: 20px; /* Add spacing below the title */
-    color: #FEC321; /* Neutral color for the title */
+    color: #243b52;
 }
 
 .checkout-options {
@@ -487,7 +537,6 @@ body {
 }
 
 .checkout-option {
-    width: 300px;
     background-color: #fafbfd;
     border: 2px solid #fafbfd;
     padding: 0.75rem 1rem;
@@ -543,7 +592,7 @@ body {
     display: none; /* Hide the default radio button */
 }
 
-checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
+.checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
     background-color: #6d67ff;
     border-color: #6d67ff;
 }
@@ -632,19 +681,7 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
         width: 92%;
 
         main {
-            flex-direction: column; /* Stack elements vertically */
-        }
-
-        .checkout-form {
-            order: 1; /* Place the MS form first */
-        }
-
-        .checkout-details {
-            order: 2; /* Place checkout details second */
-        }
-
-        main {
-            flex-direction: column;
+            flex-direction: column-reverse;
             height: auto;
             margin-bottom: 50px;
             padding: 0 10px; /* Add padding to prevent content from touching edges */
@@ -653,56 +690,17 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
                 width: 100%;
                 margin-top: 35px;
                 margin: 0 auto; /* Center elements */
-                order: 1; /* Place the MS form first */
             }
 
             .checkout-details {
                 width: 100%;
                 margin: 0 auto; /* Center elements */
-                order: 2; /* Place checkout details second */
             }
         }
 
         footer {
             height: 10%;
         }
-    }
-
-    .card-image {
-        width: 70%; /* Reduce image size for mobile */
-        margin: 0 auto; /* Center the image */
-    }
-
-    .go-back-box {
-        position: fixed; /* Make the button fixed to the viewport */
-        top: 10px; /* Add spacing from the top */
-        right: 10px; /* Add spacing from the right */
-        z-index: 1000; /* Ensure it stays above other elements */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .card-image {
-        width: 60%; /* Further reduce image size for smaller screens */
-        margin: 0 auto; /* Center the image */
-    }
-
-    header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 30px;
-    }
-
-    .go-back-link {
-        margin: 0;
-        padding: 5px 10px;
-        font-size: 12px;
-    }
-
-    .tarmonia-logo {
-        max-width: 350px; /* Increase the maximum width */
-        height: auto; /* Maintain aspect ratio */
     }
 }
 
@@ -744,9 +742,9 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
 }
 
 .go-back-box {
-    position: absolute; /* Position the button within the #msform container */
-    top: 10px; /* Add spacing from the top */
-    right: 10px; /* Add spacing from the right */
+    position: static; /* Remove absolute positioning */
+    margin-right: 20px; /* Add spacing from the left edge */
+    display: inline-block;
     padding: 10px 20px;
     background-color: #FEC321;
     color: white;
@@ -757,24 +755,16 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s ease;
-    width: 110px;
-    z-index: 1000; /* Ensure it stays above other elements */
 }
 
 .go-back-box:hover {
     background-color: #967212;
 }
 
-.go-back-box a {
-    text-decoration: none; /* Remove underline decoration */
-    color: white; /* Ensure text color remains white */
-}
-
 .state-city-container {
     display: flex;
     gap: 20px; /* Add spacing between State and City */
     margin-bottom: 10px;
-    width: 100%; /* Ensure the container takes full width */
 }
 
 .state-container, .city-container {
@@ -793,19 +783,6 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
     gap: 10px; /* Add spacing between the state dropdown and city input */
     align-items: center; /* Align the city input with the state dropdown */
     margin-bottom: 10px;
-}
-
-#state-dropdown, #city-input {
-    width: 100%; /* Ensure the dropdown and input take full width */
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    font-family: "Poppins", sans-serif;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    color: #4E5150;
-    outline: none;
 }
 
 #city-input {
@@ -830,56 +807,4 @@ checkout-options input[type="radio"]:checked + .checkout-option .fake-checkbox {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-.card-image {
-    flex-shrink: 0; /* Prevent the image from shrinking */
-    width: 100px; /* Set a fixed width for the image */
-    height: 100px; /* Set a fixed height for the image */
-    border-radius: 10px; /* Add rounded corners */
-    overflow: hidden; /* Ensure the image stays within the container */
-}
-
-.card-image img {
-    width: 100%; /* Ensure the image fills the container */
-    height: 100%; /* Ensure the image fills the container */
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
-}
-
-.card-details {
-    flex: 1; /* Allow the text to take up remaining space */
-    display: flex;
-    flex-direction: column; /* Stack text vertically */
-    justify-content: center; /* Center-align text vertically */
-    word-wrap: break-word; /* Ensure long words break to fit within the container */
-}
-
-.card-name {
-    font-size: 16px; /* Adjust font size for readability */
-    font-weight: bold;
-    color: #4E5150; /* Neutral text color */
-    margin-bottom: 5px; /* Add spacing below the name */
-}
-
-.card-price {
-    font-size: 14px; /* Adjust font size for readability */
-    color: #F2994A; /* Highlight price */
-}
-
-.go-back-link {
-    position: relative; /* Make it part of the normal flow */
-    top: 0; /* Reset top positioning */
-    left: 0; /* Reset left positioning */
-    background-color: #FEC321; /* Button background color */
-    color: white; /* Button text color */
-    padding: 5px; /* Add padding for better appearance */
-    border-radius: 5px; /* Rounded corners */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make the text bold */
-    margin-left: -35px; /* Add margin for spacing */
-}
-
-.go-back-link:hover {
-    background-color: #997E33; /* Darker background on hover */
-    transition: background 0.3s ease-in-out; /* Smooth transition */
 }

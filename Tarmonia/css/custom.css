@@ -849,14 +849,6 @@ img.emoji {
 	background-repeat: no-repeat;
 }
 
-/* for Terms and Conditions page */
-.bg_cust_13 {
-	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/b-garden.jpg);
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
 .rev_slider_wrapper {
 	margin: 0px auto; 
 	background-color:#231f20;
@@ -1183,7 +1175,7 @@ img.emoji {
 
 .faq-section {
     padding: 20px;
-    background-color: #fec321;
+    background-color: #f9f9f9;
     border-radius: 8px;
     max-width: 800px;
     margin: 20px auto;
@@ -1246,14 +1238,22 @@ img.emoji {
     margin: 0 0 10px;
 }
 
-/* Remove custom dropdown styles */
-.select2-container {
-    /* styles */
+/* 移除自定义下拉框样式 */
+.custom-dropdown,
+.selected-option,
+.selected-option:after,
+.dropdown-options,
+.dropdown-options li,
+.dropdown-options li:last-child,
+.dropdown-options li:hover,
+.custom-dropdown.active .dropdown-options {
+    display: none;
 }
 
-/* Shopping cart styles */
-.cart-container {
-    /* styles */
+@media (max-width: 767px) {
+	.faq-answer{
+		font-size: 20px !important;
+	}
 }
 
 /* Sidebar Cart Styles */
@@ -1267,13 +1267,6 @@ img.emoji {
 
 .widget_shopping_cart {
     padding: 0;
-}
-
-.widget.woocommerce.widget_shopping_cart {
-    display: block !important;
-	visibility: visible !important;
-	opacity: 1 !important;	
-	height: auto !important;
 }
 
 .cart-header {
@@ -1402,268 +1395,24 @@ img.emoji {
     color: #c82333;
 }
 
-/* Shopping cart styles */
-.cart-item {
+.products .post_content {
     display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    position: relative;
+    flex-direction: column;
 }
 
-.cart-item-image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    margin-right: 10px;
+/* Center the top navigation across the screen */
+.menu_main_nav_area { width: 100%; }
+.menu_main_nav_area .menu_main_nav {
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 0 auto;
+	float: none !important;
+	text-align: center;
 }
-
-.cart-item-details {
-    flex: 1;
-}
-
-.cart-item-details h4 {
-    margin: 0 0 5px 0;
-    font-size: 14px;
-}
-
-.cart-item-details .price {
-    color: #666;
-    margin: 0 0 5px 0;
-}
-
-.quantity-controls {
-    display: flex;
-    align-items: center;
-    margin: 5px 0;
-}
-
-.quantity-btn {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 2px 8px;
-    cursor: pointer;
-}
-
-.quantity-input {
-    width: 40px;
-    text-align: center;
-    margin: 0 5px;
-    border: 1px solid #ddd;
-    padding: 2px;
-}
-
-.remove-item {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background: none;
-    border: none;
-    color: #999;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.remove-item:hover {
-    color: #ff0000;
-}
-
-.cart-total {
-    padding: 10px;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-buttons {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-}
-
-.view-cart-button {
-    flex: 1;
-    text-align: center;
-    padding: 8px;
-    background: white;
-    color: white;
-    text-decoration: none;
-	border: 1px solid #ddd;
-}
-
-.checkout-button {
-    flex: 1;
-    text-align: center;
-    padding: 8px;
-    background: #FEC321;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-}
-
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.cart-count {
-    background: #FEC321;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-}
-
-.toc-columns {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.toc-columns ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 48%; /* Adjust width for equal spacing */
-}
-
-.toc-columns ul li {
-    margin-bottom: 5px;
-}
-
-.toc-columns ul li a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.toc-columns ul li a:hover {
-    text-decoration: underline;
-}
-
-.main-content {
-    padding: 20px;
-    line-height: 1.6;
-    font-family: Arial, sans-serif;
-}
-
-.main-content h3 {
-    margin-top: 20px;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.main-content p {
-    margin: 10px 0;
-    color: #555;
-}
-
-/* Add scroll offset for sections */
-main .main-content section {
-    scroll-margin-top: 150px; /* Adjust this value to match the height of your dropdown menu */
-}
-
-/* TOC Container */
-.toc {
-    background-color: #f9f9f9; /* Light gray background */
-    border: 1px solid #ddd; /* Light border */
-    padding: 20px;
-    border-radius: 8px; /* Rounded corners */
-    margin-bottom: 20px;
-}
-
-/* TOC Heading */
-.toc h2 {
-    font-size: 2.5em;
-    color: #333; /* Dark gray for heading */
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* TOC Links */
-.toc-columns ul li a {
-    text-decoration: none;
-    color: #007bff; /* Blue for links */
-    font-weight: bold;
-    transition: color 0.3s ease; /* Smooth color transition */
-}
-
-/* TOC Links Hover Effect */
-.toc-columns ul li a:hover {
-    color: #0056b3; /* Darker blue on hover */
-    text-decoration: underline;
-}
-
-/* TOC List Items */
-.toc-columns ul li {
-    margin-bottom: 10px; /* Space between items */
-}
-
-/* TOC Columns */
-.toc-columns {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.toc-columns ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 48%; /* Equal width for columns */
-}
-
-/* Increase font size for TOC links */
-.toc-columns ul li a {
-    font-size: 1.2em; /* Increase the font size (adjust as needed) */
-    font-weight: bold; /* Optional: Make the text bold */
-    color: #997E33; /* Optional: Keep the link color consistent */
-}
-
-.toc-columns ul li {
-    margin-bottom: 10px; /* Add spacing between list items for better readability */
-}
-
-/* Adjust the left column of the TOC */
-.toc-columns .toc-left {
-    margin-left: 110px; /* Moves the left column 20px to the right */
-}
-
-/* Style for the content box */
-.content-box {
-    background-color: #FFF9E6; /* White background for the box */
-    border: 1px solid #ddd; /* Light gray border */
-    border-radius: 30px; /* Rounded corners */
-    padding: 20px; /* Inner padding for spacing */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    margin: 20px auto; /* Center the box and add vertical spacing */
-    max-width: 1200px; /* Limit the width of the box */
-}
-
-/* Reduce spacing for the heading inside the content box */
-.content-box h2 {
-    margin-top: 10px; /* Reduce the top margin of the heading */
-    margin-bottom: 10px; /* Reduce the bottom margin of the heading */
-    padding: 0; /* Ensure no extra padding is applied */
-	text-align: center; /* Center the text horizontally */
-	color: #2C3E50;
-}
-
-/* Style for the main content sections */
-.content-box .main-content section h3 {
-    margin-top: 20px; /* Add spacing above the section title */
-    font-size: 1.5em; /* Adjust font size for section titles */
-    color: #2C3E50; /* Dark gray for section titles */
-}
-
-/* Style for the subpoints (e.g., 1.1, 1.2) */
-.content-box .main-content section p {
-    margin-left: 20px; /* Indent subpoints */
-    text-indent: -20px; /* Negative indent for the first line */
-    padding-left: 40px; /* Add padding to align the text properly */
-    color: #555555; /* Medium gray for subpoint text */
-    line-height: 1.8; /* Improve readability */
+.menu_main_nav_area .menu_main_nav > li {
+	float: none !important;
+	display: inline-flex;
 }

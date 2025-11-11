@@ -2231,3 +2231,27 @@ body:not(.search-results) .twentysixteen .entry-summary {
     background: inherit;
     color: inherit;
 }
+
+.products .product {
+    max-width: calc(33.333% - 30px);
+    height: 410px; /* Set a fixed height for all product boxes */
+    justify-content: stretch;
+}
+@media (max-width: 900px) {
+    .products .product {
+        flex: 1 1 calc(50% - 30px);
+        max-width: calc(50% - 30px);
+    }
+}
+@media (max-width: 600px) {
+    .products .product {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+.products .product .post_thumb img {
+    width: 100%;
+    height: 180px;      /* or any value that matches your design */
+    object-fit: cover;  /* Ensures images cover the box without distortion */
+    display: block;
+}

@@ -28,13 +28,18 @@
         return 'RM' + Number(n || 0).toFixed(2);
     }
 
-    function findItem(cart, id) {
-        return cart.find(function (it) { return String(it.id) === String(id); });
+    function findItem(cart, id, variant) {
+        return cart.find(function (it) {
+            var sameId = String(it.id) === String(id);
+            var v1 = (it.variant || '');
+            var v2 = (variant || '');
+            return sameId && String(v1) === String(v2);
+        });
     }
 
     function addToCart(item) {
         var cart = getCart();
-        var existing = findItem(cart, item.id);
+        var existing = findItem(cart, item.id, item.variant);
         if (existing) {
             existing.qty = (existing.qty || 0) + (item.qty || 1);
         } else {
@@ -42,6 +47,19 @@
         }
         saveCart(cart);
         updateUI();
+    }
+
+    function removeFromCart(id, variant) {
+        var cart = getCart();
+        var idx = cart.findIndex(function (raw) {
+            var it = normalizeItem(raw);
+            return String(it.id) === String(id) && String(it.variant||'') === String(variant||'');
+        });
+        if (idx !== -1) {
+            cart.splice(idx, 1);
+            saveCart(cart);
+            updateUI();
+        }
     }
 
     function updateHeader() {
@@ -55,6 +73,7 @@
             try { btn.setAttribute('data-summa', formatPrice(sum)); } catch (e) {}
             var totals = btn.querySelector('.contact_cart_totals');
             if (totals) {
+                // Replace entire totals block to avoid stray leading zeros from legacy markup
                 totals.innerHTML = '<span class="cart_items">' + items + ' Items<\/span>' +
                                    '<span class="cart_summa">' + formatPrice(sum) + '<\/span>';
             }
@@ -74,13 +93,13 @@
         520: "Lamb", 530: "Bacon", 540: "Sausage", 550: "Leather", 560: "Wool", 570: "Feathers"
     };
 
-    // Known product prices (RM). Used to backfill legacy items or when page DOM price is missing
-    var productPrices = {
-        458: 23.00, 448: 25.00, 438: 50.00, 412: 35.00, 471: 45.00, 364: 10.00,
-        402: 30.00, 426: 45.00, 387: 35.00, 420: 3.50, 430: 8.50, 450: 5.50,
-        460: 3.50, 470: 5.00, 480: 6.50, 490: 18.00, 500: 12.00, 510: 6.00,
-        520: 20.00, 530: 18.00, 540: 15.00
-    };
+        // Known product prices (RM). Used to backfill legacy items or when page DOM price is missing
+        var productPrices = {
+            458: 23.00, 448: 25.00, 438: 50.00, 412: 35.00, 471: 45.00, 364: 10.00,
+            402: 30.00, 426: 45.00, 387: 35.00, 420: 3.50, 430: 8.50, 450: 5.50,
+            460: 3.50, 470: 5.00, 480: 6.50, 490: 18.00, 500: 12.00, 510: 6.00,
+            520: 20.00, 530: 18.00, 540: 15.00
+        };
 
     function normalizeItem(raw) {
         // Accept legacy schema { productId, quantity } and new schema { id, qty }
@@ -89,10 +108,11 @@
         var price = typeof raw.price === 'number' ? raw.price : parseFloat(String(raw.price||'').replace(/[^0-9.]/g,''))||0;
         var title = raw.title || productNames[id] || 'Product';
         var image = raw.image || raw.img || '';
-        if ((!price || price === 0) && id != null && productPrices[id] != null) {
-            price = productPrices[id];
-        }
-        return { id: id, qty: qty, price: price, title: title, image: image };
+        var variant = raw.variant || raw.variation || raw.options || '';
+            if ((!price || price === 0) && id != null && productPrices[id] != null) {
+                price = productPrices[id];
+            }
+        return { id: id, qty: qty, price: price, title: title, image: image, variant: variant };
     }
 
     function updateMiniWidget() {
@@ -139,11 +159,11 @@
 
             // Build the standard WooCommerce mini-cart list inside the farm UI body
             var html = '<ul class="cart_list product_list_widget">';
-            cart.forEach(function (raw) {
+        cart.forEach(function (raw) {
                 var it = normalizeItem(raw);
                 html += '<li class="mini_cart_item">' +
                     (it.image ? '<a href="#" class="mini_cart_image"><img src="' + it.image + '" alt="" width="45"/></a>' : '') +
-                    '<a href="#" class="mini_cart_title">' + (it.title || 'Product') + '</a>' +
+            '<a href="#" class="mini_cart_title">' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</a>' +
                     '<span class="quantity"> ' + (it.qty || 1) + ' × <span class="amount">' + formatPrice(it.price || 0) + '</span></span>' +
                     '</li>';
             });
@@ -159,6 +179,15 @@
         var container = document.getElementById('cart-container') || document.getElementById('cart-items');
         var cart = getCart().map(normalizeItem);
         if (tableBody) {
+            // Ensure header has a remove column
+            try {
+                var headRow = document.querySelector('#cart-table thead tr');
+                if (headRow && headRow.children.length < 5) {
+                    var th = document.createElement('th');
+                    th.textContent = '';
+                    headRow.appendChild(th);
+                }
+            } catch (e) {}
             tableBody.innerHTML = '';
             if (!cart.length) {
                 document.getElementById('empty-cart-message') && (document.getElementById('empty-cart-message').style.display = 'block');
@@ -167,10 +196,11 @@
             document.getElementById('empty-cart-message') && (document.getElementById('empty-cart-message').style.display = 'none');
             cart.forEach(function (it) {
                 var tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + (it.title || 'Product') + '</td>' +
+                tr.innerHTML = '<td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td>' +
                     '<td>' + (it.qty || 1) + '</td>' +
                     '<td>' + formatPrice(it.price || 0) + '</td>' +
-                    '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>';
+                    '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>' +
+                    '<td><button type="button" class="remove-cart-item" data-id="' + it.id + '" data-variant="' + (it.variant || '') + '" aria-label="Remove ' + (it.title||'item') + '">×</button></td>';
                 tableBody.appendChild(tr);
             });
             // show proceed button
@@ -181,9 +211,13 @@
                 container.innerHTML = '<p>Your cart is currently empty.</p>';
                 return;
             }
-            var html = '<table class="cart-table"><thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>';
+            var html = '<table class="cart-table"><thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th><th></th></tr></thead><tbody>';
             cart.forEach(function (it) {
-                html += '<tr><td>' + (it.title || 'Product') + '</td><td>' + (it.qty || 1) + '</td><td>' + formatPrice(it.price || 0) + '</td><td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td></tr>';
+                html += '<tr><td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td>' +
+                        '<td>' + (it.qty || 1) + '</td>' +
+                        '<td>' + formatPrice(it.price || 0) + '</td>' +
+                        '<td>' + formatPrice((it.price || 0) * (it.qty || 1)) + '</td>' +
+                        '<td><button type="button" class="remove-cart-item" data-id="' + it.id + '" data-variant="' + (it.variant || '') + '" aria-label="Remove ' + (it.title||'item') + '">×</button></td></tr>';
             });
             html += '</tbody></table>';
             container.innerHTML = html;
@@ -194,6 +228,13 @@
         updateHeader();
         updateMiniWidget();
         renderCartPage();
+        try {
+            var proceed = document.getElementById('proceed-to-checkout');
+            if (proceed && !proceed._wired) {
+                proceed.addEventListener('click', function(){ window.location.href = 'checkout.html'; });
+                proceed._wired = true;
+            }
+        } catch(e){}
     }
 
     // Intercept product form submissions (single product)
@@ -213,17 +254,44 @@
                 // Prefer standard price element; if missing/zero, fallback to custom dynamic price display
                 var priceText = priceEl ? priceEl.textContent : '';
                 var priceParsed = parsePrice(priceText);
+                // Try variation selected price: look for .woocommerce-variation-price .price .amount
+                var variationPriceEl = form.querySelector('.woocommerce-variation-price .price .woocommerce-Price-amount, .woocommerce-variation-price .amount');
+                if (variationPriceEl) {
+                    var vp = parsePrice(variationPriceEl.textContent);
+                    if (vp) priceParsed = vp;
+                }
                 if (!priceText || priceParsed === 0) {
-                    var altPriceEl = document.querySelector('#pa_price, .product-price-display');
+                    var altPriceEl = document.querySelector('#pa_price, .product-price-display, .variation-price-display');
                     if (altPriceEl) {
-                        priceParsed = parsePrice(altPriceEl.textContent);
+                        var ap = parsePrice(altPriceEl.textContent);
+                        if (ap) priceParsed = ap;
                     }
                 }
                 var price = priceParsed || 0;
+                // Build variant label from selected options
+                var variantParts = [];
+                var optionDataPrice = 0;
+                form.querySelectorAll('select[name^="attribute_"], select.variation, select[data-attribute_name]').forEach(function (sel) {
+                    if (sel.value) {
+                        var opt = sel.querySelector('option[value="' + sel.value + '"]');
+                        var label = (opt && (opt.textContent || opt.label)) || sel.value;
+                        variantParts.push(label.trim());
+                        if (opt && opt.hasAttribute('data-price')) {
+                            var dp = parsePrice(opt.getAttribute('data-price'));
+                            if (dp) optionDataPrice = dp; // last non-zero wins
+                        }
+                    }
+                });
+                // Radio inputs variant capture
+                form.querySelectorAll('input[type=radio][name^="attribute_"]:checked').forEach(function (r) {
+                    if (r.value) variantParts.push(r.getAttribute('data-label') || r.value.trim());
+                });
+                var variantLabel = variantParts.join(', ');
+                if (!price && optionDataPrice) price = optionDataPrice;
                 var title = titleEl ? titleEl.textContent.trim() : 'Product';
                 var image = imgEl ? (imgEl.getAttribute('src') || '') : '';
 
-                addToCart({ id: id, title: title, price: price, qty: qty, image: image });
+                addToCart({ id: id, title: title, price: price, qty: qty, image: image, variant: variantLabel });
 
                 // feedback
                 var btn = form.querySelector('.single_add_to_cart_button, .add-to-cart-button');
@@ -262,7 +330,7 @@
                 var i = container.querySelector('img');
                 if (i) img = i.getAttribute('src') || '';
             }
-            addToCart({ id: productId || ('p-' + Date.now()), title: title, price: price, qty: 1, image: img });
+            addToCart({ id: productId || ('p-' + Date.now()), title: title, price: price, qty: 1, image: img, variant: '' });
 
             // visual feedback
             el.classList.add('added');
@@ -277,6 +345,14 @@
         var legacy = getCart();
         saveCart(legacy.map(normalizeItem));
         updateUI();
+    });
+
+    // Delegated removal handler (works for both cart page modes and mini-cart enhancements if added later)
+    document.addEventListener('click', function(e){
+        var btn = e.target.closest && e.target.closest('.remove-cart-item');
+        if (!btn) return;
+        e.preventDefault();
+        removeFromCart(btn.getAttribute('data-id'), btn.getAttribute('data-variant'));
     });
 
 })();

@@ -2,7 +2,7 @@
 <html lang="en-US" class="scheme_original">
 
 <head>
-    <title>Parmesan Cheese – Tarmonia</title>
+    <title id="dynamic-title">Product - Dairy Farm</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="format-detection" content="telephone=no">
@@ -90,23 +90,7 @@
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
                                                 <div class="widget_shopping_cart_content">
-                                                    <div class="cart-header">
-                                                        <h3>Shopping Cart</h3>
-                                                        <span class="cart-count">0</span>
-                                                    </div>
-                                                    <div class="cart-body">
-                                                        <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
-                                                    </div>
-                                                    <div class="cart-footer">
-                                                        <div class="cart-total">
-                                                            <span class="total-label">Total:</span>
-                                                            <span class="total-amount">$0.00</span>
-                                                        </div>
-                                                        <div class="cart-buttons">
-                                                            <a href="cart.html" class="view-cart-button">View Cart</a>
-                                                            <a href="checkout.html" class="checkout-button">Checkout</a>
-                                                        </div>
-                                                    </div>
+                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,18 +147,16 @@
         </div>
         <div class="top_panel_title top_panel_style_1 title_present navi_present breadcrumbs_present scheme_original">
             <div  class="bg_cust_1 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
-                <div class="content_wrap">
+                <!-- <div class="content_wrap">
                     <div class="post_navi"></div>
                     <div class="breadcrumbs">
                         <a class="breadcrumbs_item home" href="index.html">Home</a>
                         <span class="breadcrumbs_delimiter"></span>
                         <a class="breadcrumbs_item all" href="shop.html">Shop</a>
                         <span class="breadcrumbs_delimiter"></span>
-                        <a class="breadcrumbs_item cat_post" href="#">Yoghurt</a>
-                        <span class="breadcrumbs_delimiter"></span>
-                        <span class="breadcrumbs_item current">Parmesan Cheese</span>
+                        <span class="breadcrumbs_item current">Product Name</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="page_content_wrap page_paddings_yes">
@@ -182,20 +164,20 @@
                 <div class="content">
                     <article class="post_item post_item_single post_item_product">
                         <nav class="woocommerce-breadcrumb">
-                            <a href="index.html">Home</a> /
-                            <a href="#">Yoghurt</a> / Parmesan Cheese
+                            <a href="index.html">Home</a> / 
+                            <a href="#">Yoghurt</a> / Parmesan Cheese
                         </nav>
                         <div class="product has-post-thumbnail first instock purchasable">
 
                             <div class="images">
-                                <a href="images/parmesan cheese.png" class="woocommerce-main-image zoom" title="" data-rel="prettyPhoto">
-                                    <img width="600" height="765" src="images/parmesan cheese.png" class="attachment-shop_single size-shop_single " alt="" /></a>
+                                <a href="" class="woocommerce-main-image zoom" title="" data-rel="prettyPhoto">
+                                    <img width="600" height="765" src="" class="attachment-shop_single size-shop_single " alt="" /></a>
                             </div>
                             <div class="summary entry-summary">
                                 <h1 class="product_title entry-title"></h1>
                                 <p class="price">
                                     <span class="woocommerce-Price-amount amount">
-                                        <span class="woocommerce-Price-currencySymbol">$</span>
+                                        <span class="woocommerce-Price-currencySymbol"></span>
                                     </span> 
                                 </p>
                                 <div class="woocommerce-product-details__short-description">
@@ -203,6 +185,8 @@
                                 </div>
 
                                 <form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="412" data-product_variations="">
+                                    
+                                                              
                                     <table class="variations" cellspacing="0">
                                         <tbody>
                                             <tr>
@@ -210,27 +194,36 @@
                                                     <label for="pa_weight">Weight</label>
                                                 </td>
                                                 <td class="value">
-                                                    <select id="pa_weight" name="attribute_pa_weight" data-attribute_name="attribute_pa_weight">
-                                                        <option value="">Select Weight</option>
+                                                    <select id="pa_weight" class="custom-dropdown" name="attribute_pa_weight" data-attribute_name="attribute_pa_weight" data-show_option_none="yes">
+                                                        <option value="" selected>Choose Weight</option>
+                                                        <option value="1-lb">1 lb</option>
+                                                        <option value="3-lb">3 lb</option>
+                                                        <option value="5-lb">5 lb</option>
                                                     </select>
                                                 </td>
                                             </tr>
+                                            <tbody>
                                             <tr>
                                                 <td class="label">
-                                                    <label for="pa_fat">Fat Content</label>
+                                                    <label for="pa_fat">Fat</label>
                                                 </td>
                                                 <td class="value">
-                                                    <select id="pa_fat" name="attribute_pa_fat" data-attribute_name="attribute_pa_fat">
-                                                        <option value="">Select Fat Content</option>
+                                                    <select id="pa_fat" class="custom-dropdown" name="attribute_pa_fat" data-attribute_name="attribute_pa_fat" data-show_option_none="yes">
+                                                        <option value="" selected>Choose fat content</option>
+                                                        <option value="2">2%</option>
+                                                        <option value="3-5">3.5%</option>
+                                                        <option value="low-fat">Low Fat</option>
                                                     </select>
+                                                    <a class="reset_variations" href="#">Clear</a>
                                                 </td>
                                             </tr>
+                                            <tbody>
                                             <tr>
                                                 <td class="label">
-                                                    <label>Price</label>
+                                                    <label for="pa_price">Price</label>
                                                 </td>
                                                 <td class="value">
-                                                    <span id="pa_price" class="price">RM0.00</span>
+                                                    <span id="pa_price" class="product-price-display">RM0.00</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -241,7 +234,7 @@
                                             <div class="quantity">
                                                 <input type="number" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" />
                                             </div>
-                                            <button type="submit" class="single_add_to_cart_button button alt add-to-cart-button">Add to Cart</button>
+                                            <button type="submit" class="single_add_to_cart_button button alt add-to-cart-button">Add to cart</button>
                                             <input type="hidden" name="add-to-cart" value="412" />
                                             <input type="hidden" name="product_id" value="412" />
                                             <input type="hidden" name="variation_id" class="variation_id" value="0" />
@@ -352,9 +345,6 @@
                                                 <span class="price">
                                                     <span class="woocommerce-Price-amount amount">
                                                         <span class="woocommerce-Price-currencySymbol">RM</span>23.00
-                                                    </span> –
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>42.00
                                                     </span>
                                                 </span>
                                                 <a rel="nofollow" href="single-product.html?product_id=458" data-quantity="1" data-product_id="458" data-product_sku="" class="button add_to_cart_button">Select options</a>
@@ -377,9 +367,6 @@
                                                 <span class="price">
                                                     <span class="woocommerce-Price-amount amount">
                                                         <span class="woocommerce-Price-currencySymbol">RM</span>25.00
-                                                    </span> –
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>79.00
                                                     </span>
                                                 </span>
                                                 <a rel="nofollow" href="single-product.html?product_id=448" data-quantity="1" data-product_id="448" data-product_sku="" class="button add_to_cart_button">Select options</a>
@@ -402,8 +389,6 @@
                                                 <span class="price">
                                                     <span class="woocommerce-Price-amount amount">
                                                         <span class="woocommerce-Price-currencySymbol">RM</span>10.00
-                                                    </span> –
-                                                    <span class="woocommerce-Price-currencySymbol">RM</span>75.00
                                                     </span>
                                                 </span>
                                                 <a rel="nofollow" href="single-product.html?product_id=364" data-quantity="1" data-product_id="364" data-product_sku="" class="button add_to_cart_button">Select options</a>
@@ -426,9 +411,6 @@
                                                 <span class="price">
                                                     <span class="woocommerce-Price-amount amount">
                                                         <span class="woocommerce-Price-currencySymbol">RM</span>45.00
-                                                    </span> –
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>280.00
                                                     </span>
                                                 </span>
                                                 <a rel="nofollow" href="single-product.html?product_id=426" data-quantity="1" data-product_id="426" data-product_sku="" class="button add_to_cart_button">Select options</a>
@@ -463,7 +445,7 @@
                                     <li class="menu-item"><a href="recipes.html">Meet the Cows</a></li>
                                     <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
                                     <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
-                                    <li class="menu-item"><a href="contacts.html">Tarmonia Map</a></li>
+                                    <li class="menu-item"><a href="contacts.html">Dairy Farm Map</a></li>
                                     <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
                                 </ul>
                             </div>
@@ -508,7 +490,7 @@
                             <div class="widget_inner">
                                 <div class="logo">
                                     <a href="index.html">
-									<img src="images/footer-logo.png" class="logo_main" alt="" width="74" height="74">
+									<img src="images/tarmonia-new-tag.png" class="logo_main" alt="" width="74" height="74">
 									</a>
                                 </div>
                             </div>
@@ -566,7 +548,7 @@
                     <div class="copyright_text">
                         <p>
                             2025 Tarmonia
-                            <a href="tnc.html">Terms of Use</a> and
+                            <a href="http://ancorathemes.com/about/">Terms of Use</a> and
                             <a href="http://ancorathemes.com/about/">Privacy Policy</a>
                         </p>
                     </div>
@@ -607,6 +589,43 @@
 <script type='text/javascript' src='js/custom/util.min.js'></script>
 <script type='text/javascript' src='js/single-product.js'></script>
 <script type='text/javascript' src='js/local-cart.js'></script>
+<script>
+    // Dynamically update the <title> tag based on product
+    document.addEventListener('DOMContentLoaded', function () {
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        const productId = getQueryParam('product_id');
+        // Keep in sync with your JS product data
+        const products = {
+            458: "Evaporated Milk",
+            448: "Farm Sour Cream",
+            438: "Ricotta Salata",
+            412: "Parmesan Cheese",
+            471: "Pecorino Romano",
+            364: "Tested Raw Milk",
+            402: "Brie Cheese",
+            426: "Fromage a Raclette",
+            387: "Camembert Cheese",
+            420: "Fresh Milk",
+            430: "Butter",
+            450: "Yogurt",
+            460: "Chicken Eggs",
+            470: "Duck Eggs",
+            480: "Quail Eggs",
+            490: "Beef",
+            500: "Pork",
+            510: "Chicken",
+            520: "Lamb",
+            530: "Bacon",
+            540: "Sausage"
+        };
+        if (productId && products[productId]) {
+            document.title = products[productId] + " – Dairy Farm";
+        }
+    });
+</script>
 
 </body>
 

@@ -2,7 +2,7 @@
 <html lang="en-US" class="scheme_original">
 
 <head>
-    <title>Contacts &#8211; Tarmonia</title>
+    <title>Contacts &#8211; Dairy Farm</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="format-detection" content="telephone=no">
@@ -19,41 +19,30 @@
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
     <style>
-    @media screen and (max-width: 767px) {
-        .sc_googlemap_content {
-            position: relative !important;
-            width: 100% !important;
-            left: 0 !important;
-            top: 0 !important;
-            bottom: auto !important;
-            right: auto !important;
-            margin: 20px 0 !important;
-            padding: 20px !important;
-            max-width: none !important;
-            box-sizing: border-box !important;
+        /* Bring the contact form above the map as an overlay */
+        .sc_googlemap_wrap { position: relative; }
+        #map-container { position: relative; }
+        .sc_googlemap_content { 
+            position: absolute; 
+            top: 40px; 
+            right: 20px; 
+            width: min(92%, 460px);
+            z-index: 1000; 
+            pointer-events: auto; /* allow clicking the form */
         }
-        
-        .sc_form_wrap {
-            width: 100% !important;
+        .sc_googlemap_content .sc_form_wrap { 
+            background: rgba(255,255,255,0.96); 
+            padding: 16px; 
+            border-radius: 8px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
         }
-        
-        .sc_form_item input,
-        .sc_form_item textarea {
-            width: 100% !important;
-            box-sizing: border-box !important;
-            padding: 10px !important;
-            margin-bottom: 15px !important;
+        /* Keep the map clickable behind the form when activated */
+        #map-iframe { width: 100%; height: 700px; border: 0; }
+        #map-overlay { z-index: 10; }
+        #deactivate-map { z-index: 1100; }
+        @media (max-width: 600px) {
+            .sc_googlemap_content { left: 10px; right: 10px; top: 20px; width: auto; }
         }
-        
-        .sc_form_message textarea {
-            min-height: 150px !important;
-        }
-        
-        .sc_form_button button {
-            width: 100% !important;
-            padding: 15px !important;
-        }
-    }
     </style>
 </head>
 
@@ -107,7 +96,7 @@
                             <div class="column-4_5 contact_logo">
                                 <div class="logo">
                                     <a href="index.html">
-                                        <img src="images/Tarmonia-Sustaining-Lives.png" class="logo_main" alt="" width="239" height="59">
+                                        <img src="images/tarmonia-new-tag.png" class="logo_main" alt="" width="239" height="59">
                                     </a>
                                 </div>
                             </div>
@@ -124,25 +113,7 @@
                                     <li>
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
-                                                <div class="widget_shopping_cart_content">
-                                                    <div class="cart-header">
-                                                        <h3>Shopping Cart</h3>
-                                                        <span class="cart-count">0</span>
-                                                    </div>
-                                                    <div class="cart-body">
-                                                        <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
-                                                    </div>
-                                                    <div class="cart-footer">
-                                                        <div class="cart-total">
-                                                            <span class="total-label">Total:</span>
-                                                            <span class="total-amount">$0.00</span>
-                                                        </div>
-                                                        <div class="cart-buttons">
-                                                            <a href="cart.html" class="view-cart-button">View Cart</a>
-                                                            <a href="checkout.html" class="checkout-button">Checkout</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div class="widget_shopping_cart_content"></div>
                                             </div>
                                         </div>
                                     </li>
@@ -197,14 +168,14 @@
         </div>
         <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
             <div  class="bg_cust_7 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
-                <div class="content_wrap">
+                <!-- <div class="content_wrap">
                     <h1 class="page_title">Contacts</h1>
                     <div class="breadcrumbs">
                         <a class="breadcrumbs_item home" href="index.html">Home</a>
                         <span class="breadcrumbs_delimiter"></span>
                         <span class="breadcrumbs_item current">Contacts</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="page_content_wrap page_paddings_no">
@@ -216,27 +187,23 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                            <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
-                                                <div id="map-container" style="position: relative; display: flex; flex-direction: column;">
+                                                <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
+                                                <div id="map-container" style="position: relative;">
                                                     <div id="map-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 700px; background: rgba(0,0,0,0.1); z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                                                         <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">Double-click to activate the map</div>
                                                     </div>
-                                                    <div class="map-controls" style="position: absolute; top: 70px; right: 10px; z-index: 99; display: none;">
-                                                        <button id="deactivate-map" style="width: 100%; min-width: 200px; background: white; padding: 15px 30px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent; touch-action: manipulation;">
-                                                            Cancel Interaction
-                                                        </button>
-                                                    </div>
+                                                    <button id="deactivate-map" style="position: absolute; top: 86px; right: 20px; z-index: 1100; background: white; padding: 10px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
+                                                        Cancel Interaction
+                                                    </button>
                                                     <iframe 
                                                         src="https://www.google.com/maps/embed?pb=!4v1729577974874!6m8!1m7!1sT6Xad5MX16dfYyf88ubXDw!2m2!1d3.087905665915046!2d101.6133650614986!3f125.18610815573966!4f0.3364943331593935!5f0.7820865974627469"  
                                                         style="border:0; width: 100%; height: 700px; pointer-events: none;" 
                                                         allowfullscreen="" 
                                                         loading="lazy"
-                                                        id="map-iframe"
-                                                        allow="fullscreen">
+                                                        id="map-iframe">
                                                     </iframe>
-                                                    <script type='text/javascript' src='js/custom/map.interaction.js'></script>
                                                 </div>
-                                                <div class="sc_googlemap_content" style="order: 1;">
+                                                <div class="sc_googlemap_content">
                                                     <div id="sc_form_282_wrap" class="sc_form_wrap">
                                                         <div id="sc_form_282" class="sc_form sc_form_style_form_1">
                                                             <h2 class="sc_form_title sc_item_title sc_item_title_without_descr">Contact Us</h2>
@@ -296,7 +263,7 @@
                                                         <div class="sc_section_inner">
                                                             <div class="sc_section_content_wrap">
                                                                 <h4 class="sc_title sc_title_regular sc_align_center">Email</h4>
-                                                                <span class="sc_highlight">help@conebyte.com</span>
+                                                                <span class="sc_highlight">info@tarmonia.com</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -334,7 +301,7 @@
                                     <li class="menu-item"><a href="recipes.html">Meet the Cows</a></li>
                                     <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
                                     <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
-                                    <li class="menu-item current-menu-item "><a href="contacts.html">Tarmonia Map</a></li>
+                                    <li class="menu-item current-menu-item "><a href="contacts.html">Dairy Farm Map</a></li>
                                     <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
                                 </ul>
                             </div>
@@ -390,7 +357,7 @@
                                 <br>
                                 <span class="accent1">Phone: 123-456-7890</span>
                                 <br> Fax: 010-927 7092
-                                <br> Email: help@conebyte.com
+                                <br> Email: info@tarmonia.com
                             </div>
                         </aside>
                         <aside class="column-1_4 widget widget_text">
@@ -439,7 +406,7 @@
                     <div class="copyright_text">
                         <p>
                             2025 Tarmonia
-                            <a href="tnc.html">Terms of Use</a> and
+                            <a href="http://ancorathemes.com/about/">Terms of Use</a> and
                             <a href="http://ancorathemes.com/about/">Privacy Policy</a>
                         </p>
                     </div>
@@ -474,6 +441,34 @@
 
 <!-- Global cart script -->
 <script type='text/javascript' src='js/local-cart.js'></script>
+
+<script>
+// Map activation: allow clicking the map by double-clicking the overlay; keep form above
+document.addEventListener('DOMContentLoaded', function(){
+    var overlay = document.getElementById('map-overlay');
+    var iframe = document.getElementById('map-iframe');
+    var cancelBtn = document.getElementById('deactivate-map');
+
+    function activate(){
+        if (iframe) iframe.style.pointerEvents = 'auto';
+        if (overlay) overlay.style.display = 'none';
+        if (cancelBtn) cancelBtn.style.display = 'block';
+    }
+    function deactivate(){
+        if (iframe) iframe.style.pointerEvents = 'none';
+        if (overlay) overlay.style.display = 'flex';
+        if (cancelBtn) cancelBtn.style.display = 'none';
+    }
+    if (overlay){
+        overlay.addEventListener('dblclick', function(e){ e.preventDefault(); activate(); });
+        // On touch devices, single tap to activate
+        overlay.addEventListener('touchend', function(e){ e.preventDefault(); activate(); }, { passive: false });
+    }
+    if (cancelBtn){
+        cancelBtn.addEventListener('click', function(e){ e.preventDefault(); deactivate(); });
+    }
+});
+</script>
 
 </body>
 </html><script type='text/javascript' src='js/custom/core.messages.js'></script>

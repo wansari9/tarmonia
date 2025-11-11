@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link rel="stylesheet" href="checkout.css">
-    <link rel="stylesheet" href="responsive.css"> <!-- Added responsive.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -15,18 +13,16 @@
 <body>
     <div class="checkout-bg" style="background: url('./images/background-checkout.png') ">
         <header>
-            <a href="javascript:history.back()" class="go-back-link">Go Back</a>
-            <img src="./images/Tarmonia-Sustaining-Lives.png" alt="Tarmonia Logo" class="tarmonia-logo">
+            <h3>Checkout</h3>
+            <a href="javascript:history.back()" class="back-button">
+                <div class="go-back-box">Go Back</div>
+            </a>
         </header>
 
         <main>
-         
-
             <section class="checkout-form">
-                
                 <!-- Multistep Form -->
                 <form id="msform">
-                   
                     <!-- Progressbar -->
                     <ul id="progressbar">
                         <li class="active">Contact Information</li>
@@ -124,56 +120,25 @@
                         
                         <div class="action-buttons">
                             <input type="button" name="previous" class="previous action-button" value="Previous" />
-                            <button type="submit" class="submit action-button">Pay</button>
+                            <a href="checkout.html" class="submit action-button" target="_top">Pay</a>
                         </div>
-                        
                     </fieldset>
                 </form>
             </section>
 
             <section class="checkout-details">
                 <div class="checkout-details-inner">
-                    <div class="checkout-lists">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="images/Ricotta Salata.jpg" alt="Vintage Backbag">
-                            </div>
-                            <div class="card-details">
-                                <div class="card-name">Riccota Salata</div>
-                                <div class="card-price">$68.99 </div>
-                                <div class="card-wheel">
-                                    <button>-</button>
-                                    <span>1</span>
-                                    <button>+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="images/Tested raw milk.png" alt="Levi Shoes">
-                            </div>
-                            <div class="card-details">
-                                <div class="card-name">Tested Raw Milk</div>
-                                <div class="card-price">$29.99  </div>
-                                <div class="card-wheel">
-                                    <button>-</button>
-                                    <span>1</span>
-                                    <button>+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="checkout-lists" id="checkout-items"></div>
                     <div class="checkout-shipping">
                         <h6>Shipping</h6>
-                        <p>$19</p>
+                        <p class="shipping-price" data-shipping-price="19">RM19.00</p>
                     </div>
                     <div class="checkout-total">
                         <h6>Total</h6>
-                        <p>$148.98</p>
+                        <p class="order-total" id="checkout-order-total">RM0.00</p>
                     </div>
                 </div>
             </section>
-       
         </main>
 
         <footer>
@@ -196,7 +161,7 @@
 
             // Show the next fieldset and hide the current one
             current_fs.css({ display: "none" });
-            next_fs.css({ display: "flex" }); // Ensure flex display for proper alignment
+            next_fs.css({ display: "block" });
         });
 
         $(".previous").click(function () {
@@ -211,13 +176,102 @@
 
             // Show the previous fieldset and hide the current one
             current_fs.css({ display: "none" });
-            previous_fs.css({ display: "flex" }); // Ensure flex display for proper alignment
+            previous_fs.css({ display: "block" });
         });
 
         $("form").submit(function (e) {
-            e.preventDefault(); // Prevent default form submission
-            alert("Form submitted successfully!");
+            e.preventDefault();
+            alert("Order placed! (Demo – no backend)");
         });
+
+        // Render checkout items from localStorage cart and keep totals in sync
+        (function(){
+            function safeParse(v){ try { return JSON.parse(v||'[]'); } catch(e){ return []; } }
+            function getCart(){ return safeParse(localStorage.getItem('cart')); }
+            function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
+            function parsePrice(txt){ if(!txt) return 0; var n = String(txt).replace(/[^0-9.]/g,''); var f = parseFloat(n); return isNaN(f)?0:f; }
+            function format(n){ return 'RM' + Number(n||0).toFixed(2); }
+            // Fallback name/price maps (kept minimal). If PRODUCT_PRICING exists, we don't need these usually.
+            var fallbackNames = { 458:"Evaporated Milk",448:"Farm Sour Cream",438:"Ricotta Salata",412:"Parmesan Cheese",471:"Pecorino Romano",364:"Tested Raw Milk",402:"Brie Cheese",426:"Fromage a Raclette",387:"Camembert Cheese",420:"Fresh Milk",430:"Butter",450:"Yogurt",460:"Chicken Eggs",470:"Duck Eggs",480:"Quail Eggs",490:"Beef",500:"Pork",510:"Chicken",520:"Lamb",530:"Bacon",540:"Sausage" };
+            var fallbackPrices = { 458:23.00,448:25.00,438:50.00,412:35.00,471:45.00,364:10.00,402:30.00,426:45.00,387:35.00,420:3.50,430:8.50,450:5.50,460:3.50,470:5.00,480:6.50,490:18.00,500:12.00,510:6.00,520:20.00,530:18.00,540:15.00 };
+            function normalize(raw){
+                var id = raw.id || raw.productId;
+                var qty = raw.qty || raw.quantity || 1;
+                var price = typeof raw.price==='number' ? raw.price : parsePrice(raw.price);
+                if ((!price || price===0) && id!=null && fallbackPrices[id]!=null) price = fallbackPrices[id];
+                var title = raw.title || fallbackNames[id] || 'Product';
+                var image = raw.image || raw.img || '';
+                var variant = raw.variant || raw.variation || '';
+                return { id:id, qty:qty, price:price, title:title, image:image, variant:variant };
+            }
+            function render(){
+                var list = document.getElementById('checkout-items');
+                if (!list) return;
+                var cart = getCart().map(normalize);
+                if (!cart.length){
+                    list.innerHTML = '<p>Your cart is empty.</p>';
+                    updateTotals(cart);
+                    return;
+                }
+                var html = '';
+                cart.forEach(function(it){
+                    var variantText = it.variant ? ' <small>(' + it.variant + ')</small>' : '';
+                    html += '\n<div class="card" data-id="' + it.id + '" data-variant="' + (it.variant||'') + '">\n' +
+                            '  <div class="card-image">' + (it.image ? '<img src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
+                            '  <div class="card-details">\n' +
+                            '    <div class="card-name">' + (it.title || 'Product') + variantText + '</div>\n' +
+                            '    <div class="card-price">\n' +
+                            '      <span class="current-price">' + format(it.price) + '</span>\n' +
+                            '    </div>\n' +
+                            '    <div class="card-wheel">\n' +
+                            '      <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease quantity">-</button>\n' +
+                            '      <span class="qty" aria-live="polite">' + (it.qty||1) + '</span>\n' +
+                            '      <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>\n' +
+                            '    </div>\n' +
+                            '  </div>\n' +
+                            '</div>';
+                });
+                list.innerHTML = html;
+                updateTotals(cart);
+            }
+            function updateTotals(cart){
+                cart = cart || getCart().map(normalize);
+                var subtotal = cart.reduce(function(s,it){ return s + (it.price||0) * (it.qty||1); }, 0);
+                var shippingEl = document.querySelector('.shipping-price');
+                var shipping = 0;
+                if (shippingEl){
+                    var raw = parseFloat(shippingEl.getAttribute('data-shipping-price'))||0;
+                    shipping = cart.length ? raw : 0;
+                    shippingEl.textContent = format(shipping);
+                }
+                var totalEl = document.getElementById('checkout-order-total');
+                if (totalEl) totalEl.textContent = format(subtotal + shipping);
+            }
+            function adjustQty(id, variant, delta){
+                var cart = getCart();
+                var idx = cart.findIndex(function(r){ var rid = r.id||r.productId; var v = r.variant||r.variation||''; return String(rid)===String(id) && String(v)===String(variant||''); });
+                if (idx === -1) return;
+                var item = cart[idx];
+                var qty = (item.qty || item.quantity || 1) + delta;
+                if (qty <= 0) { cart.splice(idx,1); } else { item.qty = qty; }
+                saveCart(cart);
+                render();
+            }
+            document.addEventListener('click', function(e){
+                var btn = e.target.closest && e.target.closest('#checkout-items .qty-btn');
+                if (!btn) return;
+                var action = btn.getAttribute('data-action');
+                var card = btn.closest('.card');
+                if (!card) return;
+                var id = card.getAttribute('data-id');
+                var variant = card.getAttribute('data-variant') || '';
+                adjustQty(id, variant, action==='inc' ? 1 : -1);
+            });
+            render();
+        })();
     </script>
+    <!-- Global cart script so checkout can reflect the mini-cart/cart totals -->
+    <script type='text/javascript' src='js/local-cart.js'></script>
+    <script type='text/javascript' src='js/product-data.js'></script>
 </body>
 </html>
