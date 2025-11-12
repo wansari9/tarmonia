@@ -21,6 +21,13 @@ if ($quantity > 200) { // simple anti-abuse cap
 try {
     $stage = 'start';
     $cart = get_or_create_cart($pdo);
+    // If user just logged in during this request (session gained user_id), ensure cart user_id is set
+    $authUser = get_authenticated_user_id();
+    if ($authUser && empty($cart['user_id'])) {
+        $claim = $pdo->prepare('UPDATE carts SET user_id = :uid, updated_at = NOW() WHERE id = :cid');
+        $claim->execute([':uid' => $authUser, ':cid' => $cart['id']]);
+        $cart['user_id'] = $authUser;
+    }
     $stage = 'got_cart';
     $cartId = (int)$cart['id'];
     $productId = resolve_product_internal_id($pdo, $rawProductId);

@@ -743,10 +743,10 @@ if (wcBreadcrumbs && product && product.name) {
     if (addToCartButton) {
         addToCartButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // Fallback to client storage if server API not loaded
+            // Require server API; no localStorage fallback anymore
             if (!window.CartAPI) {
-                console.warn('[cart] Server API not available, falling back to local cart');
-                return; // allow local-cart.js (if present) to handle
+                alert('Cart service unavailable. Please retry.');
+                return;
             }
             const qtyInput = document.querySelector('input[name="quantity"]');
             const qty = parseInt(qtyInput && qtyInput.value, 10) || 1;
@@ -767,6 +767,8 @@ if (wcBreadcrumbs && product && product.name) {
                         addToCartButton.disabled = false;
                         addToCartButton.textContent = 'Add to Cart';
                         addToCartButton.classList.remove('added');
+                        // Stay on page or redirect? For now refresh mini cart then return to shop.
+                        try { if (window.CartAPI && window.CartAPI.mini) window.CartAPI.mini(); } catch(e){}
                         window.location.href = 'shop.html';
                     }, 600);
                 })

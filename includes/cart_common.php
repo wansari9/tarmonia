@@ -61,8 +61,8 @@ function get_or_create_cart(PDO $pdo): array {
         return $cart;
     }
 
-    // Create a new open cart
-    $ins = $pdo->prepare('INSERT INTO carts (user_id, session_id, status, currency, subtotal, discount_total, tax_total, shipping_total, grand_total, created_at) VALUES (:uid, :sid, "open", :cur, 0, 0, 0, 0, 0, NOW())');
+    // Create a new open cart; if user authenticated ensure ownership
+    $ins = $pdo->prepare('INSERT INTO carts (user_id, session_id, status, currency, subtotal, discount_total, tax_total, shipping_total, grand_total, created_at, updated_at) VALUES (:uid, :sid, "open", :cur, 0, 0, 0, 0, 0, NOW(), NOW())');
     // Currency: RM to match product pricing
     $ins->execute([':uid' => $userId, ':sid' => $sid, ':cur' => 'RM']);
     $cid = (int)$pdo->lastInsertId();
