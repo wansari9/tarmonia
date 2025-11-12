@@ -25,6 +25,19 @@
 </head>
 
 <body class="page home3 body_style_wide body_filled article_style_stretch layout_single-standard template_single-standard scheme_original top_panel_show top_panel_above sidebar_hide sidebar_outer_hide vc_responsive">
+<style>
+/* Year bar styling (replicated from about-2.html) */
+#sc_tabs_583 { position: relative; }
+#sc_tabs_583 .years-bar { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px; }
+#sc_tabs_583 .years-nav-btn { background:transparent; border:none; color:#333; font-size:22px; line-height:1; padding:6px 10px; cursor:pointer; }
+#sc_tabs_583 .years-nav-btn.disabled,#sc_tabs_583 .years-nav-btn[disabled]{opacity:.35; cursor:default; }
+#sc_tabs_583 .sc_tabs_titles.years-list { flex:1 1 auto; display:flex; justify-content:center; align-items:center; gap:8px; overflow:visible; padding:0 20px; margin:0; list-style:none; }
+#sc_tabs_583 .sc_tabs_titles.years-list li.sc_tabs_title { display:none; }
+@media (max-width:600px){
+    #sc_tabs_583 .years-nav-btn { font-size:18px; padding:6px 8px; }
+    #sc_tabs_583 .sc_tabs_titles.years-list { gap:6px; padding:0 14px; }
+}
+</style>
 
 <a id="toc_home" class="sc_anchor" title="Home" data-description="&lt;i&gt;Return to Home&lt;/i&gt; - &lt;br&gt;navigate to home page of the site" data-icon="icon-home" data-url="index.html" data-separator="yes"></a>
 <a id="toc_top" class="sc_anchor" title="To Top" data-description="&lt;i&gt;Back to top&lt;/i&gt; - &lt;br&gt;scroll to top of the page" data-icon="icon-double-up" data-url="" data-separator="yes"></a>
@@ -78,14 +91,20 @@
                                 </div>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
-                                <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00">
-                                    <span class="contact_icon icon-1"></span>
-                                    <span class="contact_label contact_cart_label">cart:</span>
-                                    <span class="contact_cart_totals">
-                                        <span class="cart_items">0 Items</span>
-                                        <span class="cart_summa">&#36;0.00</span>
-                                    </span>
-                                </a>
+                                <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                        <span class="contact_icon icon-1"></span>
+                                        <span class="contact_label contact_cart_label">cart:</span>
+                                        <span class="contact_cart_totals">
+                                            <span class="cart_items">0 Items</span>
+                                            <span class="cart_summa">&#36;0.00</span>
+                                        </span>
+                                    </a>
+                                    <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                                    <a href="#" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                        <span class="user_initial" style="font-weight:600;">U</span>
+                                    </a>
+                                </div>
                                 <ul class="widget_area sidebar_cart sidebar">
                                     <li>
                                         <div class="widget woocommerce widget_shopping_cart">
@@ -388,92 +407,47 @@
                                                                     <div class="sc_promo_block_inner">
                                                                         <div class="sc_promo_content">
                                                                             <div id="sc_tabs_583" class="sc_tabs sc_tabs_style_1" data-active="0">
-                                                                                <ul class="sc_tabs_titles">
-                                                                                    <li class="sc_tabs_title first">
-                                                                                        <a href="#sc_tab_315_1_19" class="theme_button" id="sc_tab_315_1_19_tab">1974</a>
-                                                                                    </li>
-                                                                                    <li class="sc_tabs_title">
-                                                                                        <a href="#sc_tab_315_2_67" class="theme_button" id="sc_tab_315_2_67_tab">1980</a>
-                                                                                    </li>
-                                                                                    <li class="sc_tabs_title">
-                                                                                        <a href="#sc_tab_473_0" class="theme_button" id="sc_tab_473_0_tab">1992</a>
-                                                                                    </li>
-                                                                                    <li class="sc_tabs_title">
-                                                                                        <a href="#sc_tab_649_10" class="theme_button" id="sc_tab_649_10_tab">2004</a>
-                                                                                    </li>
-                                                                                    <li class="sc_tabs_title last">
-                                                                                        <a href="#sc_tab_625_4" class="theme_button" id="sc_tab_625_4_tab">2012</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                                <div id="sc_tab_315_1_19" class="sc_tabs_content odd first">
-                                                                                    <div class="sc_section aligncenter">
-                                                                                        <div class="sc_section_inner">
-                                                                                            <div class="sc_section_content_wrap">
-                                                                                                <h4 class="sc_title sc_title_regular cmrg_1">Our Story</h4>
-                                                                                                <div class="wpb_text_column wpb_content_element ">
-                                                                                                    <div class="wpb_wrapper">
-                                                                                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vestibulum molestie lacus. Aenean nonummy hendrerit mauris. Phasellus porta. Fusce suscipit varius mi. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div class="years-bar">
+                                                                                    <button class="years-nav-btn years-prev" aria-label="Previous years" type="button">&#8249;</button>
+                                                                                    <ul class="sc_tabs_titles years-list" data-visible-count="5">
+                                                                                        <li class="sc_tabs_title first"><a href="#home_year_2017" class="theme_button" id="home_year_2017_tab">2017</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2018" class="theme_button" id="home_year_2018_tab">2018</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2019" class="theme_button" id="home_year_2019_tab">2019</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2020" class="theme_button" id="home_year_2020_tab">2020</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2021" class="theme_button" id="home_year_2021_tab">2021</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2022" class="theme_button" id="home_year_2022_tab">2022</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2023" class="theme_button" id="home_year_2023_tab">2023</a></li>
+                                                                                        <li class="sc_tabs_title"><a href="#home_year_2024" class="theme_button" id="home_year_2024_tab">2024</a></li>
+                                                                                        <li class="sc_tabs_title last"><a href="#home_year_2025" class="theme_button" id="home_year_2025_tab">2025</a></li>
+                                                                                    </ul>
+                                                                                    <button class="years-nav-btn years-next" aria-label="Next years" type="button">&#8250;</button>
                                                                                 </div>
-                                                                                <div id="sc_tab_315_2_67" class="sc_tabs_content even">
-                                                                                    <div class="sc_section aligncenter">
-                                                                                        <div class="sc_section_inner">
-                                                                                            <div class="sc_section_content_wrap">
-                                                                                                <h4 class="sc_title sc_title_regular cmrg_1">Starting a Farm</h4>
-                                                                                                <div class="wpb_text_column wpb_content_element ">
-                                                                                                    <div class="wpb_wrapper">
-                                                                                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vestibulum molestie lacus. Aenean nonummy hendrerit mauris. Phasellus porta. Fusce suscipit varius mi. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div id="home_year_2017" class="sc_tabs_content odd first">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2017 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2017 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
                                                                                 </div>
-                                                                                <div id="sc_tab_473_0" class="sc_tabs_content odd">
-                                                                                    <div class="sc_section aligncenter">
-                                                                                        <div class="sc_section_inner">
-                                                                                            <div class="sc_section_content_wrap">
-                                                                                                <h4 class="sc_title sc_title_regular cmrg_1">The Best Milk in the State</h4>
-                                                                                                <div class="wpb_text_column wpb_content_element ">
-                                                                                                    <div class="wpb_wrapper">
-                                                                                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vestibulum molestie lacus. Aenean nonummy hendrerit mauris. Phasellus porta. Fusce suscipit varius mi. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div id="home_year_2018" class="sc_tabs_content even">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2018 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2018 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
                                                                                 </div>
-                                                                                <div id="sc_tab_649_10" class="sc_tabs_content even">
-                                                                                    <div class="sc_section aligncenter">
-                                                                                        <div class="sc_section_inner">
-                                                                                            <div class="sc_section_content_wrap">
-                                                                                                <h4 class="sc_title sc_title_regular cmrg_1">Store Opening</h4>
-                                                                                                <div class="wpb_text_column wpb_content_element ">
-                                                                                                    <div class="wpb_wrapper">
-                                                                                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vestibulum molestie lacus. Aenean nonummy hendrerit mauris. Phasellus porta. Fusce suscipit varius mi. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div id="home_year_2019" class="sc_tabs_content odd">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2019 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2019 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
                                                                                 </div>
-                                                                                <div id="sc_tab_625_4" class="sc_tabs_content odd">
-                                                                                    <div class="sc_section aligncenter">
-                                                                                        <div class="sc_section_inner">
-                                                                                            <div class="sc_section_content_wrap">
-                                                                                                <h4 class="sc_title sc_title_regular cmrg_1">Online Shop and Shipment</h4>
-                                                                                                <div class="wpb_text_column wpb_content_element ">
-                                                                                                    <div class="wpb_wrapper">
-                                                                                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vestibulum molestie lacus. Aenean nonummy hendrerit mauris. Phasellus porta. Fusce suscipit varius mi. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                <div id="home_year_2020" class="sc_tabs_content even">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2020 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2020 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
+                                                                                </div>
+                                                                                <div id="home_year_2021" class="sc_tabs_content odd">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2021 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2021 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
+                                                                                </div>
+                                                                                <div id="home_year_2022" class="sc_tabs_content even">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2022 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2022 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
+                                                                                </div>
+                                                                                <div id="home_year_2023" class="sc_tabs_content odd">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2023 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2023 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
+                                                                                </div>
+                                                                                <div id="home_year_2024" class="sc_tabs_content even">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2024 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2024 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
+                                                                                </div>
+                                                                                <div id="home_year_2025" class="sc_tabs_content odd">
+                                                                                    <div class="sc_section aligncenter"><div class="sc_section_inner"><div class="sc_section_content_wrap"><h4 class="sc_title sc_title_regular cmrg_1">2025 Highlights</h4><div class="wpb_text_column wpb_content_element "><div class="wpb_wrapper"><p>Add your 2025 story here. This is a placeholder describing key milestones.</p></div></div></div></div></div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="vc_empty_space h_11r">
@@ -1252,6 +1226,58 @@
 
 <!-- Ensure cart is available globally -->
 <script type='text/javascript' src='js/local-cart.js'></script>
+<script type='text/javascript' src='js/auth-session.js'></script>
+<script>
+// Year bar pagination logic for index page (#sc_tabs_583)
+document.addEventListener('DOMContentLoaded', function(){
+    var container = document.querySelector('#sc_tabs_583');
+    if(!container) return;
+    var list = container.querySelector('.sc_tabs_titles.years-list');
+    if(!list) return;
+    var items = Array.prototype.slice.call(list.querySelectorAll('li.sc_tabs_title'));
+    var prevBtn = container.querySelector('.years-prev');
+    var nextBtn = container.querySelector('.years-next');
+    var visibleCount = parseInt(list.getAttribute('data-visible-count'),10) || 5;
+    var startIndex = 0;
+
+    function updateButtons(){
+        prevBtn.disabled = startIndex <= 0;
+        nextBtn.disabled = (startIndex + visibleCount) >= items.length;
+        prevBtn.classList.toggle('disabled', prevBtn.disabled);
+        nextBtn.classList.toggle('disabled', nextBtn.disabled);
+    }
+    function renderWindow(){
+        items.forEach(function(li, idx){
+            li.style.display = (idx >= startIndex && idx < startIndex + visibleCount) ? 'block' : 'none';
+        });
+        updateButtons();
+    }
+    function showContentByAnchor(a){
+        if(!a) return;
+        var targetId = a.getAttribute('href');
+        if(!targetId) return;
+        var contents = container.querySelectorAll('.sc_tabs_content');
+        contents.forEach(function(c){ c.style.display='none'; });
+        var target = container.querySelector(targetId);
+        if(target) target.style.display='block';
+        items.forEach(function(li){ li.classList.remove('active'); });
+        a.parentElement.classList.add('active');
+    }
+    prevBtn && prevBtn.addEventListener('click', function(){
+        if(startIndex <= 0) return; startIndex -= visibleCount; if(startIndex < 0) startIndex = 0; renderWindow(); showContentByAnchor(items[startIndex].querySelector('a')); });
+    nextBtn && nextBtn.addEventListener('click', function(){
+        if(startIndex + visibleCount >= items.length) return; startIndex += visibleCount; if(startIndex > items.length - visibleCount) startIndex = items.length - visibleCount; renderWindow(); showContentByAnchor(items[startIndex].querySelector('a')); });
+    items.forEach(function(li){
+        var a = li.querySelector('a');
+        if(!a) return;
+        a.addEventListener('click', function(e){ e.preventDefault(); showContentByAnchor(a); });
+    });
+    renderWindow();
+    // Activate first visible
+    var firstVisible = items.find(function(li){ return li.style.display !== 'none'; });
+    if(firstVisible) showContentByAnchor(firstVisible.querySelector('a'));
+});
+</script>
 
 </body>
 

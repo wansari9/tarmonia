@@ -12,11 +12,17 @@
 </head>
 <body>
     <div class="checkout-bg" style="background: url('./images/background-checkout.png') ">
-        <header>
+        <header style="display:flex;align-items:center;gap:12px;justify-content:space-between;">
             <h3>Checkout</h3>
-            <a href="javascript:history.back()" class="back-button">
-                <div class="go-back-box">Go Back</div>
-            </a>
+            <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
+                <a href="javascript:history.back()" class="back-button">
+                    <div class="go-back-box">Go Back</div>
+                </a>
+                <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                <a href="#" class="user_icon_button sc_button sc_button_style_border sc_button_size_small" style="padding:6px 10px;display:none;align-items:center;justify-content:center;border-radius:50%;width:34px;height:34px;" title="Account">
+                    <span class="user_initial" style="font-weight:600;">U</span>
+                </a>
+            </div>
         </header>
 
         <main>
@@ -273,5 +279,6 @@
     <!-- Global cart script so checkout can reflect the mini-cart/cart totals -->
     <script type='text/javascript' src='js/local-cart.js'></script>
     <script type='text/javascript' src='js/product-data.js'></script>
+    <script type='text/javascript' src='js/auth-session.js'></script>
 </body>
 </html>
