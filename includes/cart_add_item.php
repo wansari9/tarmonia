@@ -64,6 +64,29 @@ try {
         }
     }
 
+    // Apply fat-based price adjustments to align server price with UI
+    if ($fat !== '') {
+        $fatNorm = strtolower(trim($fat));
+        // Normalize common inputs (2, 2%, 3-5, 3.5 etc.)
+        if ($fatNorm === '2' || $fatNorm === '2%' || $fatNorm === '2-percent' || $fatNorm === '2-percent-fat') {
+            $fatNorm = 'low-fat';
+        } elseif ($fatNorm === '3-5' || $fatNorm === '3.5' || $fatNorm === '3.5%' || $fatNorm === 'whole') {
+            $fatNorm = 'whole';
+        } elseif ($fatNorm === 'low fat') {
+            $fatNorm = 'low-fat';
+        } elseif ($fatNorm === 'full fat') {
+            $fatNorm = 'full-fat';
+        }
+        $fatAdjust = [
+            'skim' => -0.20,
+            'low-fat' => -0.10,
+            'full-fat' => 0.0,
+            'whole' => 0.05,
+        ];
+        $adj = $fatAdjust[$fatNorm] ?? 0.0;
+        $unitPrice = round($unitPrice * (1 + $adj), 2);
+    }
+
     $optionsSnapshot = json_encode(array_filter([
         'weight' => $weight ?: null,
         'fat' => $fat ?: null,

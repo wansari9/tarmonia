@@ -151,10 +151,11 @@ function resolve_variant(PDO $pdo, int $productId, ?string $weightSlug): array {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':pid' => $productId]);
     $candidates = $stmt->fetchAll();
-    $wanted = strtolower(str_replace([' ', '_'], ['', ''], $weightSlug));
+    // Normalize by removing spaces, underscores, and dashes
+    $wanted = strtolower(str_replace([' ', '_', '-'], ['', '', ''], $weightSlug));
     foreach ($candidates as $row) {
         $opts = json_decode((string)$row['options'], true) ?: [];
-        $w = isset($opts['weight']) ? strtolower(str_replace([' ', '_'], ['', ''], (string)$opts['weight'])) : '';
+        $w = isset($opts['weight']) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts['weight'])) : '';
         if ($w === $wanted) {
             return [(int)$row['id'], $row];
         }

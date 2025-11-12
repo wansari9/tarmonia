@@ -1,29 +1,79 @@
 (function(){
   'use strict';
-  // Shared product variant pricing map for catalogue and PDP
-  // Keys are product IDs; each has a 'weight' map of option->price (RM)
-  var PRODUCT_PRICING = {
-    458: { weight: { "354ml": 4.90, "473ml": 6.90, "multipack-6-x-12": 8.99 } },
-    448: { weight: { "250g": 16.50, "1kg": 22.00, "3kg": 40.00 } },
-    438: { weight: { "250g": 50.00, "1kg": 95.00, "3kg": 160.00 } },
-    412: { weight: { "250g": 35.00, "1kg": 80.00, "3kg": 190.00 } },
-    471: { weight: { "250g": 45.00, "1kg": 95.00, "3kg": 220.00 } },
-    364: { weight: { "250ml": 10.00, "1l": 30.00, "3l": 75.00 } },
-    402: { weight: { "250g": 30.00, "1kg": 75.00, "3kg": 180.00 } },
-    426: { weight: { "250g": 45.00, "1kg": 110.00, "3kg": 280.00 } },
-    387: { weight: { "250g": 35.00, "1kg": 80.00, "3kg": 190.00 } },
-    420: { weight: { "250ml": 2.50, "1l": 7.90, "3l": 22.50 } },
-    430: { weight: { "250g": 8.50, "1kg": 30.00, "3kg": 85.00 } },
-    450: { weight: { "250g": 5.50, "1kg": 18.00, "3kg": 50.00 } },
-    460: { weight: { "250g": 3.50, "1kg": 14.00, "3kg": 42.00 } },
-    470: { weight: { "250g": 5.00, "1kg": 18.00, "3kg": 52.00 } },
-    480: { weight: { "250g": 6.50, "1kg": 25.00, "3kg": 70.00 } },
-    490: { weight: { "250g": 18.00, "1kg": 70.00, "3kg": 200.00 } },
-    500: { weight: { "250g": 12.00, "1kg": 45.00, "3kg": 130.00 } },
-    510: { weight: { "250g": 6.00, "1kg": 22.00, "3kg": 60.00 } },
-    520: { weight: { "250g": 20.00, "1kg": 75.00, "3kg": 210.00 } },
-    530: { weight: { "250g": 18.00, "1kg": 65.00, "3kg": 190.00 } },
-    540: { weight: { "250g": 15.00, "1kg": 55.00, "3kg": 160.00 } }
+
+  function getBasePath(){
+    var path = window.location.pathname;
+    var m = path.match(/^(\/[^\/]+)(?:\/|$)/);
+    if (m && m[1] && m[1] !== '/') return m[1];
+    return '';
+  }
+  var BASE = getBasePath();
+  var EP = BASE + '/includes/';
+  var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
+  var ALT_EP = ALT_BASE + '/includes/';
+
+  function parseJsonSafe(r){ return r.json().catch(function(){ return { success:false, error:'Bad JSON' }; }); }
+  function api(url, opts){
+    var options = Object.assign({ credentials:'same-origin' }, opts||{});
+    return fetch(url, options).then(function(r){
+      if (!r.ok && ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
+        var altUrl = ALT_EP + url.substring(EP.length);
+        return fetch(altUrl, options).then(parseJsonSafe);
+      }
+      return parseJsonSafe(r);
+    }).catch(function(){
+      if (ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
+        var altUrl = ALT_EP + url.substring(EP.length);
+        return fetch(altUrl, options).then(parseJsonSafe);
+      }
+      return { success:false, error:'Network error' };
+    });
+  }
+
+  var ProductsAPI = {
+    _listPromise: null,
+    list: function(){
+      if (this._listPromise) return this._listPromise;
+      this._listPromise = api(EP + 'products_list.php').then(function(res){
+        if (!res || res.success !== true || !Array.isArray(res.products)) return { success:false, products: [] };
+        return res;
+      });
+      return this._listPromise;
+    },
+    detail: function(productId){
+      var url = EP + 'product_detail.php?product_id=' + encodeURIComponent(productId);
+      return api(url).then(function(res){ return res && res.success ? res : { success:false, error:'Failed' }; });
+    }
   };
-  window.PRODUCT_PRICING = window.PRODUCT_PRICING || PRODUCT_PRICING;
+
+  // Build PRODUCT_PRICING map from server list for use across shop and PDP
+  function buildPricingMap(list){
+    var map = {};
+    (list||[]).forEach(function(p){
+      var id = p && (p.id || p.external_id || p.internal_id);
+      if (!id) return;
+      var weightMap = {};
+      var min = Number(p.price_min||0);
+      var max = Number(p.price_max||0);
+      if (min > 0) weightMap['min'] = min;
+      if (max > 0) weightMap['max'] = max;
+      // Keep a base too for any consumer expecting a single key
+      if (!isNaN(min) && min > 0) weightMap['base'] = min;
+      map[id] = { weight: weightMap };
+    });
+    return map;
+  }
+
+  // Expose globals
+  window.ProductsAPI = window.ProductsAPI || ProductsAPI;
+  // Initialize pricing map once DOM is ready so shop-price-range.js can consume it
+  document.addEventListener('DOMContentLoaded', function(){
+    ProductsAPI.list().then(function(res){
+      if (!res || res.success !== true) return;
+      var map = buildPricingMap(res.products);
+      window.PRODUCT_PRICING = Object.assign({}, window.PRODUCT_PRICING || {}, map);
+      // Trigger a custom event so listeners can update
+      try { document.dispatchEvent(new CustomEvent('products_pricing_ready')); } catch(e){}
+    });
+  });
 })();

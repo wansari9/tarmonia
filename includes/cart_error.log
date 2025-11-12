@@ -9,3 +9,15 @@
 [2025-11-12T08:34:12+01:00] [OUT] add_item cart_id=26 item_count=2 grand=80
 [2025-11-12T08:34:34+01:00] [IN] add_item pid=438 qty=1 weight=3kg fat=fat-free
 [2025-11-12T08:34:34+01:00] [OUT] add_item cart_id=26 item_count=3 grand=240
+[2025-11-12T08:39:34+01:00] [IN] add_item pid=412 qty=1 weight=3kg fat=fat-free
+[2025-11-12T08:39:34+01:00] [OUT] add_item cart_id=26 item_count=1 grand=190
+[2025-11-12T09:05:27+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=low-fat
+[2025-11-12T09:05:27+01:00] [OUT] add_item cart_id=26 item_count=2 grand=194.9
+[2025-11-12T09:21:09+01:00] [IN] add_item pid=458 qty=1 weight= fat=low-fat
+[2025-11-12T09:21:10+01:00] [OUT] add_item cart_id=26 item_count=3 grand=199.8
+[2025-11-12T09:22:23+01:00] [IN] add_item pid=480 qty=1 weight= fat=2
+[2025-11-12T09:22:23+01:00] [OUT] add_item cart_id=26 item_count=1 grand=6.5
+[2025-11-12T09:25:42+01:00] [IN] add_item pid=438 qty=1 weight= fat=
+[2025-11-12T09:25:42+01:00] [OUT] add_item cart_id=26 item_count=2 grand=56.5
+[2025-11-12T09:30:10+01:00] [IN] add_item pid=458 qty=1 weight= fat=3-5
+[2025-11-12T09:30:11+01:00] [OUT] add_item cart_id=26 item_count=3 grand=61.4
