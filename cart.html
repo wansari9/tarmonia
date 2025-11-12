@@ -434,37 +434,9 @@
 <script type='text/javascript' src='js/vendor/woo/accounting.min.js'></script>
 <script type='text/javascript' src='js/vendor/woo/price-slider.min.js'></script>
 
-<!-- Global cart script for mini-cart and cart page rendering -->
-<script type='text/javascript' src='js/local-cart.js'></script>
+<!-- Server cart scripts: API first, then mini-cart, then cart page glue -->
 <script type="text/javascript" src="js/cart-api.js"></script>
 <script type="text/javascript" src="js/mini-cart.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cartItemsContainer = document.getElementById('cart-items');
-        if (!cartItemsContainer) return; // Exit if the element is not found
-
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-        if (cartItems.length > 0) {
-            let cartHTML = '';
-            cartItems.forEach(item => {
-                const price = item.price ? item.price.toFixed(2) : '0.00'; // Fallback for undefined price
-                cartHTML += `
-                    <div class="cart-item">
-                        <p>Product ID: ${item.productId}</p>
-                        <p>Quantity: ${item.quantity}</p>
-                        <p>Weight: ${item.weight}</p>
-                        <p>Fat: ${item.fat}</p>
-                        <p>Price: RM${price}</p> <!-- Display price -->
-                    </div>
-                `;
-            });
-            cartItemsContainer.innerHTML = cartHTML;
-        } else {
-            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-        }
-    });
-</script>
+<script type='text/javascript' src='js/local-cart.js'></script>
 </body>
 </html>
