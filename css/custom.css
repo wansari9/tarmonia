@@ -1416,3 +1416,9 @@ img.emoji {
 	float: none !important;
 	display: inline-flex;
 }
+
+/* Ensure mini cart overlays fixed header (helps local XAMPP where stacking differs) */
+.top_panel_middle .sidebar_cart,
+.header_mobile .sidebar_cart {
+	z-index: 10010 !important;
+}
