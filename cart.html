@@ -76,17 +76,14 @@
                                 </div>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
-                                <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
-                                        <span class="contact_icon icon-1"></span>
-                                        <span class="contact_label contact_cart_label">cart:</span>
-                                        <span class="contact_cart_totals">
-                                            <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">&#36;0.00</span>
-                                        </span>
-                                    </a>
-                                    <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
-                                </div>
+                                <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00">
+                                    <span class="contact_icon icon-1"></span>
+                                    <span class="contact_label contact_cart_label">cart:</span>
+                                    <span class="contact_cart_totals">
+                                        <span class="cart_items">0 Items</span>
+                                        <span class="cart_summa">&#36;0.00</span>
+                                    </span>
+                                </a>
                                 <ul class="widget_area sidebar_cart sidebar">
                                     <li>
                                         <div class="widget woocommerce widget_shopping_cart">
@@ -259,11 +256,11 @@
                 </table>
                 <p id="empty-cart-message" class="empty-cart-message">Your cart is currently empty.</p>
             </div>
-        <div class="cart-bottom" style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:space-between;">
-        <div class="cart-note" style="flex:0 0 420px;min-width:240px;">
-            <textarea id="order-note" name="order_note" placeholder="Add a note for this seller..." ></textarea>
-        </div>
-                <div class="cart-actions" style="flex:0 1 360px;display:flex;gap:12px;align-items:center;justify-content:flex-end;">
+            <div class="cart-bottom" style="display:none;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:center;">
+                <div class="cart-note" style="flex:1 1 380px;min-width:220px;display:none;">
+                    <textarea id="order-note" name="order_note" placeholder="Add a note for this seller..." ></textarea>
+                </div>
+                <div class="cart-actions" style="flex:0 1 360px;display:none;flex-direction:column;gap:12px;align-items:center;justify-content:center;">
                     <div class="continue-shopping-wrap"><a href="shop.html">Continue Shopping</a></div>
                     <button id="proceed-to-checkout" class="sc_button sc_button_size_large sc_button_style_filled" style="display: none;">Proceed to Checkout</button>
                 </div>

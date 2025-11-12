@@ -191,9 +191,15 @@
             tableBody.innerHTML = '';
             if (!cart.length) {
                 document.getElementById('empty-cart-message') && (document.getElementById('empty-cart-message').style.display = 'block');
+                // Hide note textarea and cart actions when cart is empty
+                document.querySelector('.cart-note') && (document.querySelector('.cart-note').style.display = 'none');
+                document.querySelector('.cart-actions') && (document.querySelector('.cart-actions').style.display = 'none');
                 return;
             }
             document.getElementById('empty-cart-message') && (document.getElementById('empty-cart-message').style.display = 'none');
+            // Show note textarea and cart actions when cart has items
+            document.querySelector('.cart-note') && (document.querySelector('.cart-note').style.display = 'block');
+            document.querySelector('.cart-actions') && (document.querySelector('.cart-actions').style.display = 'flex');
             cart.forEach(function (it) {
                 var tr = document.createElement('tr');
                 tr.innerHTML = '<td>' + (it.title || 'Product') + (it.variant ? ' - ' + it.variant : '') + '</td>' +
@@ -203,9 +209,11 @@
                     '<td><button type="button" class="remove-cart-item" data-id="' + it.id + '" data-variant="' + (it.variant || '') + '" aria-label="Remove ' + (it.title||'item') + '">×</button></td>';
                 tableBody.appendChild(tr);
             });
-            // show proceed button
+            // show proceed button and cart-bottom section
             var btn = document.getElementById('proceed-to-checkout');
             if (btn) btn.style.display = cart.length ? 'inline-block' : 'none';
+            var cartBottom = document.querySelector('.cart-bottom');
+            if (cartBottom) cartBottom.style.display = cart.length ? 'flex' : 'none';
         } else if (container) {
             if (!cart.length) {
                 container.innerHTML = '<p>Your cart is currently empty.</p>';
