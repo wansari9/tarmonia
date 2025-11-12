@@ -48,6 +48,10 @@
         if (msg) msg.style.display = 'block';
         var btn = document.getElementById('proceed-to-checkout');
         if (btn) btn.style.display = 'none';
+        // Hide cart-bottom sections if present
+        var cb = document.querySelector('.cart-bottom'); if (cb) cb.style.display = 'none';
+        var ca = document.querySelector('.cart-actions'); if (ca) ca.style.display = 'none';
+        var note = document.querySelector('.cart-note'); if (note) note.style.display = 'none';
         return;
       }
       var msgHide = document.getElementById('empty-cart-message');
@@ -67,6 +71,25 @@
       });
       var btn = document.getElementById('proceed-to-checkout');
       if (btn) btn.style.display = 'inline-block';
+
+      // Reveal cart-bottom sections for actions/notes
+      var cb = document.querySelector('.cart-bottom'); if (cb) cb.style.display = 'flex';
+      var ca = document.querySelector('.cart-actions'); if (ca) ca.style.display = 'flex';
+      var note = document.querySelector('.cart-note'); if (note) note.style.display = 'block';
+
+      // Ensure a tfoot exists for totals
+      var table = document.getElementById('cart-table');
+      if (table){
+        var tfoot = table.querySelector('tfoot');
+        if (!tfoot){ tfoot = document.createElement('tfoot'); table.appendChild(tfoot); }
+        var subtotal = (cart.totals && (cart.totals.subtotal || cart.totals.grand_total)) || 0;
+        var grand = (cart.totals && cart.totals.grand_total) || subtotal || 0;
+        tfoot.innerHTML = '<tr>'+
+          '<th colspan="3" style="text-align:right;">Total</th>'+
+          '<th>'+ formatRM(grand) +'</th>'+
+          '<th></th>'+
+        '</tr>';
+      }
     }).catch(function(err){ console.error('[cart] render failed', err); });
   }
 

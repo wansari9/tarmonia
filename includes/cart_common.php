@@ -35,15 +35,80 @@ function get_or_create_cart(PDO $pdo): array {
     if ($userId) {
         $stmt = $pdo->prepare('SELECT * FROM carts WHERE user_id = :uid AND status = "open" ORDER BY id DESC LIMIT 1');
         $stmt->execute([':uid' => $userId]);
-        $cart = $stmt->fetch();
-        if ($cart) {
-            // Ensure session_id is set for continuity
-            if (empty($cart['session_id'])) {
-                $upd = $pdo->prepare('UPDATE carts SET session_id = :sid WHERE id = :cid');
-                $upd->execute([':sid' => $sid, ':cid' => $cart['id']]);
-                $cart['session_id'] = $sid;
+        $userCart = $stmt->fetch();
+
+        // Also check if there is a guest cart for this session
+        $gstmt = $pdo->prepare('SELECT * FROM carts WHERE session_id = :sid AND status = "open" ORDER BY id DESC LIMIT 1');
+        $gstmt->execute([':sid' => $sid]);
+        $guestCart = $gstmt->fetch();
+
+        if ($userCart && $guestCart && ((int)$userCart['id'] !== (int)$guestCart['id'])) {
+            // Merge guest cart into user cart atomically
+            $pdo->beginTransaction();
+            try {
+                // Ensure user cart has current session id
+                if (empty($userCart['session_id'])) {
+                    $updSess = $pdo->prepare('UPDATE carts SET session_id = :sid, updated_at = NOW() WHERE id = :cid');
+                    $updSess->execute([':sid' => $sid, ':cid' => $userCart['id']]);
+                    $userCart['session_id'] = $sid;
+                }
+
+                $selItems = $pdo->prepare('SELECT id, product_id, variant_id, quantity, unit_price, line_total, options_snapshot FROM cart_items WHERE cart_id = :cid ORDER BY id');
+                $selItems->execute([':cid' => $guestCart['id']]);
+                $guestItems = $selItems->fetchAll();
+                foreach ($guestItems as $gi) {
+                    $pid = (int)$gi['product_id'];
+                    $vid = isset($gi['variant_id']) ? (int)$gi['variant_id'] : null;
+                    $qty = (int)$gi['quantity'];
+                    $unit = (float)$gi['unit_price'];
+
+                    // Find matching line in user cart
+                    if ($vid === null) {
+                        $find = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :uc AND product_id = :pid AND variant_id IS NULL LIMIT 1');
+                        $find->execute([':uc' => $userCart['id'], ':pid' => $pid]);
+                    } else {
+                        $find = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :uc AND product_id = :pid AND variant_id = :vid LIMIT 1');
+                        $find->execute([':uc' => $userCart['id'], ':pid' => $pid, ':vid' => $vid]);
+                    }
+                    $existing = $find->fetch();
+                    if ($existing) {
+                        $newQty = (int)$existing['quantity'] + $qty;
+                        $upd = $pdo->prepare('UPDATE cart_items SET quantity = :q, line_total = :lt WHERE id = :id');
+                        $upd->execute([':q' => $newQty, ':lt' => $unit * $newQty, ':id' => $existing['id']]);
+                        // Remove guest line
+                        $del = $pdo->prepare('DELETE FROM cart_items WHERE id = :id');
+                        $del->execute([':id' => $gi['id']]);
+                    } else {
+                        // Reassign guest item to user cart
+                        $move = $pdo->prepare('UPDATE cart_items SET cart_id = :uc WHERE id = :id');
+                        $move->execute([':uc' => $userCart['id'], ':id' => $gi['id']]);
+                    }
+                }
+                // Remove guest cart shell after merge
+                $pdo->prepare('DELETE FROM carts WHERE id = :cid')->execute([':cid' => $guestCart['id']]);
+
+                // Recalc totals on user cart
+                recalc_cart_totals($pdo, (int)$userCart['id']);
+                $pdo->commit();
+            } catch (Throwable $e) {
+                $pdo->rollBack();
+                // If merge fails, fall back to using user cart without merge
             }
-            return $cart;
+            // Refresh user cart data
+            $stmt2 = $pdo->prepare('SELECT * FROM carts WHERE id = :cid');
+            $stmt2->execute([':cid' => $userCart['id']]);
+            $userCart = $stmt2->fetch() ?: $userCart;
+            return $userCart;
+        }
+
+        if ($userCart) {
+            // Ensure session_id is set for continuity
+            if (empty($userCart['session_id'])) {
+                $upd = $pdo->prepare('UPDATE carts SET session_id = :sid WHERE id = :cid');
+                $upd->execute([':sid' => $sid, ':cid' => $userCart['id']]);
+                $userCart['session_id'] = $sid;
+            }
+            return $userCart;
         }
     }
 
@@ -53,8 +118,8 @@ function get_or_create_cart(PDO $pdo): array {
     $cart = $stmt->fetch();
     if ($cart) {
         // If user is authenticated, claim this cart
-        if ($userId && empty($cart['user_id'])) {
-            $upd = $pdo->prepare('UPDATE carts SET user_id = :uid WHERE id = :cid');
+        if ($userId && (empty($cart['user_id']) || (int)$cart['user_id'] !== (int)$userId)) {
+            $upd = $pdo->prepare('UPDATE carts SET user_id = :uid, updated_at = NOW() WHERE id = :cid');
             $upd->execute([':uid' => $userId, ':cid' => $cart['id']]);
             $cart['user_id'] = $userId;
         }

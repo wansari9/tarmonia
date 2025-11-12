@@ -11,10 +11,31 @@
   }
   var BASE = getBasePath();
   var EP = BASE + '/includes/';
+  // Fallback: if not under a base path, try '/tarmonia' automatically when calling PHP includes
+  var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
+  var ALT_EP = ALT_BASE + '/includes/';
+
+  function parseJsonSafe(r){
+    return r.json().catch(function(){ return { success:false, error:'Bad JSON' }; });
+  }
 
   function apiFetch(url, opts){
-    return fetch(url, Object.assign({ credentials:'same-origin' }, opts||{}))
-      .then(function(r){ return r.json().catch(function(){ return { success:false, error:'Bad JSON' }; }); });
+    // Try primary URL first; on 404 or network error and when BASE is empty, retry with ALT_EP
+    var options = Object.assign({ credentials:'same-origin' }, opts||{});
+    return fetch(url, options).then(function(r){
+      if (!r.ok && ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
+        // Retry with ALT endpoint (useful when page not served from XAMPP root but backend is)
+        var altUrl = ALT_EP + url.substring(EP.length);
+        return fetch(altUrl, options).then(parseJsonSafe);
+      }
+      return parseJsonSafe(r);
+    }).catch(function(){
+      if (ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
+        var altUrl = ALT_EP + url.substring(EP.length);
+        return fetch(altUrl, options).then(parseJsonSafe);
+      }
+      return { success:false, error:'Network error' };
+    });
   }
 
   function getCart(){ return apiFetch(EP + 'cart_get_or_create.php'); }

@@ -743,9 +743,20 @@ if (wcBreadcrumbs && product && product.name) {
     if (addToCartButton) {
         addToCartButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // Require server API; no localStorage fallback anymore
             if (!window.CartAPI) {
                 alert('Cart service unavailable. Please retry.');
+                return;
+            }
+            // Resolve product id (URL param OR hidden input fallback)
+            var hiddenInput = document.querySelector('input[name="product_id"]');
+            var effectiveProductId = productId || (hiddenInput && hiddenInput.value) || addToCartButton.getAttribute('data-product_id');
+            if (!effectiveProductId) {
+                alert('Missing product id.');
+                return;
+            }
+            effectiveProductId = Number(effectiveProductId);
+            if (!effectiveProductId || isNaN(effectiveProductId)) {
+                alert('Invalid product id');
                 return;
             }
             const qtyInput = document.querySelector('input[name="quantity"]');
@@ -755,22 +766,52 @@ if (wcBreadcrumbs && product && product.name) {
             const weightVal = weightSel ? (weightSel.value || '').trim() : '';
             const fatVal = fatSel ? (fatSel.value || '').trim() : '';
 
+            // Ensure a weight value for variantized products: default to first non-empty option if not chosen
+            if (weightSel && weightSel.options.length > 1 && !weightVal) {
+                var firstVal = '';
+                for (var i=0;i<weightSel.options.length;i++){
+                    var ov = (weightSel.options[i].value||'').trim();
+                    if (ov) { firstVal = ov; break; }
+                }
+                if (firstVal) {
+                    weightSel.value = firstVal;
+                    weightVal = firstVal;
+                }
+            }
+
             addToCartButton.disabled = true;
             addToCartButton.textContent = 'Adding...';
-            window.CartAPI.addItem(Number(productId), qty, weightVal, fatVal)
+            window.CartAPI.addItem(effectiveProductId, qty, weightVal, fatVal)
                 .then(function(res){
                     if (!res || !res.success) throw new Error((res && res.error) || 'Add to cart failed');
-                    // Success: small feedback then redirect to shop
+                    // Refresh mini cart & header counts immediately
+                    try {
+                        if (window.CartAPI && window.CartAPI.mini) {
+                            window.CartAPI.mini().then(function(miniRes){
+                                var items = (miniRes && miniRes.cart && miniRes.cart.counts && miniRes.cart.counts.items) || 0;
+                                var total = (miniRes && miniRes.cart && miniRes.cart.totals && miniRes.cart.totals.grand_total) || 0;
+                                document.querySelectorAll('.top_panel_cart_button').forEach(function(btn){
+                                    btn.setAttribute('data-items', items);
+                                    btn.setAttribute('data-summa', 'RM' + Number(total).toFixed(2));
+                                    var totals = btn.querySelector('.contact_cart_totals');
+                                    if (totals) totals.innerHTML = '<span class="cart_items">' + items + ' Items</span><span class="cart_summa">RM' + Number(total).toFixed(2) + '</span>';
+                                });
+                                // Replace mini-cart widget body if available
+                                var miniWidget = document.querySelector('.widget_shopping_cart_content');
+                                if (miniWidget && miniRes && miniRes.html && miniRes.html.body) {
+                                    miniWidget.innerHTML = miniRes.html.body + '<p class="mini_cart_total"><strong>Total:</strong> <span class="amount">' + miniRes.html.totals.amount + '</span></p>';
+                                }
+                            }).catch(function(){});
+                        }
+                    } catch(e) {}
+                    // Visual feedback (stay on page)
                     addToCartButton.textContent = 'Added';
                     addToCartButton.classList.add('added');
                     setTimeout(function(){
                         addToCartButton.disabled = false;
                         addToCartButton.textContent = 'Add to Cart';
                         addToCartButton.classList.remove('added');
-                        // Stay on page or redirect? For now refresh mini cart then return to shop.
-                        try { if (window.CartAPI && window.CartAPI.mini) window.CartAPI.mini(); } catch(e){}
-                        window.location.href = 'shop.html';
-                    }, 600);
+                    }, 900);
                 })
                 .catch(function(err){
                     console.error('[cart] add failed', err);

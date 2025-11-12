@@ -20,6 +20,11 @@ if ($quantity > 200) { // simple anti-abuse cap
 
 try {
     $stage = 'start';
+    // Debug log: record incoming payload minimal info
+    try {
+        $dbg = '[IN] add_item pid=' . $rawProductId . ' qty=' . $quantity . ' weight=' . $weight . ' fat=' . $fat;
+        file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] $dbg\n", FILE_APPEND);
+    } catch (Throwable $ignore) {}
     $cart = get_or_create_cart($pdo);
     // If user just logged in during this request (session gained user_id), ensure cart user_id is set
     $authUser = get_authenticated_user_id();
@@ -65,11 +70,16 @@ try {
     ]));
 
     // Try to find existing line (same product + variant)
-    $hasVid = $variantId !== null ? 1 : 0;
     $stage = 'select_existing_prepare';
-    $selLine = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND ( (variant_id IS NULL AND :hv_isnull = 0) OR (variant_id = :vid AND :hv_eqvid = 1) ) LIMIT 1');
-    $stage = 'select_existing_execute';
-    $selLine->execute([':cid' => $cartId, ':pid' => $productId, ':hv_isnull' => $hasVid, ':vid' => $variantId, ':hv_eqvid' => $hasVid]);
+    if ($variantId === null) {
+        $selLine = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id IS NULL LIMIT 1');
+        $stage = 'select_existing_execute_null_variant';
+        $selLine->execute([':cid' => $cartId, ':pid' => $productId]);
+    } else {
+        $selLine = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id = :vid LIMIT 1');
+        $stage = 'select_existing_execute_with_variant';
+        $selLine->execute([':cid' => $cartId, ':pid' => $productId, ':vid' => $variantId]);
+    }
     $existing = $selLine->fetch();
     if ($existing) {
         $newQty = (int)$existing['quantity'] + $quantity;
@@ -100,7 +110,7 @@ try {
     $totals = recalc_cart_totals($pdo, $cartId);
     $stage = 'serialize_cart';
     $data = serialize_cart($pdo, $cartId);
-    cart_json_response(200, [
+    $response = [
         'success' => true,
         'cart' => $data,
         'debug' => [
@@ -110,7 +120,12 @@ try {
             'weight_input' => $weight,
             'unit_price_used' => $unitPrice,
         ]
-    ]);
+    ];
+    try {
+        $dbg2 = '[OUT] add_item cart_id=' . $cartId . ' item_count=' . ($data['counts']['items'] ?? 0) . ' grand=' . ($data['totals']['grand_total'] ?? 0);
+        file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] $dbg2\n", FILE_APPEND);
+    } catch (Throwable $ignore) {}
+    cart_json_response(200, $response);
 } catch (Throwable $e) {
     // Log detailed error for diagnostics
     try {
