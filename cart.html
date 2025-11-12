@@ -256,8 +256,14 @@
                 </table>
                 <p id="empty-cart-message" class="empty-cart-message">Your cart is currently empty.</p>
             </div>
-            <div class="cart-actions">
-                <button id="proceed-to-checkout" class="sc_button sc_button_size_large sc_button_style_filled" style="display: none;">Proceed to Checkout</button>
+        <div class="cart-bottom" style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:space-between;">
+        <div class="cart-note" style="flex:0 0 420px;min-width:240px;">
+            <textarea id="order-note" name="order_note" placeholder="Add a note for this seller..." ></textarea>
+        </div>
+                <div class="cart-actions" style="flex:0 1 360px;display:flex;gap:12px;align-items:center;justify-content:flex-end;">
+                    <div class="continue-shopping-wrap"><a href="shop.html">Continue Shopping</a></div>
+                    <button id="proceed-to-checkout" class="sc_button sc_button_size_large sc_button_style_filled" style="display: none;">Proceed to Checkout</button>
+                </div>
             </div>
         </div>
         <footer class="call_wrap">

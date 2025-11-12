@@ -1416,3 +1416,43 @@ img.emoji {
 	float: none !important;
 	display: inline-flex;
 }
+/* Cart remove button — override to control size/appearance */
+.remove-cart-item {
+	background: #FEC321; /* theme yellow */
+	border: none;
+	color: #231f20;
+	width: 36px;            /* smaller size */
+	height: 36px;           /* smaller size */
+	padding: 0;
+	font-size: 16px;        /* size of the × symbol */
+	line-height: 36px;      /* vertically center the symbol */
+	text-align: center;
+	border-radius: 3px;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+.remove-cart-item:hover {
+	opacity: 0.95;
+}
+@media (max-width: 480px) {
+	.remove-cart-item { width: 30px; height: 30px; font-size: 14px; line-height: 30px; }
+}
+
+/* Center quantity column in cart table */
+#cart-table td, .cart-table td { vertical-align: middle; }
+#cart-table td:nth-child(2), .cart-table td:nth-child(2) {
+	text-align: center;
+	width: 80px; /* optional, keeps column narrow */
+}
+
+/* Space between cart content and the Proceed to Checkout button */
+.cart-actions {
+	margin-top: 24px;
+	margin-bottom: 50px; /* increase/decrease to taste */
+	display: flex;    /* keep button layout predictable */
+	justify-content: flex-start;
+}
+
+@media (max-width: 480px) {
+	.cart-actions { margin-top: 16px; }
+}
