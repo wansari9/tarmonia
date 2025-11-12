@@ -37,10 +37,10 @@ try {
     // Regen session ID and store auth info
     session_regenerate_id(true);
     $_SESSION['user_id'] = (int)$user['id'];
-    $_SESSION['email'] = $user['email'];
-    $_SESSION['first_name'] = $user['first_name'] ?? '';
-    $_SESSION['last_name'] = $user['last_name'] ?? '';
-    $_SESSION['role'] = $user['role'] ?? 'customer';
+    $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_first_name'] = $user['first_name'] ?? '';
+    $_SESSION['user_last_name'] = $user['last_name'] ?? '';
+    $_SESSION['user_role'] = $user['role'] ?? 'customer';
 
     echo json_encode([
         'success' => true,

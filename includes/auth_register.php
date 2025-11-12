@@ -59,10 +59,10 @@ try {
     // Auto-login
     session_regenerate_id(true);
     $_SESSION['user_id'] = $userId;
-    $_SESSION['email'] = $email;
-    $_SESSION['first_name'] = $first;
-    $_SESSION['last_name'] = $last;
-    $_SESSION['role'] = $role;
+    $_SESSION['user_email'] = $email;
+    $_SESSION['user_first_name'] = $first;
+    $_SESSION['user_last_name'] = $last;
+    $_SESSION['user_role'] = $role;
 
     echo json_encode([
         'success' => true,

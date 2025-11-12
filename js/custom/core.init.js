@@ -355,13 +355,47 @@ function dairy_farm_ready_actions() {
 	// Added to cart
 	// Disable legacy WooCommerce added_to_cart handler (client-side cart takes over)
 	jQuery('body').off('added_to_cart');
-	// Show cart 
-	jQuery('.top_panel_middle .top_panel_cart_button, .header_mobile .top_panel_cart_button').on('click', function(e) {
+	// Show cart (robust: find panel within the same contact_cart wrapper)
+	jQuery('.top_panel_cart_button').attr({ 'role':'button', 'aria-haspopup':'true', 'aria-expanded':'false' });
+	console.log('[mini-cart] binding jQuery handler');
+	// Fixed selector: match button anywhere in header (not just .top_panel_middle direct child)
+	jQuery(document).on('click', '.top_panel_cart_button', function(e) {
 		"use strict";
-		jQuery(this).siblings('.sidebar_cart').slideToggle();
+		var $btn = jQuery(this);
+		var $wrap = $btn.closest('.contact_cart');
+		var $panel = $wrap.find('.sidebar_cart').first();
+		if ($panel.length === 0) { e.preventDefault(); return false; }
+		console.log('[mini-cart] click', { expanded: $btn.attr('aria-expanded'), panelFound: true });
+		if (e.shiftKey) {
+			console.log('[mini-cart] shift-click: force open');
+			jQuery('.contact_cart .sidebar_cart').not($panel).hide();
+			jQuery('.top_panel_cart_button[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
+			$panel.stop(true, true).show();
+			$btn.attr('aria-expanded','true');
+			e.preventDefault();
+			return false;
+		}
+		// Close other open panels
+		jQuery('.contact_cart .sidebar_cart').not($panel).hide();
+		jQuery('.top_panel_cart_button[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
+		// Toggle current
+		$panel.stop(true, true).slideToggle(150);
+		var isExpanded = $btn.attr('aria-expanded') === 'true';
+		$btn.attr('aria-expanded', isExpanded ? 'false' : 'true');
 		e.preventDefault();
 		return false;
 	});
+	// Mark as bound so other scripts don't double-bind
+	window._miniCartBound = true;
+	// Click outside to close
+	if (!window._miniCartOutsideCloseBound) {
+		jQuery(document).on('click', function(e){
+			if (jQuery(e.target).closest('.contact_cart').length) return;
+			jQuery('.contact_cart .sidebar_cart').hide();
+			jQuery('.top_panel_cart_button[aria-expanded="true"]').attr('aria-expanded','false');
+		});
+		window._miniCartOutsideCloseBound = true;
+	}
 	// Add buttons to quantity
 	jQuery('.woocommerce div.quantity,.woocommerce-page div.quantity').append('<span class="q_inc"></span><span class="q_dec"></span>');
 	jQuery('.woocommerce div.quantity').on('click', '>span', function(e) {

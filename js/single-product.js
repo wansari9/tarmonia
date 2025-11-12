@@ -5,8 +5,160 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlParams.get(param);
     }
 
+    // Detect base path for localhost (e.g., /tarmonia/ on XAMPP)
+    function getBasePath() {
+        var path = window.location.pathname;
+        // If path contains /tarmonia/, extract base; otherwise empty
+        var match = path.match(/^(\/[^\/]+\/)/);
+        if (match && match[1] !== '/' && path.includes('.html')) {
+            return match[1].replace(/\/$/, ''); // e.g., '/tarmonia'
+        }
+        return ''; // Live Server or root deployment
+    }
+    var BASE_PATH = getBasePath();
+
     // Get the product_id from the URL
     const productId = getQueryParam('product_id');
+
+    // ---- Reviews gating: moved up so it runs even if productId is missing ----
+    function gateReviews(currentProductId){
+        var reviewWrapper = document.getElementById('review_form_wrapper');
+        if (!reviewWrapper) return; // No review form on page
+
+        var formEl = reviewWrapper.querySelector('#commentform');
+        // Target submit button more robustly (try multiple selectors)
+        var submitBtn = reviewWrapper.querySelector('#submit') 
+                     || reviewWrapper.querySelector('input[type="submit"]')
+                     || reviewWrapper.querySelector('button[type="submit"]');
+        
+        // Disable all inputs in the form initially
+        if (formEl) {
+            formEl.querySelectorAll('input, textarea, select, button').forEach(function(el){
+                el.disabled = true;
+            });
+        }
+        if (submitBtn) submitBtn.disabled = true; // Extra emphasis on submit button
+
+        function showGateMessage(kind){
+            var msg = '';
+            var cta = '';
+            if (kind === 'not_authenticated'){
+                var redirect = encodeURIComponent(window.location.pathname + window.location.search);
+                var loginUrl = 'login.html?redirect=' + redirect;
+                msg = 'Only verified customers can leave a review.';
+                cta = ' <a class="button" href="' + loginUrl + '">Log in to review</a>';
+            } else if (kind === 'not_purchased'){
+                msg = 'Only customers who have purchased this product may leave a review.';
+                cta = ' <a class="button" href="shop.html">Shop Now</a>';
+            } else if (kind === 'invalid_product'){
+                msg = 'Product not found. Reviews are unavailable.';
+            } else if (kind === 'error'){
+                msg = 'Unable to verify review eligibility. Please try again later.';
+            } else {
+                msg = 'Reviews are unavailable.';
+            }
+            reviewWrapper.innerHTML = '<div class="woocommerce-info" style="padding:12px 16px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:4px;margin:16px 0;">' + msg + cta + '</div>';
+        }
+
+        // Helper to attach secure submit handler once eligible
+        function enableAndWireSubmit(){
+            var form = document.getElementById('commentform');
+            if (!form) return;
+            
+            // Re-enable all form inputs
+            form.querySelectorAll('input, textarea, select, button').forEach(function(el){
+                el.disabled = false;
+            });
+            
+            // Re-target submit button
+            var submitBtn = form.querySelector('#submit')
+                         || form.querySelector('input[type="submit"]')
+                         || form.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = false;
+            
+            form.addEventListener('submit', function(ev){
+                ev.preventDefault();
+                if (!currentProductId){ showGateMessage('invalid_product'); return; }
+                var rating = (document.getElementById('rating')||{}).value || '';
+                var content = (document.getElementById('comment')||{}).value || '';
+                // basic client validation
+                if (!rating || !content){
+                    alert('Please provide a rating and review.');
+                    return;
+                }
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.value = 'Submitting...'; }
+                var fd = new FormData();
+                fd.append('product_id', currentProductId);
+                fd.append('rating', rating);
+                fd.append('content', content);
+                fetch(BASE_PATH + '/includes/review_submit.php', { method: 'POST', body: fd, credentials: 'same-origin' })
+                    .then(function(r){ return r.json().catch(function(){ return { success:false, error:'Invalid response'}; }); })
+                    .then(function(res){
+                        if (!res || res.success !== true){
+                            var err = (res && (res.error||res.reason)) || 'Failed to submit review';
+                            alert(err);
+                        } else {
+                            // Replace form with thanks; optionally append to comments list
+                            reviewWrapper.innerHTML = '<div class="woocommerce-message" style="padding:12px 16px;border:1px solid #c6f6d5;background:#f0fff4;border-radius:4px;">Thank you! Your review was submitted'+ (res.moderated ? ' and is awaiting approval.' : '.') +'</div>';
+                        }
+                    })
+                    .catch(function(){ alert('Network error submitting review'); })
+                    .finally(function(){ if (submitBtn){ submitBtn.disabled = false; submitBtn.value = 'Submit'; } });
+            }, { once: true });
+        }
+
+        // First, check session
+        fetch(BASE_PATH + '/includes/auth_session.php', { credentials: 'same-origin' })
+            .then(function(r){ 
+                if (!r.ok) {
+                    console.error('[review-gate] auth_session.php returned', r.status);
+                    return Promise.reject(new Error('HTTP ' + r.status));
+                }
+                return r.json();
+            })
+            .then(function(sess){
+                console.log('[review-gate] session check:', sess);
+                if (!sess || !sess.authenticated){
+                    showGateMessage('not_authenticated');
+                    return; // Stop here if not logged in
+                }
+                if (!currentProductId){
+                    // Logged in but no product context -> cannot review
+                    showGateMessage('invalid_product');
+                    return;
+                }
+                // If logged in, verify purchase eligibility
+                return fetch(BASE_PATH + '/includes/review_eligibility.php?product_id=' + encodeURIComponent(currentProductId), { credentials: 'same-origin' })
+                    .then(function(r){ 
+                        if (!r.ok) {
+                            console.error('[review-gate] review_eligibility.php returned', r.status);
+                            return Promise.reject(new Error('HTTP ' + r.status));
+                        }
+                        return r.json();
+                    })
+                    .then(function(res){
+                        console.log('[review-gate] eligibility check:', res);
+                        if (!res || res.eligible !== true){
+                            var reason = (res && res.reason) || 'not_purchased';
+                            showGateMessage(reason);
+                        } else {
+                            // Eligible: keep form and wire secure submit
+                            enableAndWireSubmit();
+                        }
+                    })
+                    .catch(function(err){ 
+                        console.error('[review-gate] eligibility error:', err);
+                        showGateMessage('error'); 
+                    });
+            })
+            .catch(function(err){ 
+                console.error('[review-gate] session error:', err);
+                showGateMessage('error'); 
+            });
+    }
+
+    // Always run gating early
+    gateReviews(productId);
 
     const products = {
         458: {
@@ -174,7 +326,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('No product_id found in the URL');
         const contentElement = document.querySelector('.content');
         if (contentElement) contentElement.innerHTML = "<p>Product ID is missing from the URL.</p>";
-        return; // Exit the function if there's no product ID
+        // Do not return here; other parts of the page (like header/footer) can still initialize
+        // Subsequent product-specific blocks already guard against undefined product
     }
 
     const product = products[Number(productId)]; // Convert productId to a number
@@ -242,11 +395,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 const desktopBreadcrumb = document.querySelector('.breadcrumbs_item.current');
-if (desktopBreadcrumb && product.name) {
+if (desktopBreadcrumb && product && product.name) {
     desktopBreadcrumb.textContent = product.name;
 }
 const wcBreadcrumbs = document.querySelector('.woocommerce-breadcrumb');
-if (wcBreadcrumbs && product.name) {
+if (wcBreadcrumbs && product && product.name) {
     // Replace last text after last '/'
     wcBreadcrumbs.innerHTML = wcBreadcrumbs.innerHTML.replace(/([^>]+)$/g, product.name);
 }
@@ -585,57 +738,52 @@ if (wcBreadcrumbs && product.name) {
     // Initialize price on load
     updatePrice();
 
-    // Handle Add to Cart
+    // Handle Add to Cart (server-backed)
     const addToCartButton = document.querySelector('.add-to-cart-button');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', function(e) {
             e.preventDefault();
+            // Fallback to client storage if server API not loaded
+            if (!window.CartAPI) {
+                console.warn('[cart] Server API not available, falling back to local cart');
+                return; // allow local-cart.js (if present) to handle
+            }
             const qtyInput = document.querySelector('input[name="quantity"]');
             const qty = parseInt(qtyInput && qtyInput.value, 10) || 1;
-            const priceDisplayElement = document.getElementById('pa_price');
-            const mainPriceElement = document.querySelector('.price .woocommerce-Price-amount');
-            const priceText = (priceDisplayElement && priceDisplayElement.textContent) || (mainPriceElement && mainPriceElement.textContent) || 'RM0.00';
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
-            const titleEl = document.querySelector('.product_title.entry-title');
-            const title = titleEl ? titleEl.textContent.trim() : 'Product';
-            const imgEl = document.querySelector('.woocommerce-main-image img');
-            const image = imgEl ? imgEl.src : '';
             const weightSel = document.getElementById('pa_weight');
             const fatSel = document.getElementById('pa_fat');
-            const weight = weightSel ? weightSel.options[weightSel.selectedIndex].text : '';
-            const fat = fatSel ? fatSel.options[fatSel.selectedIndex].text : '';
+            const weightVal = weightSel ? (weightSel.value || '').trim() : '';
+            const fatVal = fatSel ? (fatSel.value || '').trim() : '';
 
-            const cartItem = { id: Number(productId), productId: Number(productId), title, price, qty, image, weight, fat };
-
-            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            // Merge if already exists
-            const existing = cartItems.find(it => (it.id || it.productId) == cartItem.id);
-            if (existing) {
-                existing.qty = (existing.qty || existing.quantity || 1) + cartItem.qty;
-                existing.price = cartItem.price; // update latest price variant
-                existing.title = cartItem.title; // ensure title stored
-                existing.image = cartItem.image || existing.image;
-                existing.weight = weight || existing.weight;
-                existing.fat = fat || existing.fat;
-            } else {
-                cartItems.push(cartItem);
-            }
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-
-            // Simple feedback
-            addToCartButton.textContent = 'Added';
-            addToCartButton.classList.add('added');
-            setTimeout(() => {
-                addToCartButton.textContent = 'Add to Cart';
-                addToCartButton.classList.remove('added');
-                // Redirect user back to shop page per requirement
-                window.location.href = 'shop.html';
-            }, 800);
-        });
+            addToCartButton.disabled = true;
+            addToCartButton.textContent = 'Adding...';
+            window.CartAPI.addItem(Number(productId), qty, weightVal, fatVal)
+                .then(function(res){
+                    if (!res || !res.success) throw new Error((res && res.error) || 'Add to cart failed');
+                    // Success: small feedback then redirect to shop
+                    addToCartButton.textContent = 'Added';
+                    addToCartButton.classList.add('added');
+                    setTimeout(function(){
+                        addToCartButton.disabled = false;
+                        addToCartButton.textContent = 'Add to Cart';
+                        addToCartButton.classList.remove('added');
+                        window.location.href = 'shop.html';
+                    }, 600);
+                })
+                .catch(function(err){
+                    console.error('[cart] add failed', err);
+                    alert(err && err.message ? err.message : 'Failed to add to cart');
+                    addToCartButton.disabled = false;
+                    addToCartButton.textContent = 'Add to Cart';
+                });
+        }, { capture: true });
     } else {
         console.error('Add to Cart button not found.');
     }
 
     const hiddenProductId = document.querySelector('input[name="product_id"]');
     if (hiddenProductId) hiddenProductId.value = productId;
+
+    // ---- Reviews gating: only logged-in users who purchased can leave a review ----
+    // (gating moved earlier and enhanced)
 });

@@ -1,0 +1,5 @@
+[2025-11-12T07:18:30+01:00] add_item: SQLSTATE[HY093]: Invalid parameter number
+[2025-11-12T07:19:26+01:00] add_item: SQLSTATE[HY093]: Invalid parameter number
+[2025-11-12T07:20:20+01:00] add_item: SQLSTATE[HY093]: Invalid parameter number
+[2025-11-12T07:26:44+01:00] add_item (stage=got_cart): SQLSTATE[HY093]: Invalid parameter number
+[2025-11-12T07:29:47+01:00] update_item (stage=update_item): SQLSTATE[HY093]: Invalid parameter number
