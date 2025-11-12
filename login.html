@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-US" class="scheme_original">
+<head>
+  <title>Login / Register – Tarmonia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
+  <style>
+    .auth-wrapper{max-width:480px;margin:60px auto;padding:32px;background:#fff;border:1px solid #e2e2e2;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+    .auth-tabs{display:flex;gap:4px;margin-bottom:18px;}
+    .auth-tabs button{flex:1;padding:10px 14px;border:1px solid #ccc;background:#f7f7f7;cursor:pointer;font-weight:600;}
+    .auth-tabs button.active{background:#72b16a;color:#fff;border-color:#72b16a;}
+    form.auth-form{display:none;}
+    form.auth-form.active{display:block;}
+    form.auth-form .field{margin-bottom:14px;}
+    form.auth-form label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;}
+    form.auth-form input{width:100%;padding:10px 12px;border:1px solid #c8c8c8;border-radius:4px;font-size:14px;}
+    .auth-actions{margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+    .auth-actions button{background:#72b16a;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-size:14px;cursor:pointer;}
+    .small-note{font-size:12px;color:#666;margin-top:6px;}
+  </style>
+</head>
+<body class="page body_style_wide body_filled layout_single-standard top_panel_show top_panel_above">
+  <div class="body_wrap">
+    <div class="page_wrap">
+      <header class="top_panel_wrap top_panel_style_1 scheme_original">
+        <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+          <div class="top_panel_middle">
+            <div class="content_wrap">
+              <div class="columns_wrap columns_fluid">
+                <div class="column-4_5 contact_logo">
+                  <div class="logo"><a href="index.html"><img src="images/tarmonia-new-tag.png" class="logo_main" alt="Tarmonia" width="239" height="59" /></a></div>
+                </div>
+                <div class="column-1_5 contact_field contact_cart">
+                  <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
+                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                      <span class="contact_icon icon-1"></span>
+                      <span class="contact_label contact_cart_label">cart:</span>
+                      <span class="contact_cart_totals"><span class="cart_items">0 Items</span><span class="cart_summa">&#36;0.00</span></span>
+                    </a>
+                    <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="page_content_wrap page_paddings_yes">
+        <div class="content_wrap">
+          <div class="content">
+            <div class="auth-wrapper">
+              <div class="auth-tabs">
+                <button type="button" id="tabLogin" class="active" data-target="loginForm">Login</button>
+                <button type="button" id="tabRegister" data-target="registerForm">Register</button>
+              </div>
+              <form id="loginForm" class="auth-form active" autocomplete="on">
+                <div class="field"><label for="login_email">Email</label><input id="login_email" name="email" type="email" required /></div>
+                <div class="field"><label for="login_password">Password</label><input id="login_password" name="password" type="password" required /></div>
+                <div class="auth-actions">
+                  <button type="submit">Login</button>
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px;"><input type="checkbox"/> Remember me</label>
+                </div>
+                <div class="small-note"><a href="#">Forgot password?</a></div>
+              </form>
+              <form id="registerForm" class="auth-form" autocomplete="on">
+                <div class="field"><label for="reg_first_name">First Name</label><input id="reg_first_name" name="first_name" type="text" required /></div>
+                <div class="field"><label for="reg_last_name">Last Name</label><input id="reg_last_name" name="last_name" type="text" required /></div>
+                <div class="field"><label for="reg_email">Email</label><input id="reg_email" name="email" type="email" required /></div>
+                <div class="field"><label for="reg_phone">Phone</label><input id="reg_phone" name="phone" type="tel" pattern="^[0-9+()\-\s]{6,}$" placeholder="+60 12-345 6789" /></div>
+                <div class="field"><label for="reg_password">Password</label><input id="reg_password" name="password" type="password" minlength="6" required /></div>
+                <div class="field"><label for="reg_password_confirm">Confirm Password</label><input id="reg_password_confirm" name="password_confirm" type="password" minlength="6" required /></div>
+                <input type="hidden" name="role" value="customer" />
+                <div class="auth-actions">
+                  <button type="submit">Create Account</button>
+                  <label style="font-size:12px;display:flex;align-items:center;gap:4px;"><input type="checkbox" required/> I agree to Terms</label>
+                </div>
+                <div class="small-note">By registering you agree to our <a href="tnc.html">Terms & Conditions</a>.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer_wrap widget_area scheme_original">
+        <div class="footer_wrap_inner widget_area_inner">
+          <div class="content_wrap">
+            <div class="columns_wrap">
+              <aside class="column-1_4 widget widget_nav_menu"><h4 class="widget_title">Navigate</h4><ul class="menu"><li class="menu-item"><a href="index.html">Home</a></li><li class="menu-item"><a href="shop.html">Products</a></li><li class="menu-item"><a href="recipes.html">Recipes</a></li></ul></aside>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <div class="copyright_wrap copyright_style_menu scheme_original"><div class="copyright_wrap_inner"><div class="content_wrap"><p style="text-align:center;font-size:12px;">2025 Tarmonia. All rights reserved.</p></div></div></div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.auth-tabs button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.auth-tabs button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('form.auth-form').forEach(f=>f.classList.remove('active'));
+        const target = document.getElementById(btn.dataset.target);
+        target && target.classList.add('active');
+      });
+    });
+    // Basic client-side password confirmation check
+    document.getElementById('registerForm').addEventListener('submit',function(e){
+      const p = document.getElementById('reg_password').value;
+      const pc = document.getElementById('reg_password_confirm').value;
+      if(p!==pc){
+        e.preventDefault();
+        alert('Passwords do not match');
+        return;
+      }
+      // Submit registration to backend
+      e.preventDefault();
+      const form = e.currentTarget;
+      const fd = new FormData(form);
+      fetch('includes/auth_register.php', {
+        method: 'POST',
+        body: fd,
+        credentials: 'same-origin'
+      })
+      .then(async (res)=>{
+        const data = await res.json().catch(()=>({success:false,error:'Invalid server response'}));
+        if(!res.ok || !data.success){
+          throw new Error(data.error || 'Registration failed');
+        }
+        // On success, redirect to homepage (logged-in session established server-side)
+        window.location.href = 'index.html';
+      })
+      .catch(err=>{
+        alert(err.message || 'Registration failed');
+      });
+    });
+    // Handle Login submit to backend
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = e.currentTarget;
+      const fd = new FormData(form);
+      fetch('includes/auth_login.php', {
+        method: 'POST',
+        body: fd,
+        credentials: 'same-origin'
+      })
+      .then(async (res)=>{
+        const data = await res.json().catch(()=>({success:false,error:'Invalid server response'}));
+        if(!res.ok || !data.success){
+          throw new Error(data.error || 'Login failed');
+        }
+        window.location.href = 'index.html';
+      })
+      .catch(err=>{
+        alert(err.message || 'Login failed');
+      });
+    });
+  </script>
+</body>
+</html>
