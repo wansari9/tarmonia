@@ -345,6 +345,7 @@
         var legacy = getCart();
         saveCart(legacy.map(normalizeItem));
         updateUI();
+        initMiniCartToggle();
     });
 
     // Delegated removal handler (works for both cart page modes and mini-cart enhancements if added later)
@@ -354,5 +355,56 @@
         e.preventDefault();
         removeFromCart(btn.getAttribute('data-id'), btn.getAttribute('data-variant'));
     });
+
+    // Mini-cart open/close logic
+    function initMiniCartToggle() {
+        // Assign a unique id to the cart panel for aria-controls if missing
+        document.querySelectorAll('.contact_cart .sidebar_cart').forEach(function(panel, idx){
+            if(!panel.id) panel.id = 'mini-cart-panel-' + (idx+1);
+        });
+        document.querySelectorAll('.top_panel_cart_button').forEach(function (btn) {
+            if (btn._wiredMiniToggle) return;
+            btn.setAttribute('role','button');
+            btn.setAttribute('aria-haspopup','true');
+            btn.setAttribute('aria-expanded','false');
+            var panel = btn.closest('.contact_cart') && btn.closest('.contact_cart').querySelector('.sidebar_cart');
+            if(panel) btn.setAttribute('aria-controls', panel.id);
+            var toggle = function(e){
+                e.preventDefault();
+                var wrapper = btn.closest('.contact_cart');
+                if(!wrapper) return;
+                var cartPanel = wrapper.querySelector('.sidebar_cart');
+                if(!cartPanel) return;
+                var willShow = cartPanel.style.display !== 'block';
+                // Close all others first
+                document.querySelectorAll('.contact_cart .sidebar_cart').forEach(function(p){ p.style.display='none'; });
+                document.querySelectorAll('.top_panel_cart_button[aria-expanded="true"]').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+                if(willShow){
+                    cartPanel.style.display = 'block';
+                    btn.setAttribute('aria-expanded','true');
+                } else {
+                    cartPanel.style.display = 'none';
+                    btn.setAttribute('aria-expanded','false');
+                }
+            };
+            btn.addEventListener('click', toggle);
+            btn.addEventListener('keydown', function(ev){
+                if(ev.key === 'Enter' || ev.key === ' '){
+                    toggle(ev);
+                }
+            });
+            btn._wiredMiniToggle = true;
+        });
+
+        // Click outside to close
+        if(!document._miniCartOutsideClose){
+            document.addEventListener('click', function(e){
+                if(e.target.closest('.contact_cart')) return; // inside
+                document.querySelectorAll('.contact_cart .sidebar_cart').forEach(function(p){ p.style.display='none'; });
+                document.querySelectorAll('.top_panel_cart_button[aria-expanded="true"]').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+            });
+            document._miniCartOutsideClose = true;
+        }
+    }
 
 })();
