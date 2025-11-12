@@ -1421,21 +1421,26 @@ img.emoji {
 	background: #FEC321; /* theme yellow */
 	border: none;
 	color: #231f20;
-	width: 36px;            /* smaller size */
-	height: 36px;           /* smaller size */
+	width: 36px;            /* diameter */
+	height: 36px;           /* diameter */
 	padding: 0;
 	font-size: 16px;        /* size of the × symbol */
-	line-height: 36px;      /* vertically center the symbol */
+	line-height: 1;         /* use flex centering */
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
-	border-radius: 3px;
+	border-radius: 50%;     /* round */
 	cursor: pointer;
 	box-sizing: border-box;
+	margin-left: 10px;      /* nudge to the right */
 }
 .remove-cart-item:hover {
 	opacity: 0.95;
 }
 @media (max-width: 480px) {
-	.remove-cart-item { width: 30px; height: 30px; font-size: 14px; line-height: 30px; }
+	.remove-cart-item { width: 30px; height: 30px; font-size: 14px; margin-left:8px; }
+	.shop_table.cart .product-remove a, .shop_table.cart .product-remove button, .remove_from_cart_button { width:30px; height:30px; margin-left:8px; }
 }
 
 /* Center quantity column in cart table */
@@ -1456,3 +1461,529 @@ img.emoji {
 @media (max-width: 480px) {
 	.cart-actions { margin-top: 16px; }
 }
+
+/* ==========================
+   Main cart page improvements
+   - keeps theme colors (yellow #FEC321 / dark text)
+   - adds Continue Shopping box and Add a note textarea styling
+   - improves table spacing, thumbnails, qty input
+   ========================== */
+
+/* Main cart table */
+table.shop_table.cart,
+table.shop_table.cart tbody,
+table.shop_table.cart thead {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.shop_table.cart {
+	background: #fff;
+	box-shadow: 0 6px 18px rgba(35,31,32,0.04);
+	border: 1px solid #eee;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+table.shop_table.cart thead th {
+	text-transform: uppercase;
+	font-size: 12px;
+	color: #fff;
+	font-weight: 700;
+	padding: 14px 12px;
+	background: #2d3039;
+	border-bottom: 2px solid #FEC321;
+	letter-spacing: 0.5px;
+}
+
+table.shop_table.cart tbody tr {
+	transition: all 0.2s ease;
+	background: #fff;
+}
+table.shop_table.cart tbody tr:hover {
+	background-color: #fffbf0;
+	box-shadow: 0 2px 8px rgba(254,195,33,0.12) inset;
+}
+
+table.shop_table.cart tbody td {
+	padding: 16px 12px;
+	vertical-align: middle;
+	border-bottom: 1px solid #f0f0f0;
+	color: #231f20;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+table.shop_table.cart .product-name {
+	font-weight: 600;
+	color: #231f20;
+}
+
+/* Product thumbnail & title */
+.product-thumbnail img,
+.shop_table.cart .product-thumbnail img {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 4px;
+	display: block;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.shop_table.cart tbody tr:hover .product-thumbnail img {
+	transform: scale(1.02);
+	box-shadow: 0 4px 12px rgba(254,195,33,0.15);
+}
+
+.shop_table.cart .product-name {
+	font-weight: 700;
+	color: #231f20;
+	font-size: 15px;
+}
+
+.shop_table.cart .product-price,
+.shop_table.cart .product-subtotal {
+	font-weight: 700;
+	color: #FEC321;
+	font-size: 15px;
+}
+
+/* Quantity input */
+.shop_table.cart .quantity input[type="number"],
+.shop_table.cart .quantity .qty {
+	width: 68px;
+	padding: 6px 8px;
+	border: 1px solid #e6e6e6;
+	border-radius: 3px;
+	text-align: center;
+	font-size: 14px;
+	color: #231f20;
+	font-weight: 600;
+	background: #fafafa;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.shop_table.cart .quantity input[type="number"]:hover,
+.shop_table.cart .quantity .qty:hover {
+	border-color: #FEC321;
+	background: #fffbf0;
+	box-shadow: 0 2px 8px rgba(254,195,33,0.12);
+}
+
+.shop_table.cart .quantity input[type="number"]:focus,
+.shop_table.cart .quantity .qty:focus {
+	outline: none;
+	border-color: #FEC321;
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(254,195,33,0.1), 0 2px 8px rgba(254,195,33,0.12);
+}
+
+/* Remove item button - keep subtle and on-theme */
+.shop_table.cart .product-remove a,
+.shop_table.cart .product-remove button,
+.remove_from_cart_button,
+.remove_from_cart_button:link,
+.remove_from_cart_button:visited {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%; /* round */
+	background: #fafafa;
+	color: #231f20;
+	border: 1px solid #e6e6e6;
+	transition: all 0.2s ease;
+	margin-left: 10px; /* nudge to the right */
+	font-size: 16px;
+	font-weight: 600;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+.shop_table.cart .product-remove a:hover,
+.shop_table.cart .product-remove button:hover,
+.remove_from_cart_button:hover {
+	background: #FEC321;
+	color: #181516;
+	border-color: #FEC321;
+	box-shadow: 0 4px 12px rgba(254,195,33,0.25);
+	transform: translateY(-2px);
+}
+
+/* Cart totals block */
+.cart_totals {
+	margin-top: 20px;
+}
+.cart_totals table {
+	width: 320px;
+	margin-left: auto;
+	border-collapse: collapse;
+}
+.cart_totals table tr td:first-child {
+	color: #7a7a7a;
+	padding: 8px 12px;
+}
+.cart_totals table tr td:last-child {
+	text-align: right;
+	font-weight: 700;
+	padding: 8px 12px;
+}
+
+/* Action buttons area (Update, Continue, Checkout) */
+.cart-actions {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	margin-top: 18px;
+}
+
+.cart-actions .button,
+.cart-actions a.button,
+.cart-actions button.button {
+	padding: 10px 18px;
+	border-radius: 3px;
+	border: 1px solid #ddd;
+	background: #fff;
+	color: #231f20;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+.cart-actions .button:hover,
+.cart-actions a.button:hover,
+.cart-actions button.button:hover {
+	border-color: #ccc;
+	background: #f8f8f8;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.cart-actions .button.alt,
+.wc-proceed-to-checkout a.button,
+.cart-actions .checkout-button {
+	background: #FEC321;
+	color: #181516 !important;
+	border: none;
+	box-shadow: 0 4px 12px rgba(254,195,33,0.28);
+	transition: all 0.2s ease;
+	font-weight: 700;
+	padding: 14px 32px;
+	border-radius: 4px;
+	font-size: 15px;
+}
+.cart-actions .button.alt:hover,
+.wc-proceed-to-checkout a.button:hover,
+.cart-actions .checkout-button:hover {
+	background: #ffb800;
+	box-shadow: 0 6px 18px rgba(254,195,33,0.35);
+	transform: translateY(-2px);
+}
+
+/* Continue shopping boxed link (visible next to actions) */
+.continue-shopping-wrap {
+	display: inline-flex;
+	align-items: center;
+	padding: 12px 18px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fafafa;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.continue-shopping-wrap:hover {
+	border-color: #FEC321;
+	background: #fffbf0;
+	box-shadow: 0 4px 12px rgba(254,195,33,0.2);
+	transform: translateY(-1px);
+}
+.continue-shopping-wrap a {
+	color: #231f20;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 15px;
+}
+
+/* Add a note (order notes) */
+.cart-note {
+	margin-top: 22px;
+	padding: 16px;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+	border: 1px solid #f0f0f0;
+	transition: all 0.3s ease;
+}
+
+.cart-note:hover {
+	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+	border-color: #e6c580;
+}
+
+.cart-note label {
+	display: block;
+	margin-bottom: 8px;
+	color: #7a7a7a;
+	font-weight: 600;
+}
+.cart-note textarea {
+	width: 100%;
+	min-height: 110px;
+	padding: 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	resize: vertical;
+	font-size: 14px;
+	color: #231f20;
+	background: #fafafa;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+	font-weight: 500;
+}
+.cart-note textarea:hover {
+	border-color: #e6c580;
+	background: #fffbf0;
+	box-shadow: 0 2px 8px rgba(254,195,33,0.08);
+}
+.cart-note textarea:focus {
+	outline: none;
+	border-color: #FEC321;
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(254,195,33,0.1), 0 2px 8px rgba(254,195,33,0.12);
+}
+
+/* Small screens tweaks */
+@media (max-width: 768px) {
+	table.shop_table.cart thead { display: none; }
+	table.shop_table.cart tbody td { display: block; width: 100%; }
+	.cart_totals table { width: 100%; }
+	.continue-shopping-wrap { width: 100%; justify-content: center; }
+}
+
+/* Also apply the same look to the custom cart table used in the static cart page */
+table.cart-table,
+#cart-table {
+	background: #fff;
+	box-shadow: 0 6px 18px rgba(35,31,32,0.04);
+	border: 1px solid #eee;
+	border-radius: 4px;
+	width: 100%;
+	border-collapse: collapse;
+	overflow: hidden;
+}
+
+table.cart-table thead th,
+#cart-table thead th {
+	text-transform: uppercase;
+	font-size: 12px;
+	color: #fff;
+	font-weight: 700;
+	padding: 14px 12px;
+	background: #2d3039;
+	border-bottom: 2px solid #FEC321;
+	letter-spacing: 0.5px;
+}
+
+table.cart-table tbody tr,
+#cart-table tbody tr {
+	transition: all 0.2s ease;
+	background: #fff;
+}
+table.cart-table tbody tr:hover,
+#cart-table tbody tr:hover {
+	background-color: #fffbf0;
+	box-shadow: 0 2px 8px rgba(254,195,33,0.12) inset;
+}
+
+table.cart-table tbody td,
+#cart-table tbody td {
+	padding: 16px 12px;
+	vertical-align: middle;
+	border-bottom: 1px solid #f0f0f0;
+	color: #231f20;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+/* Align headers and cells so labels line up with their output */
+#cart-table th:nth-child(1), #cart-table td:nth-child(1),
+.cart-table th:nth-child(1), .cart-table td:nth-child(1) {
+	text-align: left;
+}
+#cart-table th:nth-child(2), #cart-table td:nth-child(2),
+.cart-table th:nth-child(2), .cart-table td:nth-child(2) {
+	text-align: center;
+}
+#cart-table th:nth-child(3), #cart-table td:nth-child(3),
+.cart-table th:nth-child(3), .cart-table td:nth-child(3) {
+	text-align: right;
+}
+#cart-table th:nth-child(4), #cart-table td:nth-child(4),
+.cart-table th:nth-child(4), .cart-table td:nth-child(4) {
+	text-align: right;
+}
+
+/* Mirror alignment for WooCommerce shop_table if used */
+table.shop_table.cart th:nth-child(1), table.shop_table.cart td:nth-child(1) { text-align: left; }
+table.shop_table.cart th:nth-child(2), table.shop_table.cart td:nth-child(2) { text-align: center; }
+table.shop_table.cart th:nth-child(3), table.shop_table.cart td:nth-child(3) { text-align: right; }
+table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) { text-align: right; }
+
+/* Quantity on the static cart table */
+.cart-table .quantity input[type="number"],
+#cart-table .quantity input[type="number"] {
+	width: 68px;
+	padding: 6px 8px;
+	border: 1px solid #e6e6e6;
+	border-radius: 3px;
+	text-align: center;
+}
+
+/* Padding tweaks to visually balance the centered Quantity column
+   with the right-aligned Price/Total columns. Quantity gets extra
+   right padding; Price/Total get a bit of left padding. */
+#cart-table th:nth-child(2), #cart-table td:nth-child(2),
+.cart-table th:nth-child(2), .cart-table td:nth-child(2) {
+	/* keep center alignment but add breathing room to the right */
+	padding-left: 12px;
+	padding-right: 34px; /* increases visible gap before price column */
+}
+
+#cart-table th:nth-child(3), #cart-table td:nth-child(3),
+#cart-table th:nth-child(4), #cart-table td:nth-child(4),
+.cart-table th:nth-child(3), .cart-table td:nth-child(3),
+.cart-table th:nth-child(4), .cart-table td:nth-child(4) {
+	/* nudge price/total in a bit from the left so they don't touch the quantity */
+	padding-left: 10px;
+	padding-right: 12px;
+}
+
+/* Mirror for WooCommerce shop_table as well */
+table.shop_table.cart th:nth-child(2), table.shop_table.cart td:nth-child(2) {
+	padding-left: 12px;
+	padding-right: 34px;
+}
+table.shop_table.cart th:nth-child(3), table.shop_table.cart td:nth-child(3),
+table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
+	padding-left: 10px;
+	padding-right: 12px;
+}
+
+/* Responsive: remove the extra spacing on small screens so stacked cells don't look odd */
+@media (max-width: 768px) {
+	#cart-table th:nth-child(2), #cart-table td:nth-child(2),
+	.cart-table th:nth-child(2), .cart-table td:nth-child(2),
+	table.shop_table.cart th:nth-child(2), table.shop_table.cart td:nth-child(2) {
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+	#cart-table th:nth-child(3), #cart-table td:nth-child(3),
+	#cart-table th:nth-child(4), #cart-table td:nth-child(4),
+	.cart-table th:nth-child(3), .cart-table td:nth-child(3),
+	.cart-table th:nth-child(4), .cart-table td:nth-child(4),
+	table.shop_table.cart th:nth-child(3), table.shop_table.cart td:nth-child(3),
+	table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
+		padding-left: 12px;
+		padding-right: 12px;
+		text-align: left; /* stacked layout looks better left-aligned */
+	}
+}
+
+/* Cart bottom and actions styling */
+.cart-bottom {
+	margin-top: 40px;
+	padding: 28px;
+	background: #fafafa;
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+	border: 1px solid #f0f0f0;
+	transition: all 0.3s ease;
+}
+
+.cart-bottom:hover {
+	box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.cart-actions {
+	width: 100%;
+}
+
+.cart-actions .continue-shopping-wrap {
+	width: 100%;
+	justify-content: center;
+	flex: 1 1 100%;
+	max-width: 100%;
+}
+
+.cart-actions button {
+	width: 100%;
+	max-width: 100%;
+	margin-top: 8px;
+}
+
+/* Additional cart page enhancements */
+.content_wrap > h2 {
+	color: #231f20;
+	font-weight: 700;
+	margin-bottom: 28px;
+	font-size: 28px;
+	letter-spacing: 0.5px;
+	text-transform: capitalize;
+	transition: color 0.2s ease;
+}
+
+.content_wrap > h2:hover {
+	color: #FEC321;
+}
+
+#cart-container {
+	margin-bottom: 32px;
+	padding: 12px;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.empty-cart-message {
+	text-align: center;
+	padding: 60px 20px;
+	color: #999;
+	font-style: italic;
+	font-size: 16px;
+	letter-spacing: 0.3px;
+}
+
+/* Additional spacing and typography enhancements */
+.content_wrap {
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+/* Enhanced table data cell styling */
+.shop_table.cart td[data-title]::before,
+.cart-table td[data-title]::before,
+#cart-table td[data-title]::before {
+	font-weight: 700;
+	color: #FEC321;
+	margin-right: 8px;
+	display: inline-block;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+/* Product summary text styling */
+.product-summary,
+.product-details {
+	color: #231f20;
+	font-size: 15px;
+	line-height: 1.5;
+	letter-spacing: 0.3px;
+}
+
+/* Price formatting */
+.woocommerce-Price-amount.amount,
+.price {
+	color: #FEC321;
+	font-weight: 700;
+	font-size: 16px;
+}
+
