@@ -19,29 +19,90 @@
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
     <style>
-        /* Bring the contact form above the map as an overlay */
+        /* Contact page layout adjustments */
         .sc_googlemap_wrap { position: relative; }
-        #map-container { position: relative; }
-        .sc_googlemap_content { 
-            position: absolute; 
-            top: 40px; 
-            right: 20px; 
+        .contact_details_section {
+            background: #f7f9f4;
+            padding: 70px clamp(20px, 4vw, 60px) 70px;
+            padding-right: clamp(260px, 32%, 420px);
+            min-height: 480px;
+        }
+        .contact_details_section .columns_wrap {
+            margin: 0;
+            width: 100%;
+        }
+        .contact_details_section .sc_section {
+            background: rgba(255,255,255,0.88);
+            border-radius: 12px;
+            padding: 24px 18px;
+            box-shadow: 0 18px 36px rgba(0,0,0,0.08);
+        }
+        .contact_details_section .sc_title {
+            margin-bottom: 12px;
+        }
+        .contact_details_section .sc_highlight {
+            display: block;
+            line-height: 1.6;
+        }
+        .sc_googlemap_content {
+            position: absolute;
+            top: 40px;
+            right: 20px;
             width: min(92%, 460px);
-            z-index: 1000; 
-            pointer-events: auto; /* allow clicking the form */
+            z-index: 1000;
+            pointer-events: auto;
         }
-        .sc_googlemap_content .sc_form_wrap { 
-            background: rgba(255,255,255,0.96); 
-            padding: 16px; 
-            border-radius: 8px; 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        .sc_googlemap_content .sc_form_wrap {
+            background: rgba(255,255,255,0.96);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
         }
-        /* Keep the map clickable behind the form when activated */
-        #map-iframe { width: 100%; height: 700px; border: 0; }
-        #map-overlay { z-index: 10; }
+        #map-container { position: relative; width: 100%; min-height: 540px; }
+        #map-iframe { width: 100%; height: 100%; min-height: 540px; border: 0; }
+        #map-overlay { z-index: 10; height: 100%; }
         #deactivate-map { z-index: 1100; }
+        .contact_map_section {
+            margin: 0 calc(50% - 50vw);
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+        }
+        @media (max-width: 1024px) {
+            .contact_details_section {
+                padding-right: clamp(220px, 40%, 320px);
+            }
+        }
+        @media (max-width: 900px) {
+            .contact_details_section {
+                padding: 50px 24px 40px;
+                padding-right: 24px;
+            }
+            .sc_googlemap_content {
+                position: static;
+                width: 100%;
+                margin-top: 30px;
+            }
+            #map-container {
+                min-height: 420px;
+            }
+            #map-iframe {
+                min-height: 420px;
+            }
+        }
         @media (max-width: 600px) {
-            .sc_googlemap_content { left: 10px; right: 10px; top: 20px; width: auto; }
+            .sc_googlemap_content {
+                left: auto;
+                right: auto;
+                top: auto;
+                width: auto;
+            }
+            #map-container {
+                min-height: 320px;
+            }
+            #map-iframe {
+                min-height: 320px;
+            }
         }
     </style>
 </head>
@@ -193,21 +254,40 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                                <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
-                                                <div id="map-container" style="position: relative;">
-                                                    <div id="map-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 700px; background: rgba(0,0,0,0.1); z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                        <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">Double-click to activate the map</div>
+                                            <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
+                                                <div class="contact_details_section">
+                                                    <div class="columns_wrap sc_columns columns_nofluid sc_columns_count_3">
+                                                        <div class="column-1_3 sc_column_item sc_column_item_1 odd first centext">
+                                                            <div class="sc_section section_style_bordered_section">
+                                                                <div class="sc_section_inner">
+                                                                    <div class="sc_section_content_wrap">
+                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Address</h4>
+                                                                        <span class="sc_highlight">B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="column-1_3 sc_column_item sc_column_item_2 even centext">
+                                                            <div class="sc_section section_style_bordered_section">
+                                                                <div class="sc_section_inner">
+                                                                    <div class="sc_section_content_wrap">
+                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Phone</h4>
+                                                                        <span class="sc_highlight">010-927 7092</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="column-1_3 sc_column_item sc_column_item_3 odd centext">
+                                                            <div class="sc_section section_style_bordered_section">
+                                                                <div class="sc_section_inner">
+                                                                    <div class="sc_section_content_wrap">
+                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Email</h4>
+                                                                        <span class="sc_highlight">info@tarmonia.com</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <button id="deactivate-map" style="position: absolute; top: 86px; right: 20px; z-index: 1100; background: white; padding: 10px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
-                                                        Cancel Interaction
-                                                    </button>
-                                                    <iframe 
-                                                        src="https://www.google.com/maps/embed?pb=!4v1729577974874!6m8!1m7!1sT6Xad5MX16dfYyf88ubXDw!2m2!1d3.087905665915046!2d101.6133650614986!3f125.18610815573966!4f0.3364943331593935!5f0.7820865974627469"  
-                                                        style="border:0; width: 100%; height: 700px; pointer-events: none;" 
-                                                        allowfullscreen="" 
-                                                        loading="lazy"
-                                                        id="map-iframe">
-                                                    </iframe>
                                                 </div>
                                                 <div class="sc_googlemap_content">
                                                     <div id="sc_form_282_wrap" class="sc_form_wrap">
@@ -243,36 +323,21 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                            <div class="columns_wrap sc_columns columns_nofluid sc_columns_count_3 margin_top_huge margin_bottom_huge">
-                                                <div class="column-1_3 sc_column_item sc_column_item_1 odd first centext">
-                                                    <div class="sc_section section_style_bordered_section">
-                                                        <div class="sc_section_inner">
-                                                            <div class="sc_section_content_wrap">
-                                                                <h4 class="sc_title sc_title_regular sc_align_center">Address</h4>
-                                                                <span class="sc_highlight">B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor</span>
-                                                            </div>
-                                                        </div>
+                                            <div class="contact_map_section">
+                                                <div id="map-container">
+                                                    <div id="map-overlay" style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(0,0,0,0.1); z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                                        <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">Double-click to activate the map</div>
                                                     </div>
-                                                </div>
-                                                <div class="column-1_3 sc_column_item sc_column_item_2 even centext">
-                                                    <div class="sc_section section_style_bordered_section">
-                                                        <div class="sc_section_inner">
-                                                            <div class="sc_section_content_wrap">
-                                                                <h4 class="sc_title sc_title_regular sc_align_center">Phone</h4>
-                                                                <span class="sc_highlight">010-927 7092</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="column-1_3 sc_column_item sc_column_item_3 odd centext">
-                                                    <div class="sc_section section_style_bordered_section">
-                                                        <div class="sc_section_inner">
-                                                            <div class="sc_section_content_wrap">
-                                                                <h4 class="sc_title sc_title_regular sc_align_center">Email</h4>
-                                                                <span class="sc_highlight">info@tarmonia.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <button id="deactivate-map" style="position: absolute; top: 24px; right: 20px; z-index: 1100; background: white; padding: 10px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
+                                                        Cancel Interaction
+                                                    </button>
+                                                    <iframe 
+                                                        src="https://www.google.com/maps/embed?pb=!4v1729577974874!6m8!1m7!1sT6Xad5MX16dfYyf88ubXDw!2m2!1d3.087905665915046!2d101.6133650614986!3f125.18610815573966!4f0.3364943331593935!5f0.7820865974627469"  
+                                                        style="border:0; width: 100%; pointer-events: none;" 
+                                                        allowfullscreen="" 
+                                                        loading="lazy"
+                                                        id="map-iframe">
+                                                    </iframe>
                                                 </div>
                                             </div>
                                         </div>
