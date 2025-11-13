@@ -2104,7 +2104,7 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 }
 
 .contact-info-card:hover .contact-icon-wrapper {
-	background: linear-gradient(135deg, #72b16a 0%, #5a9a54 100%);
+background: linear-gradient(135deg, #F5E6C4 0%, #ECA869 100%);
 	box-shadow: 0 14px 40px rgba(114, 177, 106, 0.38);
 	transform: scale(1.25) rotateZ(12deg);
 }
