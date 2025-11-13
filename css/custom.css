@@ -2664,7 +2664,7 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 
 /* Form Header */
 .form-header-new {
-	background: linear-gradient(135deg, #6EC4D4 0%, #5eb5c3 100%);
+	background-color: #F5E6C4;
 	padding: 26px 24px 18px;
 	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 	text-align: left;
@@ -2691,7 +2691,7 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 /* Modern Form */
 .modern-form {
 	padding: 22px 24px;
-	background: linear-gradient(135deg, #6EC4D4 0%, #5eb5c3 100%);
+	background-color: #F5E6C4;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
