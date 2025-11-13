@@ -18,6 +18,23 @@ function db_json_error(int $code, string $message): void {
     exit;
 }
 
+function ensure_csrf_token(): string {
+    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function verify_csrf_token(?string $token): bool {
+    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
+        return false;
+    }
+    if ($token === null || $token === '') {
+        return false;
+    }
+    return hash_equals($_SESSION['csrf_token'], $token);
+}
+
 $DB_HOST = getenv('DB_HOST') ?: '127.0.0.1';
 $DB_NAME = getenv('DB_NAME') ?: 'tarmonia';
 $DB_USER = getenv('DB_USER') ?: 'root';

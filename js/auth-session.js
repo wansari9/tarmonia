@@ -53,6 +53,9 @@
     fetch('includes/auth_session.php', { credentials: 'same-origin' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(data => {
+        if (data && data.csrf_token) {
+          try { window.CSRF_TOKEN = data.csrf_token; } catch(e){}
+        }
         if (!data || !data.authenticated) return;
         applyAuthenticatedUI(data);
       })

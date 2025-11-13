@@ -14,37 +14,150 @@
   // Fallback: if not under a base path, try '/tarmonia' automatically when calling PHP includes
   var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
   var ALT_EP = ALT_BASE + '/includes/';
+  var csrfPromise = null;
 
   function parseJsonSafe(r){
     return r.json().catch(function(){ return { success:false, error:'Bad JSON' }; });
   }
 
+  function ensureCsrfToken(){
+    if (typeof window !== 'undefined' && window.CSRF_TOKEN) {
+      return Promise.resolve(window.CSRF_TOKEN);
+    }
+    if (csrfPromise) return csrfPromise;
+
+    var triedAlt = false;
+    var sessionUrl = EP + 'auth_session.php';
+    var altSessionUrl = ALT_EP + 'auth_session.php';
+
+    function sessionFetch(url){
+      return fetch(url, { credentials:'same-origin' });
+    }
+
+    csrfPromise = sessionFetch(sessionUrl)
+      .then(function(r){
+        if (!r.ok && !triedAlt && ALT_EP !== EP) {
+          triedAlt = true;
+          return sessionFetch(altSessionUrl);
+        }
+        return r;
+      })
+      .catch(function(err){
+        if (!triedAlt && ALT_EP !== EP) {
+          triedAlt = true;
+          return sessionFetch(altSessionUrl);
+        }
+        throw err;
+      })
+      .then(function(r){
+        if (!r.ok) {
+          var err = new Error('missing_csrf');
+          err.code = 'missing_csrf';
+          throw err;
+        }
+        return r.json();
+      })
+      .then(function(data){
+        var token = data && data.csrf_token;
+        if (!token) {
+          var err = new Error('missing_csrf');
+          err.code = 'missing_csrf';
+          throw err;
+        }
+        try { window.CSRF_TOKEN = token; } catch(e){}
+        return token;
+      })
+      .catch(function(err){
+        if (err && typeof err === 'object') {
+          err.fromEnsure = true;
+          if (!err.code && err.message === 'missing_csrf') err.code = 'missing_csrf';
+        }
+        throw err;
+      })
+      .finally(function(){ csrfPromise = null; });
+
+    return csrfPromise;
+  }
+
+  function attachCsrfHeader(options, token){
+    if (!token || !options) return;
+    var method = (options.method || 'GET').toUpperCase();
+    if (method === 'GET' || method === 'HEAD') return;
+
+    if (options.headers instanceof Headers) {
+      if (!options.headers.has('X-CSRF-Token')) {
+        options.headers.set('X-CSRF-Token', token);
+      }
+      return;
+    }
+
+    var headers = options.headers || {};
+    if (!headers['X-CSRF-Token'] && !headers['x-csrf-token']) {
+      headers['X-CSRF-Token'] = token;
+    }
+    options.headers = headers;
+  }
+
   function apiFetch(url, opts){
     // Try primary URL first; on 404 or network error and when BASE is empty, retry with ALT_EP
     var options = Object.assign({ credentials:'same-origin' }, opts||{});
-    return fetch(url, options).then(function(r){
-      if (!r.ok && ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
-        // Retry with ALT endpoint (useful when page not served from XAMPP root but backend is)
-        var altUrl = ALT_EP + url.substring(EP.length);
+    var method = (options.method || 'GET').toUpperCase();
+    var needsCsrf = method !== 'GET' && method !== 'HEAD';
+    var urlStr = typeof url === 'string' ? url : '';
+    var hasAlt = ALT_EP !== EP && urlStr.indexOf(EP) === 0;
+    var altUrl = hasAlt ? ALT_EP + urlStr.substring(EP.length) : null;
+
+    var ready = needsCsrf ? ensureCsrfToken() : Promise.resolve(null);
+
+    return ready.then(function(token){
+      if (token) attachCsrfHeader(options, token);
+      return fetch(url, options);
+    }).then(function(r){
+      if (!r.ok && altUrl) {
         return fetch(altUrl, options).then(parseJsonSafe);
       }
       return parseJsonSafe(r);
-    }).catch(function(){
-      if (ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
-        var altUrl = ALT_EP + url.substring(EP.length);
-        return fetch(altUrl, options).then(parseJsonSafe);
+    }).catch(function(err){
+      if (err && (err.code === 'missing_csrf' || err.message === 'missing_csrf')) {
+        if (typeof console !== 'undefined') {
+          console.error('Missing CSRF token for request');
+        }
+        return { success:false, error:'Missing CSRF token' };
+      }
+      if (err && err.fromEnsure) {
+        if (typeof console !== 'undefined') {
+          console.error('Unable to prepare CSRF-protected request', err);
+        }
+        return { success:false, error:'Network error' };
+      }
+      if (altUrl) {
+        return fetch(altUrl, options).then(parseJsonSafe).catch(function(){
+          return { success:false, error:'Network error' };
+        });
       }
       return { success:false, error:'Network error' };
     });
   }
 
   function getCart(){ return apiFetch(EP + 'cart_get_or_create.php'); }
-  function addItem(productId, quantity, weight, fat){
+  function addItem(productId, quantity, optsOrWeight, fat){
+    // Backwards-compatible signature:
+    // - addItem(id, qty, '250g', 'low-fat')
+    // - addItem(id, qty, { weight:'250g', fat:'low-fat', size:'Large', quantity_option:'12-pack' })
     var fd = new FormData();
     fd.append('product_id', productId);
     fd.append('quantity', quantity||1);
-    if(weight) fd.append('weight', weight);
-    if(fat) fd.append('fat', fat);
+    if (optsOrWeight && typeof optsOrWeight === 'object') {
+      // Structured options
+      if (optsOrWeight.weight) fd.append('weight', optsOrWeight.weight);
+      if (optsOrWeight.fat) fd.append('fat', optsOrWeight.fat);
+      if (optsOrWeight.size) fd.append('size', optsOrWeight.size);
+      if (optsOrWeight.quantity_option) fd.append('quantity_option', optsOrWeight.quantity_option);
+    } else {
+      // Legacy positional args
+      if (optsOrWeight) fd.append('weight', optsOrWeight);
+      if (fat) fd.append('fat', fat);
+    }
     return apiFetch(EP + 'cart_add_item.php', { method:'POST', body: fd });
   }
   function updateItem(itemId, quantity){

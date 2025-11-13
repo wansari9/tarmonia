@@ -6,6 +6,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     cart_json_response(405, ['success' => false, 'error' => 'Method Not Allowed']);
 }
 
+require_valid_csrf();
+
 $itemId = isset($_POST['item_id']) ? (int)$_POST['item_id'] : 0;
 if ($itemId <= 0) {
     cart_json_response(400, ['success' => false, 'error' => 'Invalid item']);

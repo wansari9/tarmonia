@@ -15,20 +15,49 @@ function respond_detail(int $code, array $payload): void {
     exit;
 }
 
+function filter_int_param(?string $value): ?int {
+    if ($value === null) {
+        return null;
+    }
+    $trimmed = trim($value);
+    if ($trimmed === '' || !ctype_digit($trimmed)) {
+        return null;
+    }
+    $intVal = (int)$trimmed;
+    return $intVal > 0 ? $intVal : null;
+}
+
 try {
-    $pid = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
-    if ($pid <= 0) {
-        respond_detail(400, ['success' => false, 'error' => 'Invalid product id']);
+    $idParam = filter_int_param($_GET['id'] ?? null);
+    $legacyIdParam = filter_int_param($_GET['product_id'] ?? null);
+    $externalParam = trim((string)($_GET['external_id'] ?? ''));
+    $legacyExternal = trim((string)($_GET['product_id'] ?? ''));
+
+    $lookupId = $idParam ?? $legacyIdParam;
+    $lookupExternal = $externalParam !== '' ? $externalParam : ($legacyExternal !== '' ? $legacyExternal : null);
+
+    if ($lookupId === null && ($lookupExternal === null || $lookupExternal === '')) {
+        respond_detail(400, ['success' => false, 'error' => 'Invalid product identifier']);
     }
 
-    // Map external id to internal id
-    $map = $pdo->prepare('SELECT * FROM products WHERE external_id = :ext OR id = :ext LIMIT 1');
-    $map->execute([':ext' => $pid]);
-    $p = $map->fetch();
-    if (!$p) {
-        respond_detail(404, ['success' => false, 'error' => 'Product not found']);
+    $productRow = null;
+    if ($lookupId !== null) {
+        $stmt = $pdo->prepare('SELECT * FROM products WHERE id = :id LIMIT 1');
+        $stmt->execute([':id' => $lookupId]);
+        $productRow = $stmt->fetch();
     }
 
+    if (!$productRow && $lookupExternal !== null && $lookupExternal !== '') {
+        $stmt = $pdo->prepare('SELECT * FROM products WHERE external_id = :ext OR sku = :ext LIMIT 1');
+        $stmt->execute([':ext' => $lookupExternal]);
+        $productRow = $stmt->fetch();
+    }
+
+    if (!$productRow) {
+        respond_detail(404, ['error' => 'not_found']);
+    }
+
+    $p = $productRow;
     $internalId = (int)$p['id'];
 
     // Parse JSON columns

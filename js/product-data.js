@@ -7,7 +7,10 @@
     if (m && m[1] && m[1] !== '/') return m[1];
     return '';
   }
-  var BASE = getBasePath();
+  window.AppPaths = window.AppPaths || {};
+  window.AppPaths.getBasePath = window.AppPaths.getBasePath || getBasePath;
+  window.AppPaths.base = window.AppPaths.base || window.AppPaths.getBasePath();
+  var BASE = window.AppPaths.base;
   var EP = BASE + '/includes/';
   var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
   var ALT_EP = ALT_BASE + '/includes/';
@@ -41,7 +44,7 @@
       return this._listPromise;
     },
     detail: function(productId){
-      var url = EP + 'product_detail.php?product_id=' + encodeURIComponent(productId);
+      var url = EP + 'product_detail.php?id=' + encodeURIComponent(productId);
       return api(url).then(function(res){ return res && res.success ? res : { success:false, error:'Failed' }; });
     }
   };

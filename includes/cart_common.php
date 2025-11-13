@@ -11,6 +11,13 @@ function cart_json_response(int $code, array $payload): void {
     exit;
 }
 
+function require_valid_csrf(): void {
+    $headerToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (!verify_csrf_token($headerToken)) {
+        cart_json_response(403, ['success' => false, 'error' => 'invalid_csrf']);
+    }
+}
+
 function current_session_id(): string {
     if (session_status() !== PHP_SESSION_ACTIVE) session_start();
     // Use PHP's session_id as cart session identifier
@@ -147,7 +154,7 @@ function resolve_product_internal_id(PDO $pdo, int $productIdOrExternal): ?int {
 function resolve_variant(PDO $pdo, int $productId, ?string $weightSlug): array {
     if (!$weightSlug) return [null, null];
     // Variants options JSON are like {"weight":"250g"}. The UI uses value slugs (e.g. 1kg -> 1kg), but we try to match case-insensitive
-    $sql = "SELECT id, sku, name, options, price_override, image FROM product_variants WHERE product_id = :pid AND is_active = 1";
+    $sql = "SELECT id, sku, name, options, price_override, image, stock_qty FROM product_variants WHERE product_id = :pid AND is_active = 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':pid' => $productId]);
     $candidates = $stmt->fetchAll();
@@ -157,6 +164,41 @@ function resolve_variant(PDO $pdo, int $productId, ?string $weightSlug): array {
         $opts = json_decode((string)$row['options'], true) ?: [];
         $w = isset($opts['weight']) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts['weight'])) : '';
         if ($w === $wanted) {
+            return [(int)$row['id'], $row];
+        }
+    }
+    return [null, null];
+}
+
+/**
+ * Resolve variant by matching all provided option keys and values.
+ * The $selected map should contain option keys (e.g., weight, size, quantity) with slug/label strings.
+ * We normalize by removing dashes/underscores/spaces and comparing lowercase.
+ * If no exact match is found, returns [null, null].
+ */
+function resolve_variant_by_options(PDO $pdo, int $productId, array $selected): array {
+    // Ensure we ignore empty or non-string values; exclude non-variant UI fields like fat
+    $cleanSelected = [];
+    foreach ($selected as $k => $v) {
+        if (!is_string($k) || $k === '') continue;
+        if (!is_string($v) || $v === '') continue;
+        if ($k === 'fat') continue; // not stored in variants
+        $cleanSelected[$k] = strtolower(str_replace([' ', '_', '-'], ['', '', ''], $v));
+    }
+    if (empty($cleanSelected)) return [null, null];
+
+    $stmt = $pdo->prepare('SELECT id, sku, name, options, price_override, image, stock_qty FROM product_variants WHERE product_id = :pid AND is_active = 1');
+    $stmt->execute([':pid' => $productId]);
+    $rows = $stmt->fetchAll();
+    foreach ($rows as $row) {
+        $opts = json_decode((string)$row['options'], true) ?: [];
+        $allMatch = true;
+        foreach ($cleanSelected as $k => $wanted) {
+            $have = isset($opts[$k]) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts[$k])) : '';
+            if ($wanted === '' || $have === '') { $allMatch = false; break; }
+            if ($wanted !== $have) { $allMatch = false; break; }
+        }
+        if ($allMatch) {
             return [(int)$row['id'], $row];
         }
     }

@@ -2,23 +2,102 @@ document.addEventListener('DOMContentLoaded', function () {
     // Keep a reference to current product and variants for dynamic updates
     var CURRENT_PRODUCT = null;
     var VARIANT_INDEX = {}; // weightKey -> variant
+    var OPTION_KEYS_FROM_API = []; // keys returned by product_options endpoint
+
+    var CATEGORY_ALIASES = {
+        'beef': 'meat',
+        'pork': 'meat',
+        'chicken': 'meat',
+        'lamb': 'meat',
+        'bacon': 'meat',
+        'sausage': 'meat',
+        'milk': 'dairy',
+        'egg': 'eggs',
+        'byproduct': 'byproducts'
+    };
+    var CATEGORY_FALLBACK_OPTIONS = {
+        'meat': ['weight'],
+        'dairy': ['weight', 'fat'],
+        'eggs': ['size', 'quantity'],
+        'cheese': ['weight'],
+        'byproducts': []
+    };
+    var FAT_CANONICAL_MAP = {
+        '2': '2%',
+        '2%': '2%',
+        '2-percent': '2%',
+        '2 percent': '2%',
+        '3.5': '3.5%',
+        '3.5%': '3.5%',
+        '3-5': '3.5%',
+        '3.5 percent': '3.5%',
+        'skim': 'skim',
+        'low-fat': 'low-fat',
+        'low fat': 'low-fat',
+        'full': 'full',
+        'full-fat': 'full',
+        'full fat': 'full',
+        'full cream': 'full',
+        'whole': 'whole'
+    };
+    var FAT_PRICE_ADJUST = {
+        'skim': -0.20,
+        'low-fat': -0.10,
+        '2%': -0.10,
+        'full': 0,
+        'whole': 0.05,
+        '3.5%': 0.05
+    };
+
+    function normalizeCategory(raw){
+        var c = String(raw || '').trim().toLowerCase();
+        if (!c) return '';
+        return CATEGORY_ALIASES[c] || c;
+    }
+
+    function categoryAllowsOption(cat, optionKey){
+        if (!cat) return false;
+        var opts = CATEGORY_FALLBACK_OPTIONS[cat];
+        if (!opts) return false;
+        return opts.indexOf(optionKey) !== -1;
+    }
+
+    function canonicalFatValue(input){
+        if (!input) return '';
+        var lookup = String(input).trim().toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(FAT_CANONICAL_MAP, lookup)) {
+            return FAT_CANONICAL_MAP[lookup];
+        }
+        return lookup;
+    }
+
+    function safeSrc(src){
+        if (!src) return src;
+        try { return encodeURI(String(src)); } catch (e) { return src; }
+    }
+
+    function optionDeclared(optionKey){
+        return OPTION_KEYS_FROM_API.indexOf(optionKey) !== -1;
+    }
+
+    function optionAllowed(cat, optionKey){
+        if (optionDeclared(optionKey)) return true;
+        return categoryAllowsOption(cat, optionKey);
+    }
+
+    function productHasWeightVariants(product){
+        if (!product || !Array.isArray(product.variants)) return false;
+        return product.variants.some(function(v){ return v && v.options && v.options.weight; });
+    }
     // Function to get query parameters from the URL
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 
-    // Detect base path for localhost (e.g., /tarmonia/ on XAMPP)
-    function getBasePath() {
-        var path = window.location.pathname;
-        // If path contains /tarmonia/, extract base; otherwise empty
-        var match = path.match(/^(\/[^\/]+\/)/);
-        if (match && match[1] !== '/' && path.includes('.html')) {
-            return match[1].replace(/\/$/, ''); // e.g., '/tarmonia'
-        }
-        return ''; // Live Server or root deployment
-    }
-    var BASE_PATH = getBasePath();
+    var BASE_PATH = (window.AppPaths && typeof window.AppPaths.getBasePath === 'function')
+        ? window.AppPaths.getBasePath()
+        : '';
 
     // Get the product_id from the URL
     const productId = getQueryParam('product_id');
@@ -185,18 +264,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderProduct(p){
         if (!p) return;
-        CURRENT_PRODUCT = p;
+    CURRENT_PRODUCT = p;
+    var normalizedCategory = normalizeCategory(p.category);
+    CURRENT_PRODUCT.normalizedCategory = normalizedCategory;
         // Set document title from DB
         try { document.title = (p.name ? (p.name + ' – Dairy Farm') : document.title); } catch(e){}
         setText('.product_title.entry-title', p.name || 'Product');
         if (p.image){
             var img = document.querySelector('.woocommerce-main-image img');
-            // Safely set image src (encode spaces) without double-encoding existing % sequences
-            function safeSrc(src){
-                if (!src) return src;
-                // Only encode spaces to preserve readable filenames already OK for server
-                return src.replace(/ /g, '%20');
-            }
             if (img) img.src = safeSrc(p.image);
             setAttr('.woocommerce-main-image', 'href', safeSrc(p.image));
         }
@@ -246,57 +321,124 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Populate weight dropdown from variants
-        var weightDropdown = document.getElementById('pa_weight');
-        if (weightDropdown) {
-            weightDropdown.innerHTML = '<option value="" selected>Choose</option>';
-            var added = {};
-            (p.variants||[]).forEach(function(v){
-                var w = (v.options && v.options.weight) ? String(v.options.weight) : '';
-                if (!w) return;
-                var slug = w.toLowerCase().replace(/\s+/g,'-');
-                if (added[slug]) return;
-                added[slug] = true;
-                var opt = document.createElement('option');
-                opt.value = slug; opt.textContent = w;
-                weightDropdown.appendChild(opt);
-            });
-            // Auto-select first actual option if none selected
-            if (weightDropdown.options.length > 1 && !weightDropdown.value) {
-                var firstVal = '';
-                for (var i=0;i<weightDropdown.options.length;i++){
-                    var ov = (weightDropdown.options[i].value||'').trim();
-                    if (ov) { firstVal = ov; break; }
-                }
-                if (firstVal) weightDropdown.value = firstVal;
-            }
-        }
+        // Decide if the product has weight variants present in DB
+            var hasWeightVariants = productHasWeightVariants(p);
 
-        // Populate fat dropdown (restore if previously empty). Backend doesn't yet supply fat variants;
-        // we apply pricing adjustments client-side relative to the weight variant price.
-        var fatDropdown = document.getElementById('pa_fat');
-        if (fatDropdown) {
-            // Only repopulate if it's empty or has just the placeholder
-            var needsPopulate = fatDropdown.options.length <= 1;
+            function shouldShowWeightRow(){
+                if (productHasWeightVariants(CURRENT_PRODUCT)) return true;
+                return optionAllowed(normalizedCategory, 'weight');
+            }
+
+            function manageWeightRow(){
+                var sel = document.getElementById('pa_weight');
+                if (!sel) return;
+                var row = sel.closest('tr') || sel;
+                var show = shouldShowWeightRow();
+                if (row) row.style.display = show ? '' : 'none';
+                if (!show) {
+                    try { sel.value = ''; sel.dispatchEvent(new Event('change', { bubbles:true })); } catch(e){}
+                }
+            }
+
+            // Populate weight dropdown from variants with a full node replace (helps custom-styled selects)
+            function populateWeightDropdown(product){
+                var sel = document.getElementById('pa_weight');
+                if (!sel) return false;
+                var parent = sel.parentNode;
+                var newSel = sel.cloneNode(false);
+                newSel.id = sel.id; newSel.name = sel.name; newSel.className = sel.className;
+                // placeholder
+                var ph = document.createElement('option');
+                ph.value = ''; ph.textContent = 'Choose'; ph.selected = true;
+                newSel.appendChild(ph);
+                var added = {};
+                (product.variants||[]).forEach(function(v){
+                    var w = (v.options && v.options.weight) ? String(v.options.weight) : '';
+                    if (!w) return;
+                    var slug = w.toLowerCase().replace(/\s+/g,'-');
+                    if (added[slug]) return; added[slug] = true;
+                    var opt = document.createElement('option');
+                    opt.value = slug; opt.textContent = w;
+                    newSel.appendChild(opt);
+                });
+                try { parent.replaceChild(newSel, sel); } catch(e) { sel.innerHTML = newSel.innerHTML; newSel = sel; }
+                // Attach listener again since we replaced the element
+                try { newSel.addEventListener('change', updatePrice); } catch(e){}
+                // Auto-select first non-empty option
+                if (newSel.options.length > 1 && !newSel.value){
+                    var firstVal = '';
+                    for (var i=0;i<newSel.options.length;i++){
+                        var ov = (newSel.options[i].value||'').trim();
+                        if (ov) { firstVal = ov; break; }
+                    }
+                    if (firstVal){
+                        newSel.value = firstVal;
+                        try { newSel.dispatchEvent(new Event('change', { bubbles:true })); } catch(e){}
+                    }
+                }
+                return true;
+            }
+            if (hasWeightVariants) {
+                populateWeightDropdown(p);
+                setTimeout(function(){
+                    var sel = document.getElementById('pa_weight');
+                    if (sel && sel.options.length <= 1 && (p.variants||[]).length){ populateWeightDropdown(p); }
+                }, 250);
+            }
+            manageWeightRow();
+
+            // Load dynamic option config (size/weight/quantity) to drive which selectors to show
+            try {
+                var pidKey = p.id || p.external_id || p.internal_id;
+                if (pidKey) {
+                    fetch(BASE_PATH + '/includes/product_options.php?product_id=' + encodeURIComponent(pidKey), { credentials:'same-origin' })
+                        .then(function(r){ return r.json().catch(function(){ return { success:false }; }); })
+                        .then(function(cfg){
+                            if (!cfg || cfg.success !== true || !Array.isArray(cfg.options)) return;
+                            buildDynamicOptions(p, cfg.options);
+                            manageWeightRow();
+                            manageFatRow();
+                            updatePrice();
+                        })
+                        .catch(function(){});
+                }
+            } catch(e){}
+
+        function manageFatRow(){
+            var fatSel = document.getElementById('pa_fat');
+            if (!fatSel) return;
+            var row = fatSel.closest('tr') || fatSel;
+            if (!optionAllowed(normalizedCategory, 'fat')) {
+                if (row) row.style.display = 'none';
+                try { fatSel.value = ''; fatSel.dispatchEvent(new Event('change', { bubbles:true })); } catch(e){}
+                return;
+            }
+            var needsPopulate = fatSel.options.length <= 1;
             if (needsPopulate) {
-                fatDropdown.innerHTML = '';
+                fatSel.innerHTML = '';
                 var placeholder = document.createElement('option');
                 placeholder.value = '';
                 placeholder.textContent = 'Choose Fat';
                 placeholder.selected = true;
-                fatDropdown.appendChild(placeholder);
-                // Common dairy fat levels – slug values used for computation
+                fatSel.appendChild(placeholder);
                 [
-                    { label: 'Skim', slug: 'skim' },
-                    { label: 'Low Fat', slug: 'low-fat' },
-                    { label: 'Full Fat', slug: 'full-fat' },
-                    { label: 'Whole', slug: 'whole' }
+                    { label: 'Skim', value: 'skim' },
+                    { label: 'Low Fat', value: 'low-fat' },
+                    { label: '2%', value: '2%' },
+                    { label: 'Full Cream', value: 'full' },
+                    { label: 'Whole', value: 'whole' },
+                    { label: '3.5%', value: '3.5%' }
                 ].forEach(function(optDef){
-                    var o = document.createElement('option');
-                    o.value = optDef.slug; o.textContent = optDef.label;
-                    fatDropdown.appendChild(o);
+                    var option = document.createElement('option');
+                    option.value = optDef.value;
+                    option.textContent = optDef.label;
+                    fatSel.appendChild(option);
                 });
+                try { fatSel.addEventListener('change', updatePrice); } catch(e){}
             }
+            if (row) row.style.display = '';
         }
+        manageFatRow();
 
         // Build a quick index of variants by weight (normalized)
         VARIANT_INDEX = {};
@@ -364,12 +506,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 p.gallery.forEach(function(src){
                     if (!src || (p.image && src === p.image)) return;
+                    var safe = safeSrc(src);
                     var a = document.createElement('a');
-                    a.href = src;
+                    a.href = safe;
                     a.className = 'zoom';
                     a.setAttribute('data-rel','prettyPhoto[product-gallery]');
                     var im = document.createElement('img');
-                    im.src = src;
+                    im.src = safe;
                     im.alt = p.name || '';
                     im.width = 180; im.height = 180;
                     a.appendChild(im);
@@ -453,14 +596,97 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (weightDropdownElement) {
         weightDropdownElement.addEventListener("change", updatePrice);
-    } else {
-        console.error(`Weight dropdown with ID '${weightDropdownId}' not found.`);
     }
 
     if (fatDropdownElement) {
         fatDropdownElement.addEventListener("change", updatePrice);
-    } else {
-        console.error(`Fat dropdown with ID '${fatDropdownId}' not found.`);
+    }
+
+    // Ensure presence of variations table body for dynamic rows
+    function getVariationsTbody(){
+        var tb = document.querySelector('.variations tbody');
+        return tb;
+    }
+
+    function ensureOptionRow(optKey, label){
+        var id = 'pa_' + optKey;
+        var sel = document.getElementById(id);
+        if (sel) return sel;
+        var tb = getVariationsTbody(); if (!tb) return null;
+        var tr = document.createElement('tr');
+        var tdLabel = document.createElement('td'); tdLabel.className = 'label';
+        var lab = document.createElement('label'); lab.setAttribute('for', id); lab.textContent = label || optKey;
+        tdLabel.appendChild(lab);
+        var tdVal = document.createElement('td'); tdVal.className = 'value';
+        var select = document.createElement('select'); select.id = id; select.className = 'custom-dropdown';
+        tdVal.appendChild(select);
+        tr.appendChild(tdLabel); tr.appendChild(tdVal);
+        // Insert before Price row if present, else append
+        var priceRow = Array.prototype.find.call(tb.querySelectorAll('tr'), function(r){ return (r.textContent||'').toLowerCase().indexOf('price') !== -1; });
+        if (priceRow && priceRow.parentNode === tb) tb.insertBefore(tr, priceRow); else tb.appendChild(tr);
+        return select;
+    }
+
+    function slugify(v){ return String(v||'').trim().toLowerCase().replace(/\s+/g,'-'); }
+    function normalize(v){ return String(v||'').trim().toLowerCase().replace(/[-_\s]+/g,''); }
+
+    function populateOptionFromVariants(product, optKey, selectEl){
+        if (!selectEl) return;
+        // Rebuild select
+        var newSel = selectEl.cloneNode(false); newSel.id = selectEl.id; newSel.name = selectEl.name; newSel.className = selectEl.className;
+        var ph = document.createElement('option'); ph.value = ''; ph.textContent = 'Choose'; ph.selected = true; newSel.appendChild(ph);
+        var added = {};
+        (product.variants||[]).forEach(function(v){
+            var val = v && v.options ? v.options[optKey] : null;
+            if (!val) return;
+            var slug = slugify(val);
+            if (added[slug]) return; added[slug] = true;
+            var o = document.createElement('option'); o.value = slug; o.textContent = String(val);
+            newSel.appendChild(o);
+        });
+        try { selectEl.parentNode.replaceChild(newSel, selectEl); } catch(e){ selectEl.innerHTML = newSel.innerHTML; newSel = selectEl; }
+        newSel.addEventListener('change', updatePrice);
+        // Auto-select first value
+        if (newSel.options.length > 1 && !newSel.value){
+            for (var i=0;i<newSel.options.length;i++){ var ov=(newSel.options[i].value||'').trim(); if (ov){ newSel.value=ov; break; } }
+        }
+        return newSel;
+    }
+
+    function buildDynamicOptions(product, optionList){
+        OPTION_KEYS_FROM_API = [];
+        var normalizedCategory = product ? (product.normalizedCategory || normalizeCategory(product.category)) : '';
+        optionList.forEach(function(def){
+            if (!def) return;
+            var rawKey = typeof def.key === 'string' ? def.key : '';
+            var key = rawKey.trim().toLowerCase();
+            if (!key) return;
+            if (OPTION_KEYS_FROM_API.indexOf(key) === -1) OPTION_KEYS_FROM_API.push(key);
+            var label = def.label || rawKey || key;
+            if (key === 'fat') {
+                var fatSel = ensureOptionRow('fat', label || 'Fat');
+                if (fatSel) {
+                    var fatRow = fatSel.closest('tr');
+                    if (fatRow) {
+                        var lbl = fatRow.querySelector('label');
+                        if (lbl) lbl.textContent = label || 'Fat';
+                    }
+                }
+                return;
+            }
+            var sel = ensureOptionRow(key, label);
+            if (!sel) return;
+            var row = sel.closest('tr');
+            var hasValues = Array.isArray(product.variants) && product.variants.some(function(v){ return v && v.options && v.options[key]; });
+            if (hasValues) {
+                populateOptionFromVariants(product, key, sel);
+                if (row) row.style.display = '';
+            } else {
+                if (row) {
+                    row.style.display = optionAllowed(normalizedCategory, key) ? '' : 'none';
+                }
+            }
+        });
     }
 
     // Call updatePrice() initially to set the default price
@@ -478,6 +704,45 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedWeight = weightDropdownElement ? weightDropdownElement.value : '';
         const selectedFat = fatDropdownElement ? fatDropdownElement.value : '';
 
+        // Attempt to match an exact variant based on all option selects present on the page
+        function collectSelectedOptions(){
+            var selected = {};
+            document.querySelectorAll('.variations select[id^="pa_"]').forEach(function(sel){
+                var key = sel.id.replace(/^pa_/, '');
+                var val = (sel.value||'').trim();
+                if (!val) return;
+                if (key === 'fat') {
+                    selected[key] = canonicalFatValue(val);
+                } else {
+                    selected[key] = val;
+                }
+            });
+            return selected;
+        }
+        function variantMatches(v, selected){
+            if (!v || !v.options) return false;
+            for (var k in selected){
+                if (k === 'fat') {
+                    var wantedFat = canonicalFatValue(selected[k]);
+                    var variantFatRaw = v.options.hasOwnProperty(k) ? v.options[k] : '';
+                    if (!variantFatRaw) return false;
+                    var variantFat = canonicalFatValue(variantFatRaw);
+                    if (!wantedFat || !variantFat || wantedFat !== variantFat) return false;
+                    continue;
+                }
+                var wanted = normalize(selected[k]);
+                var has = normalize(v.options[k] || '');
+                if (!wanted || !has) return false;
+                if (wanted !== has) return false;
+            }
+            return true;
+        }
+        var selectedMap = collectSelectedOptions();
+        var exactVariant = null;
+        if (CURRENT_PRODUCT && Array.isArray(CURRENT_PRODUCT.variants)){
+            exactVariant = CURRENT_PRODUCT.variants.find(function(v){ return variantMatches(v, selectedMap); }) || null;
+        }
+
         var baseMap =
             (window.PRODUCT_PRICING && window.PRODUCT_PRICING[Number(productId)] && window.PRODUCT_PRICING[Number(productId)].weight)
             || {};
@@ -490,7 +755,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         var weightKey = resolveWeight(selectedWeight);
         var price = 0;
-        if (weightKey){ price = baseMap[weightKey]; }
+        if (exactVariant && exactVariant.price != null) {
+            // If we have an exact variant match (e.g., includes size/quantity), prefer its price
+            price = Number(exactVariant.price);
+        } else if (weightKey && Object.prototype.hasOwnProperty.call(baseMap, weightKey)) {
+            // Fallback to weight-only mapping
+            price = baseMap[weightKey];
+        }
         if (!price){ // fallback to first entry
             var first = Object.keys(baseMap)[0];
             if (first) price = baseMap[first];
@@ -498,24 +769,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         // FAT pricing adjustments (percent multiplier relative to weight price)
         // Negative values reduce price, positive increase.
-        var FAT_ADJUST = {
-            'skim': -0.20,
-            'low-fat': -0.10,
-            'full-fat': 0,
-            'whole': 0.05
-        };
-        function resolveFat(slug){
-            if (!slug) return '';
-            var s = String(slug).toLowerCase().trim();
-            // Normalize common forms
-            if (s === '2' || s === '2%' || s === '2-percent' || s === '2-percent-fat') return 'low-fat';
-            if (s === '3-5' || s === '3.5' || s === '3.5%' || s === 'whole' || s === 'full-fat') return 'whole';
-            if (s === 'low fat') return 'low-fat';
-            if (s === 'full fat') return 'full-fat';
-            return s;
-        }
-        var fatKey = resolveFat(selectedFat);
-        var adj = FAT_ADJUST.hasOwnProperty(fatKey) ? FAT_ADJUST[fatKey] : 0;
+        var fatKey = canonicalFatValue(selectedFat);
+        var adj = FAT_PRICE_ADJUST.hasOwnProperty(fatKey) ? FAT_PRICE_ADJUST[fatKey] : 0;
         var finalPrice = price ? (price * (1 + adj)) : 0;
         if (finalPrice){
             var currency = (CURRENT_PRODUCT && CURRENT_PRODUCT.currency) || 'RM';
@@ -529,11 +784,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update SKU and image based on variant selection if available
         try {
             var vKey = (weightKey || '').replace(/\s+/g,'').toLowerCase();
-            var variant = VARIANT_INDEX[vKey] || null;
+            var variant = exactVariant || VARIANT_INDEX[vKey] || null;
             if (variant && skuValueEl){ skuValueEl.textContent = variant.sku || (CURRENT_PRODUCT && CURRENT_PRODUCT.sku) || ''; }
             else if (skuValueEl && CURRENT_PRODUCT){ skuValueEl.textContent = CURRENT_PRODUCT.sku || ''; }
             // Update image to variant image if present
-            function safeSrc(src){ return src ? src.replace(/ /g,'%20') : src; }
             if (variant && variant.image) {
                 if (mainImageEl) mainImageEl.src = safeSrc(variant.image);
                 if (mainImageLink) mainImageLink.setAttribute('href', safeSrc(variant.image));
@@ -572,7 +826,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const weightSel = document.getElementById('pa_weight');
             const fatSel = document.getElementById('pa_fat');
             let weightVal = weightSel ? (weightSel.value || '').trim() : '';
-            const fatVal = fatSel ? (fatSel.value || '').trim() : '';
+            const fatValRaw = fatSel ? (fatSel.value || '').trim() : '';
+            const fatVal = canonicalFatValue(fatValRaw);
+            // Collect optional dynamic options (size, quantity)
+            var sizeSel = document.getElementById('pa_size');
+            var qtyOptSel = document.getElementById('pa_quantity');
+            var sizeVal = sizeSel ? (sizeSel.value || '').trim() : '';
+            var qtyOptVal = qtyOptSel ? (qtyOptSel.value || '').trim() : '';
 
             // Ensure a weight value for variantized products: default to first non-empty option if not chosen
             if (weightSel && weightSel.options.length > 1 && !weightVal) {
@@ -589,7 +849,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             addToCartButton.disabled = true;
             addToCartButton.textContent = 'Adding...';
-            window.CartAPI.addItem(effectiveProductId, qty, weightVal, fatVal)
+            var optionsPayload = {
+                weight: weightVal || undefined,
+                fat: fatVal || undefined,
+                size: sizeVal || undefined,
+                quantity_option: qtyOptVal || undefined
+            };
+            window.CartAPI.addItem(effectiveProductId, qty, optionsPayload)
                 .then(function(res){
                     if (!res || !res.success) throw new Error((res && res.error) || 'Add to cart failed');
                     // Refresh mini cart & header counts immediately

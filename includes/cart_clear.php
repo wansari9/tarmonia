@@ -6,6 +6,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     cart_json_response(405, ['success' => false, 'error' => 'Method Not Allowed']);
 }
 
+require_valid_csrf();
+
 try {
     $cart = get_or_create_cart($pdo);
     $cartId = (int)$cart['id'];
