@@ -1,0 +1,20 @@
+/* Page shell similar to user login */
+.admin-login-page { min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; background: #fff3d3; }
+.admin-login-container { width: 100%; max-width: 520px; padding: 20px; }
+
+/* Auth card reused by admin login/register */
+.auth-wrapper{max-width:520px;margin:0 auto;padding:32px;background:#fff;border:1px solid #e2e2e2;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.auth-tabs{display:flex;gap:4px;margin-bottom:18px;}
+.auth-tabs button{flex:1;padding:10px 14px;border:1px solid #ccc;background:#f7f7f7;cursor:pointer;font-weight:600;color:#231f20;}
+.auth-tabs button.active{background:#fec321;color:#231f20;border-color:#fec321;}
+form.auth-form{display:none;}
+form.auth-form.active{display:block;}
+form.auth-form .field{margin-bottom:14px;}
+form.auth-form label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#231f20;}
+form.auth-form input{width:100%;padding:10px 12px;border:1px solid #c8c8c8;border-radius:4px;font-size:14px;}
+.auth-actions{margin-top:8px;display:flex;justify-content:flex-start;align-items:center;gap:12px;flex-wrap:wrap;}
+.auth-actions button{background:#fec321;color:#231f20;border:none;padding:10px 20px;border-radius:4px;font-size:14px;cursor:pointer;}
+.small-note{font-size:12px;color:#666;margin-top:6px;}
+
+/* Alerts */
+.admin-login-alert{margin-bottom:12px;padding:10px 12px;border-radius:6px;background:rgba(239,68,68,0.08);color:#991b1b;font-size:14px;border:1px solid rgba(239,68,68,0.2);} 

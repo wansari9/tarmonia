@@ -24,6 +24,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` bigint(20) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `full_name` varchar(128) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `addresses`
 --
 
@@ -150,7 +167,10 @@ CREATE TABLE `orders` (
   `id` bigint(20) NOT NULL,
   `order_number` varchar(30) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `status` enum('pending','paid','shipped','completed','cancelled','refunded') NOT NULL DEFAULT 'pending',
+  `status` enum('pending','paid','packed','shipped','delivered','canceled','refunded') NOT NULL DEFAULT 'pending',
+  `shipping_status` enum('pending','packed','shipped','delivered','canceled') NOT NULL DEFAULT 'pending',
+  `tracking_number` varchar(64) DEFAULT NULL,
+  `shipped_at` datetime DEFAULT NULL,
   `currency` char(3) NOT NULL DEFAULT 'RM',
   `subtotal` decimal(10,2) NOT NULL DEFAULT 0.00,
   `discount_total` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -215,11 +235,11 @@ CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `type` enum('blog','recipe') NOT NULL,
   `title` varchar(255) NOT NULL,
+  `status` enum('draft','published') NOT NULL DEFAULT 'draft',
+  `featured_image` varchar(255) DEFAULT NULL,
   `slug` varchar(255) NOT NULL,
   `excerpt` varchar(500) DEFAULT NULL,
   `content` text DEFAULT NULL,
-  `featured_image` varchar(255) DEFAULT NULL,
-  `status` enum('draft','published','archived') DEFAULT 'draft',
   `author_id` int(11) DEFAULT NULL,
   `published_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -230,13 +250,13 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `type`, `title`, `slug`, `excerpt`, `content`, `featured_image`, `status`, `author_id`, `published_at`, `created_at`, `updated_at`) VALUES
-(1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 'images/blog1.jpg', 'published', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', NULL),
-(2, 'blog', 'Milk and Cheese Against Allergies', 'milk-cheese-against-allergies', 'Evidence on dairy\'s role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 'images/blog2.jpg', 'published', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', NULL),
-(3, 'blog', 'The Butter Business Growth', 'the-butter-business-growth', 'Why butter demand is rising globally.', 'Full content for The Butter Business Growth...', 'images/blog3.jpg', 'published', 1, '2025-10-24 11:59:30', '2025-11-13 11:59:30', NULL),
-(4, 'blog', 'Sustainable Practices in Dairy Farming', 'sustainable-dairy-practices', 'Measuring and reducing farm footprint.', 'Full content for Sustainable Practices in Dairy Farming...', 'images/blog4.jpg', 'published', 1, '2025-10-09 11:59:30', '2025-11-13 11:59:30', NULL),
-(5, 'blog', 'Global Trends in World Dairy Markets', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 'images/blog5.jpg', 'published', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', NULL),
-(6, 'blog', 'Debunking Common Unhealthy Myths', 'debunking-unhealthy-myths', 'Separating dairy myths from facts.', 'Full content for Debunking Common Unhealthy Myths...', 'images/blog6.jpg', 'published', 1, '2025-08-30 11:59:30', '2025-11-13 11:59:30', NULL);
+INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, `excerpt`, `content`, `author_id`, `published_at`, `created_at`, `updated_at`) VALUES
+(1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'published', 'images/blog1.jpg', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', NULL),
+(2, 'blog', 'Milk and Cheese Against Allergies', 'published', 'images/blog2.jpg', 'milk-cheese-against-allergies', 'Evidence on dairy\'s role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', NULL),
+(3, 'blog', 'The Butter Business Growth', 'published', 'images/blog3.jpg', 'the-butter-business-growth', 'Why butter demand is rising globally.', 'Full content for The Butter Business Growth...', 1, '2025-10-24 11:59:30', '2025-11-13 11:59:30', NULL),
+(4, 'blog', 'Sustainable Practices in Dairy Farming', 'published', 'images/blog4.jpg', 'sustainable-dairy-practices', 'Measuring and reducing farm footprint.', 'Full content for Sustainable Practices in Dairy Farming...', 1, '2025-10-09 11:59:30', '2025-11-13 11:59:30', NULL),
+(5, 'blog', 'Global Trends in World Dairy Markets', 'published', 'images/blog5.jpg', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', NULL),
+(6, 'blog', 'Debunking Common Unhealthy Myths', 'published', 'images/blog6.jpg', 'debunking-unhealthy-myths', 'Separating dairy myths from facts.', 'Full content for Debunking Common Unhealthy Myths...', 1, '2025-08-30 11:59:30', '2025-11-13 11:59:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -357,6 +377,8 @@ CREATE TABLE `products` (
   `base_price` decimal(10,2) NOT NULL,
   `max_price` decimal(10,2) DEFAULT NULL,
   `price` decimal(10,2) GENERATED ALWAYS AS (`base_price`) STORED,
+  `stock_qty` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `lower_price` decimal(10,2) GENERATED ALWAYS AS (`base_price`) STORED,
   `upper_price` decimal(10,2) GENERATED ALWAYS AS (coalesce(`max_price`,`base_price`)) STORED,
   `currency` char(3) NOT NULL DEFAULT 'RM',
@@ -365,7 +387,6 @@ CREATE TABLE `products` (
   `attributes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`attributes`)),
   `status` enum('draft','active','archived') NOT NULL DEFAULT 'active',
   `has_variants` tinyint(1) NOT NULL DEFAULT 0,
-  `stock_qty` int(11) NOT NULL DEFAULT 0,
   `allow_backorder` tinyint(1) NOT NULL DEFAULT 0,
   `weight_grams` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -376,31 +397,31 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, `short_description`, `description`, `base_price`, `max_price`, `currency`, `image`, `gallery`, `attributes`, `status`, `has_variants`, `stock_qty`, `allow_backorder`, `weight_grams`, `created_at`, `updated_at`) VALUES
-(1, 458, 'EVAP-001', 'Evaporated Milk', 'evaporated-milk', 'dairy', 'High-quality evaporated milk', 'High-quality evaporated milk for your recipes.', 4.90, 8.99, 'RM', 'images/Evaporated Milk.png', NULL, NULL, 'active', 1, 100, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(2, 448, 'SCREAM-001', 'Farm Sour Cream', 'farm-sour-cream', 'dairy', 'Rich sour cream', 'Rich and creamy sour cream from our farm.', 16.50, 40.00, 'RM', 'images/Farm sour Cream.png', NULL, NULL, 'active', 1, 80, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(3, 438, 'RICOTTA-SAL-001', 'Ricotta Salata Cheese', 'ricotta-salata-cheese', 'cheese', 'Delicious ricotta salata', 'Delicious ricotta salata.', 50.00, 160.00, 'RM', 'images/Ricotta Salata.png', NULL, NULL, 'active', 1, 60, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(4, 412, 'PARM-001', 'Parmesan Cheese', 'parmesan-cheese', 'cheese', 'Authentic Parmesan', 'Authentic Italian Parmesan cheese.', 35.00, 190.00, 'RM', 'images/parmesan cheese.png', NULL, NULL, 'active', 1, 70, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(5, 471, 'PECORINO-ROM-001', 'Pecorino Romano Cheese', 'pecorino-romano-cheese', 'cheese', 'Classic Pecorino', 'Classic Pecorino Romano cheese.', 45.00, 220.00, 'RM', 'images/Pecorino Romano.jpg', NULL, NULL, 'active', 1, 50, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(6, 364, 'RAW-MILK-001', 'Tested Raw Milk', 'tested-raw-milk', 'dairy', 'Fresh raw milk', 'Fresh and tested raw milk directly from our farm.', 10.00, 75.00, 'RM', 'images/Tested raw milk.png', NULL, NULL, 'active', 1, 120, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(7, 402, 'BRIE-001', 'Brie Cheese', 'brie-cheese', 'cheese', 'Creamy Brie', 'Creamy and delightful Brie cheese.', 30.00, 180.00, 'RM', 'images/brie cheese.png', NULL, NULL, 'active', 1, 65, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(8, 426, 'RACLETTE-001', 'Fromage a Raclette Cheese', 'fromage-a-raclette-cheese', 'cheese', 'Raclette cheese', 'Delicious Fromage a Raclette cheese for your dishes.', 45.00, 280.00, 'RM', 'images/fromage a raclette.png', NULL, NULL, 'active', 1, 40, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(9, 387, 'CAMEMBERT-001', 'Camembert Cheese', 'camembert-cheese', 'cheese', 'Aromatic Camembert', 'Rich and aromatic Camembert cheese.', 35.00, 190.00, 'RM', 'images/camembert cheese.png', NULL, NULL, 'active', 1, 55, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(10, 420, 'FRESH-MILK-001', 'Fresh Milk', 'fresh-milk', 'dairy', 'Pure fresh milk', 'Fresh milk is pure, creamy, and naturally wholesome.', 2.50, 22.50, 'RM', 'images/fresh milk.png', NULL, NULL, 'active', 1, 0, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(11, 430, 'BUTTER-001', 'Butter', 'butter', 'dairy', 'Rich butter', 'Rich, creamy, versatile dairy product.', 8.50, 85.00, 'RM', 'images/Butter.png', NULL, NULL, 'active', 1, 150, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(12, 450, 'YOGURT-001', 'Yogurt', 'yogurt', 'dairy', 'Creamy yogurt', 'Creamy, rich, and packed with probiotics.', 5.50, 50.00, 'RM', 'images/yogurt.png', NULL, NULL, 'active', 1, 140, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(13, 460, 'CH-EGGS-001', 'Chicken Eggs', 'chicken-eggs', 'eggs', 'Fresh chicken eggs', 'Fresh and nutritious chicken eggs, rich in protein and essential vitamins.', 3.50, 42.00, 'RM', 'images/chicken eggs.png', NULL, NULL, 'active', 1, 300, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(14, 470, 'DUCK-EGGS-001', 'Duck Eggs', 'duck-eggs', 'eggs', 'Flavorful duck eggs', 'Rich and flavorful duck eggs with larger yolks.', 5.00, 52.00, 'RM', 'images/duck eggs.png', NULL, NULL, 'active', 1, 180, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(15, 480, 'QUAIL-EGGS-001', 'Quail Eggs', 'quail-eggs', 'eggs', 'Delicate quail eggs', 'Small, nutrient-rich quail eggs with a delicate flavor.', 6.50, 70.00, 'RM', 'images/quail eggs.png', NULL, NULL, 'active', 1, 160, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(16, 490, 'BEEF-001', 'Beef', 'beef', 'meat', 'Fresh beef', 'Fresh, high-quality beef with rich flavor and tenderness.', 18.00, 200.00, 'RM', 'images/beef.png', NULL, NULL, 'active', 1, 90, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(17, 500, 'PORK-001', 'Pork', 'pork', 'meat', 'Fresh pork', 'Fresh, tender, and flavorful pork.', 12.00, 130.00, 'RM', 'images/pork.png', NULL, NULL, 'active', 1, 110, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(18, 510, 'CHICKEN-001', 'Chicken', 'chicken', 'meat', 'Fresh chicken', 'Fresh, tender, and protein-rich chicken.', 6.00, 60.00, 'RM', 'images/chicken.png', NULL, NULL, 'active', 1, 210, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(19, 520, 'LAMB-001', 'Lamb', 'lamb', 'meat', 'Premium lamb', 'Premium, tender lamb with rich flavor.', 20.00, 210.00, 'RM', 'images/lamb.png', NULL, NULL, 'active', 1, 75, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(20, 530, 'BACON-001', 'Bacon', 'bacon', 'meat', 'Savory bacon', 'Savory, crispy, and flavorful bacon.', 18.00, 190.00, 'RM', 'images/bacon.jpeg', NULL, NULL, 'active', 1, 85, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(21, 540, 'SAUSAGE-001', 'Sausage', 'sausage', 'meat', 'Juicy sausages', 'Juicy and flavorful sausages.', 15.00, 160.00, 'RM', 'images/sausage.png', NULL, NULL, 'active', 1, 95, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(22, NULL, 'LEATHER-001', 'Leather', 'leather', 'byproducts', 'Durable leather', 'High-quality, durable leather.', 50.00, 500.00, 'RM', 'images/leather.png', NULL, NULL, 'active', 0, 30, 0, NULL, '2025-11-13 11:02:14', NULL),
-(23, NULL, 'WOOL-001', 'Wool', 'wool', 'byproducts', 'Soft wool', 'Soft, warm, and durable wool.', 40.00, 400.00, 'RM', 'images/wool.png', NULL, NULL, 'active', 0, 60, 0, NULL, '2025-11-13 11:02:14', NULL),
-(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 45, 0, NULL, '2025-11-13 11:02:14', NULL);
+INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, `short_description`, `description`, `base_price`, `max_price`, `currency`, `image`, `gallery`, `attributes`, `status`, `has_variants`, `stock_qty`, `is_active`, `allow_backorder`, `weight_grams`, `created_at`, `updated_at`) VALUES
+(1, 458, 'EVAP-001', 'Evaporated Milk', 'evaporated-milk', 'dairy', 'High-quality evaporated milk', 'High-quality evaporated milk for your recipes.', 4.90, 8.99, 'RM', 'images/Evaporated Milk.png', NULL, NULL, 'active', 1, 100, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(2, 448, 'SCREAM-001', 'Farm Sour Cream', 'farm-sour-cream', 'dairy', 'Rich sour cream', 'Rich and creamy sour cream from our farm.', 16.50, 40.00, 'RM', 'images/Farm sour Cream.png', NULL, NULL, 'active', 1, 80, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(3, 438, 'RICOTTA-SAL-001', 'Ricotta Salata Cheese', 'ricotta-salata-cheese', 'cheese', 'Delicious ricotta salata', 'Delicious ricotta salata.', 50.00, 160.00, 'RM', 'images/Ricotta Salata.png', NULL, NULL, 'active', 1, 60, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(4, 412, 'PARM-001', 'Parmesan Cheese', 'parmesan-cheese', 'cheese', 'Authentic Parmesan', 'Authentic Italian Parmesan cheese.', 35.00, 190.00, 'RM', 'images/parmesan cheese.png', NULL, NULL, 'active', 1, 70, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(5, 471, 'PECORINO-ROM-001', 'Pecorino Romano Cheese', 'pecorino-romano-cheese', 'cheese', 'Classic Pecorino', 'Classic Pecorino Romano cheese.', 45.00, 220.00, 'RM', 'images/Pecorino Romano.jpg', NULL, NULL, 'active', 1, 50, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(6, 364, 'RAW-MILK-001', 'Tested Raw Milk', 'tested-raw-milk', 'dairy', 'Fresh raw milk', 'Fresh and tested raw milk directly from our farm.', 10.00, 75.00, 'RM', 'images/Tested raw milk.png', NULL, NULL, 'active', 1, 120, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(7, 402, 'BRIE-001', 'Brie Cheese', 'brie-cheese', 'cheese', 'Creamy Brie', 'Creamy and delightful Brie cheese.', 30.00, 180.00, 'RM', 'images/brie cheese.png', NULL, NULL, 'active', 1, 65, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(8, 426, 'RACLETTE-001', 'Fromage a Raclette Cheese', 'fromage-a-raclette-cheese', 'cheese', 'Raclette cheese', 'Delicious Fromage a Raclette cheese for your dishes.', 45.00, 280.00, 'RM', 'images/fromage a raclette.png', NULL, NULL, 'active', 1, 40, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(9, 387, 'CAMEMBERT-001', 'Camembert Cheese', 'camembert-cheese', 'cheese', 'Aromatic Camembert', 'Rich and aromatic Camembert cheese.', 35.00, 190.00, 'RM', 'images/camembert cheese.png', NULL, NULL, 'active', 1, 55, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(10, 420, 'FRESH-MILK-001', 'Fresh Milk', 'fresh-milk', 'dairy', 'Pure fresh milk', 'Fresh milk is pure, creamy, and naturally wholesome.', 2.50, 22.50, 'RM', 'images/fresh milk.png', NULL, NULL, 'active', 1, 0, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(11, 430, 'BUTTER-001', 'Butter', 'butter', 'dairy', 'Rich butter', 'Rich, creamy, versatile dairy product.', 8.50, 85.00, 'RM', 'images/Butter.png', NULL, NULL, 'active', 1, 150, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(12, 450, 'YOGURT-001', 'Yogurt', 'yogurt', 'dairy', 'Creamy yogurt', 'Creamy, rich, and packed with probiotics.', 5.50, 50.00, 'RM', 'images/yogurt.png', NULL, NULL, 'active', 1, 140, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(13, 460, 'CH-EGGS-001', 'Chicken Eggs', 'chicken-eggs', 'eggs', 'Fresh chicken eggs', 'Fresh and nutritious chicken eggs, rich in protein and essential vitamins.', 3.50, 42.00, 'RM', 'images/chicken eggs.png', NULL, NULL, 'active', 1, 300, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(14, 470, 'DUCK-EGGS-001', 'Duck Eggs', 'duck-eggs', 'eggs', 'Flavorful duck eggs', 'Rich and flavorful duck eggs with larger yolks.', 5.00, 52.00, 'RM', 'images/duck eggs.png', NULL, NULL, 'active', 1, 180, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(15, 480, 'QUAIL-EGGS-001', 'Quail Eggs', 'quail-eggs', 'eggs', 'Delicate quail eggs', 'Small, nutrient-rich quail eggs with a delicate flavor.', 6.50, 70.00, 'RM', 'images/quail eggs.png', NULL, NULL, 'active', 1, 160, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(16, 490, 'BEEF-001', 'Beef', 'beef', 'meat', 'Fresh beef', 'Fresh, high-quality beef with rich flavor and tenderness.', 18.00, 200.00, 'RM', 'images/beef.png', NULL, NULL, 'active', 1, 90, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(17, 500, 'PORK-001', 'Pork', 'pork', 'meat', 'Fresh pork', 'Fresh, tender, and flavorful pork.', 12.00, 130.00, 'RM', 'images/pork.png', NULL, NULL, 'active', 1, 110, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(18, 510, 'CHICKEN-001', 'Chicken', 'chicken', 'meat', 'Fresh chicken', 'Fresh, tender, and protein-rich chicken.', 6.00, 60.00, 'RM', 'images/chicken.png', NULL, NULL, 'active', 1, 210, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(19, 520, 'LAMB-001', 'Lamb', 'lamb', 'meat', 'Premium lamb', 'Premium, tender lamb with rich flavor.', 20.00, 210.00, 'RM', 'images/lamb.png', NULL, NULL, 'active', 1, 75, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(20, 530, 'BACON-001', 'Bacon', 'bacon', 'meat', 'Savory bacon', 'Savory, crispy, and flavorful bacon.', 18.00, 190.00, 'RM', 'images/bacon.jpeg', NULL, NULL, 'active', 1, 85, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(21, 540, 'SAUSAGE-001', 'Sausage', 'sausage', 'meat', 'Juicy sausages', 'Juicy and flavorful sausages.', 15.00, 160.00, 'RM', 'images/sausage.png', NULL, NULL, 'active', 1, 95, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(22, NULL, 'LEATHER-001', 'Leather', 'leather', 'byproducts', 'Durable leather', 'High-quality, durable leather.', 50.00, 500.00, 'RM', 'images/leather.png', NULL, NULL, 'active', 0, 30, 1, 0, NULL, '2025-11-13 11:02:14', NULL),
+(23, NULL, 'WOOL-001', 'Wool', 'wool', 'byproducts', 'Soft wool', 'Soft, warm, and durable wool.', 40.00, 400.00, 'RM', 'images/wool.png', NULL, NULL, 'active', 0, 60, 1, 0, NULL, '2025-11-13 11:02:14', NULL),
+(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 45, 1, 0, NULL, '2025-11-13 11:02:14', NULL);
 
 --
 -- Triggers `products`
@@ -567,11 +588,12 @@ INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `p
 CREATE TABLE `shipments` (
   `id` bigint(20) NOT NULL,
   `order_id` bigint(20) NOT NULL,
-  `carrier` varchar(100) DEFAULT NULL,
-  `tracking_number` varchar(120) DEFAULT NULL,
-  `shipped_at` datetime DEFAULT NULL,
-  `delivered_at` datetime DEFAULT NULL,
-  `status` enum('pending','shipped','in_transit','delivered','returned') DEFAULT 'pending'
+  `carrier` varchar(64) NOT NULL,
+  `service` varchar(64) DEFAULT NULL,
+  `tracking_number` varchar(64) NOT NULL,
+  `label_url` varchar(255) DEFAULT NULL,
+  `status` enum('created','packed','shipped','delivered','canceled') NOT NULL DEFAULT 'created',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -618,6 +640,14 @@ CREATE TABLE `wishlist` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `addresses`
@@ -676,6 +706,8 @@ ALTER TABLE `orders`
   ADD KEY `billing_address_id` (`billing_address_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `status` (`status`),
+  ADD KEY `shipping_status` (`shipping_status`),
+  ADD KEY `tracking_number` (`tracking_number`),
   ADD KEY `placed_at` (`placed_at`);
 
 --
@@ -790,6 +822,12 @@ ALTER TABLE `wishlist`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `addresses`
