@@ -21,3 +21,5 @@
 [2025-11-12T09:25:42+01:00] [OUT] add_item cart_id=26 item_count=2 grand=56.5
 [2025-11-12T09:30:10+01:00] [IN] add_item pid=458 qty=1 weight= fat=3-5
 [2025-11-12T09:30:11+01:00] [OUT] add_item cart_id=26 item_count=3 grand=61.4
+[2025-11-13T04:50:51+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=low-fat
+[2025-11-13T04:50:51+01:00] [OUT] add_item cart_id=2 item_count=1 grand=4.41
