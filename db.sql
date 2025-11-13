@@ -44,23 +44,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DELIMITER $$
-DROP TRIGGER IF EXISTS `trg_products_category_bi` $$
-CREATE TRIGGER `trg_products_category_bi` BEFORE INSERT ON `products`
-FOR EACH ROW BEGIN
-  IF NEW.`category` IS NOT NULL THEN
-    SET NEW.`category` = LOWER(TRIM(NEW.`category`));
-  END IF;
-END $$
 
-DROP TRIGGER IF EXISTS `trg_products_category_bu` $$
-CREATE TRIGGER `trg_products_category_bu` BEFORE UPDATE ON `products`
-FOR EACH ROW BEGIN
-  IF NEW.`category` IS NOT NULL THEN
-    SET NEW.`category` = LOWER(TRIM(NEW.`category`));
-  END IF;
-END $$
-DELIMITER ;
 
 -- Addresses
 CREATE TABLE `addresses` (
@@ -486,3 +470,20 @@ INSERT INTO `product_option_definitions` (`id`, `product_id`, `category`, `optio
 (4, NULL, 'cheese',     '["weight"]', '{"weight":"Weight"}', 1, NOW(), NULL),
 (5, NULL, 'byproducts', '[]', '{}', 1, NOW(), NULL);
 
+DELIMITER $$
+DROP TRIGGER IF EXISTS `trg_products_category_bi` $$
+CREATE TRIGGER `trg_products_category_bi` BEFORE INSERT ON `products`
+FOR EACH ROW BEGIN
+  IF NEW.`category` IS NOT NULL THEN
+    SET NEW.`category` = LOWER(TRIM(NEW.`category`));
+  END IF;
+END $$
+
+DROP TRIGGER IF EXISTS `trg_products_category_bu` $$
+CREATE TRIGGER `trg_products_category_bu` BEFORE UPDATE ON `products`
+FOR EACH ROW BEGIN
+  IF NEW.`category` IS NOT NULL THEN
+    SET NEW.`category` = LOWER(TRIM(NEW.`category`));
+  END IF;
+END $$
+DELIMITER ;
