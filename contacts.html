@@ -20,43 +20,23 @@
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
     <style>
         /* Contact page layout adjustments */
-        .sc_googlemap_wrap { position: relative; }
-        .contact_details_section {
-            background: #f7f9f4;
-            padding: 70px clamp(20px, 4vw, 60px) 70px;
-            padding-right: clamp(260px, 32%, 420px);
-            min-height: 480px;
-        }
-        .contact_details_section .columns_wrap {
-            margin: 0;
-            width: 100%;
-        }
-        .contact_details_section .sc_section {
-            background: rgba(255,255,255,0.88);
-            border-radius: 12px;
-            padding: 24px 18px;
-            box-shadow: 0 18px 36px rgba(0,0,0,0.08);
-        }
-        .contact_details_section .sc_title {
-            margin-bottom: 12px;
-        }
-        .contact_details_section .sc_highlight {
-            display: block;
-            line-height: 1.6;
+        .sc_googlemap_wrap { position: static; }
+        .contact_layout_container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
         }
         .sc_googlemap_content {
-            position: absolute;
-            top: 40px;
-            right: 20px;
-            width: min(92%, 460px);
-            z-index: 1000;
+            position: static !important;
+            width: 100% !important;
+            z-index: auto;
             pointer-events: auto;
         }
         .sc_googlemap_content .sc_form_wrap {
-            background: rgba(255,255,255,0.96);
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+            background: #6EC4D4 !important;
+            padding: 0 !important;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
         #map-container { position: relative; width: 100%; min-height: 540px; }
         #map-iframe { width: 100%; height: 100%; min-height: 540px; border: 0; }
@@ -254,62 +234,130 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                            <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap">
-                                                <div class="contact_details_section">
-                                                    <div class="columns_wrap sc_columns columns_nofluid sc_columns_count_3">
-                                                        <div class="column-1_3 sc_column_item sc_column_item_1 odd first centext">
-                                                            <div class="sc_section section_style_bordered_section">
-                                                                <div class="sc_section_inner">
-                                                                    <div class="sc_section_content_wrap">
-                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Address</h4>
-                                                                        <span class="sc_highlight">B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor</span>
-                                                                    </div>
+                                            <div id="sc_googlemap_571_wrap" class="sc_googlemap_wrap contact-main-wrapper">
+                                                <div class="contact_layout_container">
+                                                    <!-- Left Side: Contact Info Cards Grid -->
+                                                    <div class="contact_info_section">
+                                                        <div class="contact_info_grid">
+                                                            <div class="contact-info-card">
+                                                                <div class="contact-icon-wrapper">
+                                                                    <span class="contact-icon icon-location"></span>
+                                                                </div>
+                                                                <div class="contact-card-content">
+                                                                    <h4 class="contact-card-title">Address</h4>
+                                                                    <p class="contact-card-text">B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor</p>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="column-1_3 sc_column_item sc_column_item_2 even centext">
-                                                            <div class="sc_section section_style_bordered_section">
-                                                                <div class="sc_section_inner">
-                                                                    <div class="sc_section_content_wrap">
-                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Phone</h4>
-                                                                        <span class="sc_highlight">010-927 7092</span>
-                                                                    </div>
+
+                                                            <div class="contact-info-card">
+                                                                <div class="contact-icon-wrapper">
+                                                                    <span class="contact-icon icon-phone-1"></span>
+                                                                </div>
+                                                                <div class="contact-card-content">
+                                                                    <h4 class="contact-card-title">Phone Number</h4>
+                                                                    <p class="contact-card-text">010-927 7092</p>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="column-1_3 sc_column_item sc_column_item_3 odd centext">
-                                                            <div class="sc_section section_style_bordered_section">
-                                                                <div class="sc_section_inner">
-                                                                    <div class="sc_section_content_wrap">
-                                                                        <h4 class="sc_title sc_title_regular sc_align_center">Email</h4>
-                                                                        <span class="sc_highlight">info@tarmonia.com</span>
-                                                                    </div>
+
+                                                            <div class="contact-info-card">
+                                                                <div class="contact-icon-wrapper">
+                                                                    <span class="contact-icon icon-mail"></span>
+                                                                </div>
+                                                                <div class="contact-card-content">
+                                                                    <h4 class="contact-card-title">Email</h4>
+                                                                    <p class="contact-card-text">info@tarmonia.com</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="sc_googlemap_content">
-                                                    <div id="sc_form_282_wrap" class="sc_form_wrap">
-                                                        <div id="sc_form_282" class="sc_form sc_form_style_form_1">
-                                                            <h2 class="sc_form_title sc_item_title sc_item_title_without_descr">Contact Us</h2>
-                                                            <form id="sc_form_282_form" class="sc_input_hover_default" data-formtype="form_1" method="post" action="includes/sendmail.php">
-                                                                <div class="sc_form_info">
-                                                                    <div class="sc_form_item sc_form_field label_over">
-                                                                        <input id="sc_form_username" type="text" name="username" placeholder="Name *" aria-required="true">
+
+                                                    <!-- Right Side: Contact Form -->
+                                                    <div class="contact_form_section">
+                                                        <div class="modern-contact-form-wrapper">
+                                                            <div class="form-container">
+                                                                <div class="form-header-new">
+                                                                    <h2 class="form-title-new">Send us a Message</h2>
+                                                                    <p class="form-subtitle-new">We're here to help and answer any question you might have.</p>
+                                                                </div>
+
+                                                                <form id="contact-form-new" class="modern-form" method="post" action="includes/sendmail.php">
+                                                                    <div class="form-field-group">
+                                                                        <label for="form-name" class="form-field-label">
+                                                                            <span class="label-text">Full Name</span>
+                                                                            <span class="required-star">*</span>
+                                                                        </label>
+                                                                        <div class="input-wrapper">
+                                                                            <input 
+                                                                                id="form-name" 
+                                                                                type="text" 
+                                                                                name="username" 
+                                                                                placeholder="Your full name" 
+                                                                                required
+                                                                                aria-required="true"
+                                                                            >
+                                                                            <div class="input-focus-line"></div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="sc_form_item sc_form_field label_over">
-                                                                        <input id="sc_form_email" type="text" name="email" placeholder="E-mail *" aria-required="true">
+
+                                                                    <div class="form-field-group">
+                                                                        <label for="form-email" class="form-field-label">
+                                                                            <span class="label-text">Email Address</span>
+                                                                            <span class="required-star">*</span>
+                                                                        </label>
+                                                                        <div class="input-wrapper">
+                                                                            <input 
+                                                                                id="form-email" 
+                                                                                type="email" 
+                                                                                name="email" 
+                                                                                placeholder="your@email.com" 
+                                                                                required
+                                                                                aria-required="true"
+                                                                            >
+                                                                            <div class="input-focus-line"></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="sc_form_item sc_form_message">
-                                                                    <textarea id="sc_form_message" name="message" placeholder="Message" aria-required="true"></textarea>
-                                                                </div>
-                                                                <div class="sc_form_item sc_form_button">
-                                                                    <button>Send Message</button>
-                                                                </div>
-                                                                <div class="result sc_infobox"></div>
-                                                            </form>
+
+                                                                    <div class="form-field-group">
+                                                                        <label for="form-phone" class="form-field-label">
+                                                                            <span class="label-text">Phone Number</span>
+                                                                            <span class="optional-label">(Optional)</span>
+                                                                        </label>
+                                                                        <div class="input-wrapper">
+                                                                            <input 
+                                                                                id="form-phone" 
+                                                                                type="tel" 
+                                                                                name="phone" 
+                                                                                placeholder="+60 123-456-7890"
+                                                                            >
+                                                                            <div class="input-focus-line"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-field-group">
+                                                                        <label for="form-message" class="form-field-label">
+                                                                            <span class="label-text">Message</span>
+                                                                            <span class="required-star">*</span>
+                                                                        </label>
+                                                                        <div class="textarea-wrapper">
+                                                                            <textarea 
+                                                                                id="form-message" 
+                                                                                name="message" 
+                                                                                placeholder="Tell us what you're thinking..." 
+                                                                                required
+                                                                                aria-required="true"
+                                                                            ></textarea>
+                                                                            <div class="textarea-focus-line"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <button type="submit" class="btn-submit-new">
+                                                                        <span class="btn-text">Send Message</span>
+                                                                        <span class="btn-arrow">→</span>
+                                                                    </button>
+
+                                                                    <div class="form-message result"></div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
