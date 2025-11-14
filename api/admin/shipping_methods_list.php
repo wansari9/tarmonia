@@ -4,9 +4,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/../_response.php';
 require_once __DIR__ . '/../../includes/admin_api.php';
 
-global $pdo;
-
 try {
+    global $pdo;
     $zoneId = isset($_GET['zone_id']) ? (int)$_GET['zone_id'] : 0;
     if ($zoneId <= 0) { api_json_error(422, 'invalid_zone', 'Valid zone_id is required'); }
 

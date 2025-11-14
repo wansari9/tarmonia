@@ -4,9 +4,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/../_response.php';
 require_once __DIR__ . '/../../includes/admin_api.php';
 
-global $pdo;
-
 try {
+    global $pdo;
     $data = admin_read_json_body();
     $id = admin_validate_positive_int($data['id'] ?? 0, 'id');
 

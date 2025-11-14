@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2025 at 05:01 AM
+-- Generation Time: Nov 14, 2025 at 04:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,23 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `tarmonia`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admins`
---
-
-CREATE TABLE `admins` (
-  `id` bigint(20) NOT NULL,
-  `username` varchar(64) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `full_name` varchar(128) DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -63,6 +46,32 @@ CREATE TABLE `addresses` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` bigint(20) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `full_name` varchar(128) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `username`, `email`, `password_hash`, `full_name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'wansari9', 'wansari000@gmail.com', '$2y$10$WvxZ1zDeXjPv5OKnWhIP/eZOY8SoAOSbFiTkkGFaNpzRmYCiOO896', 'wasi ansari', 1, '2025-11-13 15:46:51', NULL),
+(2, 'wasnari', 'wasnari000@gmail.com', '$2y$10$mNvlg1Kj5lCHXBsolo0SEeSaSu8H64rgBGvLHRyBk.fqxkzv.A22q', 'wasi ansari', 1, '2025-11-14 10:34:26', NULL),
+(3, 'wasnari9', 'wasi@gmail.com', '$2y$10$zqPDr0HLlieMeOOEUwOpIe6yo10R46VokF8tV5NXPFETaGYlrQbHW', 'wasianari', 1, '2025-11-14 11:14:35', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `carts`
 --
 
@@ -72,6 +81,7 @@ CREATE TABLE `carts` (
   `session_id` varchar(128) DEFAULT NULL,
   `status` enum('open','converted','abandoned') NOT NULL DEFAULT 'open',
   `currency` char(3) NOT NULL DEFAULT 'RM',
+  `shipping_method_id` int(11) DEFAULT NULL,
   `subtotal` decimal(10,2) NOT NULL DEFAULT 0.00,
   `discount_total` decimal(10,2) NOT NULL DEFAULT 0.00,
   `tax_total` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -85,10 +95,25 @@ CREATE TABLE `carts` (
 -- Dumping data for table `carts`
 --
 
-INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `grand_total`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'jqlhe1ri9fdtl5do1tkla0jff4', 'open', 'RM', 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 11:02:37', '2025-11-13 11:03:02'),
-(2, 1, '9bku3007944d874r2ldcdmsk6g', 'open', 'RM', 4.41, 0.00, 0.00, 0.00, 4.41, '2025-11-13 11:03:10', '2025-11-13 11:56:16'),
-(3, NULL, 'h6qigsoblqooiteri2l3hjt832', 'open', 'RM', 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 11:58:49', '2025-11-13 11:58:49');
+INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipping_method_id`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `grand_total`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'jqlhe1ri9fdtl5do1tkla0jff4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 11:02:37', '2025-11-13 11:03:02'),
+(2, 1, '9bku3007944d874r2ldcdmsk6g', 'open', 'RM', NULL, 8.82, 0.00, 0.00, 0.00, 8.82, '2025-11-13 11:03:10', '2025-11-14 11:32:27'),
+(3, NULL, 'h6qigsoblqooiteri2l3hjt832', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 11:58:49', '2025-11-13 11:58:49'),
+(4, NULL, '2gccu19do7aqp3q3dkfgobeb28', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 15:18:31', '2025-11-13 15:18:31'),
+(5, NULL, '7jt4i0o3s039o0t97mjid60m0e', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 15:49:37', '2025-11-13 15:49:37'),
+(6, NULL, '5673sbet8abted9nq92r286kvd', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 16:07:40', '2025-11-13 16:07:40'),
+(7, NULL, 'nk19s58fmp3ea88l1b4063ftl4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 16:20:41', '2025-11-13 16:20:41'),
+(8, NULL, 'rgdtasj2kp0lc57aftv2smtjp0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-13 16:56:15', '2025-11-13 16:56:15'),
+(9, NULL, '2u48re23c94j0ign6tt5tk7v6r', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 10:14:26', '2025-11-14 10:14:26'),
+(10, NULL, '8paf9dmaubjpt8do75h2k5k6na', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 10:25:58', '2025-11-14 10:25:58'),
+(11, NULL, 'up9cmnb5qdm424v8rhkahkdn1v', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 10:33:54', '2025-11-14 10:33:54'),
+(12, NULL, 'ut8e81crae4a2qi0acnmvuenie', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 10:34:57', '2025-11-14 10:34:57'),
+(13, NULL, '8ggsa793id3i04bn74oubdm0m3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:04:58', '2025-11-14 11:04:58'),
+(14, NULL, '82fie0u6rgnscfi4pc47gb0054', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:32:12', '2025-11-14 11:32:12'),
+(15, NULL, 'ge3n6ukbooh5huapnkbvb0kj3o', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:33:32', '2025-11-14 11:33:32'),
+(16, NULL, '7d1bc1ip7ev0mninef97nthe8j', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:33:32', '2025-11-14 11:33:32'),
+(17, NULL, 'rc6hknlc0i7a2h4to3l5rtp4rs', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:33:42', '2025-11-14 11:33:42'),
+(18, NULL, '1vubt1pa7ppq3ceuc2bc9uuc6b', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 11:34:41', '2025-11-14 11:34:41');
 
 -- --------------------------------------------------------
 
@@ -117,7 +142,7 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_name`, `sku`, `variant_sku`, `options_snapshot`, `quantity`, `unit_price`, `line_total`, `image`, `added_at`) VALUES
-(2, 2, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"5-lb\",\"fat\":\"low-fat\"}', 1, 4.41, 4.41, 'images/Evaporated Milk.png', '2025-11-13 11:50:51');
+(3, 2, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"5-lb\",\"fat\":\"low-fat\"}', 2, 4.41, 8.82, 'images/Evaporated Milk.png', '2025-11-14 10:35:17');
 
 -- --------------------------------------------------------
 
@@ -176,6 +201,7 @@ CREATE TABLE `orders` (
   `discount_total` decimal(10,2) NOT NULL DEFAULT 0.00,
   `tax_total` decimal(10,2) NOT NULL DEFAULT 0.00,
   `shipping_total` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `shipping_method_id` int(11) DEFAULT NULL,
   `grand_total` decimal(10,2) NOT NULL DEFAULT 0.00,
   `shipping_address_id` int(11) DEFAULT NULL,
   `billing_address_id` int(11) DEFAULT NULL,
@@ -397,31 +423,31 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, `short_description`, `description`, `base_price`, `max_price`, `currency`, `image`, `gallery`, `attributes`, `status`, `has_variants`, `stock_qty`, `is_active`, `allow_backorder`, `weight_grams`, `created_at`, `updated_at`) VALUES
-(1, 458, 'EVAP-001', 'Evaporated Milk', 'evaporated-milk', 'dairy', 'High-quality evaporated milk', 'High-quality evaporated milk for your recipes.', 4.90, 8.99, 'RM', 'images/Evaporated Milk.png', NULL, NULL, 'active', 1, 100, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(2, 448, 'SCREAM-001', 'Farm Sour Cream', 'farm-sour-cream', 'dairy', 'Rich sour cream', 'Rich and creamy sour cream from our farm.', 16.50, 40.00, 'RM', 'images/Farm sour Cream.png', NULL, NULL, 'active', 1, 80, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(3, 438, 'RICOTTA-SAL-001', 'Ricotta Salata Cheese', 'ricotta-salata-cheese', 'cheese', 'Delicious ricotta salata', 'Delicious ricotta salata.', 50.00, 160.00, 'RM', 'images/Ricotta Salata.png', NULL, NULL, 'active', 1, 60, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(4, 412, 'PARM-001', 'Parmesan Cheese', 'parmesan-cheese', 'cheese', 'Authentic Parmesan', 'Authentic Italian Parmesan cheese.', 35.00, 190.00, 'RM', 'images/parmesan cheese.png', NULL, NULL, 'active', 1, 70, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(5, 471, 'PECORINO-ROM-001', 'Pecorino Romano Cheese', 'pecorino-romano-cheese', 'cheese', 'Classic Pecorino', 'Classic Pecorino Romano cheese.', 45.00, 220.00, 'RM', 'images/Pecorino Romano.jpg', NULL, NULL, 'active', 1, 50, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(6, 364, 'RAW-MILK-001', 'Tested Raw Milk', 'tested-raw-milk', 'dairy', 'Fresh raw milk', 'Fresh and tested raw milk directly from our farm.', 10.00, 75.00, 'RM', 'images/Tested raw milk.png', NULL, NULL, 'active', 1, 120, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(7, 402, 'BRIE-001', 'Brie Cheese', 'brie-cheese', 'cheese', 'Creamy Brie', 'Creamy and delightful Brie cheese.', 30.00, 180.00, 'RM', 'images/brie cheese.png', NULL, NULL, 'active', 1, 65, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(8, 426, 'RACLETTE-001', 'Fromage a Raclette Cheese', 'fromage-a-raclette-cheese', 'cheese', 'Raclette cheese', 'Delicious Fromage a Raclette cheese for your dishes.', 45.00, 280.00, 'RM', 'images/fromage a raclette.png', NULL, NULL, 'active', 1, 40, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(9, 387, 'CAMEMBERT-001', 'Camembert Cheese', 'camembert-cheese', 'cheese', 'Aromatic Camembert', 'Rich and aromatic Camembert cheese.', 35.00, 190.00, 'RM', 'images/camembert cheese.png', NULL, NULL, 'active', 1, 55, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(10, 420, 'FRESH-MILK-001', 'Fresh Milk', 'fresh-milk', 'dairy', 'Pure fresh milk', 'Fresh milk is pure, creamy, and naturally wholesome.', 2.50, 22.50, 'RM', 'images/fresh milk.png', NULL, NULL, 'active', 1, 0, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(11, 430, 'BUTTER-001', 'Butter', 'butter', 'dairy', 'Rich butter', 'Rich, creamy, versatile dairy product.', 8.50, 85.00, 'RM', 'images/Butter.png', NULL, NULL, 'active', 1, 150, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(12, 450, 'YOGURT-001', 'Yogurt', 'yogurt', 'dairy', 'Creamy yogurt', 'Creamy, rich, and packed with probiotics.', 5.50, 50.00, 'RM', 'images/yogurt.png', NULL, NULL, 'active', 1, 140, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(13, 460, 'CH-EGGS-001', 'Chicken Eggs', 'chicken-eggs', 'eggs', 'Fresh chicken eggs', 'Fresh and nutritious chicken eggs, rich in protein and essential vitamins.', 3.50, 42.00, 'RM', 'images/chicken eggs.png', NULL, NULL, 'active', 1, 300, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(14, 470, 'DUCK-EGGS-001', 'Duck Eggs', 'duck-eggs', 'eggs', 'Flavorful duck eggs', 'Rich and flavorful duck eggs with larger yolks.', 5.00, 52.00, 'RM', 'images/duck eggs.png', NULL, NULL, 'active', 1, 180, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(15, 480, 'QUAIL-EGGS-001', 'Quail Eggs', 'quail-eggs', 'eggs', 'Delicate quail eggs', 'Small, nutrient-rich quail eggs with a delicate flavor.', 6.50, 70.00, 'RM', 'images/quail eggs.png', NULL, NULL, 'active', 1, 160, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(16, 490, 'BEEF-001', 'Beef', 'beef', 'meat', 'Fresh beef', 'Fresh, high-quality beef with rich flavor and tenderness.', 18.00, 200.00, 'RM', 'images/beef.png', NULL, NULL, 'active', 1, 90, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(17, 500, 'PORK-001', 'Pork', 'pork', 'meat', 'Fresh pork', 'Fresh, tender, and flavorful pork.', 12.00, 130.00, 'RM', 'images/pork.png', NULL, NULL, 'active', 1, 110, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(18, 510, 'CHICKEN-001', 'Chicken', 'chicken', 'meat', 'Fresh chicken', 'Fresh, tender, and protein-rich chicken.', 6.00, 60.00, 'RM', 'images/chicken.png', NULL, NULL, 'active', 1, 210, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(19, 520, 'LAMB-001', 'Lamb', 'lamb', 'meat', 'Premium lamb', 'Premium, tender lamb with rich flavor.', 20.00, 210.00, 'RM', 'images/lamb.png', NULL, NULL, 'active', 1, 75, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(20, 530, 'BACON-001', 'Bacon', 'bacon', 'meat', 'Savory bacon', 'Savory, crispy, and flavorful bacon.', 18.00, 190.00, 'RM', 'images/bacon.jpeg', NULL, NULL, 'active', 1, 85, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(21, 540, 'SAUSAGE-001', 'Sausage', 'sausage', 'meat', 'Juicy sausages', 'Juicy and flavorful sausages.', 15.00, 160.00, 'RM', 'images/sausage.png', NULL, NULL, 'active', 1, 95, 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
-(22, NULL, 'LEATHER-001', 'Leather', 'leather', 'byproducts', 'Durable leather', 'High-quality, durable leather.', 50.00, 500.00, 'RM', 'images/leather.png', NULL, NULL, 'active', 0, 30, 1, 0, NULL, '2025-11-13 11:02:14', NULL),
-(23, NULL, 'WOOL-001', 'Wool', 'wool', 'byproducts', 'Soft wool', 'Soft, warm, and durable wool.', 40.00, 400.00, 'RM', 'images/wool.png', NULL, NULL, 'active', 0, 60, 1, 0, NULL, '2025-11-13 11:02:14', NULL),
-(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 45, 1, 0, NULL, '2025-11-13 11:02:14', NULL);
+INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, `short_description`, `description`, `base_price`, `max_price`, `stock_qty`, `is_active`, `currency`, `image`, `gallery`, `attributes`, `status`, `has_variants`, `allow_backorder`, `weight_grams`, `created_at`, `updated_at`) VALUES
+(1, 458, 'EVAP-001', 'Evaporated Milk', 'evaporated-milk', 'dairy', 'High-quality evaporated milk', 'High-quality evaporated milk for your recipes.', 4.90, 8.99, 100, 1, 'RM', 'images/Evaporated Milk.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(2, 448, 'SCREAM-001', 'Farm Sour Cream', 'farm-sour-cream', 'dairy', 'Rich sour cream', 'Rich and creamy sour cream from our farm.', 16.50, 40.00, 80, 1, 'RM', 'images/Farm sour Cream.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(3, 438, 'RICOTTA-SAL-001', 'Ricotta Salata Cheese', 'ricotta-salata-cheese', 'cheese', 'Delicious ricotta salata', 'Delicious ricotta salata.', 50.00, 160.00, 60, 1, 'RM', 'images/Ricotta Salata.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(4, 412, 'PARM-001', 'Parmesan Cheese', 'parmesan-cheese', 'cheese', 'Authentic Parmesan', 'Authentic Italian Parmesan cheese.', 35.00, 190.00, 70, 1, 'RM', 'images/parmesan cheese.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(5, 471, 'PECORINO-ROM-001', 'Pecorino Romano Cheese', 'pecorino-romano-cheese', 'cheese', 'Classic Pecorino', 'Classic Pecorino Romano cheese.', 45.00, 220.00, 50, 1, 'RM', 'images/Pecorino Romano.jpg', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(6, 364, 'RAW-MILK-001', 'Tested Raw Milk', 'tested-raw-milk', 'dairy', 'Fresh raw milk', 'Fresh and tested raw milk directly from our farm.', 10.00, 75.00, 120, 1, 'RM', 'images/Tested raw milk.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(7, 402, 'BRIE-001', 'Brie Cheese', 'brie-cheese', 'cheese', 'Creamy Brie', 'Creamy and delightful Brie cheese.', 30.00, 180.00, 65, 1, 'RM', 'images/brie cheese.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(8, 426, 'RACLETTE-001', 'Fromage a Raclette Cheese', 'fromage-a-raclette-cheese', 'cheese', 'Raclette cheese', 'Delicious Fromage a Raclette cheese for your dishes.', 45.00, 280.00, 40, 1, 'RM', 'images/fromage a raclette.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(9, 387, 'CAMEMBERT-001', 'Camembert Cheese', 'camembert-cheese', 'cheese', 'Aromatic Camembert', 'Rich and aromatic Camembert cheese.', 35.00, 190.00, 55, 1, 'RM', 'images/camembert cheese.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(10, 420, 'FRESH-MILK-001', 'Fresh Milk', 'fresh-milk', 'dairy', 'Pure fresh milk', 'Fresh milk is pure, creamy, and naturally wholesome.', 2.50, 22.50, 0, 1, 'RM', 'images/fresh milk.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(11, 430, 'BUTTER-001', 'Butter', 'butter', 'dairy', 'Rich butter', 'Rich, creamy, versatile dairy product.', 8.50, 85.00, 150, 1, 'RM', 'images/Butter.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(12, 450, 'YOGURT-001', 'Yogurt', 'yogurt', 'dairy', 'Creamy yogurt', 'Creamy, rich, and packed with probiotics.', 5.50, 50.00, 140, 1, 'RM', 'images/yogurt.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(13, 460, 'CH-EGGS-001', 'Chicken Eggs', 'chicken-eggs', 'eggs', 'Fresh chicken eggs', 'Fresh and nutritious chicken eggs, rich in protein and essential vitamins.', 3.50, 42.00, 300, 1, 'RM', 'images/chicken eggs.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(14, 470, 'DUCK-EGGS-001', 'Duck Eggs', 'duck-eggs', 'eggs', 'Flavorful duck eggs', 'Rich and flavorful duck eggs with larger yolks.', 5.00, 52.00, 180, 1, 'RM', 'images/duck eggs.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(15, 480, 'QUAIL-EGGS-001', 'Quail Eggs', 'quail-eggs', 'eggs', 'Delicate quail eggs', 'Small, nutrient-rich quail eggs with a delicate flavor.', 6.50, 70.00, 160, 1, 'RM', 'images/quail eggs.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(16, 490, 'BEEF-001', 'Beef', 'beef', 'meat', 'Fresh beef', 'Fresh, high-quality beef with rich flavor and tenderness.', 18.00, 200.00, 90, 1, 'RM', 'images/beef.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(17, 500, 'PORK-001', 'Pork', 'pork', 'meat', 'Fresh pork', 'Fresh, tender, and flavorful pork.', 12.00, 130.00, 110, 1, 'RM', 'images/pork.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(18, 510, 'CHICKEN-001', 'Chicken', 'chicken', 'meat', 'Fresh chicken', 'Fresh, tender, and protein-rich chicken.', 6.00, 60.00, 210, 1, 'RM', 'images/chicken.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(19, 520, 'LAMB-001', 'Lamb', 'lamb', 'meat', 'Premium lamb', 'Premium, tender lamb with rich flavor.', 20.00, 210.00, 75, 1, 'RM', 'images/lamb.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(20, 530, 'BACON-001', 'Bacon', 'bacon', 'meat', 'Savory bacon', 'Savory, crispy, and flavorful bacon.', 18.00, 190.00, 85, 1, 'RM', 'images/bacon.jpeg', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(21, 540, 'SAUSAGE-001', 'Sausage', 'sausage', 'meat', 'Juicy sausages', 'Juicy and flavorful sausages.', 15.00, 160.00, 95, 1, 'RM', 'images/sausage.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
+(22, NULL, 'LEATHER-001', 'Leather', 'leather', 'byproducts', 'Durable leather', 'High-quality, durable leather.', 50.00, 500.00, 30, 1, 'RM', 'images/leather.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL),
+(23, NULL, 'WOOL-001', 'Wool', 'wool', 'byproducts', 'Soft wool', 'Soft, warm, and durable wool.', 40.00, 400.00, 60, 1, 'RM', 'images/wool.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL),
+(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 45, 1, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL);
 
 --
 -- Triggers `products`
@@ -599,6 +625,72 @@ CREATE TABLE `shipments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shipping_methods`
+--
+
+CREATE TABLE `shipping_methods` (
+  `id` int(11) NOT NULL,
+  `zone_id` int(11) NOT NULL,
+  `type` enum('flat','weight','price','free') NOT NULL DEFAULT 'flat',
+  `name` varchar(150) NOT NULL,
+  `min_weight` decimal(10,2) DEFAULT NULL,
+  `max_weight` decimal(10,2) DEFAULT NULL,
+  `min_price` decimal(10,2) DEFAULT NULL,
+  `max_price` decimal(10,2) DEFAULT NULL,
+  `rate` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `shipping_methods`
+--
+
+INSERT INTO `shipping_methods` (`id`, `zone_id`, `type`, `name`, `min_weight`, `max_weight`, `min_price`, `max_price`, `rate`, `active`, `created_at`) VALUES
+(1, 1, 'flat', 'Standard Delivery (KL)', NULL, NULL, NULL, NULL, 8.00, 1, '2025-10-15 08:30:00'),
+(2, 1, 'flat', 'Express Delivery (KL)', NULL, NULL, NULL, NULL, 15.00, 1, '2025-10-15 08:35:00'),
+(3, 1, 'price', 'Free Shipping (KL)', NULL, NULL, 100.00, NULL, 0.00, 1, '2025-10-15 08:40:00'),
+(4, 2, 'flat', 'Standard Delivery (Selangor)', NULL, NULL, NULL, NULL, 10.00, 1, '2025-10-15 08:45:00'),
+(5, 2, 'flat', 'Express Delivery (Selangor)', NULL, NULL, NULL, NULL, 18.00, 1, '2025-10-15 08:50:00'),
+(6, 2, 'price', 'Free Shipping (Selangor)', NULL, NULL, 120.00, NULL, 0.00, 1, '2025-10-15 08:55:00'),
+(7, 3, 'flat', 'Standard Delivery (Penang)', NULL, NULL, NULL, NULL, 15.00, 1, '2025-10-15 09:00:00'),
+(8, 3, 'flat', 'Express Delivery (Penang)', NULL, NULL, NULL, NULL, 25.00, 1, '2025-10-15 09:05:00'),
+(9, 4, 'flat', 'Standard Delivery (Johor)', NULL, NULL, NULL, NULL, 12.00, 1, '2025-10-15 09:10:00'),
+(10, 4, 'flat', 'Express Delivery (Johor)', NULL, NULL, NULL, NULL, 22.00, 1, '2025-10-15 09:15:00'),
+(11, 5, 'flat', 'Standard Delivery', NULL, NULL, NULL, NULL, 18.00, 1, '2025-10-15 09:20:00'),
+(12, 5, 'flat', 'Express Delivery', NULL, NULL, NULL, NULL, 30.00, 1, '2025-10-15 09:25:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipping_zones`
+--
+
+CREATE TABLE `shipping_zones` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `country` varchar(2) NOT NULL,
+  `region` varchar(100) DEFAULT NULL,
+  `postcode_pattern` varchar(100) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `shipping_zones`
+--
+
+INSERT INTO `shipping_zones` (`id`, `name`, `country`, `region`, `postcode_pattern`, `active`, `created_at`) VALUES
+(1, 'malaysia', 'MY', 'Selangor', '47810', 1, '2025-11-14 11:34:28'),
+(2, 'Kuala Lumpur', 'MY', 'Kuala Lumpur', '5%', 1, '2025-10-15 08:00:00'),
+(3, 'Selangor', 'MY', 'Selangor', '4%', 1, '2025-10-15 08:05:00'),
+(4, 'Penang', 'MY', 'Penang', '1%', 1, '2025-10-15 08:10:00'),
+(5, 'Johor', 'MY', 'Johor', '8%', 1, '2025-10-15 08:15:00'),
+(6, 'Rest of Malaysia', 'MY', NULL, '%', 1, '2025-10-15 08:20:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -637,47 +729,17 @@ CREATE TABLE `wishlist` (
   `added_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-
-
-
--- Shipping configuration schema (zones and methods)
-
-CREATE TABLE IF NOT EXISTS `shipping_zones` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) NOT NULL,
-  `country` varchar(2) NOT NULL,
-  `region` varchar(100) DEFAULT NULL,
-  `postcode_pattern` varchar(100) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `country_region` (`country`,`region`),
-  KEY `active` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS `shipping_methods` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `zone_id` int(11) NOT NULL,
-  `type` enum('flat','weight','price','free') NOT NULL DEFAULT 'flat',
-  `name` varchar(150) NOT NULL,
-  `min_weight` decimal(10,2) DEFAULT NULL,
-  `max_weight` decimal(10,2) DEFAULT NULL,
-  `min_price` decimal(10,2) DEFAULT NULL,
-  `max_price` decimal(10,2) DEFAULT NULL,
-  `rate` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `zone_id` (`zone_id`),
-  CONSTRAINT `shipping_methods_zone_fk` FOREIGN KEY (`zone_id`) REFERENCES `shipping_zones` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `country_idx` (`country`,`state`,`city`);
 
 --
 -- Indexes for table `admins`
@@ -688,35 +750,14 @@ ALTER TABLE `admins`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `addresses`
---
-ALTER TABLE `addresses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `country_idx` (`country`,`state`,`city`);
-
-
-
--- Add selected shipping method linkage to carts and orders
-
-ALTER TABLE `carts`
-  ADD COLUMN `shipping_method_id` int(11) DEFAULT NULL AFTER `currency`;
-
-ALTER TABLE `orders`
-  ADD COLUMN `shipping_method_id` int(11) DEFAULT NULL AFTER `shipping_total`;
-
--- Indexes for lookups
-ALTER TABLE `carts` ADD KEY `shipping_method_id` (`shipping_method_id`);
-ALTER TABLE `orders` ADD KEY `shipping_method_id` (`shipping_method_id`);
-
---
 -- Indexes for table `carts`
 --
 ALTER TABLE `carts`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `session_id` (`session_id`),
-  ADD KEY `status` (`status`);
+  ADD KEY `status` (`status`),
+  ADD KEY `shipping_method_id` (`shipping_method_id`);
 
 --
 -- Indexes for table `cart_items`
@@ -760,7 +801,8 @@ ALTER TABLE `orders`
   ADD KEY `status` (`status`),
   ADD KEY `shipping_status` (`shipping_status`),
   ADD KEY `tracking_number` (`tracking_number`),
-  ADD KEY `placed_at` (`placed_at`);
+  ADD KEY `placed_at` (`placed_at`),
+  ADD KEY `shipping_method_id` (`shipping_method_id`);
 
 --
 -- Indexes for table `order_items`
@@ -855,6 +897,21 @@ ALTER TABLE `shipments`
   ADD KEY `tracking_number` (`tracking_number`);
 
 --
+-- Indexes for table `shipping_methods`
+--
+ALTER TABLE `shipping_methods`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `zone_id` (`zone_id`);
+
+--
+-- Indexes for table `shipping_zones`
+--
+ALTER TABLE `shipping_zones`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `country_region` (`country`,`region`),
+  ADD KEY `active` (`active`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -876,28 +933,28 @@ ALTER TABLE `wishlist`
 --
 
 --
--- AUTO_INCREMENT for table `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -970,6 +1027,18 @@ ALTER TABLE `product_variants`
 --
 ALTER TABLE `shipments`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shipping_methods`
+--
+ALTER TABLE `shipping_methods`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `shipping_zones`
+--
+ALTER TABLE `shipping_zones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1073,6 +1142,12 @@ ALTER TABLE `product_variants`
 --
 ALTER TABLE `shipments`
   ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `shipping_methods`
+--
+ALTER TABLE `shipping_methods`
+  ADD CONSTRAINT `shipping_methods_zone_fk` FOREIGN KEY (`zone_id`) REFERENCES `shipping_zones` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `wishlist`
