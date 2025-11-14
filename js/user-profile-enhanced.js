@@ -507,13 +507,16 @@
   function initLogout(){
     const logoutBtn = document.querySelector('[data-action="logout"]');
     if(logoutBtn){
-      logoutBtn.addEventListener('click', async () => {
-        if(confirm('Are you sure you want to logout?')){
-          try {
-            window.location.href = 'includes/auth_logout.php';
-          } catch (error) {
-            console.error('Logout failed:', error);
-          }
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if(!confirm('Are you sure you want to logout?')) return;
+        try {
+          await fetch('includes/auth_logout.php', { method: 'POST', credentials: 'same-origin' });
+        } catch (error) {
+          console.error('Logout request failed:', error);
+        } finally {
+          // Redirect to homepage after logout attempt
+          window.location.href = 'index.html';
         }
       });
     }

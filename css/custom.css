@@ -21,6 +21,59 @@ img.emoji {
 	height: 30px
 }
 
+/* Reduce top panel height - Updated */
+.top_panel_top,
+.scheme_original .top_panel_top {
+    padding: 4px 0 !important;
+    font-size: 11px !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.top_panel_top_contact_area,
+.top_panel_top_open_hours,
+.scheme_original .top_panel_top_contact_area,
+.scheme_original .top_panel_top_open_hours {
+    line-height: 1.2 !important;
+}
+
+/* Strong override: enforce identical top-panel appearance across all pages */
+.top_panel_wrap .top_panel_top,
+.scheme_original .top_panel_wrap .top_panel_top,
+.top_panel_top,
+.scheme_original .top_panel_top {
+	padding: 4px 0 !important;
+	font-size: 11px !important;
+	line-height: 1.2 !important;
+	background-color: #231f20 !important;
+	color: #838383 !important;
+	border: none !important;
+	border-top: none !important;
+	border-bottom: none !important;
+}
+
+.top_panel_top a,
+.scheme_original .top_panel_top a,
+.top_panel_top .sc_socials.sc_socials_type_icons a {
+	color: #727272 !important;
+}
+
+.top_panel_top a:hover,
+.scheme_original .top_panel_top a:hover,
+.top_panel_top .sc_socials.sc_socials_type_icons a:hover {
+	color: #fec321 !important;
+}
+
+.top_panel_top_contact_area,
+.top_panel_top_open_hours,
+.scheme_original .top_panel_top_contact_area,
+.scheme_original .top_panel_top_open_hours {
+	line-height: 1.2 !important;
+	font-size: 11px !important;
+	padding: 0 !important;
+}
+
 
 
 .blog-yumprint-recipe .blog-yumprint-recipe-title {
