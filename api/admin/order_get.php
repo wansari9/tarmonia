@@ -49,7 +49,7 @@ try {
         'subtotal' => (float)$orderRow['subtotal'],
         'discount_total' => (float)$orderRow['discount_total'],
         'tax_total' => (float)$orderRow['tax_total'],
-        'shipping_total' => (float)$orderRow['shipping_total'],
+        // Note: shipping_total intentionally omitted for admin view
         'grand_total' => (float)$orderRow['grand_total'],
         'created_at' => (string)$orderRow['created_at'],
         'updated_at' => $orderRow['updated_at'],

@@ -152,7 +152,7 @@ function money_fmt($v, $cur){ return $cur . ' ' . number_format((float)$v, 2); }
         <tr><td colspan="4" class="text-right">Subtotal</td><td class="text-right"><?php echo money_fmt($order['subtotal'], $currency); ?></td></tr>
         <tr><td colspan="4" class="text-right">Discount</td><td class="text-right"><?php echo money_fmt($order['discount_total'], $currency); ?></td></tr>
         <tr><td colspan="4" class="text-right">Tax</td><td class="text-right"><?php echo money_fmt($order['tax_total'], $currency); ?></td></tr>
-        <tr><td colspan="4" class="text-right">Shipping</td><td class="text-right"><?php echo money_fmt($order['shipping_total'], $currency); ?></td></tr>
+        <!-- Shipping fee intentionally hidden from admin invoice per request -->
         <tr><td colspan="4" class="text-right"><strong>Grand total</strong></td><td class="text-right"><strong><?php echo money_fmt($order['grand_total'], $currency); ?></strong></td></tr>
       </tfoot>
     </table>
