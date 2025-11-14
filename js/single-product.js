@@ -99,6 +99,21 @@ document.addEventListener('DOMContentLoaded', function () {
         ? window.AppPaths.getBasePath()
         : '';
 
+    var joinPath = (window.AppPaths && typeof window.AppPaths.join === 'function')
+        ? window.AppPaths.join
+        : function(fragment){
+            var base = String(BASE_PATH || '').replace(/\/+$/,'');
+            var cleanFragment = String(fragment || '').replace(/^\/+/, '');
+            if (!base) return cleanFragment;
+            if (!cleanFragment) return base;
+            return base + '/' + cleanFragment;
+        };
+
+    function includeUrl(resource){
+        var clean = String(resource || '').replace(/^\/+/, '');
+        return joinPath('includes/' + clean);
+    }
+
     // Get the product_id from the URL
     const productId = getQueryParam('product_id');
     // Ensure hidden product_id is set ASAP so the UI doesn't look empty
@@ -180,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 fd.append('product_id', currentProductId);
                 fd.append('rating', rating);
                 fd.append('content', content);
-                fetch(BASE_PATH + '/includes/review_submit.php', { method: 'POST', body: fd, credentials: 'same-origin' })
+                fetch(includeUrl('review_submit.php'), { method: 'POST', body: fd, credentials: 'same-origin' })
                     .then(function(r){ return r.json().catch(function(){ return { success:false, error:'Invalid response'}; }); })
                     .then(function(res){
                         if (!res || res.success !== true){
@@ -197,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // First, check session
-        fetch(BASE_PATH + '/includes/auth_session.php', { credentials: 'same-origin' })
+        fetch(includeUrl('auth_session.php'), { credentials: 'same-origin' })
             .then(function(r){ 
                 if (!r.ok) {
                     console.error('[review-gate] auth_session.php returned', r.status);
@@ -217,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
                 // If logged in, verify purchase eligibility
-                return fetch(BASE_PATH + '/includes/review_eligibility.php?product_id=' + encodeURIComponent(currentProductId), { credentials: 'same-origin' })
+                return fetch(includeUrl('review_eligibility.php?product_id=' + encodeURIComponent(currentProductId)), { credentials: 'same-origin' })
                     .then(function(r){ 
                         if (!r.ok) {
                             console.error('[review-gate] review_eligibility.php returned', r.status);
@@ -391,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 var pidKey = p.id || p.external_id || p.internal_id;
                 if (pidKey) {
-                    fetch(BASE_PATH + '/includes/product_options.php?product_id=' + encodeURIComponent(pidKey), { credentials:'same-origin' })
+                    fetch(includeUrl('product_options.php?product_id=' + encodeURIComponent(pidKey)), { credentials:'same-origin' })
                         .then(function(r){ return r.json().catch(function(){ return { success:false }; }); })
                         .then(function(cfg){
                             if (!cfg || cfg.success !== true || !Array.isArray(cfg.options)) return;

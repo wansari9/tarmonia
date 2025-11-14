@@ -9,11 +9,23 @@
     if(m && m[1] && m[1] !== '/') return m[1];
     return ''; // root / live server
   }
-  var BASE = getBasePath();
-  var EP = BASE + '/includes/';
-  // Fallback: if not under a base path, try '/tarmonia' automatically when calling PHP includes
-  var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
-  var ALT_EP = ALT_BASE + '/includes/';
+  window.AppPaths = window.AppPaths || {};
+  window.AppPaths.getBasePath = window.AppPaths.getBasePath || getBasePath;
+  var BASE = window.AppPaths.base = typeof window.AppPaths.base !== 'undefined' ? window.AppPaths.base : window.AppPaths.getBasePath();
+
+  function joinPath(fragment){
+    var cleanBase = String(BASE || '').replace(/\/+$/,'');
+    var cleanFragment = String(fragment || '').replace(/^\/+/, '');
+    if (!cleanBase) return cleanFragment;
+    if (!cleanFragment) return cleanBase;
+    return cleanBase + '/' + cleanFragment;
+  }
+
+  if (typeof window.AppPaths.join !== 'function') {
+    window.AppPaths.join = joinPath;
+  }
+
+  var EP = joinPath('includes/');
   var csrfPromise = null;
 
   function parseJsonSafe(r){
@@ -26,29 +38,13 @@
     }
     if (csrfPromise) return csrfPromise;
 
-    var triedAlt = false;
-    var sessionUrl = EP + 'auth_session.php';
-    var altSessionUrl = ALT_EP + 'auth_session.php';
+    var sessionUrl = joinPath('includes/auth_session.php');
 
     function sessionFetch(url){
       return fetch(url, { credentials:'same-origin' });
     }
 
     csrfPromise = sessionFetch(sessionUrl)
-      .then(function(r){
-        if (!r.ok && !triedAlt && ALT_EP !== EP) {
-          triedAlt = true;
-          return sessionFetch(altSessionUrl);
-        }
-        return r;
-      })
-      .catch(function(err){
-        if (!triedAlt && ALT_EP !== EP) {
-          triedAlt = true;
-          return sessionFetch(altSessionUrl);
-        }
-        throw err;
-      })
       .then(function(r){
         if (!r.ok) {
           var err = new Error('missing_csrf');
@@ -99,23 +95,15 @@
   }
 
   function apiFetch(url, opts){
-    // Try primary URL first; on 404 or network error and when BASE is empty, retry with ALT_EP
     var options = Object.assign({ credentials:'same-origin' }, opts||{});
     var method = (options.method || 'GET').toUpperCase();
     var needsCsrf = method !== 'GET' && method !== 'HEAD';
-    var urlStr = typeof url === 'string' ? url : '';
-    var hasAlt = ALT_EP !== EP && urlStr.indexOf(EP) === 0;
-    var altUrl = hasAlt ? ALT_EP + urlStr.substring(EP.length) : null;
-
     var ready = needsCsrf ? ensureCsrfToken() : Promise.resolve(null);
 
     return ready.then(function(token){
       if (token) attachCsrfHeader(options, token);
       return fetch(url, options);
     }).then(function(r){
-      if (!r.ok && altUrl) {
-        return fetch(altUrl, options).then(parseJsonSafe);
-      }
       return parseJsonSafe(r);
     }).catch(function(err){
       if (err && (err.code === 'missing_csrf' || err.message === 'missing_csrf')) {
@@ -129,11 +117,6 @@
           console.error('Unable to prepare CSRF-protected request', err);
         }
         return { success:false, error:'Network error' };
-      }
-      if (altUrl) {
-        return fetch(altUrl, options).then(parseJsonSafe).catch(function(){
-          return { success:false, error:'Network error' };
-        });
       }
       return { success:false, error:'Network error' };
     });

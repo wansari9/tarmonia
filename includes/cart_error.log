@@ -23,3 +23,9 @@
 [2025-11-12T09:30:11+01:00] [OUT] add_item cart_id=26 item_count=3 grand=61.4
 [2025-11-13T04:50:51+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=low-fat
 [2025-11-13T04:50:51+01:00] [OUT] add_item cart_id=2 item_count=1 grand=4.41
+[2025-11-14T03:15:07+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=3.5%
+[2025-11-14T03:15:07+01:00] add_item (stage=recalc_totals): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'line_total' in 'field list'
+[2025-11-14T03:19:00+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=3.5%
+[2025-11-14T03:19:00+01:00] add_item (stage=recalc_totals): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'line_total' in 'field list'
+[2025-11-14T03:35:17+01:00] [IN] add_item pid=458 qty=1 weight=5-lb fat=low-fat
+[2025-11-14T03:35:17+01:00] [OUT] add_item cart_id=2 item_count=1 grand=4.41

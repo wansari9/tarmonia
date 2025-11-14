@@ -2,6 +2,38 @@
     const csrfMeta = document.querySelector('meta[name="csrf-token"]');
     const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
 
+    // --- Toast utilities ---
+    const toastRoot = document.getElementById('toast-root');
+    function ensureToastStyles(){
+        if (document.getElementById('admin-toast-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'admin-toast-styles';
+        style.textContent = `
+        .admin-toast-root{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+        .admin-toast{min-width:240px;max-width:420px;background:#1f2937;color:#fff;padding:10px 12px;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.2);display:flex;align-items:flex-start;gap:8px}
+        .admin-toast--success{background:#065f46}
+        .admin-toast--error{background:#7f1d1d}
+        .admin-toast__message{flex:1}
+        .admin-toast__close{background:transparent;border:0;color:#fff;cursor:pointer;font-size:16px;}
+        `;
+        document.head.appendChild(style);
+    }
+    function showToast(message, type='info', timeout=3500){
+        ensureToastStyles();
+        const host = toastRoot || document.body;
+        const el = document.createElement('div');
+        el.className = `admin-toast ${type==='success' ? 'admin-toast--success' : ''} ${type==='error' ? 'admin-toast--error' : ''}`.trim();
+        el.innerHTML = `<div class="admin-toast__message"></div><button class="admin-toast__close" aria-label="Close">×</button>`;
+        el.querySelector('.admin-toast__message').textContent = String(message||'');
+        el.querySelector('.admin-toast__close').addEventListener('click', () => { el.remove(); });
+        (host).appendChild(el);
+        if (timeout > 0) { setTimeout(() => { el.remove(); }, timeout); }
+    }
+    window.showToast = showToast;
+
+    // --- Confirm dialog (light wrapper) ---
+    window.confirmDialog = (message) => window.confirm(message);
+
     window.fetchWithCSRF = async (url, options = {}) => {
         const settings = { ...options };
         settings.credentials = settings.credentials || 'same-origin';
@@ -35,16 +67,45 @@
     };
 
     const logoutButton = document.querySelector('[data-admin-logout]');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async (event) => {
+    function wireLogout(btn){
+        if (!btn || btn._wired) return;
+        btn.addEventListener('click', async (event) => {
             event.preventDefault();
-            logoutButton.disabled = true;
+            btn.disabled = true;
             try {
-                await fetchWithCSRF('/tarmonia/api/admin/logout.php', { method: 'POST' });
-            } catch (err) {
-                // keep trying to redirect even if logout fails, session likely cleared or expired
-            }
-            window.location.href = '/tarmonia/admin-login.php';
+                await fetchWithCSRF('api/admin/auth.php?action=logout', { method: 'POST' });
+            } catch (_err) { /* ignore */ }
+            window.location.href = 'admin-login.php';
         });
+        btn._wired = true;
+    }
+    if (logoutButton) wireLogout(logoutButton);
+    document.querySelectorAll('[data-admin-logout]').forEach(wireLogout);
+
+    // Header user menu toggle
+    const userTrigger = document.querySelector('[data-admin-user-menu]');
+    if (userTrigger) {
+        const dropdown = userTrigger.parentElement?.querySelector('.admin-user-dropdown');
+        userTrigger.addEventListener('click', () => {
+            if (!dropdown) return;
+            const isHidden = dropdown.hasAttribute('hidden');
+            if (isHidden) { dropdown.removeAttribute('hidden'); userTrigger.setAttribute('aria-expanded','true'); }
+            else { dropdown.setAttribute('hidden',''); userTrigger.setAttribute('aria-expanded','false'); }
+        });
+        document.addEventListener('click', (e) => {
+            if (!dropdown) return;
+            if (e.target === userTrigger || userTrigger.contains(e.target)) return;
+            if (!dropdown.contains(e.target)) { dropdown.setAttribute('hidden',''); userTrigger.setAttribute('aria-expanded','false'); }
+        });
+    }
+
+    // Auto surface flash messages as toasts
+    const flashEl = document.querySelector('.admin-alert[data-flash]');
+    if (flashEl) {
+        const msg = flashEl.getAttribute('data-flash-message') || flashEl.textContent || '';
+        const type = flashEl.getAttribute('data-flash-type') || 'info';
+        if (msg) { showToast(msg, type === 'success' ? 'success' : type === 'error' ? 'error' : 'info'); }
+        // Keep in DOM for non-JS; hide if JS is running
+        flashEl.style.display = 'none';
     }
 })();

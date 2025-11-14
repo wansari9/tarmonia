@@ -205,16 +205,90 @@ function resolve_variant_by_options(PDO $pdo, int $productId, array $selected): 
     return [null, null];
 }
 
+function cart_total_weight_grams(PDO $pdo, int $cartId): int {
+    // Use variant weight if available; else ignore
+    $sql = 'SELECT ci.quantity, pv.weight_grams
+            FROM cart_items ci
+            LEFT JOIN product_variants pv ON pv.id = ci.variant_id
+            WHERE ci.cart_id = :cid';
+    $st = $pdo->prepare($sql);
+    $st->execute([':cid' => $cartId]);
+    $total = 0;
+    while ($r = $st->fetch()) {
+        $w = isset($r['weight_grams']) ? (int)$r['weight_grams'] : 0;
+        $qty = isset($r['quantity']) ? (int)$r['quantity'] : 0;
+        if ($w > 0 && $qty > 0) $total += $w * $qty;
+    }
+    return $total;
+}
+
+function compute_shipping_rate_for_method(PDO $pdo, int $methodId, float $subtotal, float $weightKg): ?float {
+    $st = $pdo->prepare('SELECT id, type, rate, min_weight, max_weight, min_price, max_price, active FROM shipping_methods WHERE id = :id');
+    try {
+        $st->execute([':id' => $methodId]);
+    } catch (Throwable $e) { return null; }
+    $m = $st->fetch();
+    if (!$m || (int)$m['active'] !== 1) return null;
+    $type = (string)$m['type'];
+    $rate = (float)$m['rate'];
+    // Bounds
+    $inWeight = true; $inPrice = true;
+    if ($m['min_weight'] !== null) $inWeight = $inWeight && ($weightKg >= (float)$m['min_weight']);
+    if ($m['max_weight'] !== null) $inWeight = $inWeight && ($weightKg <= (float)$m['max_weight']);
+    if ($m['min_price'] !== null)  $inPrice  = $inPrice && ($subtotal >= (float)$m['min_price']);
+    if ($m['max_price'] !== null)  $inPrice  = $inPrice && ($subtotal <= (float)$m['max_price']);
+    if (!$inWeight || !$inPrice) return null;
+    if ($type === 'free') return 0.0;
+    if ($type === 'flat') return $rate;
+    if ($type === 'price') return $rate; // rate acts as flat fee within price bounds
+    if ($type === 'weight') return $rate; // simplified: rate acts as flat fee within weight bounds
+    return null;
+}
+
 function recalc_cart_totals(PDO $pdo, int $cartId): array {
-    $sum = $pdo->prepare('SELECT COALESCE(SUM(line_total),0) AS subtotal FROM cart_items WHERE cart_id = :cid');
-    $sum->execute([':cid' => $cartId]);
-    $subtotal = (float)($sum->fetch()['subtotal'] ?? 0);
+    // subtotal is from items table; currency and shipping method are from carts table
+    $sumItems = $pdo->prepare('SELECT COALESCE(SUM(line_total),0) AS subtotal FROM cart_items WHERE cart_id = :cid');
+    $sumItems->execute([':cid' => $cartId]);
+    $subtotal = (float)($sumItems->fetch()['subtotal'] ?? 0);
+
+    // Read currency and (optionally) shipping_method_id from carts. Be tolerant if shipping_method_id doesn't exist yet.
+    $currency = 'RM';
+    $shippingMethodId = null;
+    try {
+        $metaStmt = $pdo->prepare('SELECT currency, shipping_method_id FROM carts WHERE id = :cid');
+        $metaStmt->execute([':cid' => $cartId]);
+        $meta = $metaStmt->fetch() ?: [];
+        if (isset($meta['currency']) && $meta['currency'] !== null && $meta['currency'] !== '') {
+            $currency = $meta['currency'];
+        }
+        if (array_key_exists('shipping_method_id', $meta) && $meta['shipping_method_id'] !== null) {
+            $shippingMethodId = (int)$meta['shipping_method_id'];
+        }
+    } catch (Throwable $e) {
+        // Fallback for schema without shipping_method_id
+        try {
+            $metaStmt = $pdo->prepare('SELECT currency FROM carts WHERE id = :cid');
+            $metaStmt->execute([':cid' => $cartId]);
+            $meta = $metaStmt->fetch() ?: [];
+            if (isset($meta['currency']) && $meta['currency'] !== null && $meta['currency'] !== '') {
+                $currency = $meta['currency'];
+            }
+        } catch (Throwable $ignored) {
+            // keep defaults
+        }
+    }
     $discount = 0.0; // placeholder for future promotions
     $tax = 0.0;      // no tax for now
-    $shipping = 0.0; // computed at checkout
+    $shipping = 0.0; // computed if method selected
+    if ($shippingMethodId) {
+        $grams = cart_total_weight_grams($pdo, $cartId);
+        $kg = $grams > 0 ? ($grams / 1000.0) : 0.0;
+        $rate = compute_shipping_rate_for_method($pdo, $shippingMethodId, $subtotal, $kg);
+        if ($rate !== null) $shipping = (float)$rate;
+    }
     $grand = $subtotal - $discount + $tax + $shipping;
-    $upd = $pdo->prepare('UPDATE carts SET subtotal = :sub, discount_total = :disc, tax_total = :tax, shipping_total = :ship, grand_total = :grand, updated_at = NOW(), currency = COALESCE(currency, "RM") WHERE id = :cid');
-    $upd->execute([':sub' => $subtotal, ':disc' => $discount, ':tax' => $tax, ':ship' => $shipping, ':grand' => $grand, ':cid' => $cartId]);
+    $upd = $pdo->prepare('UPDATE carts SET subtotal = :sub, discount_total = :disc, tax_total = :tax, shipping_total = :ship, grand_total = :grand, updated_at = NOW(), currency = COALESCE(currency, :cur) WHERE id = :cid');
+    $upd->execute([':sub' => $subtotal, ':disc' => $discount, ':tax' => $tax, ':ship' => $shipping, ':grand' => $grand, ':cur' => $currency, ':cid' => $cartId]);
     return ['subtotal' => $subtotal, 'discount_total' => $discount, 'tax_total' => $tax, 'shipping_total' => $shipping, 'grand_total' => $grand];
 }
 

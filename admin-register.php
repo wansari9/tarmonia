@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['admin_active'] === 1) {
-    header('Location: /tarmonia/admin-dashboard.php');
+    header('Location: admin-dashboard.php');
     exit;
 }
 
@@ -17,11 +17,11 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Registration · Tarmonia</title>
-    <link rel="stylesheet" href="/tarmonia/css/layout.css">
-    <link rel="stylesheet" href="/tarmonia/css/style.css">
-    <link rel="stylesheet" href="/tarmonia/css/theme.css">
-    <link rel="stylesheet" href="/tarmonia/css/custom.css">
-    <link rel="stylesheet" href="/tarmonia/css/admin-login.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/admin-login.css">
 </head>
 <body class="admin-login-page">
     <main class="admin-login-container">
@@ -38,7 +38,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
                 <div class="auth-actions">
                     <button type="submit">Create Account</button>
                 </div>
-                <div class="small-note">Already have an account? <a href="/tarmonia/admin-login.php">Sign in</a> · <a href="/tarmonia/index.html">Back to site</a></div>
+                <div class="small-note">Already have an account? <a href="admin-login.php">Sign in</a> · <a href="index.html">Back to site</a></div>
             </form>
         </section>
     </main>
@@ -78,7 +78,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
             submitBtn.disabled = true;
             submitBtn.textContent = 'Creating…';
 
-            fetch('/tarmonia/api/admin/register.php', {
+            fetch('api/admin/auth.php?action=register', {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -87,7 +87,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
             .then((res) => res.json().then((payload) => ({ status: res.status, payload })))
             .then(({status, payload}) => {
                 if ((status === 200 || status === 201) && payload && payload.ok){
-                    window.location.href = '/tarmonia/admin-dashboard.php';
+                    window.location.href = 'admin-dashboard.php';
                     return;
                 }
                 const msg = payload && payload.error ? (payload.error.message || payload.error) : 'Registration failed';

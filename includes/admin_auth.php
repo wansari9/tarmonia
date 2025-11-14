@@ -27,7 +27,7 @@ function admin_require_session(): void {
         admin_send_json(401, 'Admin authentication required');
     }
 
-    header('Location: /tarmonia/admin-login.php');
+    header('Location: admin-login.php');
     exit;
 }
 

@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['admin_active'] === 1) {
-    header('Location: /tarmonia/admin-dashboard.php');
+    header('Location: admin-dashboard.php');
     exit;
 }
 
@@ -17,11 +17,11 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login · Tarmonia</title>
-    <link rel="stylesheet" href="/tarmonia/css/layout.css">
-    <link rel="stylesheet" href="/tarmonia/css/style.css">
-    <link rel="stylesheet" href="/tarmonia/css/theme.css">
-    <link rel="stylesheet" href="/tarmonia/css/custom.css">
-    <link rel="stylesheet" href="/tarmonia/css/admin-login.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/admin-login.css">
 </head>
 <body class="admin-login-page">
     <main class="admin-login-container">
@@ -36,7 +36,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
                 <div class="auth-actions">
                     <button type="submit">Sign In</button>
                 </div>
-                <div class="small-note"><a href="/tarmonia/admin-register.php">Create admin account</a> · <a href="/tarmonia/login.html">User login</a> · <a href="/tarmonia/index.html">Back to site</a></div>
+                <div class="small-note"><a href="admin-register.php">Create admin account</a> · <a href="login.html">User login</a> · <a href="index.html">Back to site</a></div>
             </form>
         </section>
     </main>
@@ -44,11 +44,11 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
     <script>
     (function () {
         const sessionCheck = () => {
-            fetch('/tarmonia/api/admin/session.php', { credentials: 'same-origin' })
+            fetch('api/admin/auth.php?action=session', { credentials: 'same-origin' })
                 .then((response) => response.ok ? response.json() : Promise.reject(new Error('Session check failed')))
                 .then((payload) => {
                     if (payload && payload.ok) {
-                        window.location.href = '/tarmonia/admin-dashboard.php';
+                        window.location.href = 'admin-dashboard.php';
                     }
                 })
                 .catch(() => {/* ignore */});
@@ -83,7 +83,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
             button.disabled = true;
             button.textContent = 'Signing In…';
 
-            fetch('/tarmonia/api/admin/login.php', {
+            fetch('api/admin/auth.php?action=login', {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {
@@ -95,7 +95,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
                 .then((response) => response.json().then((payload) => ({ status: response.status, payload })))
                 .then(({ status, payload }) => {
                     if (status === 200 && payload && payload.ok) {
-                        window.location.href = '/tarmonia/admin-dashboard.php';
+                        window.location.href = 'admin-dashboard.php';
                         return;
                     }
 

@@ -637,6 +637,44 @@ CREATE TABLE `wishlist` (
   `added_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+
+
+
+-- Shipping configuration schema (zones and methods)
+
+CREATE TABLE IF NOT EXISTS `shipping_zones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  `country` varchar(2) NOT NULL,
+  `region` varchar(100) DEFAULT NULL,
+  `postcode_pattern` varchar(100) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `country_region` (`country`,`region`),
+  KEY `active` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `shipping_methods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `zone_id` int(11) NOT NULL,
+  `type` enum('flat','weight','price','free') NOT NULL DEFAULT 'flat',
+  `name` varchar(150) NOT NULL,
+  `min_weight` decimal(10,2) DEFAULT NULL,
+  `max_weight` decimal(10,2) DEFAULT NULL,
+  `min_price` decimal(10,2) DEFAULT NULL,
+  `max_price` decimal(10,2) DEFAULT NULL,
+  `rate` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `zone_id` (`zone_id`),
+  CONSTRAINT `shipping_methods_zone_fk` FOREIGN KEY (`zone_id`) REFERENCES `shipping_zones` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -656,6 +694,20 @@ ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `country_idx` (`country`,`state`,`city`);
+
+
+
+-- Add selected shipping method linkage to carts and orders
+
+ALTER TABLE `carts`
+  ADD COLUMN `shipping_method_id` int(11) DEFAULT NULL AFTER `currency`;
+
+ALTER TABLE `orders`
+  ADD COLUMN `shipping_method_id` int(11) DEFAULT NULL AFTER `shipping_total`;
+
+-- Indexes for lookups
+ALTER TABLE `carts` ADD KEY `shipping_method_id` (`shipping_method_id`);
+ALTER TABLE `orders` ADD KEY `shipping_method_id` (`shipping_method_id`);
 
 --
 -- Indexes for table `carts`
