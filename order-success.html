@@ -210,38 +210,54 @@
             }
 
             // Load order details
-            fetch('/tarmonia/api/order_detail.php?order_number=' + encodeURIComponent(orderNumber))
+            fetch('api/order_detail.php?order_number=' + encodeURIComponent(orderNumber))
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
-                    if (data.success && data.order) {
+                    console.log('Order data:', data);
+                    if (data.ok && data.order) {
+                        displayOrderDetails(data);
+                    } else if (data.success && data.order) {
                         displayOrderDetails(data);
                     } else {
-                        document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">Unable to load order details.</p>';
+                        document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">Unable to load order details. Error: ' + (data.error?.message || data.message || 'Unknown error') + '</p>';
                     }
                 })
                 .catch(function(error) {
                     console.error('Error loading order:', error);
-                    document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#ff0000;">Error loading order details.</p>';
+                    document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#ff0000;">Error loading order details: ' + error.message + '</p>';
                 });
 
             function displayOrderDetails(data) {
                 var order = data.order;
                 var items = data.items || [];
                 var shippingAddress = data.shipping_address;
+                var billingAddress = data.billing_address;
 
                 // Display order info
                 var infoHTML = '';
-                infoHTML += '<div class="info-item"><label>Order Number</label><value>' + order.order_number + '</value></div>';
+                infoHTML += '<div class="info-item"><label>Order Number</label><value>' + (order.order_number || order.id) + '</value></div>';
                 infoHTML += '<div class="info-item"><label>Order Date</label><value>' + formatDate(order.placed_at || order.created_at) + '</value></div>';
-                infoHTML += '<div class="info-item"><label>Status</label><value>' + capitalizeFirst(order.status) + '</value></div>';
-                infoHTML += '<div class="info-item"><label>Payment Status</label><value>' + capitalizeFirst(order.payment_status) + '</value></div>';
+                infoHTML += '<div class="info-item"><label>Status</label><value>' + capitalizeFirst(order.status || 'pending') + '</value></div>';
+                infoHTML += '<div class="info-item"><label>Payment Status</label><value>' + capitalizeFirst(order.payment_status || 'unpaid') + '</value></div>';
 
-                if (shippingAddress) {
-                    var addressHTML = shippingAddress.line1;
-                    if (shippingAddress.line2) addressHTML += ', ' + shippingAddress.line2;
-                    addressHTML += ', ' + shippingAddress.city;
-                    if (shippingAddress.state) addressHTML += ', ' + shippingAddress.state;
-                    addressHTML += ' ' + shippingAddress.postal_code;
+                // Use shipping address from inline fields if available
+                if (order.shipping_first_name || order.shipping_address_line1 || shippingAddress) {
+                    var addressHTML = '';
+                    if (order.shipping_first_name) {
+                        addressHTML = order.shipping_first_name + ' ' + (order.shipping_last_name || '') + '<br>';
+                        addressHTML += order.shipping_address_line1 || '';
+                        if (order.shipping_address_line2) addressHTML += ', ' + order.shipping_address_line2;
+                        addressHTML += '<br>' + (order.shipping_city || '');
+                        if (order.shipping_state) addressHTML += ', ' + order.shipping_state;
+                        addressHTML += ' ' + (order.shipping_postal_code || '');
+                    } else if (shippingAddress) {
+                        addressHTML = (shippingAddress.recipient_name || '') + '<br>';
+                        addressHTML += shippingAddress.line1;
+                        if (shippingAddress.line2) addressHTML += ', ' + shippingAddress.line2;
+                        addressHTML += '<br>' + shippingAddress.city;
+                        if (shippingAddress.state) addressHTML += ', ' + shippingAddress.state;
+                        addressHTML += ' ' + shippingAddress.postal_code;
+                    }
                     infoHTML += '<div class="info-item" style="grid-column:1/-1;"><label>Shipping Address</label><value>' + addressHTML + '</value></div>';
                 }
 
@@ -257,6 +273,17 @@
                             opts.push(key + ': ' + item.options[key]);
                         }
                         optionsText = opts.length ? ' (' + opts.join(', ') + ')' : '';
+                    } else if (item.options_snapshot) {
+                        try {
+                            var parsedOptions = typeof item.options_snapshot === 'string' ? JSON.parse(item.options_snapshot) : item.options_snapshot;
+                            var opts = [];
+                            for (var key in parsedOptions) {
+                                opts.push(key + ': ' + parsedOptions[key]);
+                            }
+                            optionsText = opts.length ? ' (' + opts.join(', ') + ')' : '';
+                        } catch(e) {
+                            console.error('Error parsing options:', e);
+                        }
                     }
 
                     itemsHTML += '<div class="order-item">';
@@ -269,28 +296,29 @@
                     itemsHTML += '    <div class="item-name">' + item.product_name + optionsText + '</div>';
                     itemsHTML += '    <div class="item-quantity">Quantity: ' + item.quantity + '</div>';
                     itemsHTML += '  </div>';
-                    itemsHTML += '  <div class="item-price">RM' + parseFloat(item.line_total).toFixed(2) + '</div>';
+                    itemsHTML += '  <div class="item-price">' + (order.currency || 'RM') + parseFloat(item.line_total).toFixed(2) + '</div>';
                     itemsHTML += '</div>';
                 });
 
                 document.getElementById('order-items').innerHTML = '<h3 style="margin-bottom:15px;">Order Items</h3>' + itemsHTML;
 
                 // Display summary
+                var currency = order.currency || 'RM';
                 var summaryHTML = '';
-                summaryHTML += '<div class="summary-row"><span>Subtotal:</span><span>RM' + parseFloat(order.subtotal).toFixed(2) + '</span></div>';
+                summaryHTML += '<div class="summary-row"><span>Subtotal:</span><span>' + currency + parseFloat(order.subtotal || 0).toFixed(2) + '</span></div>';
                 if (order.discount_total > 0) {
-                    summaryHTML += '<div class="summary-row"><span>Discount:</span><span>-RM' + parseFloat(order.discount_total).toFixed(2) + '</span></div>';
+                    summaryHTML += '<div class="summary-row"><span>Discount:</span><span>-' + currency + parseFloat(order.discount_total).toFixed(2) + '</span></div>';
                 }
                 if (order.tax_total > 0) {
-                    summaryHTML += '<div class="summary-row"><span>Tax:</span><span>RM' + parseFloat(order.tax_total).toFixed(2) + '</span></div>';
+                    summaryHTML += '<div class="summary-row"><span>Tax:</span><span>' + currency + parseFloat(order.tax_total).toFixed(2) + '</span></div>';
                 }
-                summaryHTML += '<div class="summary-row"><span>Shipping:</span><span>RM' + parseFloat(order.shipping_total).toFixed(2) + '</span></div>';
-                summaryHTML += '<div class="summary-row total"><span>Total:</span><span>RM' + parseFloat(order.grand_total).toFixed(2) + '</span></div>';
+                summaryHTML += '<div class="summary-row"><span>Shipping:</span><span>' + currency + parseFloat(order.shipping_total || 0).toFixed(2) + '</span></div>';
+                summaryHTML += '<div class="summary-row total"><span>Total:</span><span>' + currency + parseFloat(order.grand_total || 0).toFixed(2) + '</span></div>';
 
                 document.getElementById('order-summary').innerHTML = summaryHTML;
 
-                // Update view order button
-                document.getElementById('view-order-btn').href = 'order-details.html?order=' + order.order_number;
+                // Update view order button - link to user profile orders
+                document.getElementById('view-order-btn').href = 'user-profile.php#order-' + order.id;
             }
 
             function formatDate(dateString) {

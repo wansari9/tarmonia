@@ -14,6 +14,26 @@
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/user-profile.css' type='text/css' media='all' />
+    <!-- REQUIRE LOGIN FOR PROFILE PAGE -->
+    <script>
+        (function() {
+            // Check authentication immediately before page loads
+            fetch('includes/auth_session.php', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(session) {
+                    if (!session || !session.authenticated) {
+                        // Not logged in - redirect to login with return URL
+                        var returnUrl = encodeURIComponent(window.location.href);
+                        window.location.href = 'login.html?redirect=' + returnUrl + '&message=' + encodeURIComponent('Please log in to view your profile');
+                    }
+                })
+                .catch(function() {
+                    // Error checking session - redirect to login
+                    var returnUrl = encodeURIComponent(window.location.href);
+                    window.location.href = 'login.html?redirect=' + returnUrl;
+                });
+        })();
+    </script>
 </head>
 
 <body class="page body_style_wide body_filled scheme_original top_panel_show top_panel_above sidebar_hide">
@@ -152,13 +172,13 @@
                                 </div>
 
                                 <div class="profile-tabs">
-                                    <button class="tab-button active" data-tab="account">Account Information</button>
-                                    <button class="tab-button" data-tab="orders">Order History</button>
+                                    <button class="tab-button" data-tab="account">Account Information</button>
+                                    <button class="tab-button active" data-tab="orders">Order History</button>
                                     <button class="tab-button" data-tab="addresses">Addresses</button>
                                 </div>
 
                                 <!-- Account Tab -->
-                                <div class="profile-tab-content active" data-tab-content="account">
+                                <div class="profile-tab-content" data-tab-content="account">
                                     <div class="profile-card">
                                         <div class="card-header">
                                             <h2>Account Information</h2>
@@ -217,7 +237,7 @@
                                 </div>
 
                                 <!-- Orders Tab -->
-                                <div class="profile-tab-content" data-tab-content="orders">
+                                <div class="profile-tab-content active" data-tab-content="orders">
                                     <div class="profile-card">
                                         <div class="card-header">
                                             <h2>Order History</h2>
@@ -318,7 +338,7 @@
 
 <script src="js/auth-session.js"></script>
 <script src="js/mini-cart.js"></script>
-<script src="js/user-profile.js"></script>
+<script src="js/user-profile-enhanced.js"></script>
 
 </body>
 </html>

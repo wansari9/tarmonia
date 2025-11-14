@@ -55,12 +55,15 @@ try {
         file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] $dbg\n", FILE_APPEND);
     } catch (Throwable $ignore) {}
     $cart = get_or_create_cart($pdo);
-    // If user just logged in during this request (session gained user_id), ensure cart user_id is set
+    // ALWAYS assign cart to logged-in user immediately
     $authUser = get_authenticated_user_id();
-    if ($authUser && empty($cart['user_id'])) {
-        $claim = $pdo->prepare('UPDATE carts SET user_id = :uid, updated_at = NOW() WHERE id = :cid');
-        $claim->execute([':uid' => $authUser, ':cid' => $cart['id']]);
-        $cart['user_id'] = $authUser;
+    if ($authUser) {
+        // Update cart to belong to user if not already assigned or assigned to different user
+        if (empty($cart['user_id']) || (int)$cart['user_id'] !== $authUser) {
+            $claim = $pdo->prepare('UPDATE carts SET user_id = :uid, updated_at = NOW() WHERE id = :cid');
+            $claim->execute([':uid' => $authUser, ':cid' => $cart['id']]);
+            $cart['user_id'] = $authUser;
+        }
     }
     $stage = 'got_cart';
     $cartId = (int)$cart['id'];
@@ -103,6 +106,10 @@ try {
             if ($variantRow['price_override'] !== null) {
                 $unitPrice = (float)$variantRow['price_override'];
             }
+        }
+        // REQUIRE VARIANT SELECTION - Cannot add product with variants without selecting one
+        if (!$variantRow) {
+            cart_json_response(400, ['success' => false, 'error' => 'variant_required', 'message' => 'Please select a variant before adding to cart']);
         }
     }
 

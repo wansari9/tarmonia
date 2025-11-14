@@ -9,6 +9,26 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- REQUIRE LOGIN BEFORE CHECKOUT -->
+    <script>
+        (function() {
+            // Check authentication immediately before page loads
+            fetch('includes/auth_session.php', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(session) {
+                    if (!session || !session.authenticated) {
+                        // Not logged in - redirect to login with return URL
+                        var returnUrl = encodeURIComponent(window.location.href);
+                        window.location.href = 'login.html?redirect=' + returnUrl + '&message=' + encodeURIComponent('Please log in to checkout');
+                    }
+                })
+                .catch(function() {
+                    // Error checking session - redirect to login
+                    var returnUrl = encodeURIComponent(window.location.href);
+                    window.location.href = 'login.html?redirect=' + returnUrl;
+                });
+        })();
+    </script>
 </head>
 <body>
     <div class="checkout-bg" style="background: url('./images/background-checkout.png') ">

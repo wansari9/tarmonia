@@ -849,6 +849,23 @@ document.addEventListener('DOMContentLoaded', function () {
             var sizeVal = sizeSel ? (sizeSel.value || '').trim() : '';
             var qtyOptVal = qtyOptSel ? (qtyOptSel.value || '').trim() : '';
 
+            // CHECK IF PRODUCT HAS VARIANTS - Require selection before adding to cart
+            var hasVariants = CURRENT_PRODUCT && (CURRENT_PRODUCT.has_variants || productHasWeightVariants(CURRENT_PRODUCT));
+            if (hasVariants) {
+                // Check if at least one variant option is selected (weight, size, or quantity)
+                var hasSelection = weightVal || sizeVal || qtyOptVal;
+                if (!hasSelection) {
+                    alert('Please select product options (weight, size, or quantity) before adding to cart.');
+                    // Highlight the weight dropdown if it exists
+                    if (weightSel && weightSel.options.length > 1) {
+                        weightSel.focus();
+                        weightSel.style.border = '2px solid #ff0000';
+                        setTimeout(function(){ weightSel.style.border = ''; }, 2000);
+                    }
+                    return;
+                }
+            }
+
             // Ensure a weight value for variantized products: default to first non-empty option if not chosen
             if (weightSel && weightSel.options.length > 1 && !weightVal) {
                 var firstVal = '';
@@ -904,7 +921,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(function(err){
                     console.error('[cart] add failed', err);
-                    alert(err && err.message ? err.message : 'Failed to add to cart');
+                    var errorMsg = 'Failed to add to cart';
+                    if (err && err.message) {
+                        errorMsg = err.message;
+                    } else if (err && err.error === 'variant_required') {
+                        errorMsg = 'Please select product options (weight, size, or quantity) before adding to cart.';
+                    }
+                    alert(errorMsg);
                     addToCartButton.disabled = false;
                     addToCartButton.textContent = 'Add to Cart';
                 });

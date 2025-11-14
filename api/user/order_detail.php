@@ -3,16 +3,16 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/auth_session.php';
+require_once __DIR__ . '/../../includes/session_helper.php';
 
 // Ensure user is authenticated
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+if (!is_user_authenticated()) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
     exit;
 }
 
-$user_id = (int)$_SESSION['user_id'];
+$user_id = get_session_user_id();
 $order_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($order_id <= 0) {
@@ -25,12 +25,16 @@ try {
     // Get order - ensure it belongs to the logged-in user
     $stmt = $pdo->prepare("
         SELECT 
-            id, user_id, status, subtotal, shipping_total, tax_total, total,
-            billing_first_name, billing_last_name, billing_address_line1, billing_address_line2,
-            billing_city, billing_state, billing_postal_code, billing_country, billing_phone,
-            shipping_first_name, shipping_last_name, shipping_address_line1, shipping_address_line2,
-            shipping_city, shipping_state, shipping_postal_code, shipping_country, shipping_phone,
-            tracking_number, shipped_at, created_at, updated_at
+            id, user_id, order_number, status, currency, subtotal, shipping_total, tax_total, 
+            discount_total, grand_total,
+            billing_first_name, billing_last_name, billing_email, billing_phone,
+            billing_address_line1, billing_address_line2,
+            billing_city, billing_state, billing_postal_code, billing_country,
+            shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
+            shipping_address_line1, shipping_address_line2,
+            shipping_city, shipping_state, shipping_postal_code, shipping_country,
+            tracking_number, shipped_at, admin_confirmed_at, notes,
+            created_at, updated_at
         FROM orders
         WHERE id = ? AND user_id = ?
     ");
@@ -49,17 +53,22 @@ try {
             oi.id,
             oi.product_id,
             oi.product_name,
+            oi.sku,
             oi.quantity,
             oi.unit_price,
-            oi.subtotal,
-            p.image_url
+            oi.line_total,
+            oi.image,
+            oi.options_snapshot
         FROM order_items oi
-        LEFT JOIN products p ON p.id = oi.product_id
         WHERE oi.order_id = ?
         ORDER BY oi.id
     ");
     $stmt->execute([$order_id]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Add modification capability flag
+    $order['can_modify'] = ($order['status'] === 'awaiting_confirmation' && empty($order['admin_confirmed_at']));
+    $order['currency'] = $order['currency'] ?: 'RM';
 
     echo json_encode([
         'success' => true,

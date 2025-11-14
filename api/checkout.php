@@ -15,6 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // CSRF validation removed per user request
 
+// REQUIRE USER LOGIN - Cannot checkout without being logged in
+if (!is_user_authenticated()) {
+    api_json_error(401, 'authentication_required', 'You must be logged in to checkout');
+}
+
+$userId = get_session_user_id();
+
 // Get POST data
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
 
@@ -25,6 +32,12 @@ try {
     // Get or create cart
     $cart = get_or_create_cart($pdo);
     $cartId = (int)$cart['id'];
+    
+    // Ensure cart is assigned to logged-in user
+    if (empty($cart['user_id']) || (int)$cart['user_id'] !== $userId) {
+        $assignUser = $pdo->prepare('UPDATE carts SET user_id = :uid, updated_at = NOW() WHERE id = :cid');
+        $assignUser->execute([':uid' => $userId, ':cid' => $cartId]);
+    }
     
     error_log("Checkout - Cart ID: " . $cartId);
     
@@ -45,9 +58,7 @@ try {
     
     $pdo->beginTransaction();
     
-    // Get user ID if logged in
-    $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
-    
+    // User ID already validated above (required for checkout)
     // Calculate cart totals (includes $5.99 shipping)
     $totals = recalc_cart_totals($pdo, $cartId);
     

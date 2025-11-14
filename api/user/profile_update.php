@@ -3,16 +3,16 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/auth_session.php';
+require_once __DIR__ . '/../../includes/session_helper.php';
 
 // Ensure user is authenticated
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+if (!is_user_authenticated()) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
     exit;
 }
 
-$user_id = (int)$_SESSION['user_id'];
+$user_id = get_session_user_id();
 
 // Get JSON input
 $input = json_decode(file_get_contents('php://input'), true);

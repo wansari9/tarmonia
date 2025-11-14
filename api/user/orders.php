@@ -3,16 +3,16 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/auth_session.php';
+require_once __DIR__ . '/../../includes/session_helper.php';
 
 // Ensure user is authenticated
-if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+if (!is_user_authenticated()) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
     exit;
 }
 
-$user_id = (int)$_SESSION['user_id'];
+$user_id = get_session_user_id();
 
 // Pagination
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
@@ -25,15 +25,22 @@ try {
     $stmt->execute([$user_id]);
     $total = (int)$stmt->fetchColumn();
 
-    // Get orders
+    // Get orders with proper column names
     $stmt = $pdo->prepare("
         SELECT 
             o.id,
+            o.order_number,
             o.status,
-            o.total,
+            o.currency,
+            o.subtotal,
+            o.shipping_total,
+            o.tax_total,
+            o.grand_total,
             o.created_at,
             o.tracking_number,
             o.shipped_at,
+            o.admin_confirmed_at,
+            o.notes,
             COUNT(oi.id) as item_count
         FROM orders o
         LEFT JOIN order_items oi ON oi.order_id = o.id
@@ -44,6 +51,12 @@ try {
     ");
     $stmt->execute([$user_id, $limit, $offset]);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Add modification status to each order
+    foreach ($orders as &$order) {
+        $order['can_modify'] = ($order['status'] === 'awaiting_confirmation' && empty($order['admin_confirmed_at']));
+        $order['currency'] = $order['currency'] ?: 'RM';
+    }
 
     $total_pages = ceil($total / $limit);
 
