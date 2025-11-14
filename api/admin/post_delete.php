@@ -4,9 +4,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/../_response.php';
 require_once __DIR__ . '/../../includes/admin_api.php';
 
-global $pdo;
-
 try {
+    global $pdo;
     $data = admin_read_json_body();
     $id = isset($data['id']) ? (int)$data['id'] : 0;
     if ($id <= 0) { api_json_error(422, 'invalid_id', 'Valid post id required'); }

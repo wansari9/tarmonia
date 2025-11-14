@@ -33,6 +33,7 @@
         <td>${(z.active ? 'Active' : 'Disabled')}</td>
         <td>
           <button type="button" class="admin-button" data-manage-methods data-id="${z.id}" data-name="${z.name}">Manage</button>
+          <button type="button" class="admin-button admin-button--danger" data-delete-zone data-id="${z.id}" data-name="${z.name}">Delete</button>
         </td>
       `;
       zonesBody.appendChild(tr);
@@ -43,6 +44,32 @@
         const zid = parseInt(btn.getAttribute('data-id'), 10);
         const zname = btn.getAttribute('data-name') || '';
         openMethodsModal({ id: zid, name: zname });
+      });
+    });
+    zonesBody.querySelectorAll('[data-delete-zone]').forEach(btn => {
+      btn.addEventListener('click', async e => {
+        e.preventDefault();
+        const zid = parseInt(btn.getAttribute('data-id'), 10);
+        const zname = btn.getAttribute('data-name') || '';
+        if (!confirm(`Delete zone "${zname}"? This will also delete all associated shipping methods.`)) return;
+        try {
+          const res = await fetch('api/admin/shipping.php?action=zone_delete', { 
+            method: 'POST', 
+            credentials: 'same-origin', 
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-CSRF-Token': csrf 
+            }, 
+            body: JSON.stringify({ id: zid }) 
+          });
+          const j = await res.json();
+          if (!res.ok || !j || j.ok !== true) throw new Error(j?.error?.message || 'Delete failed');
+          await loadZones();
+          alert('Zone deleted');
+        } catch (e) {
+          alert(e.message || 'Delete failed');
+        }
       });
     });
   }

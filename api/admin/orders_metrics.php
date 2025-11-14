@@ -11,8 +11,6 @@ require_once __DIR__ . '/../../includes/admin_api.php';
  * - from, to: YYYY-MM-DD (only used when window=custom; inclusive)
  */
 
-global $pdo;
-
 function dt_start_of_day(string $date): string {
     return $date . ' 00:00:00';
 }
@@ -25,6 +23,7 @@ $from = null;
 $to = null;
 
 try {
+    global $pdo;
     $now = new DateTimeImmutable('now');
     $todayStr = $now->format('Y-m-d');
 

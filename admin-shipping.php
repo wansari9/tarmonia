@@ -26,7 +26,7 @@ ob_start();
             <th>Region</th>
             <th>Postcode pattern</th>
             <th>Status</th>
-            <th style="width:140px;">Actions</th>
+            <th style="width:200px;">Actions</th>
           </tr>
         </thead>
         <tbody data-zones>

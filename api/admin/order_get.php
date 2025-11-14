@@ -4,39 +4,44 @@ declare(strict_types=1);
 require_once __DIR__ . '/../_response.php';
 require_once __DIR__ . '/../../includes/admin_api.php';
 
-global $pdo;
-
 $id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) {
     api_json_error(422, 'invalid_id', 'Valid order id required');
 }
 
 try {
+    global $pdo;
+    
     // Order core
     $stmt = $pdo->prepare('SELECT id, status, currency, subtotal, discount_total, tax_total, shipping_total, grand_total, created_at, updated_at, user_id, billing_address_id, shipping_address_id FROM orders WHERE id = :id LIMIT 1');
     $stmt->execute([':id' => $id]);
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$order) {
+    $orderRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$orderRow) {
         api_json_error(404, 'not_found', 'Order not found');
     }
+    
+    // Store address IDs before reformatting
+    $billingAddressId = $orderRow['billing_address_id'] ? (int)$orderRow['billing_address_id'] : null;
+    $shippingAddressId = $orderRow['shipping_address_id'] ? (int)$orderRow['shipping_address_id'] : null;
+    
     $order = [
-        'id' => (int)$order['id'],
-        'status' => (string)$order['status'],
-        'currency' => $order['currency'] ?: 'RM',
-        'subtotal' => (float)$order['subtotal'],
-        'discount_total' => (float)$order['discount_total'],
-        'tax_total' => (float)$order['tax_total'],
-        'shipping_total' => (float)$order['shipping_total'],
-        'grand_total' => (float)$order['grand_total'],
-        'created_at' => (string)$order['created_at'],
-        'updated_at' => $order['updated_at'],
-        'user_id' => $order['user_id'] ? (int)$order['user_id'] : null,
+        'id' => (int)$orderRow['id'],
+        'status' => (string)$orderRow['status'],
+        'currency' => $orderRow['currency'] ?: 'RM',
+        'subtotal' => (float)$orderRow['subtotal'],
+        'discount_total' => (float)$orderRow['discount_total'],
+        'tax_total' => (float)$orderRow['tax_total'],
+        'shipping_total' => (float)$orderRow['shipping_total'],
+        'grand_total' => (float)$orderRow['grand_total'],
+        'created_at' => (string)$orderRow['created_at'],
+        'updated_at' => $orderRow['updated_at'],
+        'user_id' => $orderRow['user_id'] ? (int)$orderRow['user_id'] : null,
     ];
 
     // Items
     $items = [];
     try {
-        $it = $pdo->prepare('SELECT id, order_id, product_id, variant_id, product_name, sku, variant_sku, options_snapshot, quantity, unit_price, line_total, image, added_at FROM order_items WHERE order_id = :id ORDER BY id ASC');
+        $it = $pdo->prepare('SELECT id, order_id, product_id, variant_id, product_name, sku, variant_sku, options_snapshot, quantity, unit_price, line_total, image FROM order_items WHERE order_id = :id ORDER BY id ASC');
         $it->execute([':id' => $id]);
         while ($row = $it->fetch(PDO::FETCH_ASSOC)) {
             $items[] = [
@@ -54,11 +59,9 @@ try {
     // Addresses (align to schema in db/db.sql)
     $billing = null; $shipping = null;
     try {
-        $billingId = $order['billing_address_id'] ? (int)$order['billing_address_id'] : null;
-        $shippingId = $order['shipping_address_id'] ? (int)$order['shipping_address_id'] : null;
-        if ($billingId) {
+        if ($billingAddressId) {
             $as = $pdo->prepare('SELECT id, recipient_name, line1, line2, city, state, postal_code, country FROM addresses WHERE id = :id');
-            $as->execute([':id' => $billingId]);
+            $as->execute([':id' => $billingAddressId]);
             $row = $as->fetch(PDO::FETCH_ASSOC) ?: null;
             if ($row) {
                 $billing = [
@@ -73,9 +76,9 @@ try {
                 ];
             }
         }
-        if ($shippingId) {
+        if ($shippingAddressId) {
             $as = $pdo->prepare('SELECT id, recipient_name, line1, line2, city, state, postal_code, country FROM addresses WHERE id = :id');
-            $as->execute([':id' => $shippingId]);
+            $as->execute([':id' => $shippingAddressId]);
             $row = $as->fetch(PDO::FETCH_ASSOC) ?: null;
             if ($row) {
                 $shipping = [

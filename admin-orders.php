@@ -50,16 +50,17 @@ ob_start();
       <table class="admin-table">
         <thead>
           <tr>
-            <th style="width:100px;">ID</th>
+            <th style="width:80px;">ID</th>
+            <th>Customer</th>
             <th>Status</th>
-            <th>Currency</th>
-            <th class="text-right">Grand total</th>
-            <th>Created</th>
+            <th style="width:100px;">Total</th>
+            <th>Date</th>
+            <th style="width:220px;">Quick Actions</th>
           </tr>
         </thead>
         <tbody data-rows>
           <tr data-empty>
-            <td colspan="5" style="text-align:center;">No orders found.</td>
+            <td colspan="6" style="text-align:center;">No orders found.</td>
           </tr>
         </tbody>
       </table>

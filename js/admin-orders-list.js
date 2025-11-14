@@ -22,10 +22,18 @@
   const applyBtn = $('[data-apply]');
   const clearBtn = $('[data-clear]');
 
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
   let currentPage = 1;
   let pageSize = 20;
 
-  function showAlert(msg){ if(alertBox){ alertBox.textContent = msg; alertBox.hidden = false; } }
+  function showAlert(msg, type='error'){ 
+    if(alertBox){ 
+      alertBox.textContent = msg; 
+      alertBox.hidden = false; 
+      alertBox.className = 'admin-alert ' + (type === 'success' ? 'admin-alert--success' : 'admin-alert--error');
+    } 
+  }
   function clearAlert(){ if(alertBox){ alertBox.textContent=''; alertBox.hidden = true; } }
 
   function buildQuery(params){
@@ -46,26 +54,91 @@
     }
   }
 
+  function getStatusBadge(status) {
+    const statusMap = {
+      'pending': 'admin-badge--pending',
+      'paid': 'admin-badge--paid',
+      'packed': 'admin-badge--packed',
+      'shipped': 'admin-badge--shipped',
+      'delivered': 'admin-badge--delivered',
+      'canceled': 'admin-badge--canceled',
+      'refunded': 'admin-badge--refunded'
+    };
+    const badgeClass = statusMap[status] || 'admin-badge--pending';
+    return `<span class="admin-badge ${badgeClass}">${status}</span>`;
+  }
+
+  async function updateOrderStatus(orderId, newStatus) {
+    try {
+      const res = await fetch('api/admin/orders.php?action=update', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrf
+        },
+        body: JSON.stringify({ id: orderId, status: newStatus })
+      });
+      const json = await res.json();
+      if (!res.ok || !json || json.ok !== true) {
+        throw new Error(json?.error?.message || 'Update failed');
+      }
+      showAlert('Order status updated successfully', 'success');
+      loadOrders(currentPage);
+    } catch (e) {
+      showAlert(e.message || 'Failed to update order status');
+    }
+  }
+
   function renderRows(items){
     rowsBody.innerHTML = '';
     if(!items || items.length === 0){
       const tr = document.createElement('tr');
       tr.setAttribute('data-empty','');
-      tr.innerHTML = '<td colspan="5" style="text-align:center;">No orders found.</td>';
+      tr.innerHTML = '<td colspan="6" style="text-align:center;">No orders found.</td>';
       rowsBody.appendChild(tr);
       return;
     }
     for(const o of items){
       const tr = document.createElement('tr');
+      const customerInfo = o.user_email || o.user_id ? `${o.user_email || 'Customer #' + o.user_id}` : 'Guest';
+      
       tr.innerHTML = `
-        <td><a href="admin-order-detail.php?id=${o.id}" class="admin-link">#${o.id}</a></td>
-        <td>${o.status || ''}</td>
-        <td>${o.currency || ''}</td>
-        <td class="text-right">${formatMoney(o.grand_total || 0, o.currency)}</td>
-        <td>${o.created_at || ''}</td>
+        <td><a href="admin-order-detail.php?id=${o.id}" class="admin-link" style="font-weight:700;">#${o.id}</a></td>
+        <td style="font-size:13px; color:#6b7280;">${customerInfo}</td>
+        <td>${getStatusBadge(o.status || 'pending')}</td>
+        <td class="text-right" style="font-weight:600;">${formatMoney(o.grand_total || 0, o.currency)}</td>
+        <td style="font-size:13px; color:#6b7280;">${new Date(o.created_at).toLocaleDateString()}</td>
+        <td>
+          <div class="admin-table-actions">
+            <button type="button" class="admin-button" data-action="view" data-id="${o.id}" title="View Details">View</button>
+            ${o.status === 'pending' ? `<button type="button" class="admin-button admin-button--primary" data-action="markPaid" data-id="${o.id}" title="Mark as Paid">Mark Paid</button>` : ''}
+            ${o.status === 'paid' || o.status === 'packed' ? `<button type="button" class="admin-button" data-action="markShipped" data-id="${o.id}" title="Mark as Shipped">Ship</button>` : ''}
+          </div>
+        </td>
       `;
       rowsBody.appendChild(tr);
     }
+
+    // Add event listeners to action buttons
+    $$('[data-action]', rowsBody).forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const action = btn.getAttribute('data-action');
+        const orderId = parseInt(btn.getAttribute('data-id'), 10);
+        
+        if (action === 'view') {
+          window.location.href = `admin-order-detail.php?id=${orderId}`;
+        } else if (action === 'markPaid') {
+          if (confirm('Mark this order as paid?')) {
+            await updateOrderStatus(orderId, 'paid');
+          }
+        } else if (action === 'markShipped') {
+          window.location.href = `admin-order-detail.php?id=${orderId}`;
+        }
+      });
+    });
   }
 
   function renderPagination(total, page, size){

@@ -59,8 +59,10 @@ try {
     $countStmt->execute();
     $total = (int)$countStmt->fetchColumn();
 
-    $listSql = 'SELECT o.id, o.status, o.currency, o.grand_total, o.created_at
-                FROM orders o ' . $whereSql . ' ORDER BY o.id DESC LIMIT :limit OFFSET :offset';
+    $listSql = 'SELECT o.id, o.user_id, o.status, o.currency, o.grand_total, o.created_at, u.email as user_email
+                FROM orders o 
+                LEFT JOIN users u ON u.id = o.user_id
+                ' . $whereSql . ' ORDER BY o.id DESC LIMIT :limit OFFSET :offset';
     $listStmt = $pdo->prepare($listSql);
     foreach ($params as $k => $v) {
         $listStmt->bindValue($k, $v, is_int($v) ? PDO::PARAM_INT : PDO::PARAM_STR);
@@ -73,6 +75,8 @@ try {
     while ($row = $listStmt->fetch(PDO::FETCH_ASSOC)) {
         $items[] = [
             'id' => (int)$row['id'],
+            'user_id' => $row['user_id'] ? (int)$row['user_id'] : null,
+            'user_email' => $row['user_email'] ?? null,
             'status' => (string)$row['status'],
             'currency' => $row['currency'] ?: 'RM',
             'grand_total' => (float)$row['grand_total'],

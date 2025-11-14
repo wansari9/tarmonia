@@ -33,48 +33,68 @@ ob_start();
         </div>
     </header>
 
-    <div class="admin-grid-4" style="margin-bottom:16px;">
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Sales (Today)</div>
-            <div class="admin-stat-value" data-sales-today>—</div>
+    <div class="admin-grid-4" style="margin-bottom:32px;">
+        <article class="admin-stat-card admin-stat-card--primary">
+            <div class="admin-stat-icon">$</div>
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Sales Today</div>
+                <div class="admin-stat-value" data-sales-today>—</div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Sales (7 days)</div>
-            <div class="admin-stat-value" data-sales-7d>—</div>
+        <article class="admin-stat-card admin-stat-card--success">
+            <div class="admin-stat-icon">⟳</div>
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Last 7 Days</div>
+                <div class="admin-stat-value" data-sales-7d>—</div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Sales (30 days)</div>
-            <div class="admin-stat-value" data-sales-30d>—</div>
+        <article class="admin-stat-card admin-stat-card--info">
+            <div class="admin-stat-icon">↗</div>
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Last 30 Days</div>
+                <div class="admin-stat-value" data-sales-30d>—</div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Open Carts</div>
-            <div class="admin-stat-value" data-open-carts>—</div>
+        <article class="admin-stat-card admin-stat-card--warning">
+            <div class="admin-stat-icon">◉</div>
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Active Carts</div>
+                <div class="admin-stat-value" data-open-carts>—</div>
+            </div>
         </article>
     </div>
 
-    <div class="admin-grid-4" style="margin-bottom:16px;">
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Products</div>
-            <div class="admin-stat-value" data-products-count>—</div>
-            <div class="admin-stat-meta"><a class="admin-link" href="admin-products.php">View products →</a></div>
+    <div class="admin-grid-4" style="margin-bottom:32px;">
+        <article class="admin-stat-card admin-stat-card--accent">
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Products</div>
+                <div class="admin-stat-value" data-products-count>—</div>
+                <div class="admin-stat-meta"><a class="admin-link" href="admin-products.php">Manage products →</a></div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Orders</div>
-            <div class="admin-stat-value" data-orders-count>—</div>
-            <div class="admin-stat-meta"><a class="admin-link" href="admin-orders.php">View orders →</a></div>
+        <article class="admin-stat-card admin-stat-card--accent">
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Orders</div>
+                <div class="admin-stat-value" data-orders-count>—</div>
+                <div class="admin-stat-meta"><a class="admin-link" href="admin-orders.php">View orders →</a></div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Posts</div>
-            <div class="admin-stat-value" data-posts-count>—</div>
-            <div class="admin-stat-meta"><a class="admin-link" href="admin-posts.php">Manage posts →</a></div>
+        <article class="admin-stat-card admin-stat-card--accent">
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Blog Posts</div>
+                <div class="admin-stat-value" data-posts-count>—</div>
+                <div class="admin-stat-meta"><a class="admin-link" href="admin-posts.php">Manage posts →</a></div>
+            </div>
         </article>
-        <article class="admin-stat-card">
-            <div class="admin-stat-label">Status Breakdown</div>
-            <div class="admin-stat-multi">
-                <span><b data-orders-pending>—</b> pending</span>
-                <span><b data-orders-paid>—</b> paid</span>
-                <span><b data-orders-fulfilled>—</b> fulfilled</span>
-                <span><b data-orders-canceled>—</b> canceled</span>
+        <article class="admin-stat-card admin-stat-card--neutral">
+            <div class="admin-stat-content">
+                <div class="admin-stat-label">Order Status</div>
+                <div class="admin-stat-multi">
+                    <span><b data-orders-pending>—</b> pending</span>
+                    <span><b data-orders-paid>—</b> paid</span>
+                    <span><b data-orders-fulfilled>—</b> fulfilled</span>
+                    <span><b data-orders-canceled>—</b> canceled</span>
+                </div>
             </div>
         </article>
     </div>
