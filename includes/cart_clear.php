@@ -6,7 +6,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     cart_json_response(405, ['success' => false, 'error' => 'Method Not Allowed']);
 }
 
-require_valid_csrf();
+// CSRF validation removed per user request
 
 try {
     $cart = get_or_create_cart($pdo);

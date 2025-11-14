@@ -32,13 +32,12 @@ try {
     } elseif ($email && $orderNumber) {
         // Guest lookup by email and order number
         $stmt = $pdo->prepare('
-            SELECT o.id, o.order_number, o.status, o.shipping_status, o.currency,
-                   o.subtotal, o.discount_total, o.tax_total, o.shipping_total, o.grand_total,
-                   o.payment_status, o.fulfillment_status, o.placed_at, o.created_at
-            FROM orders o
-            LEFT JOIN addresses a ON o.shipping_address_id = a.id
-            WHERE o.order_number = :order_number
-            AND (a.recipient_name LIKE :email OR a.phone LIKE :email)
+            SELECT id, order_number, status, shipping_status, currency,
+                   subtotal, discount_total, tax_total, shipping_total, grand_total,
+                   payment_status, fulfillment_status, placed_at, created_at
+            FROM orders
+            WHERE order_number = :order_number
+            AND (shipping_email LIKE :email OR billing_email LIKE :email)
             LIMIT 1
         ');
         $stmt->execute([

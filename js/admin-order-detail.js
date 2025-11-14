@@ -11,11 +11,16 @@
   const orderStatus = $('[data-order-status]');
   const orderCurrency = $('[data-order-currency]');
   const orderGrand = $('[data-order-grand]');
+  const confirmedAt = $('[data-confirmed-at]');
+  const confirmedBy = $('[data-confirmed-by]');
+  const confirmationInfo = $('[data-confirmation-info]');
   const billing = $('[data-billing]');
   const shipping = $('[data-shipping]');
   const itemsBody = $('[data-order-items]');
   const paymentsBody = $('[data-order-payments]');
 
+  const actionConfirm = $('[data-action-confirm]');
+  const confirmSection = $('[data-confirm-section]');
   const actionStatus = $('[data-action-status]');
   const actionUpdate = $('[data-action-update]');
   const actionCarrier = $('[data-action-carrier]');
@@ -146,6 +151,18 @@
       if(orderStatus) orderStatus.textContent = order.status || '';
       if(orderCurrency) orderCurrency.textContent = order.currency || 'RM';
       if(orderGrand) orderGrand.textContent = formatMoney(order.grand_total, order.currency);
+      
+      // Show/hide confirmation section and data
+      if(order.status === 'awaiting_confirmation'){
+        if(confirmSection) confirmSection.style.display = 'block';
+        if(confirmationInfo) confirmationInfo.style.display = 'none';
+      } else {
+        if(confirmSection) confirmSection.style.display = 'none';
+        if(confirmationInfo) confirmationInfo.style.display = 'grid';
+        if(confirmedAt) confirmedAt.textContent = order.admin_confirmed_at || '—';
+        if(confirmedBy) confirmedBy.textContent = order.confirmed_by_name || '—';
+      }
+      
       if(billing) billing.innerHTML = formatAddress(billingAddr);
       if(shipping) shipping.innerHTML = formatAddress(shippingAddr);
       if(actionStatus) actionStatus.value = order.status || 'pending';
@@ -172,6 +189,23 @@
     const json = await res.json();
     if(!res.ok || !json || json.ok !== true) throw new Error(json?.error?.message || 'Request failed');
     return json.data;
+  }
+
+  // Confirm order
+  if(actionConfirm){
+    actionConfirm.addEventListener('click', async () => {
+      clearAlert();
+      const id = getId();
+      if(!id) return;
+      if(!confirm('Confirm this order? It will be moved to pending status.')) return;
+      try{
+        await apiPost('api/admin/order_confirm.php', { id });
+        showAlert('Order confirmed successfully', 'success');
+        await loadOrder();
+      } catch(e){
+        showAlert(e.message || 'Failed to confirm order');
+      }
+    });
   }
 
   // Update status

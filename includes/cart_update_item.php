@@ -6,7 +6,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     cart_json_response(405, ['success' => false, 'error' => 'Method Not Allowed']);
 }
 
-require_valid_csrf();
+// CSRF validation removed per user request
 
 $itemId = isset($_POST['item_id']) ? (int)$_POST['item_id'] : 0;
 $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;

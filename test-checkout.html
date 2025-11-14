@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+        .result { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Checkout System Test</h1>
+    
+    <div class="section info">
+        <h3>Test Status</h3>
+        <div id="status">Ready to test...</div>
+    </div>
+
+    <div class="section">
+        <h3>Step 1: Test Cart API</h3>
+        <button onclick="testCartAPI()">Test Cart Mini API</button>
+        <div id="cart-result" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h3>Step 2: Add Test Product to Cart</h3>
+        <button onclick="addTestProduct()">Add Test Product</button>
+        <div id="add-result" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h3>Step 3: Test Checkout API</h3>
+        <button onclick="testCheckout()">Submit Test Order</button>
+        <div id="checkout-result" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h3>Debug Info</h3>
+        <button onclick="checkSession()">Check Session</button>
+        <button onclick="clearLocalStorage()">Clear LocalStorage</button>
+        <div id="debug-result" class="result"></div>
+    </div>
+
+    <script>
+        function log(elementId, message, type = 'info') {
+            const el = document.getElementById(elementId);
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            el.innerHTML = `<div class="${className}"><pre>${message}</pre></div>`;
+        }
+
+        async function testCartAPI() {
+            try {
+                log('cart-result', 'Testing cart_mini.php...', 'info');
+                const response = await fetch('includes/cart_mini.php', {
+                    credentials: 'same-origin'
+                });
+                
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch(e) {
+                    log('cart-result', 'Response is not JSON:\n' + text, 'error');
+                    return;
+                }
+                
+                if (data.success) {
+                    const summary = `Cart loaded successfully!
+Items: ${data.cart.counts.items}
+Subtotal: RM${data.cart.totals.subtotal}
+Shipping: RM${data.cart.totals.shipping_total}
+Total: RM${data.cart.totals.grand_total}
+
+Full response:
+${JSON.stringify(data, null, 2)}`;
+                    log('cart-result', summary, 'success');
+                } else {
+                    log('cart-result', 'Cart API Error:\n' + JSON.stringify(data, null, 2), 'error');
+                }
+            } catch(error) {
+                log('cart-result', 'Error: ' + error.message + '\n' + error.stack, 'error');
+            }
+        }
+
+        async function addTestProduct() {
+            try {
+                log('add-result', 'Adding test product...', 'info');
+                
+                const formData = new FormData();
+                formData.append('product_id', '1');
+                formData.append('quantity', '1');
+                
+                const response = await fetch('includes/cart_add_item.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    log('add-result', 'Product added!\n' + JSON.stringify(data, null, 2), 'success');
+                    // Refresh cart
+                    await testCartAPI();
+                } else {
+                    log('add-result', 'Failed to add product:\n' + JSON.stringify(data, null, 2), 'error');
+                }
+            } catch(error) {
+                log('add-result', 'Error: ' + error.message, 'error');
+            }
+        }
+
+        async function testCheckout() {
+            try {
+                log('checkout-result', 'Submitting test order...', 'info');
+                
+                const orderData = {
+                    first_name: 'Test',
+                    last_name: 'User',
+                    email: 'test@example.com',
+                    phone: '0123456789',
+                    address: '123 Test Street',
+                    address2: '',
+                    city: 'Kuala Lumpur',
+                    state: 'Selangor',
+                    postal_code: '50000',
+                    country: 'MY',
+                    payment_method: 'manual',
+                    notes: 'Test order from checkout test page'
+                };
+                
+                const response = await fetch('api/checkout.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                const text = await response.text();
+                console.log('Raw response:', text);
+                
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch(e) {
+                    log('checkout-result', 'Response is not JSON:\n' + text, 'error');
+                    return;
+                }
+                
+                if (data.ok) {
+                    const summary = `✅ ORDER PLACED SUCCESSFULLY!
+Order ID: ${data.data.order_id}
+Order Number: ${data.data.order_number}
+Total: RM${data.data.total}
+
+Full response:
+${JSON.stringify(data, null, 2)}`;
+                    log('checkout-result', summary, 'success');
+                } else {
+                    const errorMsg = `❌ CHECKOUT FAILED
+${data.error ? JSON.stringify(data.error, null, 2) : 'Unknown error'}
+
+Full response:
+${JSON.stringify(data, null, 2)}`;
+                    log('checkout-result', errorMsg, 'error');
+                }
+            } catch(error) {
+                log('checkout-result', 'Error: ' + error.message + '\n' + error.stack, 'error');
+            }
+        }
+
+        async function checkSession() {
+            try {
+                const response = await fetch('includes/auth_session.php', {
+                    credentials: 'same-origin'
+                });
+                const data = await response.json();
+                
+                const info = `Session Info:
+Authenticated: ${data.authenticated}
+User: ${data.user ? JSON.stringify(data.user, null, 2) : 'Not logged in'}
+CSRF Token: ${data.csrf_token ? data.csrf_token.substring(0, 20) + '...' : 'None'}`;
+                
+                log('debug-result', info, 'info');
+            } catch(error) {
+                log('debug-result', 'Error: ' + error.message, 'error');
+            }
+        }
+
+        function clearLocalStorage() {
+            localStorage.clear();
+            log('debug-result', 'LocalStorage cleared!', 'success');
+        }
+
+        // Auto-run cart test on load
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('status').innerHTML = '✅ Page loaded. Click buttons to test each step.';
+        });
+    </script>
+</body>
+</html>

@@ -59,10 +59,13 @@ try {
     $countStmt->execute();
     $total = (int)$countStmt->fetchColumn();
 
-    $listSql = 'SELECT o.id, o.user_id, o.status, o.currency, o.grand_total, o.created_at, u.email as user_email
+    $listSql = 'SELECT o.id, o.user_id, o.status, o.currency, o.grand_total, o.created_at, o.tracking_number, o.admin_confirmed_at, u.email as user_email
                 FROM orders o 
                 LEFT JOIN users u ON u.id = o.user_id
-                ' . $whereSql . ' ORDER BY o.id DESC LIMIT :limit OFFSET :offset';
+                ' . $whereSql . ' ORDER BY 
+                CASE WHEN o.status = "awaiting_confirmation" THEN 0 ELSE 1 END,
+                o.id DESC 
+                LIMIT :limit OFFSET :offset';
     $listStmt = $pdo->prepare($listSql);
     foreach ($params as $k => $v) {
         $listStmt->bindValue($k, $v, is_int($v) ? PDO::PARAM_INT : PDO::PARAM_STR);
@@ -81,6 +84,8 @@ try {
             'currency' => $row['currency'] ?: 'RM',
             'grand_total' => (float)$row['grand_total'],
             'created_at' => (string)$row['created_at'],
+            'tracking_number' => $row['tracking_number'],
+            'admin_confirmed_at' => $row['admin_confirmed_at'],
         ];
     }
 

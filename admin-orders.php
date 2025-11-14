@@ -19,6 +19,7 @@ ob_start();
         <span class="admin-field-label">Status</span>
         <select class="admin-input" data-filter-status>
           <option value="all">All</option>
+          <option value="awaiting_confirmation">Awaiting Confirmation</option>
           <option value="pending">Pending</option>
           <option value="paid">Paid</option>
           <option value="packed">Packed</option>

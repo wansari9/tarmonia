@@ -15,11 +15,14 @@ if ($orderId <= 0 && !$orderNumber) {
 }
 
 try {
-    // Get order
+    // Get order with inline address fields
     $sql = 'SELECT id, order_number, user_id, status, shipping_status, tracking_number,
                    currency, subtotal, discount_total, tax_total, shipping_total, grand_total,
-                   shipping_address_id, billing_address_id, fulfillment_status, payment_status,
-                   notes, placed_at, created_at, updated_at
+                   fulfillment_status, payment_status, notes, placed_at, created_at, updated_at,
+                   billing_first_name, billing_last_name, billing_email, billing_phone,
+                   billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
+                   shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
+                   shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country
             FROM orders WHERE ';
     
     $params = [];
@@ -74,52 +77,36 @@ try {
         ];
     }
     
-    // Get shipping address
+    // Build shipping address from inline fields
     $shippingAddress = null;
-    if ($order['shipping_address_id']) {
-        $addrStmt = $pdo->prepare('
-            SELECT id, recipient_name, phone, line1, line2, city, state, postal_code, country
-            FROM addresses WHERE id = :id
-        ');
-        $addrStmt->execute([':id' => $order['shipping_address_id']]);
-        if ($addr = $addrStmt->fetch(PDO::FETCH_ASSOC)) {
-            $shippingAddress = [
-                'id' => (int)$addr['id'],
-                'recipient_name' => $addr['recipient_name'],
-                'phone' => $addr['phone'],
-                'line1' => $addr['line1'],
-                'line2' => $addr['line2'],
-                'city' => $addr['city'],
-                'state' => $addr['state'],
-                'postal_code' => $addr['postal_code'],
-                'country' => $addr['country']
-            ];
-        }
+    if ($order['shipping_first_name'] || $order['shipping_address_line1']) {
+        $shippingAddress = [
+            'recipient_name' => trim(($order['shipping_first_name'] ?? '') . ' ' . ($order['shipping_last_name'] ?? '')),
+            'email' => $order['shipping_email'],
+            'phone' => $order['shipping_phone'],
+            'line1' => $order['shipping_address_line1'],
+            'line2' => $order['shipping_address_line2'],
+            'city' => $order['shipping_city'],
+            'state' => $order['shipping_state'],
+            'postal_code' => $order['shipping_postal_code'],
+            'country' => $order['shipping_country']
+        ];
     }
     
-    // Get billing address (often same as shipping)
+    // Build billing address from inline fields
     $billingAddress = null;
-    if ($order['billing_address_id'] && $order['billing_address_id'] != $order['shipping_address_id']) {
-        $addrStmt = $pdo->prepare('
-            SELECT id, recipient_name, phone, line1, line2, city, state, postal_code, country
-            FROM addresses WHERE id = :id
-        ');
-        $addrStmt->execute([':id' => $order['billing_address_id']]);
-        if ($addr = $addrStmt->fetch(PDO::FETCH_ASSOC)) {
-            $billingAddress = [
-                'id' => (int)$addr['id'],
-                'recipient_name' => $addr['recipient_name'],
-                'phone' => $addr['phone'],
-                'line1' => $addr['line1'],
-                'line2' => $addr['line2'],
-                'city' => $addr['city'],
-                'state' => $addr['state'],
-                'postal_code' => $addr['postal_code'],
-                'country' => $addr['country']
-            ];
-        }
-    } else {
-        $billingAddress = $shippingAddress;
+    if ($order['billing_first_name'] || $order['billing_address_line1']) {
+        $billingAddress = [
+            'recipient_name' => trim(($order['billing_first_name'] ?? '') . ' ' . ($order['billing_last_name'] ?? '')),
+            'email' => $order['billing_email'],
+            'phone' => $order['billing_phone'],
+            'line1' => $order['billing_address_line1'],
+            'line2' => $order['billing_address_line2'],
+            'city' => $order['billing_city'],
+            'state' => $order['billing_state'],
+            'postal_code' => $order['billing_postal_code'],
+            'country' => $order['billing_country']
+        ];
     }
     
     // Get payments

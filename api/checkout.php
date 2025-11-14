@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/_response.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/cart_common.php';
-require_once __DIR__ . '/../includes/auth_session.php';
+require_once __DIR__ . '/../includes/session_helper.php';
 
 global $pdo;
 
@@ -13,13 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_json_error(405, 'method_not_allowed', 'Only POST allowed');
 }
 
+// CSRF validation removed per user request
+
 // Get POST data
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
+
+// Log for debugging
+error_log("Checkout attempt - Input: " . json_encode($input));
 
 try {
     // Get or create cart
     $cart = get_or_create_cart($pdo);
     $cartId = (int)$cart['id'];
+    
+    error_log("Checkout - Cart ID: " . $cartId);
     
     // Check cart has items
     $itemCheck = $pdo->prepare('SELECT COUNT(*) as cnt FROM cart_items WHERE cart_id = :cid');
@@ -41,32 +48,7 @@ try {
     // Get user ID if logged in
     $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
     
-    // Create/get shipping address
-    $shippingAddressId = null;
-    $stmt = $pdo->prepare('
-        INSERT INTO addresses (user_id, recipient_name, phone, line1, line2, city, state, postal_code, country, label)
-        VALUES (:user_id, :recipient_name, :phone, :line1, :line2, :city, :state, :postal_code, :country, :label)
-    ');
-    
-    $recipientName = trim($input['first_name'] . ' ' . $input['last_name']);
-    $stmt->execute([
-        ':user_id' => $userId,
-        ':recipient_name' => $recipientName,
-        ':phone' => $input['phone'] ?? '',
-        ':line1' => $input['address'] ?? '',
-        ':line2' => $input['address2'] ?? null,
-        ':city' => $input['city'] ?? '',
-        ':state' => $input['state'] ?? null,
-        ':postal_code' => $input['postal_code'] ?? '',
-        ':country' => $input['country'] ?? 'MY',
-        ':label' => 'Shipping Address'
-    ]);
-    $shippingAddressId = (int)$pdo->lastInsertId();
-    
-    // Use same address for billing (can be enhanced later)
-    $billingAddressId = $shippingAddressId;
-    
-    // Calculate cart totals
+    // Calculate cart totals (includes $5.99 shipping)
     $totals = recalc_cart_totals($pdo, $cartId);
     
     // Generate order number
@@ -77,12 +59,18 @@ try {
         INSERT INTO orders (
             order_number, user_id, status, shipping_status, currency,
             subtotal, discount_total, tax_total, shipping_total, grand_total,
-            shipping_address_id, billing_address_id, shipping_method_id,
+            billing_first_name, billing_last_name, billing_email, billing_phone,
+            billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
+            shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
+            shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country,
             fulfillment_status, payment_status, notes, placed_at
         ) VALUES (
             :order_number, :user_id, :status, :shipping_status, :currency,
             :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
-            :shipping_address_id, :billing_address_id, :shipping_method_id,
+            :billing_first_name, :billing_last_name, :billing_email, :billing_phone,
+            :billing_address_line1, :billing_address_line2, :billing_city, :billing_state, :billing_postal_code, :billing_country,
+            :shipping_first_name, :shipping_last_name, :shipping_email, :shipping_phone,
+            :shipping_address_line1, :shipping_address_line2, :shipping_city, :shipping_state, :shipping_postal_code, :shipping_country,
             :fulfillment_status, :payment_status, :notes, NOW()
         )
     ');
@@ -90,7 +78,7 @@ try {
     $orderStmt->execute([
         ':order_number' => $orderNumber,
         ':user_id' => $userId,
-        ':status' => 'pending',
+        ':status' => 'awaiting_confirmation',
         ':shipping_status' => 'pending',
         ':currency' => $cart['currency'] ?? 'RM',
         ':subtotal' => $totals['subtotal'],
@@ -98,9 +86,26 @@ try {
         ':tax_total' => $totals['tax_total'],
         ':shipping_total' => $totals['shipping_total'],
         ':grand_total' => $totals['grand_total'],
-        ':shipping_address_id' => $shippingAddressId,
-        ':billing_address_id' => $billingAddressId,
-        ':shipping_method_id' => $cart['shipping_method_id'] ?? null,
+        ':billing_first_name' => $input['first_name'],
+        ':billing_last_name' => $input['last_name'],
+        ':billing_email' => $input['email'],
+        ':billing_phone' => $input['phone'],
+        ':billing_address_line1' => $input['address'],
+        ':billing_address_line2' => $input['address2'] ?? null,
+        ':billing_city' => $input['city'],
+        ':billing_state' => $input['state'] ?? null,
+        ':billing_postal_code' => $input['postal_code'],
+        ':billing_country' => $input['country'] ?? 'MY',
+        ':shipping_first_name' => $input['first_name'],
+        ':shipping_last_name' => $input['last_name'],
+        ':shipping_email' => $input['email'],
+        ':shipping_phone' => $input['phone'],
+        ':shipping_address_line1' => $input['address'],
+        ':shipping_address_line2' => $input['address2'] ?? null,
+        ':shipping_city' => $input['city'],
+        ':shipping_state' => $input['state'] ?? null,
+        ':shipping_postal_code' => $input['postal_code'],
+        ':shipping_country' => $input['country'] ?? 'MY',
         ':fulfillment_status' => 'unfulfilled',
         ':payment_status' => 'unpaid',
         ':notes' => $input['notes'] ?? null

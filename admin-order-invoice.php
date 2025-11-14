@@ -26,15 +26,29 @@ try {
     $it->execute([':id' => $id]);
     $items = $it->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
-    if (!empty($order['billing_address_id'])) {
-        $as = $pdo->prepare('SELECT recipient_name, line1, line2, city, state, postal_code, country FROM addresses WHERE id = :id');
-        $as->execute([':id' => (int)$order['billing_address_id']]);
-        $billing = $as->fetch(PDO::FETCH_ASSOC) ?: null;
+    // Build billing address from inline fields
+    if (!empty($order['billing_first_name']) || !empty($order['billing_address_line1'])) {
+        $billing = [
+            'recipient_name' => trim(($order['billing_first_name'] ?? '') . ' ' . ($order['billing_last_name'] ?? '')),
+            'line1' => $order['billing_address_line1'],
+            'line2' => $order['billing_address_line2'],
+            'city' => $order['billing_city'],
+            'state' => $order['billing_state'],
+            'postal_code' => $order['billing_postal_code'],
+            'country' => $order['billing_country']
+        ];
     }
-    if (!empty($order['shipping_address_id'])) {
-        $as = $pdo->prepare('SELECT recipient_name, line1, line2, city, state, postal_code, country FROM addresses WHERE id = :id');
-        $as->execute([':id' => (int)$order['shipping_address_id']]);
-        $shipping = $as->fetch(PDO::FETCH_ASSOC) ?: null;
+    // Build shipping address from inline fields
+    if (!empty($order['shipping_first_name']) || !empty($order['shipping_address_line1'])) {
+        $shipping = [
+            'recipient_name' => trim(($order['shipping_first_name'] ?? '') . ' ' . ($order['shipping_last_name'] ?? '')),
+            'line1' => $order['shipping_address_line1'],
+            'line2' => $order['shipping_address_line2'],
+            'city' => $order['shipping_city'],
+            'state' => $order['shipping_state'],
+            'postal_code' => $order['shipping_postal_code'],
+            'country' => $order['shipping_country']
+        ];
     }
 } catch (Throwable $e) {
     http_response_code(404);

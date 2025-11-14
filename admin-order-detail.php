@@ -28,6 +28,11 @@ ob_start();
         <div class="admin-kv"><span>Status</span><b data-order-status>—</b></div>
         <div class="admin-kv"><span>Grand total</span><b data-order-grand>—</b></div>
       </div>
+      <div class="admin-grid-3" style="margin-top:12px;" data-confirmation-info>
+        <div class="admin-kv"><span>Confirmed At</span><b data-confirmed-at>—</b></div>
+        <div class="admin-kv"><span>Confirmed By</span><b data-confirmed-by>—</b></div>
+        <div class="admin-kv"><span></span><b></b></div>
+      </div>
       <div class="admin-grid-2" style="margin-top:12px;">
         <div>
           <h4>Billing</h4>
@@ -92,10 +97,14 @@ ob_start();
     <div class="admin-card-body">
       <div class="admin-grid-2">
         <div>
+          <div class="admin-inline" style="margin-bottom:12px;" data-confirm-section>
+            <button type="button" class="admin-button" data-action-confirm style="background:#10b981;color:#fff;">Confirm Order</button>
+          </div>
           <label class="admin-field">
             <span class="admin-field-label">Update status</span>
             <div class="admin-inline">
               <select class="admin-input" data-action-status>
+                <option value="awaiting_confirmation">Awaiting Confirmation</option>
                 <option value="pending">Pending</option>
                 <option value="paid">Paid</option>
                 <option value="packed">Packed</option>
