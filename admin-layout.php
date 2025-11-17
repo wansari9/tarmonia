@@ -41,6 +41,7 @@ if (isset($_SESSION['flash'])) { unset($_SESSION['flash']); }
                 <li><a href="admin-products.php"<?= nav_active('admin-products.php', $currentScript) ?>>Products</a></li>
                 <li><a href="admin-posts.php"<?= nav_active('admin-posts.php', $currentScript) ?>>Posts</a></li>
                 <li><a href="admin-reviews.php"<?= nav_active('admin-reviews.php', $currentScript) ?>>Reviews</a></li>
+                <li><a href="admin-moderation-logs.php"<?= nav_active('admin-moderation-logs.php', $currentScript) ?>>Moderation Logs</a></li>
                 <li><a href="admin-orders.php"<?= nav_active('admin-orders.php', $currentScript) ?>>Orders</a></li>
                 <li><a href="admin-shipping.php"<?= nav_active('admin-shipping.php', $currentScript) ?>>Shipping</a></li>
             </ul>

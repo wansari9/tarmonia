@@ -28,6 +28,14 @@ try {
     if ($action === 'delete') {
         $del = $pdo->prepare('DELETE FROM comments WHERE id = :id LIMIT 1');
         $del->execute([':id' => $id]);
+        // log moderation
+        try {
+            $log = $pdo->prepare('INSERT INTO moderation_logs (admin_id, comment_id, action, created_at) VALUES (:admin_id, :comment_id, :action, NOW())');
+            $log->execute([':admin_id' => $_SESSION['admin_id'] ?? null, ':comment_id' => $id, ':action' => 'delete']);
+        } catch (Throwable $_e) {
+            // non-fatal: keep going even if logging fails
+        }
+
         api_json_success(['ok' => true, 'action' => 'deleted']);
     }
 
@@ -40,6 +48,20 @@ try {
     $newStatus = $statusMap[$action] ?? 'deleted';
     $u = $pdo->prepare('UPDATE comments SET status = :status WHERE id = :id LIMIT 1');
     $u->execute([':status' => $newStatus, ':id' => $id]);
+
+    // insert moderation log (non-blocking)
+    try {
+        $meta = json_encode(['previous_status' => null], JSON_UNESCAPED_UNICODE);
+        $log = $pdo->prepare('INSERT INTO moderation_logs (admin_id, comment_id, action, meta, created_at) VALUES (:admin_id, :comment_id, :action, :meta, NOW())');
+        $log->execute([
+            ':admin_id' => $_SESSION['admin_id'] ?? null,
+            ':comment_id' => $id,
+            ':action' => $action,
+            ':meta' => $meta,
+        ]);
+    } catch (Throwable $_e) {
+        // ignore logging errors
+    }
 
     api_json_success(['ok' => true, 'status' => $newStatus]);
 } catch (Throwable $e) {
