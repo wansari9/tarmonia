@@ -32,6 +32,14 @@ $parentId = isset($_POST['comment_parent']) ? (int)$_POST['comment_parent'] : 0;
 $content = isset($_POST['comment']) ? trim((string)$_POST['comment']) : '';
 $guestName = isset($_POST['author']) ? trim((string)$_POST['author']) : '';
 $guestEmail = isset($_POST['email']) ? trim((string)$_POST['email']) : '';
+// optional rating for product reviews (1-5)
+$rating = null;
+if (isset($_POST['rating'])) {
+    $r = filter_var($_POST['rating'], FILTER_VALIDATE_INT);
+    if ($r !== false && $r >= 1 && $r <= 5) {
+        $rating = $r;
+    }
+}
 
 if ($postId <= 0) {
     respond(400, ['success' => false, 'error' => 'Invalid post']);
@@ -51,12 +59,13 @@ try {
 
     // Insert comment as pending by default
     $status = 'pending';
-    $ins = $pdo->prepare('INSERT INTO comments (user_id, target_type, target_id, parent_id, rating, content, status, created_at) VALUES (:uid, :tt, :tid, :parent, NULL, :content, :status, NOW())');
+    $ins = $pdo->prepare('INSERT INTO comments (user_id, target_type, target_id, parent_id, rating, content, status, created_at) VALUES (:uid, :tt, :tid, :parent, :rating, :content, :status, NOW())');
     $ins->execute([
         ':uid' => $userId ?: null,
         ':tt' => 'post',
         ':tid' => $postId,
         ':parent' => $parentId > 0 ? $parentId : null,
+        ':rating' => $rating,
         ':content' => $content,
         ':status' => $status,
     ]);
@@ -71,6 +80,9 @@ try {
             $body .= "User ID: {$userId}\n";
         } else {
             $body .= "Guest: " . ($guestName ?: 'Guest') . " <" . ($guestEmail ?: 'n/a') . ">\n";
+        }
+        if ($rating !== null) {
+            $body .= "Rating: {$rating}\n";
         }
         $body .= "\n" . $content;
         $c = $pdo->prepare('INSERT INTO communications (direction, channel, from_email, to_email, subject, body, status, related_type, related_id, created_at) VALUES (:dir, :chan, NULL, :to, :sub, :body, :st, :rtype, :rid, NOW())');
