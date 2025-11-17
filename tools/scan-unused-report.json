@@ -1,0 +1,2650 @@
+﻿[
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-dashboard.js",
+        "name":  "admin-dashboard.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-moderation-logs.js",
+        "name":  "admin-moderation-logs.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-order-detail.js",
+        "name":  "admin-order-detail.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-orders-list.js",
+        "name":  "admin-orders-list.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-orders.js",
+        "name":  "admin-orders.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-post-editor.js",
+        "name":  "admin-post-editor.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-posts.js",
+        "name":  "admin-posts.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-product-editor.js",
+        "name":  "admin-product-editor.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-products-list.js",
+        "name":  "admin-products-list.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-products.js",
+        "name":  "admin-products.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-reviews.js",
+        "name":  "admin-reviews.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin-shipping.js",
+        "name":  "admin-shipping.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\admin.js",
+        "name":  "admin.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\auth-session.js",
+        "name":  "auth-session.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\blog-dynamic.js",
+        "name":  "blog-dynamic.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\blog.js",
+        "name":  "blog.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\cart-api.js",
+        "name":  "cart-api.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\checkout.js",
+        "name":  "checkout.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\index-dynamic.js",
+        "name":  "index-dynamic.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\local-cart.js",
+        "name":  "local-cart.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\mini-cart.js",
+        "name":  "mini-cart.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\product-data.js",
+        "name":  "product-data.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\recipe.js",
+        "name":  "recipe.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\shop-dynamic.js",
+        "name":  "shop-dynamic.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\shop-price-range.js",
+        "name":  "shop-price-range.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\shop.js",
+        "name":  "shop.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\single-posts.js",
+        "name":  "single-posts.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\single-product.js",
+        "name":  "single-product.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\user-order-detail.js",
+        "name":  "user-order-detail.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\user-profile-enhanced.js",
+        "name":  "user-profile-enhanced.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\user-profile.js",
+        "name":  "user-profile.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\comment-reply.min.js",
+        "name":  "comment-reply.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.debug.js",
+        "name":  "core.debug.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.init.js",
+        "name":  "core.init.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.messages.js",
+        "name":  "core.messages.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.min.js",
+        "name":  "core.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.reviews.js",
+        "name":  "core.reviews.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\core.utils.js",
+        "name":  "core.utils.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\custom.js",
+        "name":  "custom.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\embed.min.js",
+        "name":  "embed.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\faq.js",
+        "name":  "faq.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\init.js",
+        "name":  "init.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\map.interaction.js",
+        "name":  "map.interaction.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\product-reviews.js",
+        "name":  "product-reviews.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\shortcodes.js",
+        "name":  "shortcodes.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\social-share.js",
+        "name":  "social-share.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\custom\\util.min.js",
+        "name":  "util.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\core.googlemap.js",
+        "name":  "core.googlemap.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\emoji-release.min.js",
+        "name":  "emoji-release.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\isotope.pkgd.min.js",
+        "name":  "isotope.pkgd.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\modernizr.min.js",
+        "name":  "modernizr.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\superfish.js",
+        "name":  "superfish.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\underscore.min.js",
+        "name":  "underscore.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\comp\\comp.min.css",
+        "name":  "comp.min.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\comp\\comp_front.min.js",
+        "name":  "comp_front.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\comp\\jquery.flexslider-min.js",
+        "name":  "jquery.flexslider-min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\egfont.ttf",
+        "name":  "egfont.ttf",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\egfont.woff",
+        "name":  "egfont.woff",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\jquery.themepunch.essential.min.js",
+        "name":  "jquery.themepunch.essential.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\jquery.themepunch.tools.min.js",
+        "name":  "jquery.themepunch.tools.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\lightbox.css",
+        "name":  "lightbox.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\lightbox.js",
+        "name":  "lightbox.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\esg\\settings.css",
+        "name":  "settings.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\chart.min.js",
+        "name":  "chart.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\jquery-migrate.min.js",
+        "name":  "jquery-migrate.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\jquery.countdown.js",
+        "name":  "jquery.countdown.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\jquery.hoverdir.js",
+        "name":  "jquery.hoverdir.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\jquery.js",
+        "name":  "jquery.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\jquery.plugin.js",
+        "name":  "jquery.plugin.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\jquery\\js.cookie.min.js",
+        "name":  "js.cookie.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\mediaelement\\mediaelement-and-player.min.js",
+        "name":  "mediaelement-and-player.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\mediaelement\\mediaelement.min.css",
+        "name":  "mediaelement.min.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\mediaelement\\mediaelement.min.js",
+        "name":  "mediaelement.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\mediaelement\\mediaelementplayer.min.css",
+        "name":  "mediaelementplayer.min.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\prettyPhoto\\jquery.prettyPhoto.init.min.js",
+        "name":  "jquery.prettyPhoto.init.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\prettyPhoto\\jquery.prettyPhoto.min.js",
+        "name":  "jquery.prettyPhoto.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\prettyPhoto\\prettyPhoto.css",
+        "name":  "prettyPhoto.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\prettyPhoto\\ver\\jquery.prettyPhoto.min.js",
+        "name":  "jquery.prettyPhoto.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\prettyPhoto\\ver\\prettyPhoto.css",
+        "name":  "prettyPhoto.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\jquery.themepunch.revolution.min.js",
+        "name":  "jquery.themepunch.revolution.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\settings.css",
+        "name":  "settings.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\extensions\\revolution.extension.actions.min.js",
+        "name":  "revolution.extension.actions.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\extensions\\revolution.extension.layeranimation.min.js",
+        "name":  "revolution.extension.layeranimation.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\extensions\\revolution.extension.navigation.min.js",
+        "name":  "revolution.extension.navigation.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\revslider\\extensions\\revolution.extension.slideanims.min.js",
+        "name":  "revolution.extension.slideanims.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\swiper\\swiper.css",
+        "name":  "swiper.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\swiper\\swiper.js",
+        "name":  "swiper.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\core.min.js",
+        "name":  "core.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\default-skin.css",
+        "name":  "default-skin.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\effect-fade.min.js",
+        "name":  "effect-fade.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\effect.min.js",
+        "name":  "effect.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\jquery.blockUI.min.js",
+        "name":  "jquery.blockUI.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\jquery.zoom.min.js",
+        "name":  "jquery.zoom.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\mouse.min.js",
+        "name":  "mouse.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\photoswipe-ui-default.min.js",
+        "name":  "photoswipe-ui-default.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\photoswipe.css",
+        "name":  "photoswipe.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\photoswipe.min.js",
+        "name":  "photoswipe.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\slider.min.js",
+        "name":  "slider.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\tabs.min.js",
+        "name":  "tabs.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\ui\\widget.min.js",
+        "name":  "widget.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\accounting.min.js",
+        "name":  "accounting.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\add-to-cart-variation.min.js",
+        "name":  "add-to-cart-variation.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\add-to-cart.min.js",
+        "name":  "add-to-cart.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\cart-fragments.min.js",
+        "name":  "cart-fragments.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\jquery-ui-touch-punch.min.js",
+        "name":  "jquery-ui-touch-punch.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\plugin.woocommerce.css",
+        "name":  "plugin.woocommerce.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\price-slider.min.js",
+        "name":  "price-slider.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\single-product.min.js",
+        "name":  "single-product.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\star.ttf",
+        "name":  "star.ttf",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\star.woff",
+        "name":  "star.woff",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\woocommerce-add-to-cart.js",
+        "name":  "woocommerce-add-to-cart.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\woocommerce-layout.css",
+        "name":  "woocommerce-layout.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\woocommerce-smallscreen.css",
+        "name":  "woocommerce-smallscreen.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\woocommerce.css",
+        "name":  "woocommerce.css",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\woocommerce.min.js",
+        "name":  "woocommerce.min.js",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\WooCommerce.ttf",
+        "name":  "WooCommerce.ttf",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\js\\vendor\\woo\\WooCommerce.woff",
+        "name":  "WooCommerce.woff",
+        "dir":  "js",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\admin-login.css",
+        "name":  "admin-login.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\admin.css",
+        "name":  "admin.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\checkout.css",
+        "name":  "checkout.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\core.animation.css",
+        "name":  "core.animation.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\core.messages.css",
+        "name":  "core.messages.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\core.portfolio.css",
+        "name":  "core.portfolio.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\custom-styles.css",
+        "name":  "custom-styles.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\custom.css",
+        "name":  "custom.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\layout.css",
+        "name":  "layout.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\responsive.css",
+        "name":  "responsive.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\shortcodes.css",
+        "name":  "shortcodes.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\style.css",
+        "name":  "style.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\theme.css",
+        "name":  "theme.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\user-profile.css",
+        "name":  "user-profile.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\config.json",
+        "name":  "config.json",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\demo.html",
+        "name":  "demo.html",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\LICENSE.txt",
+        "name":  "LICENSE.txt",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\README.txt",
+        "name":  "README.txt",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\animation.css",
+        "name":  "animation.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\animation.min.css",
+        "name":  "animation.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-codes.css",
+        "name":  "fontello-codes.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-codes.min.css",
+        "name":  "fontello-codes.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-embedded.css",
+        "name":  "fontello-embedded.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-embedded.min.css",
+        "name":  "fontello-embedded.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-ie7-codes.css",
+        "name":  "fontello-ie7-codes.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-ie7-codes.min.css",
+        "name":  "fontello-ie7-codes.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-ie7.css",
+        "name":  "fontello-ie7.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello-ie7.min.css",
+        "name":  "fontello-ie7.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello.css",
+        "name":  "fontello.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\css\\fontello.min.css",
+        "name":  "fontello.min.css",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\font\\fontello.eot",
+        "name":  "fontello.eot",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\font\\fontello.svg",
+        "name":  "fontello.svg",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\font\\fontello.ttf",
+        "name":  "fontello.ttf",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\font\\fontello.woff",
+        "name":  "fontello.woff",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\css\\fontello\\font\\fontello.woff2",
+        "name":  "fontello.woff2",
+        "dir":  "css",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\0219T1-2043a_0.jpg",
+        "name":  "0219T1-2043a_0.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\1-1.png",
+        "name":  "1-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2-1.png",
+        "name":  "2-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2000x1400.png",
+        "name":  "2000x1400.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2000x1600.png",
+        "name":  "2000x1600.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2000x2000.png",
+        "name":  "2000x2000.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2000x800.png",
+        "name":  "2000x800.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\2124572-2000x1394-desktop-hd-ice-cream-cone-background-image.jpg",
+        "name":  "2124572-2000x1394-desktop-hd-ice-cream-cone-background-image.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\3-1.png",
+        "name":  "3-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\4-1.png",
+        "name":  "4-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\5-1.png",
+        "name":  "5-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\71Wr8Vi2NvL._AC_UF894,1000_QL80_.jpg",
+        "name":  "71Wr8Vi2NvL._AC_UF894,1000_QL80_.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\71Wr8Vi2NvL._AC_UF894_1000_QL80_-removebg-preview.png",
+        "name":  "71Wr8Vi2NvL._AC_UF894_1000_QL80_-removebg-preview.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\7360.avif",
+        "name":  "7360.avif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\88417b888aceef44019134d17e94635d0593947d-2000x2000.avif",
+        "name":  "88417b888aceef44019134d17e94635d0593947d-2000x2000.avif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\960x2000.png",
+        "name":  "960x2000.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-milk.avif",
+        "name":  "about-milk.avif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-milk.jpg",
+        "name":  "about-milk.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-story.png",
+        "name":  "about-story.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-team-1.png",
+        "name":  "about-team-1.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-team-2.png",
+        "name":  "about-team-2.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-team-3.png",
+        "name":  "about-team-3.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-team-4.png",
+        "name":  "about-team-4.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\about-teambg.png",
+        "name":  "about-teambg.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\aboutbg.jpg",
+        "name":  "aboutbg.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\background-checkout.png",
+        "name":  "background-checkout.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\bacon.jpeg",
+        "name":  "bacon.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\bacon.png",
+        "name":  "bacon.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\beef.png",
+        "name":  "beef.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\big-cow.png",
+        "name":  "big-cow.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\big-logo.png",
+        "name":  "big-logo.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\big_cow.png",
+        "name":  "big_cow.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\black-currant-ice.jpg",
+        "name":  "black-currant-ice.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\blank.gif",
+        "name":  "blank.gif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\brie cheese.png",
+        "name":  "brie cheese.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\btnNext-light.png",
+        "name":  "btnNext-light.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\btnNext.png",
+        "name":  "btnNext.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\btnPrevious.png",
+        "name":  "btnPrevious.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Butter.png",
+        "name":  "Butter.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\butter_burfi_1.webp",
+        "name":  "butter_burfi_1.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\camembert cheese.png",
+        "name":  "camembert cheese.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\card2-3-3.webp",
+        "name":  "card2-3-3.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\card2.webp",
+        "name":  "card2.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\checkout-bg.png",
+        "name":  "checkout-bg.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\chicken eggs.png",
+        "name":  "chicken eggs.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\chicken.png",
+        "name":  "chicken.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\contentPatternBottom.png",
+        "name":  "contentPatternBottom.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\contentPatternLeft.png",
+        "name":  "contentPatternLeft.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\contentPatternRight.png",
+        "name":  "contentPatternRight.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\contentPatternTop.png",
+        "name":  "contentPatternTop.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\controls.png",
+        "name":  "controls.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\cows-7880154_1280.jpg",
+        "name":  "cows-7880154_1280.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Cranberry-Cashew-Cheese-Vegan-Gluten-Free.jpg",
+        "name":  "Cranberry-Cashew-Cheese-Vegan-Gluten-Free.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\cranberry.png",
+        "name":  "cranberry.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Cranberry_Homecheese.jpg",
+        "name":  "Cranberry_Homecheese.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\cropped-agricultural-machinery.jpg",
+        "name":  "cropped-agricultural-machinery.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\dakin-dairy-farm-cows-header-3.jpg",
+        "name":  "dakin-dairy-farm-cows-header-3.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\DALL·E 2025-03-20 10.43.56 - A close-up of freshly made corn waffles, golden brown and crispy on the edges, served on a rustic wooden plate. The waffles have visible bits of sweet.webp",
+        "name":  "DALL·E 2025-03-20 10.43.56 - A close-up of freshly made corn waffles, golden brown and crispy on the edges, served on a rustic wooden plate. The waffles have visible bits of sweet.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Depositphotos_42141769_XL.jpg",
+        "name":  "Depositphotos_42141769_XL.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\duck eggs.png",
+        "name":  "duck eggs.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\EH7NJI6XDBIBHDJ64ECG7QAOUY.jpg",
+        "name":  "EH7NJI6XDBIBHDJ64ECG7QAOUY.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\esgbox_overlay.png",
+        "name":  "esgbox_overlay.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\esgbox_sprite.png",
+        "name":  "esgbox_sprite.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Evaporated Milk.png",
+        "name":  "Evaporated Milk.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\f38449d949b744a8ae5cb79029f8165d.jpg",
+        "name":  "f38449d949b744a8ae5cb79029f8165d.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Farm sour Cream.png",
+        "name":  "Farm sour Cream.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\farm-trader-faq.jpg",
+        "name":  "farm-trader-faq.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\farm111.jpg",
+        "name":  "farm111.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\farming-8210675_1280.jpg",
+        "name":  "farming-8210675_1280.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\featured-image-1.jpg",
+        "name":  "featured-image-1.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\fishing.jpg",
+        "name":  "fishing.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\food-bread-butter-knife-wallpaper-thumb.jpg",
+        "name":  "food-bread-butter-knife-wallpaper-thumb.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\foodiesfeed.com_fresh-eggs-in-a-grocery-store-1024x683.jpg",
+        "name":  "foodiesfeed.com_fresh-eggs-in-a-grocery-store-1024x683.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\footer-logo.png",
+        "name":  "footer-logo.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\fresh milk.png",
+        "name":  "fresh milk.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\fromage a raclette.png",
+        "name":  "fromage a raclette.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\frozen-dairy-products.webp",
+        "name":  "frozen-dairy-products.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\google_marker.png",
+        "name":  "google_marker.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\google_white5.png",
+        "name":  "google_white5.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\hd-about-us.jpg",
+        "name":  "hd-about-us.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\header-img-foods-to-include-in-daily-routine.jpg",
+        "name":  "header-img-foods-to-include-in-daily-routine.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Home-Slide-1-Cattle-2000x1400-1.webp",
+        "name":  "Home-Slide-1-Cattle-2000x1400-1.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\homecheese.jpeg",
+        "name":  "homecheese.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\How-to-Start-a-Peanut-Butter-Brand.jpg",
+        "name":  "How-to-Start-a-Peanut-Butter-Brand.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\il_fullxfull.5179313557_c10m.jpg",
+        "name":  "il_fullxfull.5179313557_c10m.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images.jpeg",
+        "name":  "images.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images10.jpeg",
+        "name":  "images10.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images11.jpeg",
+        "name":  "images11.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images2.jpeg",
+        "name":  "images2.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images3.jpeg",
+        "name":  "images3.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images4.jpeg",
+        "name":  "images4.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images5.jpeg",
+        "name":  "images5.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images6.jpeg",
+        "name":  "images6.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images7.jpeg",
+        "name":  "images7.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images8.jpeg",
+        "name":  "images8.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\images9.jpeg",
+        "name":  "images9.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\istockphoto-1349772438-612x612.jpg",
+        "name":  "istockphoto-1349772438-612x612.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\JG10293-glass-milk-bottles_3.webp",
+        "name":  "JG10293-glass-milk-bottles_3.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Lamb-scaled.webp",
+        "name":  "Lamb-scaled.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\lamb.png",
+        "name":  "lamb.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\loader.gif",
+        "name":  "loader.gif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\loader.svg",
+        "name":  "loader.svg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\logo.png",
+        "name":  "logo.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\mapcnt6.png",
+        "name":  "mapcnt6.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Milk_\u0026_Sugar_Cereal.webp",
+        "name":  "Milk_\u0026_Sugar_Cereal.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\new-logo-tarmonia.png",
+        "name":  "new-logo-tarmonia.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\nice-farm-with-chickens_198067-939696.avif",
+        "name":  "nice-farm-with-chickens_198067-939696.avif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\No-Churn-SIC-004.webp",
+        "name":  "No-Churn-SIC-004.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\organic food.jpg",
+        "name":  "organic food.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\parmesan cheese.png",
+        "name":  "parmesan cheese.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Pecorino Romano.jpg",
+        "name":  "Pecorino Romano.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\People-Meeting-to-Discuss-Building-a-Positive-Workplace-Culture_resized_8293a1a63f66d16893f6981cf90ddd66e556a307.jpg",
+        "name":  "People-Meeting-to-Discuss-Building-a-Positive-Workplace-Culture_resized_8293a1a63f66d16893f6981cf90ddd66e556a307.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\percorino romano.jpeg",
+        "name":  "percorino romano.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\picking-strawberries.jpg",
+        "name":  "picking-strawberries.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\pork.png",
+        "name":  "pork.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\pouring_milk.webp",
+        "name":  "pouring_milk.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Print-Marinade-steak.webp",
+        "name":  "Print-Marinade-steak.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\quail eggs.png",
+        "name":  "quail eggs.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Raspberry-Frozen-Yogurt-Pops.jpg",
+        "name":  "Raspberry-Frozen-Yogurt-Pops.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\recipes-bg.jpeg",
+        "name":  "recipes-bg.jpeg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Ricotta Salata.jpg",
+        "name":  "Ricotta Salata.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Ricotta Salata.png",
+        "name":  "Ricotta Salata.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\sample-melody.mp3",
+        "name":  "sample-melody.mp3",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\sausage.png",
+        "name":  "sausage.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Screenshot 2025-03-20 at 9.42.56 AM.png",
+        "name":  "Screenshot 2025-03-20 at 9.42.56 AM.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\shutterstock_1120312025.webp",
+        "name":  "shutterstock_1120312025.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\shutterstock_1669554079_2.avif",
+        "name":  "shutterstock_1669554079_2.avif",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\smoked-cheese-flight-000983-1.jpg",
+        "name":  "smoked-cheese-flight-000983-1.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\sprite.png",
+        "name":  "sprite.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\sv9.png",
+        "name":  "sv9.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\tarmonia-new-tag.png",
+        "name":  "tarmonia-new-tag.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\tarmonia-tag.png",
+        "name":  "tarmonia-tag.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Tested raw milk.png",
+        "name":  "Tested raw milk.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\The-Health-Benefits-of-Dairy-Exploring-the-Nutrients-in-Milk-Cheese-and-Yogurt.jpg",
+        "name":  "The-Health-Benefits-of-Dairy-Exploring-the-Nutrients-in-Milk-Cheese-and-Yogurt.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\tmapctrl.png",
+        "name":  "tmapctrl.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\tmapctrl4.png",
+        "name":  "tmapctrl4.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\unsplash-image-w0PGw7eCAYU.jpg",
+        "name":  "unsplash-image-w0PGw7eCAYU.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Untitled-design-5.webp",
+        "name":  "Untitled-design-5.webp",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Vanilla_Ice_Cream.jpg",
+        "name":  "Vanilla_Ice_Cream.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\waffle-with-chocolate-ice-cream-waffles-with-chocolate-ice-cream-wallpaper-preview.jpg",
+        "name":  "waffle-with-chocolate-ice-cream-waffles-with-chocolate-ice-cream-wallpaper-preview.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\waffles.png",
+        "name":  "waffles.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\Waffles_with_Cream.jpg",
+        "name":  "Waffles_with_Cream.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\wide-logo.png",
+        "name":  "wide-logo.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\yellow_bg.jpg",
+        "name":  "yellow_bg.jpg",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\images\\yogurt.png",
+        "name":  "yogurt.png",
+        "dir":  "images",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\admin_api.php",
+        "name":  "admin_api.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\admin_auth.php",
+        "name":  "admin_auth.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\assets.php",
+        "name":  "assets.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_login.php",
+        "name":  "auth_login.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_logout.php",
+        "name":  "auth_logout.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_register.php",
+        "name":  "auth_register.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_request_password_reset.php",
+        "name":  "auth_request_password_reset.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_reset_password.php",
+        "name":  "auth_reset_password.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\auth_session.php",
+        "name":  "auth_session.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_add_item.php",
+        "name":  "cart_add_item.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_clear.php",
+        "name":  "cart_clear.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_common.php",
+        "name":  "cart_common.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_error.log",
+        "name":  "cart_error.log",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_get_or_create.php",
+        "name":  "cart_get_or_create.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_mini.php",
+        "name":  "cart_mini.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_remove_item.php",
+        "name":  "cart_remove_item.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_set_shipping_method.php",
+        "name":  "cart_set_shipping_method.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\cart_update_item.php",
+        "name":  "cart_update_item.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\comment_submit.php",
+        "name":  "comment_submit.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\csrf.php",
+        "name":  "csrf.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\db.php",
+        "name":  "db.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\email_helper.php",
+        "name":  "email_helper.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\email_log.txt",
+        "name":  "email_log.txt",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\head_template.php",
+        "name":  "head_template.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\products_list.php",
+        "name":  "products_list.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\product_detail.php",
+        "name":  "product_detail.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\product_options.php",
+        "name":  "product_options.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\review_eligibility.php",
+        "name":  "review_eligibility.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\review_submit.php",
+        "name":  "review_submit.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\security.php",
+        "name":  "security.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\sendmail.php",
+        "name":  "sendmail.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\session_helper.php",
+        "name":  "session_helper.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\shipping_helper.php",
+        "name":  "shipping_helper.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    },
+    {
+        "path":  "C:\\xampp\\htdocs\\tarmonia\\includes\\smtp_config.php",
+        "name":  "smtp_config.php",
+        "dir":  "includes",
+        "used":  false,
+        "refs":  0,
+        "sample_refs":  ""
+    }
+]

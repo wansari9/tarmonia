@@ -34,6 +34,11 @@ function head_template_render(array $meta = []): void
     }
     echo "    <meta name=\"twitter:image\" content=\"" . htmlspecialchars($image, ENT_QUOTES, 'UTF-8') . "\">\n";
 
+    // Favicon and touch icons
+    echo "    <link rel=\"icon\" href=\"/images/big-logo.png\" sizes=\"any\">\n";
+    echo "    <link rel=\"shortcut icon\" href=\"/images/big-logo.png\">\n";
+    echo "    <link rel=\"apple-touch-icon\" href=\"/images/big-logo.png\">\n";
+
     // Basic JSON-LD placeholders: consumer pages (product/article) should
     // provide $meta['schema'] with proper structure; here we emit a small
     // context wrapper if provided.
@@ -43,6 +48,14 @@ function head_template_render(array $meta = []): void
             echo "    <script type=\"application/ld+json\">\n" . $json . "\n    </script>\n";
         }
     }
+
+    // Resource hints: preconnect to Google Fonts to speed up font loading
+    echo "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n";
+    echo "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n";
+
+    // Preload main stylesheet to reduce render blocking (onload swap)
+    echo "    <link rel=\"preload\" href=\"css/style.css\" as=\"style\" onload=\"this.rel='stylesheet'\">\n";
+    echo "    <noscript><link rel=\"stylesheet\" href=\"css/style.css\"></noscript>\n";
 }
 
 // Helper that returns a minimal Product schema array for convenience.

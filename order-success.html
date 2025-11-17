@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Successful - Tarmonia</title>
-    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="preload" href="css/checkout.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/checkout.css"></noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .success-container {
@@ -289,7 +290,7 @@
                     itemsHTML += '<div class="order-item">';
                     itemsHTML += '  <div class="item-image">';
                     if (item.image) {
-                        itemsHTML += '<img src="' + item.image + '" alt="' + item.product_name + '">';
+                        itemsHTML += '<img loading="lazy" decoding="async" src="' + item.image + '" alt="' + item.product_name + '">';
                     }
                     itemsHTML += '  </div>';
                     itemsHTML += '  <div class="item-details">';

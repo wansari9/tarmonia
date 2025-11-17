@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
-    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="preload" href="css/checkout.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/checkout.css"></noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -246,7 +247,7 @@
                 cart.forEach(function(it){
                     var variantText = it.variant ? ' <small>(' + it.variant + ')</small>' : '';
                     html += '\n<div class="card" data-id="' + it.id + '" data-variant="' + (it.variant||'') + '">\n' +
-                            '  <div class="card-image">' + (it.image ? '<img src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
+                            '  <div class="card-image">' + (it.image ? '<img loading="lazy" decoding="async" src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
                             '  <div class="card-details">\n' +
                             '    <div class="card-name">' + (it.title || 'Product') + variantText + '</div>\n' +
                             '    <div class="card-price">\n' +
@@ -300,11 +301,11 @@
         })();
     </script>
     <!-- Global cart script so checkout can reflect the mini-cart/cart totals -->
-    <script type='text/javascript' src='js/local-cart.js'></script>
-    <script type='text/javascript' src='js/cart-api.js'></script>
-    <script type='text/javascript' src='js/mini-cart.js'></script>
-    <script type='text/javascript' src='js/product-data.js'></script>
-    <script type='text/javascript' src='js/auth-session.js'></script>
-    <script type='text/javascript' src='js/checkout.js'></script>
+    <script defer type='text/javascript' src='js/local-cart.js'></script>
+    <script defer type='text/javascript' src='js/cart-api.js'></script>
+    <script defer type='text/javascript' src='js/mini-cart.js'></script>
+    <script defer type='text/javascript' src='js/product-data.js'></script>
+    <script defer type='text/javascript' src='js/auth-session.js'></script>
+    <script defer type='text/javascript' src='js/checkout.js'></script>
 </body>
 </html>

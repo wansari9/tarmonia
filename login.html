@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
-  <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+  <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
   <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
@@ -162,6 +163,7 @@
     });
   </script>
   <script type="text/javascript" src="js/cart-api.js"></script>
-  <script type="text/javascript" src="js/mini-cart.js"></script>
+  <script defer type="text/javascript" src="js/cart-api.js"></script>
+  <script defer type="text/javascript" src="js/mini-cart.js"></script>
 </body>
 </html>
