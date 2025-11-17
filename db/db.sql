@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2025 at 02:32 AM
+-- Generation Time: Nov 17, 2025 at 03:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -117,7 +117,11 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 (42, NULL, '5o6hnq636j5c72gsbgvfnf6da0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:21:36', '2025-11-14 15:21:36'),
 (43, NULL, '8ibmpgd48n3jhnf98ec8p86cho', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:46:34', '2025-11-14 15:46:34'),
 (44, NULL, 'j5buc7ea1k1stb2v668r9c2ivb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:02:00', '2025-11-14 16:02:00'),
-(45, NULL, '5k40iqev7jbla05i5pm3hcc9e2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:05:43', '2025-11-14 16:05:43');
+(45, NULL, '5k40iqev7jbla05i5pm3hcc9e2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:05:43', '2025-11-14 16:05:43'),
+(46, NULL, 'nr9a8ab4egg3884pofe7n1bjb9', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:21', '2025-11-17 09:35:21'),
+(47, NULL, 'a176shrfs2fkjr4j3m25j1iine', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:33', '2025-11-17 09:35:33'),
+(48, NULL, 'tbr05d1enn91urfeq34ju589mu', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:38:02', '2025-11-17 09:38:02'),
+(49, 12, 'avmbm8tuu0kfm13ncj3d7uf645', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:38:40', '2025-11-17 09:38:40');
 
 -- --------------------------------------------------------
 
@@ -447,20 +451,22 @@ CREATE TABLE `posts` (
   `author_id` int(11) DEFAULT NULL,
   `published_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `category_slugs` varchar(1000) DEFAULT NULL,
+  `tag_slugs` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, `excerpt`, `content`, `author_id`, `published_at`, `created_at`, `updated_at`) VALUES
-(1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'published', 'images/blog1.jpg', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', NULL),
-(2, 'blog', 'Milk and Cheese Against Allergies', 'published', 'images/blog2.jpg', 'milk-cheese-against-allergies', 'Evidence on dairy\'s role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', NULL),
-(3, 'blog', 'The Butter Business Growth', 'published', 'images/blog3.jpg', 'the-butter-business-growth', 'Why butter demand is rising globally.', 'Full content for The Butter Business Growth...', 1, '2025-10-24 11:59:30', '2025-11-13 11:59:30', NULL),
-(4, 'blog', 'Sustainable Practices in Dairy Farming', 'published', 'images/blog4.jpg', 'sustainable-dairy-practices', 'Measuring and reducing farm footprint.', 'Full content for Sustainable Practices in Dairy Farming...', 1, '2025-10-09 11:59:30', '2025-11-13 11:59:30', NULL),
-(5, 'blog', 'Global Trends in World Dairy Markets', 'published', 'images/blog5.jpg', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', NULL),
-(6, 'blog', 'Debunking Common Unhealthy Myths', 'published', 'images/blog6.jpg', 'debunking-unhealthy-myths', 'Separating dairy myths from facts.', 'Full content for Debunking Common Unhealthy Myths...', 1, '2025-08-30 11:59:30', '2025-11-13 11:59:30', NULL);
+INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, `excerpt`, `content`, `author_id`, `published_at`, `created_at`, `updated_at`, `category_slugs`, `tag_slugs`) VALUES
+(1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'published', 'images/blog1.jpg', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'dairy-herd-management', 'dairy,natural'),
+(2, 'blog', 'Milk and Cheese Against Allergies', 'published', 'images/blog2.jpg', 'milk-cheese-against-allergies', 'Evidence on dairy\'s role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'farm-life', 'cheese,milk'),
+(3, 'blog', 'The Butter Business Growth', 'published', 'images/blog3.jpg', 'the-butter-business-growth', 'Why butter demand is rising globally.', 'Full content for The Butter Business Growth...', 1, '2025-10-24 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'industry-input', 'dairy,organic'),
+(4, 'blog', 'Sustainable Practices in Dairy Farming', 'published', 'images/blog4.jpg', 'sustainable-dairy-practices', 'Measuring and reducing farm footprint.', 'Full content for Sustainable Practices in Dairy Farming...', 1, '2025-10-09 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'dairy-herd-management', 'agriculture,natural'),
+(5, 'blog', 'Global Trends in World Dairy Markets', 'published', 'images/blog5.jpg', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'world-dairy-markets', 'agriculture,dairy'),
+(6, 'blog', 'Debunking Common Unhealthy Myths', 'published', 'images/blog6.jpg', 'debunking-unhealthy-myths', 'Separating dairy myths from facts.', 'Full content for Debunking Common Unhealthy Myths...', 1, '2025-08-30 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'unhealthy-myths', 'milk,natural');
 
 -- --------------------------------------------------------
 
@@ -913,7 +919,8 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, 
 (8, 'lisa.wong@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Lisa', 'Wong', '+60145678901', 'customer', NULL, NULL, '2025-11-06 14:15:00', NULL, 0),
 (9, 'david.lim@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'David', 'Lim', '+60137894561', 'customer', NULL, NULL, '2025-11-07 09:20:00', NULL, 0),
 (10, 'emily.chen@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Emily', 'Chen', '+60126547893', 'customer', NULL, NULL, '2025-11-08 11:45:00', NULL, 0),
-(11, 'wes@gmail.com', '$2y$10$29adSka3Lk008R4mQOFBcOn23hOY8f3HCI9TaKQsYzJIxDNgpdL5m', 'wes', 'ansari', '+601128098103', 'customer', NULL, NULL, '2025-11-14 12:55:07', '2025-11-17 09:25:19', 1);
+(11, 'wes@gmail.com', '$2y$10$29adSka3Lk008R4mQOFBcOn23hOY8f3HCI9TaKQsYzJIxDNgpdL5m', 'wes', 'ansari', '+601128098103', 'customer', NULL, NULL, '2025-11-14 12:55:07', '2025-11-17 09:25:19', 1),
+(12, 'wansari000@gmail.com', '$2y$10$w1lP7Tca9X.8vTQhQp4rT.MJKUJgfilljazyVRI/A9h3abVi.ogy.', 'wasi', 'ansri', '123456789', 'customer', NULL, NULL, '2025-11-17 09:38:39', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -962,14 +969,6 @@ ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `country_idx` (`country`,`state`,`city`);
-
---
--- Indexes for table `admins`
---
-ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `carts`
@@ -1161,16 +1160,10 @@ ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
@@ -1266,7 +1259,7 @@ ALTER TABLE `shipping_zones`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `wishlist`
