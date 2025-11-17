@@ -115,10 +115,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const dt = new Date(postPublishedAt);
                 const year = dt.getFullYear();
                 const month = dt.getMonth() + 1;
+                console.debug('single-posts: loading calendar for', year, month, 'from published_at', postPublishedAt);
                 fetch('api/calendar.php?year=' + year + '&month=' + month, { credentials: 'same-origin' })
                     .then(r => r.json())
                     .then(payload => {
                         const cal = (payload && payload.ok === true && payload.data) ? payload.data : payload;
+                        console.debug('single-posts: calendar API payload', cal);
                         if (!cal || !cal.days) return;
                         // replace calendar with simple list of days that have posts
                         const days = cal.days; // object keyed by day number
@@ -130,9 +132,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         html += '</ul></div>';
                         calendarWrap.innerHTML = html;
+                        console.debug('single-posts: calendar injected into DOM');
                     })
-                    .catch(() => {});
-            } catch (e) {}
+                    .catch(err => { console.warn('single-posts: calendar fetch error', err); });
+            } catch (e) { console.warn('single-posts: failed to build calendar date', e); }
         }
     }
 

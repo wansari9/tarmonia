@@ -3060,6 +3060,22 @@ background: linear-gradient(135deg, #F5E6C4 0%, #ECA869 100%);
 	}
 }
 
+/* Calendar widget styles for single-posts.js generated list */
+.calendar_wrap .calendar_list { margin-top: 6px; }
+.calendar_wrap .calendar_list strong { display:block; font-size:1rem; color:#231f20; margin-bottom:8px; }
+.calendar_wrap .calendar_list ul { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
+.calendar_wrap .calendar_list li { margin:0; }
+.calendar_wrap .calendar_list a { display:inline-block; padding:6px 8px; background:#fff4d9; color:#231f20; border-radius:4px; text-decoration:none; font-weight:600; border:1px solid rgba(35,31,32,0.06); }
+.calendar_wrap .calendar_list a:hover { background:#FEC321; color:#181516; border-color:rgba(35,31,32,0.12); }
+.calendar_wrap .calendar_list ul li a::before { content: none; }
+
+/* If a table calendar exists elsewhere, keep default table hidden when JS provides list */
+.calendar_wrap .wp-calendar { display:none; }
+
+@media (max-width: 480px) {
+  .calendar_wrap .calendar_list ul { gap:6px; }
+  .calendar_wrap .calendar_list a { padding:5px 6px; font-size:14px; }
+}
 @media (max-width: 480px) {
 	.form-header-new {
 		padding: 16px 16px 10px;
