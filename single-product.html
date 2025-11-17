@@ -22,6 +22,32 @@
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel="stylesheet" href='css/custom-styles.css' type='text/css' media='all'/>
+        <!-- Open Graph/Twitter placeholders (filled by client-side product loader) -->
+        <meta property="og:title" content="">
+        <meta property="og:description" content="">
+        <meta property="og:image" content="">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="">
+        <meta name="twitter:description" content="">
+
+        <!-- Minimal JSON-LD product schema; client JS should replace values when loading product -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "",
+            "image": [""],
+            "description": "",
+            "sku": "",
+            "offers": {
+                "@type": "Offer",
+                "url": "",
+                "priceCurrency": "MYR",
+                "price": "",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+        </script>
 </head>
 
 <body class="product-template-default single single-product woocommerce woocommerce-page body_style_wide body_filled article_style_stretch layout_single-standard template_single-standard scheme_original top_panel_show top_panel_above sidebar_hide sidebar_outer_hide vc_responsive">
@@ -177,7 +203,7 @@
 
                             <div class="images">
                                 <a href="" class="woocommerce-main-image zoom" title="" data-rel="prettyPhoto">
-                                    <img width="600" height="765" src="" class="attachment-shop_single size-shop_single " alt="" /></a>
+                                    <img width="600" height="765" src="" class="attachment-shop_single size-shop_single " alt="" loading="eager" /></a>
                             </div>
                             <div class="summary entry-summary">
                                 <h1 class="product_title entry-title"></h1>
@@ -340,7 +366,7 @@
                                             <div class="post_featured">
                                                 <div class="post_thumb">
                                                     <a class="hover_icon hover_icon_link" href="single-product.html?product_id=458">
-                                                        <img src="images/Evaporated Milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" />
+                                                        <img src="images/Evaporated Milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
                                                     </a>
                                                 </div>
                                             </div>
@@ -362,7 +388,7 @@
                                             <div class="post_featured">
                                                 <div class="post_thumb">
                                                     <a class="hover_icon hover_icon_link" href="single-product.html?product_id=448">
-                                                        <img src="images/Farm sour Cream.png" class="attachment-shop_catalog size-shop_catalog" alt="" />
+                                                        <img src="images/Farm sour Cream.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
                                                     </a>
                                                 </div>
                                             </div>
@@ -384,7 +410,7 @@
                                             <div class="post_featured">
                                                 <div class="post_thumb">
                                                     <a class="hover_icon hover_icon_link" href="single-product.html?product_id=364">
-                                                        <img src="images/Tested raw milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" />
+                                                        <img src="images/Tested raw milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
                                                     </a>
                                                 </div>
                                             </div>
@@ -406,7 +432,7 @@
                                             <div class="post_featured">
                                                 <div class="post_thumb">
                                                     <a class="hover_icon hover_icon_link" href="single-product.html?product_id=426">
-                                                        <img src="images/fromage a raclette.png" class="attachment-shop_catalog size-shop_catalog" alt="" />
+                                                        <img src="images/fromage a raclette.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
                                                     </a>
                                                 </div>
                                             </div>
@@ -567,40 +593,40 @@
 <a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
 <div class="custom_html_section"></div>
 
-<script type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
-<script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
-<script type='text/javascript' src='js/custom/custom.js'></script>
-<script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js'></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js'></script>
-<script type='text/javascript' src='js/vendor/modernizr.min.js'></script>
-<script type='text/javascript' src='js/vendor/prettyPhoto/ver/jquery.prettyPhoto.min.js'></script>
-<script type='text/javascript' src='js/vendor/prettyPhoto/jquery.prettyPhoto.init.min.js'></script>
-<script type='text/javascript' src='js/vendor/ui/jquery.zoom.min.js'></script>
-<script type='text/javascript' src='js/vendor/comp/jquery.flexslider-min.js'></script>
-<script type='text/javascript' src='js/vendor/woo/single-product.min.js'></script>
-<script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js'></script>
-<script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js'></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce.min.js'></script>
-<script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js'></script>
-<script type='text/javascript' src='js/vendor/superfish.js'></script>
-<script type='text/javascript' src='js/custom/core.reviews.js'></script>
-<script type='text/javascript' src='js/custom/core.utils.js'></script>
-<script type='text/javascript' src='js/custom/core.init.js'></script>
-<script type='text/javascript' src='js/custom/init.js'></script>
-<script type='text/javascript' src='js/custom/comment-reply.min.js'></script>
-<script type='text/javascript' src='js/custom/core.debug.js'></script>
-<script type='text/javascript' src='js/custom/embed.min.js'></script>
-<script type='text/javascript' src='js/custom/shortcodes.js'></script>
-<script type='text/javascript' src='js/vendor/underscore.min.js'></script>
-<script type='text/javascript' src='js/custom/util.min.js'></script>
+<script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
+<script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
+<script type='text/javascript' src='js/custom/custom.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>
+<script type='text/javascript' src='js/vendor/modernizr.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/prettyPhoto/ver/jquery.prettyPhoto.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/prettyPhoto/jquery.prettyPhoto.init.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/ui/jquery.zoom.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/comp/jquery.flexslider-min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/single-product.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/woocommerce.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/superfish.js' defer></script>
+<script type='text/javascript' src='js/custom/core.reviews.js' defer></script>
+<script type='text/javascript' src='js/custom/core.utils.js' defer></script>
+<script type='text/javascript' src='js/custom/core.init.js' defer></script>
+<script type='text/javascript' src='js/custom/init.js' defer></script>
+<script type='text/javascript' src='js/custom/comment-reply.min.js' defer></script>
+<script type='text/javascript' src='js/custom/core.debug.js' defer></script>
+<script type='text/javascript' src='js/custom/embed.min.js' defer></script>
+<script type='text/javascript' src='js/custom/shortcodes.js' defer></script>
+<script type='text/javascript' src='js/vendor/underscore.min.js' defer></script>
+<script type='text/javascript' src='js/custom/util.min.js' defer></script>
 <!-- Server-side cart API integration: load API first -->
-<script type="text/javascript" src="js/cart-api.js"></script>
-<script type="text/javascript" src="js/mini-cart.js"></script>
-<script type='text/javascript' src='js/local-cart.js'></script>
-<script type='text/javascript' src='js/product-data.js'></script>
+<script type="text/javascript" src="js/cart-api.js" defer></script>
+<script type="text/javascript" src="js/mini-cart.js" defer></script>
+<script type='text/javascript' src='js/local-cart.js' defer></script>
+<script type='text/javascript' src='js/product-data.js' defer></script>
 <script>window.APP_VERSION = '2025111301';</script>
-<script type='text/javascript' src='js/single-product.js?v=2025111301'></script>
-<script type='text/javascript' src='js/auth-session.js'></script>
+<script type='text/javascript' src='js/single-product.js?v=2025111301' defer></script>
+<script type='text/javascript' src='js/auth-session.js' defer></script>
 <!-- Title now updated dynamically by single-product.js after API response -->
 
 </body>

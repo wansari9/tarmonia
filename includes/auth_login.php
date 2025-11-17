@@ -35,17 +35,7 @@ try {
         exit;
     }
 
-    // Prevent admin accounts from signing into the storefront.
-    // Admins should use the admin login (or create a separate user account with a different email).
-    $isAdminFlag = (int)($user['is_admin'] ?? 0);
-    if ($isAdminFlag === 1) {
-        http_response_code(403);
-        echo json_encode([
-            'success' => false,
-            'error' => 'This account is an admin account and cannot sign in to the storefront. Please create a separate user account with a non-admin email.'
-        ]);
-        exit;
-    }
+
 
     // Regen session ID and store auth info
     session_regenerate_id(true);

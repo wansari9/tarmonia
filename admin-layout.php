@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/admin_auth.php';
 require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/head_template.php';
+require_once __DIR__ . '/includes/assets.php';
 
 $pageTitle = isset($pageTitle) && is_string($pageTitle) ? $pageTitle : 'Admin';
 $pageContent = isset($pageContent) && is_string($pageContent) ? $pageContent : '';
@@ -27,6 +29,7 @@ if (isset($_SESSION['flash'])) { unset($_SESSION['flash']); }
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/admin.css">
+    <?php head_template_render(['title' => $pageTitle, 'description' => 'Admin panel for Tarmonia']); ?>
     <script src="js/admin.js" defer></script>
 </head>
 <body class="admin-app">
@@ -69,4 +72,11 @@ if (isset($_SESSION['flash'])) { unset($_SESSION['flash']); }
     <!-- Toast portal -->
     <div id="toast-root" class="admin-toast-root" aria-live="polite" aria-atomic="true"></div>
 </body>
+<?php
+// Render vendor + optional page bundle. Pages can set $page_bundle = 'product.bundle.js';
+if (function_exists('render_assets')) {
+    render_assets($page_bundle ?? null);
+}
+?>
+</html>
 </html>
