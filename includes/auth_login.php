@@ -24,13 +24,26 @@ if ($email === '' || $password === '') {
 }
 
 try {
-    $stmt = $pdo->prepare('SELECT id, email, password_hash, first_name, last_name, role FROM users WHERE email = ? LIMIT 1');
+    // select user row; read `is_admin` column directly (DB contains this column)
+    $stmt = $pdo->prepare('SELECT id, email, password_hash, first_name, last_name, role, IFNULL(is_admin, 0) AS is_admin FROM users WHERE email = ? LIMIT 1');
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
     if (!$user || !password_verify($password, $user['password_hash'])) {
         http_response_code(401);
         echo json_encode(['success' => false, 'error' => 'Invalid email or password']);
+        exit;
+    }
+
+    // Prevent admin accounts from signing into the storefront.
+    // Admins should use the admin login (or create a separate user account with a different email).
+    $isAdminFlag = (int)($user['is_admin'] ?? 0);
+    if ($isAdminFlag === 1) {
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error' => 'This account is an admin account and cannot sign in to the storefront. Please create a separate user account with a non-admin email.'
+        ]);
         exit;
     }
 
@@ -41,6 +54,14 @@ try {
     $_SESSION['user_first_name'] = $user['first_name'] ?? '';
     $_SESSION['user_last_name'] = $user['last_name'] ?? '';
     $_SESSION['user_role'] = $user['role'] ?? 'customer';
+    // Determine admin flag: prefer explicit `is_admin` column if present, otherwise infer from role
+    $isAdmin = 0;
+    if (array_key_exists('is_admin', (array)$user) && $user['is_admin'] !== null) {
+        $isAdmin = (int)$user['is_admin'];
+    } else {
+        $isAdmin = (isset($user['role']) && $user['role'] === 'admin') ? 1 : 0;
+    }
+    $_SESSION['is_admin'] = $isAdmin;
 
     echo json_encode([
         'success' => true,
@@ -50,6 +71,7 @@ try {
             'first_name' => $user['first_name'] ?? '',
             'last_name' => $user['last_name'] ?? '',
             'role' => $user['role'] ?? 'customer',
+            'is_admin' => $isAdmin,
         ],
     ]);
 } catch (Throwable $e) {

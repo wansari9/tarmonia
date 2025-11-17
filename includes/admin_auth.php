@@ -18,8 +18,23 @@ function admin_send_json(int $code, string $message): void {
 }
 
 function admin_require_session(): void {
-    $isActive = isset($_SESSION['admin_active']) && (int)$_SESSION['admin_active'] === 1;
-    if (isset($_SESSION['admin_id'], $_SESSION['admin_username']) && $isActive) {
+    // Support legacy admin session OR users with `is_admin` flag
+    $isAdminSessionActive = isset($_SESSION['admin_active']) && (int)$_SESSION['admin_active'] === 1;
+    $isUserAdmin = isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && (int)$_SESSION['is_admin'] === 1;
+
+    if (($isAdminSessionActive && isset($_SESSION['admin_id'], $_SESSION['admin_username'])) || $isUserAdmin) {
+        // If a normal user session has admin privileges, mirror a few admin session keys
+        if ($isUserAdmin) {
+            $_SESSION['admin_id'] = (int)($_SESSION['user_id'] ?? 0);
+            $_SESSION['admin_username'] = (string)($_SESSION['user_email'] ?? '');
+            $full = trim((string)($_SESSION['user_first_name'] ?? '') . ' ' . (string)($_SESSION['user_last_name'] ?? ''));
+            $_SESSION['admin_full_name'] = $full !== '' ? $full : ($_SESSION['user_email'] ?? '');
+            $_SESSION['admin_active'] = 1;
+            // ensure admin csrf token exists so admin pages can use it
+            if (empty($_SESSION['admin_csrf']) && !empty($_SESSION['csrf_token'])) {
+                $_SESSION['admin_csrf'] = $_SESSION['csrf_token'];
+            }
+        }
         return;
     }
 
@@ -27,7 +42,7 @@ function admin_require_session(): void {
         admin_send_json(401, 'Admin authentication required');
     }
 
-    header('Location: admin-login.php');
+    header('Location: login.html');
     exit;
 }
 

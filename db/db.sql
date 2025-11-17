@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2025 at 07:41 AM
+-- Generation Time: Nov 17, 2025 at 02:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,35 +67,6 @@ INSERT INTO `addresses` (`id`, `user_id`, `label`, `recipient_name`, `phone`, `l
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
---
-
-CREATE TABLE `admins` (
-  `id` bigint(20) NOT NULL,
-  `username` varchar(64) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `full_name` varchar(128) DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `admins`
---
-
-INSERT INTO `admins` (`id`, `username`, `email`, `password_hash`, `full_name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Admin User', 1, '2025-10-01 08:00:00', NULL),
-(2, 'manager', 'manager@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Store Manager', 1, '2025-10-01 08:30:00', NULL),
-(3, 'supervisor', 'supervisor@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Operations Supervisor', 1, '2025-10-01 09:00:00', NULL),
-(4, 'staff1', 'staff1@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Staff Member One', 1, '2025-10-01 09:30:00', NULL),
-(5, 'staff2', 'staff2@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Staff Member Two', 1, '2025-10-01 10:00:00', NULL),
-(6, 'wansari9', 'wansari000@gmail.com', '$2y$10$YjdPx2LxMduB3HMk6oU.6uDWEYlTFAbgCVa3uUivT5zTgtSU3kl8a', 'wasii ansari', 1, '2025-11-14 12:06:40', NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `carts`
 --
 
@@ -139,7 +110,14 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 (35, NULL, '543f594323b503bb85c9b28ea056d0f2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-14 14:06:33', '2025-11-14 14:06:33'),
 (36, NULL, 'm6i3tgugu4kusjosa1v5e2j5pf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:14:46', '2025-11-14 14:14:46'),
 (37, NULL, '5sh8fnfeusu4p34bhp4do4tpn7', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:30:00', '2025-11-14 14:30:00'),
-(38, NULL, 'hogs26l7fpi0gdh6m2p3pgr7ia', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:30:46', '2025-11-14 14:30:46');
+(38, NULL, 'hogs26l7fpi0gdh6m2p3pgr7ia', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:30:46', '2025-11-14 14:30:46'),
+(39, NULL, 'u5o4iphav2umla91ruksut0g2j', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:45:48', '2025-11-14 14:45:48'),
+(40, 11, 'eqe50h29cks2idf0bfqo5pdp13', 'converted', 'RM', NULL, 39.81, 0.00, 0.00, 5.99, 45.80, '2025-11-14 14:46:16', '2025-11-14 14:53:48'),
+(41, 11, 'eqe50h29cks2idf0bfqo5pdp13', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:54:20', '2025-11-14 14:54:20'),
+(42, NULL, '5o6hnq636j5c72gsbgvfnf6da0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:21:36', '2025-11-14 15:21:36'),
+(43, NULL, '8ibmpgd48n3jhnf98ec8p86cho', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:46:34', '2025-11-14 15:46:34'),
+(44, NULL, 'j5buc7ea1k1stb2v668r9c2ivb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:02:00', '2025-11-14 16:02:00'),
+(45, NULL, '5k40iqev7jbla05i5pm3hcc9e2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:05:43', '2025-11-14 16:05:43');
 
 -- --------------------------------------------------------
 
@@ -341,7 +319,8 @@ INSERT INTO `orders` (`id`, `order_number`, `user_id`, `status`, `shipping_statu
 (10, 'ORD-20251109-J6K1L', 8, 'paid', 'pending', NULL, NULL, 'RM', 167.50, 0.00, 0.00, 8.00, 1, 175.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 12, 'unfulfilled', 'paid', 'Contact before delivery', '2025-11-09 10:15:00', '2025-11-09 10:15:00', '2025-11-09 10:15:00', NULL, NULL),
 (11, 'ORD-20251111-K7L2M', 9, 'delivered', 'delivered', 'TRK-MY-5001234571', '2025-11-12 09:30:00', 'RM', 310.00, 0.00, 0.00, 15.00, 7, 325.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 14, 'fulfilled', 'paid', NULL, '2025-11-11 16:00:00', '2025-11-11 16:00:00', '2025-11-13 14:00:00', NULL, NULL),
 (12, 'ORD-20251113-L8M3N', 10, 'paid', 'pending', NULL, NULL, 'RM', 189.00, 0.00, 0.00, 10.00, 4, 199.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 15, 'unfulfilled', 'paid', NULL, '2025-11-13 13:45:00', '2025-11-13 13:45:00', '2025-11-13 13:45:00', NULL, NULL),
-(13, 'ORD-20251114-727241A6', 11, '', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', NULL, NULL, NULL);
+(13, 'ORD-20251114-727241A6', 11, '', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', NULL, NULL, NULL),
+(14, 'ORD-20251114-C737D1B1', 11, 'canceled', 'pending', NULL, NULL, 'RM', 39.81, 0.00, 0.00, 5.99, NULL, 45.80, 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', '', '2025-11-14 14:53:48', '2025-11-14 14:53:48', '2025-11-14 15:08:10', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -409,7 +388,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 (38, 12, 15, 56, 'Quail Eggs', 'QUAIL-EGGS-001', 'QUAIL-EGGS-001-M-12', '{\"size\":\"M\",\"quantity\":\"12\"}', 4, 6.60, 26.40, 'images/quail eggs.png'),
 (39, 12, 12, 24, 'Yogurt', 'YOGURT-001', 'YOGURT-001-250G', '{\"weight\":\"250g\"}', 8, 5.50, 44.00, 'images/yogurt.png'),
 (40, 12, 11, 21, 'Butter', 'BUTTER-001', 'BUTTER-001-250G', '{\"weight\":\"250g\"}', 2, 8.50, 17.00, 'images/Butter.png'),
-(41, 13, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png');
+(41, 13, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
+(42, 14, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
+(43, 14, 2, NULL, 'Farm Sour Cream', 'SCREAM-001', NULL, '{\"weight\":\"3-lb\"}', 2, 16.50, 34.66, 'images/Farm sour Cream.png');
 
 -- --------------------------------------------------------
 
@@ -445,7 +426,8 @@ INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `statu
 (10, 10, 'stripe', 175.50, 'RM', 'captured', 'pi_5MNO345JKL678901', '2025-11-09 10:20:00'),
 (11, 11, 'cod', 325.00, 'RM', 'captured', NULL, '2025-11-11 16:05:00'),
 (12, 12, 'stripe', 199.00, 'RM', 'captured', 'pi_6PQR678MNO901234', '2025-11-13 13:50:00'),
-(13, 13, 'manual', 11.14, 'RM', 'initiated', NULL, '2025-11-14 14:30:25');
+(13, 13, 'manual', 11.14, 'RM', 'initiated', NULL, '2025-11-14 14:30:25'),
+(14, 14, '', 45.80, 'RM', 'initiated', NULL, '2025-11-14 14:53:48');
 
 -- --------------------------------------------------------
 
@@ -913,24 +895,25 @@ CREATE TABLE `users` (
   `reset_token` varchar(128) DEFAULT NULL,
   `reset_expires_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `phone`, `role`, `reset_token`, `reset_expires_at`, `created_at`, `updated_at`) VALUES
-(2, 'john.doe@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'John', 'Doe', '+60123456789', 'customer', NULL, NULL, '2025-11-01 10:00:00', NULL),
-(3, 'jane.smith@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Jane', 'Smith', '+60198765432', 'customer', NULL, NULL, '2025-11-02 11:30:00', NULL),
-(4, 'ali.rahman@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Ali', 'Rahman', '+60187654321', 'customer', NULL, NULL, '2025-11-03 09:15:00', NULL),
-(5, 'sarah.lee@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Sarah', 'Lee', '+60176543210', 'customer', NULL, NULL, '2025-11-04 14:20:00', NULL),
-(6, 'admin@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Admin', 'User', '+60123456788', 'admin', NULL, NULL, '2025-10-01 08:00:00', NULL),
-(7, 'michael.tan@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Michael', 'Tan', '+60165432109', 'customer', NULL, NULL, '2025-11-05 10:30:00', NULL),
-(8, 'lisa.wong@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Lisa', 'Wong', '+60145678901', 'customer', NULL, NULL, '2025-11-06 14:15:00', NULL),
-(9, 'david.lim@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'David', 'Lim', '+60137894561', 'customer', NULL, NULL, '2025-11-07 09:20:00', NULL),
-(10, 'emily.chen@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Emily', 'Chen', '+60126547893', 'customer', NULL, NULL, '2025-11-08 11:45:00', NULL),
-(11, 'wes@gmail.com', '$2y$10$29adSka3Lk008R4mQOFBcOn23hOY8f3HCI9TaKQsYzJIxDNgpdL5m', 'wes', 'ansari', '+601128098103', 'customer', NULL, NULL, '2025-11-14 12:55:07', NULL);
+INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `phone`, `role`, `reset_token`, `reset_expires_at`, `created_at`, `updated_at`, `is_admin`) VALUES
+(2, 'john.doe@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'John', 'Doe', '+60123456789', 'customer', NULL, NULL, '2025-11-01 10:00:00', NULL, 0),
+(3, 'jane.smith@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Jane', 'Smith', '+60198765432', 'customer', NULL, NULL, '2025-11-02 11:30:00', NULL, 0),
+(4, 'ali.rahman@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Ali', 'Rahman', '+60187654321', 'customer', NULL, NULL, '2025-11-03 09:15:00', NULL, 0),
+(5, 'sarah.lee@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Sarah', 'Lee', '+60176543210', 'customer', NULL, NULL, '2025-11-04 14:20:00', NULL, 0),
+(6, 'admin@tarmonia.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Admin', 'User', '+60123456788', 'admin', NULL, NULL, '2025-10-01 08:00:00', NULL, 0),
+(7, 'michael.tan@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Michael', 'Tan', '+60165432109', 'customer', NULL, NULL, '2025-11-05 10:30:00', NULL, 0),
+(8, 'lisa.wong@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Lisa', 'Wong', '+60145678901', 'customer', NULL, NULL, '2025-11-06 14:15:00', NULL, 0),
+(9, 'david.lim@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'David', 'Lim', '+60137894561', 'customer', NULL, NULL, '2025-11-07 09:20:00', NULL, 0),
+(10, 'emily.chen@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Emily', 'Chen', '+60126547893', 'customer', NULL, NULL, '2025-11-08 11:45:00', NULL, 0),
+(11, 'wes@gmail.com', '$2y$10$29adSka3Lk008R4mQOFBcOn23hOY8f3HCI9TaKQsYzJIxDNgpdL5m', 'wes', 'ansari', '+601128098103', 'customer', NULL, NULL, '2025-11-14 12:55:07', '2025-11-17 09:25:19', 1);
 
 -- --------------------------------------------------------
 
@@ -1187,13 +1170,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -1211,19 +1194,19 @@ ALTER TABLE `communications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `posts`

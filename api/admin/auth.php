@@ -75,8 +75,13 @@ switch ($action) {
         if (strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
             api_json_error(405, 'method_not_allowed', 'Use POST');
         }
-        // Clear only admin session keys to avoid impacting frontend session unnecessarily
-        unset($_SESSION['admin_id'], $_SESSION['admin_username'], $_SESSION['admin_full_name'], $_SESSION['admin_active'], $_SESSION['admin_csrf']);
+        // Clear full session (unify logout for admin/user)
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
+        session_destroy();
         api_json_success(['ok' => true]);
         break;
     }
@@ -126,9 +131,14 @@ switch ($action) {
         break;
     }
     case 'session': {
-        $isActive = isset($_SESSION['admin_id'], $_SESSION['admin_username']) && (int)($_SESSION['admin_active'] ?? 0) === 1;
-        if ($isActive) {
-            api_json_success(['id' => (int)$_SESSION['admin_id'], 'username' => (string)$_SESSION['admin_username'], 'full_name' => $_SESSION['admin_full_name'] ?? null]);
+        // Accept legacy admin session OR user session with is_admin flag
+        $isAdminSession = isset($_SESSION['admin_id'], $_SESSION['admin_username']) && (int)($_SESSION['admin_active'] ?? 0) === 1;
+        $isUserAdmin = isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && (int)($_SESSION['is_admin'] ?? 0) === 1;
+        if ($isAdminSession || $isUserAdmin) {
+            $id = $isAdminSession ? (int)($_SESSION['admin_id'] ?? 0) : (int)($_SESSION['user_id'] ?? 0);
+            $username = $isAdminSession ? (string)($_SESSION['admin_username'] ?? '') : (string)($_SESSION['user_email'] ?? '');
+            $full = $isAdminSession ? ($_SESSION['admin_full_name'] ?? null) : (($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['user_last_name'] ?? ''));
+            api_json_success(['id' => $id, 'username' => $username, 'full_name' => trim($full) ?: null]);
         } else {
             api_json_response(['ok' => false]);
         }

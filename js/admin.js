@@ -73,9 +73,9 @@
             event.preventDefault();
             btn.disabled = true;
             try {
-                await fetchWithCSRF('api/admin/auth.php?action=logout', { method: 'POST' });
-            } catch (_err) { /* ignore */ }
-            window.location.href = 'admin-login.php';
+                    await fetchWithCSRF('includes/auth_logout.php', { method: 'POST' });
+                } catch (_err) { /* ignore */ }
+                window.location.href = 'login.html';
         });
         btn._wired = true;
     }

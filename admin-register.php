@@ -38,7 +38,7 @@ if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['a
                 <div class="auth-actions">
                     <button type="submit">Create Account</button>
                 </div>
-                <div class="small-note">Already have an account? <a href="admin-login.php">Sign in</a> · <a href="index.html">Back to site</a></div>
+                <div class="small-note">Already have an account? <a href="login.html">Sign in</a> · <a href="index.html">Back to site</a></div>
             </form>
         </section>
     </main>
