@@ -21,10 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `tarmonia`
 --
 
--- --------------------------------------------------------
 
---
--- Table structure for table `addresses`
+-- --------------------------------------------------------
+-- End additional variants
 --
 
 CREATE TABLE `addresses` (
@@ -663,7 +662,7 @@ CREATE TABLE `product_option_definitions` (
   `id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
-  `category_scope` varchar(100) GENERATED ALWAYS AS (case when `product_id` is null then lcase(trim(`category`)) else NULL end) STORED,
+  `category_scope` varchar(100) GENERATED ALWAYS AS (case when `product_id` is null then lcase(trim(`category`)) else NULL end) VIRTUAL,
   `option_order` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`option_order`)),
   `option_labels` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`option_labels`)),
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
@@ -1235,7 +1234,7 @@ ALTER TABLE `product_option_definitions`
 -- AUTO_INCREMENT for table `product_variants`
 --
 ALTER TABLE `product_variants`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `shipments`
@@ -1371,6 +1370,14 @@ ALTER TABLE `wishlist`
   ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `wishlist_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
+-- Additional product_variants appended by migration helper
+INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `price_override`, `stock_qty`, `is_active`, `image`, `weight_grams`, `created_at`, `updated_at`) VALUES
+(81, 1, 'EVAP-001-1LB', 'Evaporated Milk 1 lb', '{"weight": "1-lb"}', NULL, 100, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
+(82, 1, 'EVAP-001-3LB', 'Evaporated Milk 3 lb', '{"weight": "3-lb"}', NULL, 100, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
+(83, 1, 'EVAP-001-5LB', 'Evaporated Milk 5 lb', '{"weight": "5-lb"}', NULL, 100, 1, NULL, 2268, '2025-11-18 06:00:00', NULL),
+(84, 3, 'RICOTTA-SAL-001-1LB', 'Ricotta Salata Cheese 1 lb', '{"weight": "1-lb"}', NULL, 50, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
+(85, 3, 'RICOTTA-SAL-001-3LB', 'Ricotta Salata Cheese 3 lb', '{"weight": "3-lb"}', NULL, 40, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
+(86, 3, 'RICOTTA-SAL-001-5LB', 'Ricotta Salata Cheese 5 lb', '{"weight": "5-lb"}', NULL, 20, 1, NULL, 2268, '2025-11-18 06:00:00', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

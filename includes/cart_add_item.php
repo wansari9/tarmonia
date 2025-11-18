@@ -109,6 +109,26 @@ try {
         }
         // REQUIRE VARIANT SELECTION - Cannot add product with variants without selecting one
         if (!$variantRow) {
+            // If debug requested, include candidate variants and normalized options to aid diagnosis
+            if (isset($_POST['debug'])) {
+                try {
+                    $vstmt = $pdo->prepare('SELECT id, options FROM product_variants WHERE product_id = :pid AND is_active = 1');
+                    $vstmt->execute([':pid' => $productId]);
+                    $vrows = $vstmt->fetchAll();
+                    $variantsDebug = [];
+                    foreach ($vrows as $vr) {
+                        $opts = json_decode((string)$vr['options'], true) ?: [];
+                        $normalized = [];
+                        foreach ($opts as $k => $vv) {
+                            $normalized[$k] = strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$vv));
+                        }
+                        $variantsDebug[] = ['id' => (int)$vr['id'], 'options' => $opts, 'normalized' => $normalized];
+                    }
+                } catch (Throwable $e) {
+                    $variantsDebug = ['error' => $e->getMessage()];
+                }
+                cart_json_response(400, ['success' => false, 'error' => 'variant_required', 'message' => 'Please select a variant before adding to cart', 'debug' => ['selected' => $selectedOptions, 'variants' => $variantsDebug]]);
+            }
             cart_json_response(400, ['success' => false, 'error' => 'variant_required', 'message' => 'Please select a variant before adding to cart']);
         }
     }

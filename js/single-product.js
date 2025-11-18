@@ -849,6 +849,43 @@ document.addEventListener('DOMContentLoaded', function () {
             var sizeVal = sizeSel ? (sizeSel.value || '').trim() : '';
             var qtyOptVal = qtyOptSel ? (qtyOptSel.value || '').trim() : '';
 
+            // Resolve selected options map (id -> raw value)
+            function collectSelectedOptionsLocal(){
+                var selected = {};
+                document.querySelectorAll('.variations select[id^="pa_"]').forEach(function(sel){
+                    var key = sel.id.replace(/^pa_/, '');
+                    var val = (sel.value||'').trim();
+                    if (!val) return;
+                    if (key === 'fat') selected[key] = canonicalFatValue(val);
+                    else selected[key] = val;
+                });
+                return selected;
+            }
+
+            // Try to find an exact variant id from CURRENT_PRODUCT based on selected options
+            function resolveSelectedVariant(){
+                var selMap = collectSelectedOptionsLocal();
+                if (!CURRENT_PRODUCT || !Array.isArray(CURRENT_PRODUCT.variants)) return null;
+                for (var i=0;i<CURRENT_PRODUCT.variants.length;i++){
+                    var v = CURRENT_PRODUCT.variants[i];
+                    if (!v || !v.options) continue;
+                    var ok = true;
+                    for (var k in selMap){
+                        if (!selMap.hasOwnProperty(k)) continue;
+                        var wanted = selMap[k];
+                        if (k === 'fat'){
+                            var varFat = v.options.hasOwnProperty(k) ? canonicalFatValue(v.options[k]) : '';
+                            if (!varFat || varFat !== wanted) { ok = false; break; }
+                            continue;
+                        }
+                        var have = (v.options[k] || '').trim();
+                        if (!have || normalize(have) !== normalize(wanted)) { ok = false; break; }
+                    }
+                    if (ok) return v;
+                }
+                return null;
+            }
+
             // CHECK IF PRODUCT HAS VARIANTS - Require selection before adding to cart
             var hasVariants = CURRENT_PRODUCT && (CURRENT_PRODUCT.has_variants || productHasWeightVariants(CURRENT_PRODUCT));
             if (hasVariants) {
@@ -864,6 +901,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     return;
                 }
+            }
+
+            // If a weight was selected, ensure it actually exists in the product's variants
+            if (weightVal && CURRENT_PRODUCT && Array.isArray(CURRENT_PRODUCT.variants) && CURRENT_PRODUCT.variants.length) {
+                try {
+                    var normSelected = normalize(String(weightVal));
+                    var available = CURRENT_PRODUCT.variants.map(function(v){
+                        var w = (v && v.options && v.options.weight) ? String(v.options.weight) : '';
+                        return normalize(w);
+                    }).filter(function(x){ return !!x; });
+                    if (available.indexOf(normSelected) === -1) {
+                        // Build human-readable list of available weights
+                        var pretty = (CURRENT_PRODUCT.variants||[]).map(function(v){ return (v && v.options && v.options.weight) ? String(v.options.weight) : null; }).filter(Boolean);
+                        alert('The selected weight "' + weightVal + '" does not match any available variant for this product. Available weights: ' + (pretty.join(', ') || 'None') + '. Please choose one of these before adding to cart.');
+                        if (weightSel) { weightSel.focus(); }
+                        addToCartButton.disabled = false; addToCartButton.textContent = 'Add to Cart';
+                        return;
+                    }
+                } catch(e) { /* ignore */ }
             }
 
             // Ensure a weight value for variantized products: default to first non-empty option if not chosen
@@ -887,9 +943,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 size: sizeVal || undefined,
                 quantity_option: qtyOptVal || undefined
             };
+            // If we can resolve an explicit variant id, include it to avoid server 'variant_required' errors
+            try {
+                var resolvedVariant = resolveSelectedVariant();
+                if (resolvedVariant) {
+                    optionsPayload.variation_id = resolvedVariant.id || resolvedVariant.variant_id || resolvedVariant.variation_id || null;
+                }
+            } catch(e) { /* ignore resolution errors */ }
+
+            // Helpful debug: log selected options and resolved variant to console
+            try {
+                var selMapDbg = (function(){ var m={}; document.querySelectorAll('.variations select[id^="pa_"]').forEach(function(s){ m[s.id.replace(/^pa_/, '')] = s.value; }); return m; })();
+                console.log('[cart-debug] selected options:', selMapDbg, 'resolvedVariant:', resolvedVariant || null);
+            } catch(e) {}
+
+            // If running locally, ask server for debug detail to aid diagnosis
+            if (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.indexOf('localhost') !== -1) {
+                optionsPayload.debug = '1';
+            }
             window.CartAPI.addItem(effectiveProductId, qty, optionsPayload)
                 .then(function(res){
-                    if (!res || !res.success) throw new Error((res && res.error) || 'Add to cart failed');
+                    if (!res || !res.success) {
+                        // Normalize server-side variant_required responses so client catch() can handle specifically
+                        var serverErr = (res && res.error) ? String(res.error) : '';
+                        if (serverErr === 'variant_required') {
+                            var ve = new Error('variant_required'); ve.code = 'variant_required';
+                            throw ve;
+                        }
+                        throw new Error((res && res.error) || 'Add to cart failed');
+                    }
                     // Refresh mini cart & header counts immediately
                     try {
                         if (window.CartAPI && window.CartAPI.mini) {
@@ -922,10 +1004,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(function(err){
                     console.error('[cart] add failed', err);
                     var errorMsg = 'Failed to add to cart';
-                    if (err && err.message) {
-                        errorMsg = err.message;
-                    } else if (err && err.error === 'variant_required') {
+                    // Handle normalized error codes from server or thrown Error
+                    var code = (err && (err.code || (err.message||'').toString())) || null;
+                    if (code === 'variant_required' || (err && err.error === 'variant_required')){
                         errorMsg = 'Please select product options (weight, size, or quantity) before adding to cart.';
+                        // Focus/highlight the first option control to guide the user
+                        if (weightSel && weightSel.options.length > 1){ weightSel.focus(); weightSel.style.boxShadow = '0 0 0 3px rgba(255,0,0,0.12)'; setTimeout(function(){ weightSel.style.boxShadow=''; },2200); }
+                    } else if (err && err.message){
+                        errorMsg = err.message;
                     }
                     alert(errorMsg);
                     addToCartButton.disabled = false;

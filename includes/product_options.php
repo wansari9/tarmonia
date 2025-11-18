@@ -157,5 +157,15 @@ try {
 
     respond_opts(200, ['success' => true, 'options' => $options]);
 } catch (Throwable $e) {
-    respond_opts(500, ['success' => false, 'error' => 'Failed to load option config']);
+    // Write diagnostic info to a local log to aid debugging on dev environments
+    try {
+        file_put_contents(__DIR__ . '/product_options_error.log', '[' . date('c') . '] ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
+    } catch (Throwable $ignore) {
+    }
+    $debug = isset($_GET['debug']);
+    $payload = ['success' => false, 'error' => 'Failed to load option config'];
+    if ($debug) {
+        $payload['detail'] = $e->getMessage();
+    }
+    respond_opts(500, $payload);
 }

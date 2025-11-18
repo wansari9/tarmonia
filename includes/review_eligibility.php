@@ -60,5 +60,14 @@ try {
         respond(200, ['eligible' => false, 'reason' => 'not_purchased']);
     }
 } catch (Throwable $e) {
-    respond(500, ['eligible' => false, 'reason' => 'error']);
+    // Log error locally for diagnostics (dev environments)
+    try {
+        file_put_contents(__DIR__ . '/review_eligibility_error.log', '[' . date('c') . '] ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
+    } catch (Throwable $ignore) {}
+    $debug = isset($_GET['debug']);
+    $payload = ['eligible' => false, 'reason' => 'error'];
+    if ($debug) {
+        $payload['detail'] = $e->getMessage();
+    }
+    respond(500, $payload);
 }

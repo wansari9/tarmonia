@@ -136,6 +136,16 @@
       if (optsOrWeight.fat) fd.append('fat', optsOrWeight.fat);
       if (optsOrWeight.size) fd.append('size', optsOrWeight.size);
       if (optsOrWeight.quantity_option) fd.append('quantity_option', optsOrWeight.quantity_option);
+      // Optional debug flag for local development
+      if (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.indexOf('localhost') !== -1) {
+        if (optsOrWeight.debug) {
+          fd.append('debug', optsOrWeight.debug);
+        } else {
+          fd.append('debug', '1');
+        }
+      } else if (optsOrWeight.debug) {
+        fd.append('debug', optsOrWeight.debug);
+      }
     } else {
       // Legacy positional args
       if (optsOrWeight) fd.append('weight', optsOrWeight);
