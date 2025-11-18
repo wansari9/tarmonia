@@ -2,10 +2,19 @@
 // Fetch session status and toggle login button vs user icon in headers.
 (function(){
   function applyAuthenticatedUI(data){
-    // Hide all login buttons
-    document.querySelectorAll('.top_panel_login_button').forEach(btn => {
-      btn.style.display = 'none';
-    });
+    // Add a body class and inject a strong CSS rule so the login link stays hidden
+    // even if other scripts later toggle inline styles.
+    try {
+      document.body.classList.add('user-authenticated');
+      if (!document.getElementById('auth-session-style')) {
+        var style = document.createElement('style');
+        style.id = 'auth-session-style';
+        style.appendChild(document.createTextNode('\n.user-authenticated [class*="top_panel_login_button"]{display:none !important;}\n.user-authenticated [class*="user_icon_button"]{display:inline-flex !important;}\n'));
+        document.head.appendChild(style);
+      }
+    } catch(e) {
+      // ignore DOM exceptions
+    }
     // Show user icon placeholders and update them
     document.querySelectorAll('.user_icon_button').forEach(icon => {
       icon.style.display = 'inline-flex';
