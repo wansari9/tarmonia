@@ -19,40 +19,62 @@
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
     <style>
-        /* Contact page layout adjustments */
-        .sc_googlemap_wrap { position: static; }
+        /* Contact page full-height layout */
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page_content_wrap.page_paddings_no {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .vc_row.vc_row-no-padding {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .sc_googlemap_wrap.contact-main-wrapper {
+            min-height: 100vh !important;
+            display: block !important;
+        }
+        
         .contact_layout_container {
-            display: grid;
+            min-height: 100vh !important;
+            display: grid !important;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
+            background: linear-gradient(135deg, #F8F8F8 0%, #ECECEC 50%, #F5F5F5 100%) !important;
+            align-items: center;
         }
+        
         .sc_googlemap_content {
             position: static !important;
             width: 100% !important;
             z-index: auto;
             pointer-events: auto;
         }
-        .sc_googlemap_content .sc_form_wrap {
-            background: #6EC4D4 !important;
-            padding: 0 !important;
-            border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        }
-        #map-container { position: relative; width: 100%; min-height: 540px; }
-        #map-iframe { width: 100%; height: 100%; min-height: 540px; border: 0; }
+        
+        #map-container { position: relative; width: 100%; min-height: 650px; }
+        #map-iframe { width: 100%; height: 100%; min-height: 650px; border: 0; }
         #map-overlay { z-index: 10; height: 100%; }
         #deactivate-map { z-index: 1100; }
+        
         .contact_map_section {
-            margin: 0 calc(50% - 50vw);
-            width: 100vw;
+            margin: 0 calc(50% - 50vw) !important;
+            width: 100vw !important;
             position: relative;
             overflow: hidden;
         }
+        
         @media (max-width: 1024px) {
-            .contact_details_section {
-                padding-right: clamp(220px, 40%, 320px);
+            .contact_layout_container {
+                grid-template-columns: 1fr;
+                min-height: auto !important;
             }
         }
+        
         @media (max-width: 900px) {
             .contact_details_section {
                 padding: 50px 24px 40px;
@@ -64,10 +86,10 @@
                 margin-top: 30px;
             }
             #map-container {
-                min-height: 420px;
+                min-height: 500px;
             }
             #map-iframe {
-                min-height: 420px;
+                min-height: 500px;
             }
         }
         @media (max-width: 600px) {
@@ -78,10 +100,10 @@
                 width: auto;
             }
             #map-container {
-                min-height: 320px;
+                min-height: 400px;
             }
             #map-iframe {
-                min-height: 320px;
+                min-height: 400px;
             }
         }
     </style>

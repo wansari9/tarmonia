@@ -30,7 +30,7 @@
           '<div class="cart-body"></div>' +
           '<div class="cart-footer">' +
           '  <div class="cart-total"><span class="total-label">Total:</span><span class="total-amount">' + formatRM(0) + '</span></div>' +
-          '  <div class="cart-buttons"><a href="cart.html" class="view-cart-button">View Cart</a><a href="checkout.html" class="checkout-button">Checkout</a></div>' +
+          '  <div class="cart-buttons"><a href="cart.html" class="view-cart-button">View Cart</a><a href="checkout.html" class="checkout-button"><span>Checkout</span></a></div>' +
           '</div>';
       }
       var body = w.querySelector('.cart-body');

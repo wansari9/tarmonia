@@ -2251,7 +2251,7 @@ fieldset legend {
 }
 .row, .columns_wrap {
   margin-left: 0px;		/* -15px; */
-  margin-right: -30px;	/* -15px; */
+  margin-right: -140px;	/* -15px; */
 }
 .row > [class*="column-"], .columns_wrap > [class*="column-"] {
 
