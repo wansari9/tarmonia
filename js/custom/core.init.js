@@ -356,10 +356,10 @@ function dairy_farm_ready_actions() {
 	// Disable legacy WooCommerce added_to_cart handler (client-side cart takes over)
 	jQuery('body').off('added_to_cart');
 	// Show cart (robust: find panel within the same contact_cart wrapper)
-	jQuery('.top_panel_cart_button').attr({ 'role':'button', 'aria-haspopup':'true', 'aria-expanded':'false' });
+	jQuery('.top_panel_cart_button, .top_panel_cart_button_simple').attr({ 'role':'button', 'aria-haspopup':'true', 'aria-expanded':'false' });
 	console.log('[mini-cart] binding jQuery handler');
 	// Fixed selector: match button anywhere in header (not just .top_panel_middle direct child)
-	jQuery(document).on('click', '.top_panel_cart_button', function(e) {
+	jQuery(document).on('click', '.top_panel_cart_button, .top_panel_cart_button_simple', function(e) {
 		"use strict";
 		var $btn = jQuery(this);
 		var $wrap = $btn.closest('.contact_cart');
@@ -369,7 +369,7 @@ function dairy_farm_ready_actions() {
 		if (e.shiftKey) {
 			console.log('[mini-cart] shift-click: force open');
 			jQuery('.contact_cart .sidebar_cart').not($panel).hide();
-			jQuery('.top_panel_cart_button[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
+			jQuery('.top_panel_cart_button[aria-expanded="true"], .top_panel_cart_button_simple[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
 			$panel.stop(true, true).show();
 			$btn.attr('aria-expanded','true');
 			e.preventDefault();
@@ -377,7 +377,7 @@ function dairy_farm_ready_actions() {
 		}
 		// Close other open panels
 		jQuery('.contact_cart .sidebar_cart').not($panel).hide();
-		jQuery('.top_panel_cart_button[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
+		jQuery('.top_panel_cart_button[aria-expanded="true"], .top_panel_cart_button_simple[aria-expanded="true"]').not($btn).attr('aria-expanded','false');
 		// Toggle current
 		$panel.stop(true, true).slideToggle(150);
 		var isExpanded = $btn.attr('aria-expanded') === 'true';
@@ -392,7 +392,7 @@ function dairy_farm_ready_actions() {
 		jQuery(document).on('click', function(e){
 			if (jQuery(e.target).closest('.contact_cart').length) return;
 			jQuery('.contact_cart .sidebar_cart').hide();
-			jQuery('.top_panel_cart_button[aria-expanded="true"]').attr('aria-expanded','false');
+			jQuery('.top_panel_cart_button[aria-expanded="true"], .top_panel_cart_button_simple[aria-expanded="true"]').attr('aria-expanded','false');
 		});
 		window._miniCartOutsideCloseBound = true;
 	}

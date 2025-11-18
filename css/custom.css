@@ -3837,4 +3837,87 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 }
 
 
+/* ============================================
+   SIMPLE CART BUTTON - NO BOX STYLE
+   ============================================ */
 
+.top_panel_cart_button_simple {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	box-shadow: none !important;
+	transition: none !important;
+}
+
+.top_panel_cart_button_simple .contact_icon {
+	position: relative;
+	z-index: 1;
+	float: none !important;
+	width: 24px !important;
+	height: 24px !important;
+	line-height: 24px !important;
+	margin: 0 !important;
+	background: none !important;
+	border: none !important;
+	border-radius: 0 !important;
+	font-size: 24px;
+	color: inherit !important;
+	transition: none !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: none !important;
+}
+
+.top_panel_cart_button_simple:hover .contact_icon {
+	background: none !important;
+	color: inherit !important;
+	transform: none !important;
+}
+
+.top_panel_cart_button_simple:active .contact_icon {
+	transform: none !important;
+}
+
+
+/* ============================================
+   SIMPLE LOGIN BUTTON - TEXT ONLY
+   ============================================ */
+
+.top_panel_login_button_simple {
+	display: inline-block !important;
+	text-decoration: none;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	box-shadow: none !important;
+	color: inherit !important;
+	font-size: 14px;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-family: "Open Sans", sans-serif;
+	transition: none !important;
+	cursor: pointer;
+}
+
+.top_panel_login_button_simple:hover {
+	background: none !important;
+	color: inherit !important;
+	text-decoration: none;
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+.top_panel_login_button_simple:active {
+	background: none !important;
+	color: inherit !important;
+	transform: none !important;
+	box-shadow: none !important;
+}

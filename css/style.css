@@ -4078,19 +4078,22 @@ li.opened > a > .open_child_menu:before {
 	border-top: 1px solid #e5e5e5;
 	position: absolute;
 	top:-6px;
-	right:3em;
+	left:50%;
+	margin-left: -5px;
 	-webkit-transform: rotate(45deg);
 	   -moz-transform: rotate(45deg);
 	     -o-transform: rotate(45deg);
 	    -ms-transform: rotate(45deg);
 			transform: rotate(45deg);
+	display: none;
 }
 .top_panel_style_5 .top_panel_middle .sidebar_cart:after,
 .top_panel_style_6 .top_panel_middle .sidebar_cart:after,
 .top_panel_style_7 .top_panel_middle .sidebar_cart:after,
 .top_panel_style_8 .top_panel_middle .sidebar_cart:after {
-	right:2.15em;
-	left:auto;
+	left:50%;
+	margin-left: -5px;
+	right:auto;
 }
 .menu_user_nav > li > ul > li {
 	z-index:1;
