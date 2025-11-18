@@ -2250,7 +2250,7 @@ fieldset legend {
   padding-right: 15px;
 }
 .row, .columns_wrap {
-  margin-left: 0px;		/* -15px; */
+  margin-left: -130px;		/* -15px; */
   margin-right: -140px;	/* -15px; */
 }
 .row > [class*="column-"], .columns_wrap > [class*="column-"] {
@@ -4073,21 +4073,7 @@ li.opened > a > .open_child_menu:before {
 .top_panel_middle .sidebar_cart:after,
 .menu_user_nav > li > ul:after,
 .search_wrap .search_results:after {
-	content:" ";
-	width:10px;
-	height:10px;
-	background-color: #fff;
-	border-left: 1px solid #e5e5e5;
-	border-top: 1px solid #e5e5e5;
-	position: absolute;
-	top:-6px;
-	left:50%;
-	margin-left: -5px;
-	-webkit-transform: rotate(45deg);
-	   -moz-transform: rotate(45deg);
-	     -o-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
-			transform: rotate(45deg);
+	display: none;
 }
 .top_panel_style_5 .top_panel_middle .sidebar_cart:after,
 .top_panel_style_6 .top_panel_middle .sidebar_cart:after,
