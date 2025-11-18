@@ -46,6 +46,33 @@
     return window.CartAPI.mini().then(renderMiniCart).catch(function(){ /* no-op */ });
   }
 
+  function handleCheckoutClick(e) {
+    var checkoutLink = e.target.closest && e.target.closest('.checkout-button');
+    if (!checkoutLink) return;
+    
+    e.preventDefault();
+    
+    // Check if user is logged in before proceeding to checkout
+    fetch('includes/auth_session.php', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(session) {
+        if (!session || !session.authenticated) {
+          // Not logged in - redirect to login with return URL
+          var returnUrl = encodeURIComponent('checkout.html');
+          var message = encodeURIComponent('Please log in to checkout');
+          window.location.href = 'login.html?redirect=' + returnUrl + '&message=' + message;
+        } else {
+          // Logged in - proceed to checkout
+          window.location.href = 'checkout.html';
+        }
+      })
+      .catch(function() {
+        // Error checking session - redirect to login
+        var returnUrl = encodeURIComponent('checkout.html');
+        window.location.href = 'login.html?redirect=' + returnUrl;
+      });
+  }
+
   // Fetch on open of mini cart, and once on page load to sync header counters
   document.addEventListener('DOMContentLoaded', function(){
     refreshMini();
@@ -54,5 +81,7 @@
       if (!btn) return;
       setTimeout(refreshMini, 10); // after toggle, refresh contents
     });
+    // Add click handler for checkout buttons in mini-cart
+    document.body.addEventListener('click', handleCheckoutClick);
   });
 })();

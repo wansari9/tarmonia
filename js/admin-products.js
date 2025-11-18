@@ -69,10 +69,8 @@ function toImageUrl(path) {
     if (path.startsWith('http://') || path.startsWith('https://')) {
         return path;
     }
-    if (path.startsWith('/')) {
-        return path;
-    }
-    return `/${path.replace(/^\/+/, '')}`;
+    // Normalize to relative path (no leading slash)
+    return path.replace(/^\/+/, '');
 }
 
 function showBanner(target, message, tone = 'error') {
@@ -172,7 +170,7 @@ async function loadProducts() {
         if (state.isActive !== 'all') {
             params.set('is_active', state.isActive);
         }
-    const response = await window.fetchWithCSRF(`/tarmonia/api/admin/products_list.php?${params.toString()}`);
+    const response = await window.fetchWithCSRF(`api/admin/products.php?action=list&${params.toString()}`);
         const payload = await response.json();
         if (!payload || !payload.ok) {
             throw new Error(payload?.error?.message || 'Unable to load products');
@@ -382,7 +380,7 @@ function closeEditor() {
 }
 
 async function fetchProduct(id) {
-    const response = await window.fetchWithCSRF(`/tarmonia/api/admin/product_get.php?id=${id}`);
+    const response = await window.fetchWithCSRF(`api/admin/products.php?action=get&id=${id}`);
     const payload = await response.json();
     if (!payload || !payload.ok) {
         throw new Error(payload?.error?.message || 'Unable to load product');
@@ -487,7 +485,7 @@ async function handleFormSubmit(event) {
         setEditorAlert('');
         setSaveDisabled(true);
         const payload = formToPayload(elements.editorForm, editorState.mode);
-    const endpoint = editorState.mode === 'edit' ? '/tarmonia/api/admin/product_update.php' : '/tarmonia/api/admin/product_create.php';
+    const endpoint = editorState.mode === 'edit' ? 'api/admin/products.php?action=update' : 'api/admin/products.php?action=create';
         const method = editorState.mode === 'edit' ? 'PUT' : 'POST';
         const response = await window.fetchWithCSRF(endpoint, {
             method,
@@ -515,7 +513,7 @@ async function handleDelete(id) {
     try {
         setLoading(true);
         showBanner(elements.alert, '');
-    const response = await window.fetchWithCSRF('/tarmonia/api/admin/product_delete.php', {
+    const response = await window.fetchWithCSRF('api/admin/products.php?action=delete', {
             method: 'DELETE',
             body: JSON.stringify({ id }),
         });
@@ -552,7 +550,7 @@ async function handleUpload(event) {
     try {
         setUploadAlert('');
         setUploadDisabled(true);
-    const response = await window.fetchWithCSRF('/tarmonia/api/admin/product_upload_image.php', {
+    const response = await window.fetchWithCSRF('api/admin/products.php?action=upload_image', {
             method: 'POST',
             body: formData,
         });

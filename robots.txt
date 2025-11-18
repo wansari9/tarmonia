@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/admin/
+Allow: /api/
+Sitemap: http://localhost/tarmonia/sitemap.xml

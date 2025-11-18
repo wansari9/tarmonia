@@ -6,7 +6,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="format-detection" content="telephone=no">
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext' type='text/css' media='all' />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext&display=swap' type='text/css' media='all' />
+    <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/revslider/settings.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/woo/woocommerce-layout.css' type='text/css' media='all' />
@@ -101,7 +105,7 @@
                                         </span>
                                     </a>
                                     <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
-                                    <a href="#" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                    <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
                                         <span class="user_initial" style="font-weight:600;">U</span>
                                     </a>
                                 </div>
@@ -248,7 +252,7 @@
                                                 <div class="sc_section_inner">
                                                     <div class="sc_section_content_wrap">
                                                         <figure class="sc_image sc_image_shape_square margin_top_huge-">
-                                                            <img src="images/big-logo.png" alt="" style="max-height: 250px;"/>
+                                                            <img src="images/big-logo.png" alt="" style="max-height: 250px;" decoding="async"/>
                                                         </figure>
                                                     </div>
                                                 </div>
@@ -269,7 +273,7 @@
                                                                 <div class="sc_services_item_featured post_featured">
                                                                     <div class="post_thumb" data-image="" data-title="Our Dairy Farm">
                                                                         <a class="hover_icon hover_icon_link" href="about-2.html">
-                                                                            <img alt="" src="images/farming-8210675_1280.jpg">
+                                                                            <img alt="" src="images/farming-8210675_1280.jpg" loading="lazy" decoding="async">
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -293,7 +297,7 @@
                                                                 <div class="sc_services_item_featured post_featured">
                                                                     <div class="post_thumb" data-image="" data-title="Meet Our Cows">
                                                                         <a class="hover_icon hover_icon_link" href="farm.html">
-                                                                            <img alt="" src="images/shutterstock_1669554079_2.avif">
+                                                                            <img alt="" src="images/shutterstock_1669554079_2.avif" loading="lazy" decoding="async">
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -317,7 +321,7 @@
                                                                 <div class="sc_services_item_featured post_featured">
                                                                     <div class="post_thumb" data-image="" data-title="Our Organic Food">
                                                                         <a class="hover_icon hover_icon_link" href="shop.html">
-                                                                            <img alt="" src="images/organic food.jpg">
+                                                                            <img alt="" src="images/organic food.jpg" loading="lazy" decoding="async">
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -380,7 +384,7 @@
                                     <div class="vc_column-inner vc_custom_1475235352066">
                                         <div class="wpb_wrapper">
                                             <figure class="sc_image sc_image_shape_square margin_top_huge" data-animation="animated fadeInRight normal">
-                                                <img src="images/images2.jpeg" alt="" />
+                                                <img src="images/images2.jpeg" alt="" loading="lazy" decoding="async" />
                                             </figure>
                                         </div>
                                     </div>
@@ -477,7 +481,7 @@
                                                         <div class="columns_wrap sc_columns columns_nofluid sc_columns_count_4">
                                                             <div class="column-1_4 sc_column_item sc_column_item_1 odd first">
                                                                 <figure class="sc_image sc_image_shape_round">
-                                                                    <img src="images/pouring_milk.webp" alt="" />
+                                                                    <img src="images/pouring_milk.webp" alt="" loading="lazy" decoding="async" />
                                                                 </figure>
                                                                 <h4 class="sc_title sc_title_regular cmrg_2">
                                                                     <a href="#">Milk</a>
@@ -490,7 +494,7 @@
                                                             </div>
                                                             <div class="column-1_4 sc_column_item sc_column_item_2 even">
                                                                 <figure class="sc_image sc_image_shape_round">
-                                                                    <img src="images/smoked-cheese-flight-000983-1.jpg" alt="" />
+                                                                    <img src="images/smoked-cheese-flight-000983-1.jpg" alt="" loading="lazy" decoding="async" />
                                                                 </figure>
                                                                 <h4 class="sc_title sc_title_regular cmrg_2">
                                                                     <a href="#">Cheese</a>
@@ -503,7 +507,7 @@
                                                             </div>
                                                             <div class="column-1_4 sc_column_item sc_column_item_3 odd">
                                                                 <figure class="sc_image sc_image_shape_round">
-                                                                    <img src="images/butter_burfi_1.webp" alt="" />
+                                                                    <img src="images/butter_burfi_1.webp" alt="" loading="lazy" decoding="async" />
                                                                 </figure>
                                                                 <h4 class="sc_title sc_title_regular cmrg_2">
                                                                     <a href="#">Butter</a>
@@ -516,7 +520,7 @@
                                                             </div>
                                                             <div class="column-1_4 sc_column_item sc_column_item_4 even">
                                                                 <figure class="sc_image sc_image_shape_round">
-                                                                    <img src="images/images.jpeg" alt="" />
+                                                                    <img src="images/images.jpeg" alt="" loading="lazy" decoding="async" />
                                                                 </figure>
                                                                 <h4 class="sc_title sc_title_regular cmrg_2">
                                                                     <a href="#">Cream</a>
@@ -548,7 +552,7 @@
                                     <div class="vc_column-inner vc_custom_1475049444491">
                                         <div class="wpb_wrapper">
                                             <figure class="sc_image sc_image_shape_square margin_top_huge" data-animation="animated fadeInLeft normal">
-                                                <img src="images/88417b888aceef44019134d17e94635d0593947d-2000x2000.avif" alt="" />
+                                                <img src="images/88417b888aceef44019134d17e94635d0593947d-2000x2000.avif" alt="" loading="lazy" decoding="async" />
                                             </figure>
                                         </div>
                                     </div>
@@ -595,88 +599,9 @@
                                                 <div class="sc_section_inner">
                                                     <h2 class="sc_section_title sc_item_title sc_item_title_without_descr">Our Shop<span></span></h2>
                                                     <div class="sc_section_content_wrap">
-                                                        <div class="woocommerce columns-4">
+                                                        <div class="woocommerce columns-4 list_products">
                                                             <ul class="products">
-                                                                <li class="product has-post-thumbnail first instock purchasable">
-                                                                    <div class="post_item_wrap">
-                                                                        <div class="post_featured">
-                                                                            <div class="post_thumb">
-                                                                                <a class="hover_icon hover_icon_link" href="single-product.html">
-                                                                                    <img src="images/percorino romano.jpeg" class="attachment-shop_catalog size-shop_catalog" alt="" />
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="post_content">
-                                                                            <h2 class="woocommerce-loop-product__title">Pecorino Romano</h2>
-                                                                            <span class="price">
-                                                                                <span class="woocommerce-Price-amount amount">
-                                                                                    <span class="woocommerce-Price-currencySymbol">&#36;</span>18.90
-                                                                                </span>
-                                                                            </span>
-                                                                            <a rel="nofollow" href="single-product.html" data-quantity="1" data-product_id="471" data-product_sku="" class="button add_to_cart_button">Select options</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="product has-post-thumbnail instock purchasable">
-                                                                    <div class="post_item_wrap">
-                                                                        <div class="post_featured">
-                                                                            <div class="post_thumb">
-                                                                                <a class="hover_icon hover_icon_link" href="single-product.html">
-                                                                                    <img src="images/JG10293-glass-milk-bottles_3.webp" class="attachment-shop_catalog size-shop_catalog" alt="" />
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="post_content">
-                                                                            <h2 class="woocommerce-loop-product__title">Evaporated Milk</h2>
-                                                                            <span class="price">
-                                                                                <span class="woocommerce-Price-amount amount">
-                                                                                    <span class="woocommerce-Price-currencySymbol">&#36;</span>4.90
-                                                                                </span>
-                                                                            </span>
-                                                                            <a rel="nofollow" href="single-product.html" data-quantity="1" data-product_id="458" data-product_sku="" class="button add_to_cart_button">Select options</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="product has-post-thumbnail instock purchasable">
-                                                                    <div class="post_item_wrap">
-                                                                        <div class="post_featured">
-                                                                            <div class="post_thumb">
-                                                                                <a class="hover_icon hover_icon_link" href="single-product.html">
-                                                                                    <img src="images/images3.jpeg" class="attachment-shop_catalog size-shop_catalog" alt="" />
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="post_content">
-                                                                            <h2 class="woocommerce-loop-product__title">Farm Sour Cream</h2>
-                                                                            <span class="price">
-                                                                                <span class="woocommerce-Price-amount amount">
-                                                                                    <span class="woocommerce-Price-currencySymbol">&#36;</span>12.50
-                                                                                </span>
-                                                                            </span>
-                                                                            <a rel="nofollow" href="single-product.html" data-quantity="1" data-product_id="448" data-product_sku="" class="button add_to_cart_button">Select options</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="product has-post-thumbnail last instock purchasable">
-                                                                    <div class="post_item_wrap">
-                                                                        <div class="post_featured">
-                                                                            <div class="post_thumb">
-                                                                                <a class="hover_icon hover_icon_link" href="single-product.html">
-                                                                                    <img src="images/images4.jpeg" class="attachment-shop_catalog size-shop_catalog" alt="" />
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="post_content">
-                                                                            <h2 class="woocommerce-loop-product__title">Ricotta Salata</h2>
-                                                                            <span class="price">
-                                                                                <span class="woocommerce-Price-amount amount">
-                                                                                    <span class="woocommerce-Price-currencySymbol">&#36;</span>15.99
-                                                                                </span>
-                                                                            </span>
-                                                                            <a rel="nofollow" href="single-product.html" data-quantity="1" data-product_id="438" data-product_sku="" class="button add_to_cart_button">Select options</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
+                                                                <!-- Products will be populated dynamically by `js/index-dynamic.js` using `includes/products_list.php` -->
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -690,28 +615,7 @@
                                 <div class="wpb_column vc_column_container vc_col-sm-12">
                                     <div class="vc_column-inner ">
                                         <div class="wpb_wrapper">
-                                            <div class="columns_wrap sc_columns columns_nofluid sc_columns_count_12 margin_top_small margin_bottom_huge" data-animation="animated fadeInUp normal">
-                                                <div class="column-7_12 sc_column_item sc_column_item_1 odd first span_7">
-                                                    <div class="sc_intro intro_1">
-                                                        <div class="sc_intro_inner  sc_intro_style_2">
-                                                            <div class="sc_intro_content">
-                                                                <h2 class="sc_intro_title">Breakfast Ideas</h2>
-                                                                <div class="sc_intro_descr">Heat up your mornings with a bowl of warm cereal. Whether you prefer oatmeal, farina, or any other kind of porridge, make your instant version a bit creamier!</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="column-5_12 sc_column_item sc_column_item_8 even span_5">
-                                                    <div class="sc_intro intro_2">
-                                                        <div class="sc_intro_inner  sc_intro_style_2">
-                                                            <div class="sc_intro_content">
-                                                                <h2 class="sc_intro_title">Ice Cream</h2>
-                                                                <div class="sc_intro_descr">Try our low fat, fruitty, caramel, vanilla and chocolate ice cream all made by our best farm cooks!</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- Promotional boxes removed: replaced by dynamic content. -->
                                         </div>
                                     </div>
                                 </div>
@@ -730,7 +634,7 @@
                                                                     <div class="column-1_4 column_padding_bottom">
                                                                         <div id="sc_team_278_1" class="sc_team_item sc_team_item_1 odd first">
                                                                             <div class="sc_team_item_avatar">
-                                                                                <img alt="" src="images/images6.jpeg">
+                                                                                <img alt="" src="images/images6.jpeg" loading="lazy" decoding="async">
                                                                                 <div class="sc_team_item_hover">
                                                                                     <div class="sc_team_item_socials">
                                                                                         <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
@@ -764,7 +668,7 @@
                                                                     <div class="column-1_4 column_padding_bottom">
                                                                         <div id="sc_team_278_2" class="sc_team_item sc_team_item_2 even">
                                                                             <div class="sc_team_item_avatar">
-                                                                                <img alt="" src="images/images7.jpeg">
+                                                                                <img alt="" src="images/images7.jpeg" loading="lazy" decoding="async">
                                                                                 <div class="sc_team_item_hover">
                                                                                     <div class="sc_team_item_socials">
                                                                                         <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
@@ -798,7 +702,7 @@
                                                                     <div class="column-1_4 column_padding_bottom">
                                                                         <div id="sc_team_278_3" class="sc_team_item sc_team_item_3 odd">
                                                                             <div class="sc_team_item_avatar">
-                                                                                <img alt="" src="images/images8.jpeg">
+                                                                                <img alt="" src="images/images8.jpeg" loading="lazy" decoding="async">
                                                                                 <div class="sc_team_item_hover">
                                                                                     <div class="sc_team_item_socials">
                                                                                         <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
@@ -832,7 +736,7 @@
                                                                     <div class="column-1_4 column_padding_bottom">
                                                                         <div id="sc_team_278_4" class="sc_team_item sc_team_item_4 even">
                                                                             <div class="sc_team_item_avatar">
-                                                                                <img alt="" src="images/images9.jpeg">
+                                                                                <img alt="" src="images/images9.jpeg" loading="lazy" decoding="async">
                                                                                 <div class="sc_team_item_hover">
                                                                                     <div class="sc_team_item_socials">
                                                                                         <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
@@ -889,7 +793,7 @@
                                                                         <div class="post_featured">
                                                                             <div class="post_thumb" data-image="images/post-6.jpg" data-title="It Was Delicious">
                                                                                 <a class="hover_icon hover_icon_link" href="single-post.html?content=5">
-                                                                                    <img alt="" src="images/Untitled-design-5.webp">
+                                                                                    <img alt="" src="images/Untitled-design-5.webp" loading="lazy" decoding="async">
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -926,7 +830,7 @@
                                                                         <div class="post_featured">
                                                                             <div class="post_thumb" data-image="images/post-5.jpg" data-title="A Better Cream Life">
                                                                                 <a class="hover_icon hover_icon_link" href="single-post.html?content=6">
-                                                                                    <img alt="" src="images/picking-strawberries.jpg">
+                                                                                    <img alt="" src="images/picking-strawberries.jpg" loading="lazy" decoding="async">
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -963,7 +867,7 @@
                                                                         <div class="post_featured">
                                                                             <div class="post_thumb" data-image="images/2000x1600.png" data-title="Butter of a Dream">
                                                                                 <a class="hover_icon hover_icon_link" href="single-post.html?content=7">
-                                                                                    <img alt="" src="images/fishing.jpg">
+                                                                                    <img alt="" src="images/fishing.jpg" loading="lazy" decoding="async">
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -1017,36 +921,36 @@
                                                         <div class="slides swiper-wrapper">
                                                             <div class="swiper-slide" data-style="width:100%;">
                                                                 <div id="sc_clients_635_1" class="sc_clients_item sc_clients_item_1 odd first">
-                                                                    <div class="sc_client_image">
-                                                                        <img class="" alt="" src="images/5-1.png">
+                                                                        <div class="sc_client_image">
+                                                                        <img class="" alt="" src="images/5-1.png" loading="lazy" decoding="async">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="swiper-slide" data-style="width:100%;">
                                                                 <div id="sc_clients_635_2" class="sc_clients_item sc_clients_item_2 even">
-                                                                    <div class="sc_client_image">
-                                                                        <img class="" alt="" src="images/3-1.png">
+                                                                        <div class="sc_client_image">
+                                                                        <img class="" alt="" src="images/3-1.png" loading="lazy" decoding="async">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="swiper-slide" data-style="width:100%;">
                                                                 <div id="sc_clients_635_3" class="sc_clients_item sc_clients_item_3 odd">
-                                                                    <div class="sc_client_image">
-                                                                        <img class="" alt="" src="images/2-1.png">
+                                                                        <div class="sc_client_image">
+                                                                        <img class="" alt="" src="images/2-1.png" loading="lazy" decoding="async">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="swiper-slide" data-style="width:100%;">
                                                                 <div id="sc_clients_635_4" class="sc_clients_item sc_clients_item_4 even">
-                                                                    <div class="sc_client_image">
-                                                                        <img class="" alt="" src="images/1-1.png">
+                                                                        <div class="sc_client_image">
+                                                                        <img class="" alt="" src="images/1-1.png" loading="lazy" decoding="async">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="swiper-slide" data-style="width:100%;">
                                                                 <div id="sc_clients_635_5" class="sc_clients_item sc_clients_item_5 odd">
-                                                                    <div class="sc_client_image">
-                                                                        <img class="" alt="" src="images/4-1.png">
+                                                                        <div class="sc_client_image">
+                                                                        <img class="" alt="" src="images/4-1.png" loading="lazy" decoding="async">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1199,36 +1103,38 @@
 
 <a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
 <div class="custom_html_section"></div>
-<script type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
-<script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
-<script type='text/javascript' src='js/custom/custom.js'></script>
-<script type='text/javascript' src='js/vendor/esg/jquery.themepunch.tools.min.js'></script>
-<script type='text/javascript' src='js/vendor/revslider/jquery.themepunch.revolution.min.js'></script>
-<script type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.actions.min.js'></script>
-<script type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.layeranimation.min.js'></script>
-<script type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.navigation.min.js'></script>
-<script type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.slideanims.min.js'></script>
-<script type='text/javascript' src='js/vendor/modernizr.min.js'></script>
-<script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js'></script>
-<script type='text/javascript' src='js/vendor/superfish.js'></script>
-<script type='text/javascript' src='js/custom/core.utils.js'></script>
-<script type='text/javascript' src='js/custom/core.init.js'></script>
-<script type='text/javascript' src='js/custom/init.js'></script>
-<script type='text/javascript' src='js/custom/core.debug.js'></script>
-<script type='text/javascript' src='js/custom/embed.min.js'></script>
-<script type='text/javascript' src='js/custom/shortcodes.js'></script>
-<script type='text/javascript' src='js/vendor/comp/comp_front.min.js'></script>
-<script type='text/javascript' src='js/vendor/ui/core.min.js'></script>
-<script type='text/javascript' src='js/vendor/ui/widget.min.js'></script>
-<script type='text/javascript' src='js/vendor/ui/tabs.min.js'></script>
-<script type='text/javascript' src='js/vendor/isotope.pkgd.min.js'></script>
-<script type='text/javascript' src='js/vendor/swiper/swiper.js'></script>
+<script defer type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
+<script defer type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
+<script defer type='text/javascript' src='js/custom/custom.js'></script>
+<script defer type='text/javascript' src='js/vendor/esg/jquery.themepunch.tools.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/revslider/jquery.themepunch.revolution.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.actions.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.layeranimation.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.navigation.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/revslider/extensions/revolution.extension.slideanims.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/modernizr.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/jquery/js.cookie.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/superfish.js'></script>
+<script defer type='text/javascript' src='js/custom/core.utils.js'></script>
+<script defer type='text/javascript' src='js/custom/core.init.js'></script>
+<script defer type='text/javascript' src='js/custom/init.js'></script>
+<script defer type='text/javascript' src='js/custom/core.debug.js'></script>
+<script defer type='text/javascript' src='js/custom/embed.min.js'></script>
+<script defer type='text/javascript' src='js/custom/shortcodes.js'></script>
+<script defer type='text/javascript' src='js/vendor/comp/comp_front.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/core.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/widget.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/tabs.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/isotope.pkgd.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/swiper/swiper.js'></script>
 
 <!-- Ensure cart is available globally -->
-<script type='text/javascript' src='js/local-cart.js'></script>
-<script type="text/javascript" src="js/cart-api.js"></script>
-<script type="text/javascript" src="js/mini-cart.js"></script>
-<script type='text/javascript' src='js/auth-session.js'></script>
+<script defer type='text/javascript' src='js/local-cart.js'></script>
+<script defer type="text/javascript" src="js/cart-api.js"></script>
+<script defer type="text/javascript" src="js/mini-cart.js"></script>
+<script defer type='text/javascript' src='js/auth-session.js'></script>
+<script defer type='text/javascript' src='js/product-data.js'></script>
+<script defer type='text/javascript' src='js/index-dynamic.js'></script>
 <script>
 // Year bar pagination logic for index page (#sc_tabs_583)
 document.addEventListener('DOMContentLoaded', function(){

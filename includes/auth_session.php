@@ -22,6 +22,7 @@ if ($isAuth) {
         'first_name' => $_SESSION['user_first_name'] ?? null,
         'last_name' => $_SESSION['user_last_name'] ?? null,
         'role' => $_SESSION['user_role'] ?? null,
+        'is_admin' => isset($_SESSION['is_admin']) ? (int)$_SESSION['is_admin'] : 0,
     ];
 }
 

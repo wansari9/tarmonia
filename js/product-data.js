@@ -9,26 +9,26 @@
   }
   window.AppPaths = window.AppPaths || {};
   window.AppPaths.getBasePath = window.AppPaths.getBasePath || getBasePath;
-  window.AppPaths.base = window.AppPaths.base || window.AppPaths.getBasePath();
-  var BASE = window.AppPaths.base;
-  var EP = BASE + '/includes/';
-  var ALT_BASE = (BASE === '' ? '/tarmonia' : BASE);
-  var ALT_EP = ALT_BASE + '/includes/';
+  var BASE = window.AppPaths.base = window.AppPaths.base || window.AppPaths.getBasePath();
+
+  function joinPath(fragment){
+    var cleanBase = String(BASE || '').replace(/\/+$/,'');
+    var cleanFragment = String(fragment || '').replace(/^\/+/, '');
+    if (!cleanBase) return cleanFragment;
+    if (!cleanFragment) return cleanBase;
+    return cleanBase + '/' + cleanFragment;
+  }
+
+  if (typeof window.AppPaths.join !== 'function') {
+    window.AppPaths.join = joinPath;
+  }
+
+  var EP = joinPath('includes/');
 
   function parseJsonSafe(r){ return r.json().catch(function(){ return { success:false, error:'Bad JSON' }; }); }
   function api(url, opts){
     var options = Object.assign({ credentials:'same-origin' }, opts||{});
-    return fetch(url, options).then(function(r){
-      if (!r.ok && ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
-        var altUrl = ALT_EP + url.substring(EP.length);
-        return fetch(altUrl, options).then(parseJsonSafe);
-      }
-      return parseJsonSafe(r);
-    }).catch(function(){
-      if (ALT_EP !== EP && typeof url === 'string' && url.indexOf(EP) === 0) {
-        var altUrl = ALT_EP + url.substring(EP.length);
-        return fetch(altUrl, options).then(parseJsonSafe);
-      }
+    return fetch(url, options).then(parseJsonSafe).catch(function(){
       return { success:false, error:'Network error' };
     });
   }

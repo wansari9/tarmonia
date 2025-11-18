@@ -206,15 +206,31 @@ function resolve_variant_by_options(PDO $pdo, int $productId, array $selected): 
 }
 
 function recalc_cart_totals(PDO $pdo, int $cartId): array {
-    $sum = $pdo->prepare('SELECT COALESCE(SUM(line_total),0) AS subtotal FROM cart_items WHERE cart_id = :cid');
-    $sum->execute([':cid' => $cartId]);
-    $subtotal = (float)($sum->fetch()['subtotal'] ?? 0);
+    // subtotal is from items table; currency from carts table
+    $sumItems = $pdo->prepare('SELECT COALESCE(SUM(line_total),0) AS subtotal FROM cart_items WHERE cart_id = :cid');
+    $sumItems->execute([':cid' => $cartId]);
+    $subtotal = (float)($sumItems->fetch()['subtotal'] ?? 0);
+
+    // Read currency from carts
+    $currency = 'RM';
+    try {
+        $metaStmt = $pdo->prepare('SELECT currency FROM carts WHERE id = :cid');
+        $metaStmt->execute([':cid' => $cartId]);
+        $meta = $metaStmt->fetch() ?: [];
+        if (isset($meta['currency']) && $meta['currency'] !== null && $meta['currency'] !== '') {
+            $currency = $meta['currency'];
+        }
+    } catch (Throwable $ignored) {
+        // keep defaults
+    }
+    
     $discount = 0.0; // placeholder for future promotions
     $tax = 0.0;      // no tax for now
-    $shipping = 0.0; // computed at checkout
+    $shipping = 5.99; // flat shipping rate
     $grand = $subtotal - $discount + $tax + $shipping;
-    $upd = $pdo->prepare('UPDATE carts SET subtotal = :sub, discount_total = :disc, tax_total = :tax, shipping_total = :ship, grand_total = :grand, updated_at = NOW(), currency = COALESCE(currency, "RM") WHERE id = :cid');
-    $upd->execute([':sub' => $subtotal, ':disc' => $discount, ':tax' => $tax, ':ship' => $shipping, ':grand' => $grand, ':cid' => $cartId]);
+    
+    $upd = $pdo->prepare('UPDATE carts SET subtotal = :sub, discount_total = :disc, tax_total = :tax, shipping_total = :ship, grand_total = :grand, updated_at = NOW(), currency = COALESCE(currency, :cur) WHERE id = :cid');
+    $upd->execute([':sub' => $subtotal, ':disc' => $discount, ':tax' => $tax, ':ship' => $shipping, ':grand' => $grand, ':cur' => $currency, ':cid' => $cartId]);
     return ['subtotal' => $subtotal, 'discount_total' => $discount, 'tax_total' => $tax, 'shipping_total' => $shipping, 'grand_total' => $grand];
 }
 

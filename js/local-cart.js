@@ -134,11 +134,41 @@
     });
   }
 
+  function initCheckoutButton(){
+    var checkoutBtn = document.getElementById('proceed-to-checkout');
+    if (!checkoutBtn) return;
+    
+    checkoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Check if user is logged in before proceeding to checkout
+      fetch('includes/auth_session.php', { credentials: 'same-origin' })
+        .then(function(r) { return r.json(); })
+        .then(function(session) {
+          if (!session || !session.authenticated) {
+            // Not logged in - redirect to login with return URL
+            var returnUrl = encodeURIComponent('checkout.html');
+            var message = encodeURIComponent('Please log in to checkout');
+            window.location.href = 'login.html?redirect=' + returnUrl + '&message=' + message;
+          } else {
+            // Logged in - proceed to checkout
+            window.location.href = 'checkout.html';
+          }
+        })
+        .catch(function() {
+          // Error checking session - redirect to login
+          var returnUrl = encodeURIComponent('checkout.html');
+          window.location.href = 'login.html?redirect=' + returnUrl;
+        });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
     // Purge any legacy localStorage cart
     try { localStorage.removeItem('cart'); } catch(e){}
     initArchiveAddToCart();
     initRemoveDelegation();
+    initCheckoutButton();
     renderCartPage();
   });
 })();

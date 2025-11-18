@@ -89,16 +89,31 @@ if ($total === 0) {
     ]);
 }
 
-$listSql = 'SELECT DISTINCT p.id, p.title, p.slug, p.excerpt, p.featured_image, p.published_at
+$listSql = 'SELECT DISTINCT p.id, p.title, p.slug, p.excerpt, p.featured_image, p.published_at, p.category_slugs, p.tag_slugs
             FROM posts p' . $joinSql . ' ' . $whereSql . ' ORDER BY p.published_at DESC LIMIT :limit OFFSET :offset';
-$listStmt = $pdo->prepare($listSql);
-foreach ($params as $key => $value) {
-    $listStmt->bindValue(':' . $key, $value);
+$rows = [];
+try {
+    $listStmt = $pdo->prepare($listSql);
+    foreach ($params as $key => $value) {
+        $listStmt->bindValue(':' . $key, $value);
+    }
+    $listStmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $listStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $listStmt->execute();
+    $rows = $listStmt->fetchAll();
+} catch (PDOException $e) {
+    // Fallback: posts table may not include denormalized columns. Retry without them.
+    $fallbackSql = 'SELECT DISTINCT p.id, p.title, p.slug, p.excerpt, p.featured_image, p.published_at
+            FROM posts p' . $joinSql . ' ' . $whereSql . ' ORDER BY p.published_at DESC LIMIT :limit OFFSET :offset';
+    $listStmt = $pdo->prepare($fallbackSql);
+    foreach ($params as $key => $value) {
+        $listStmt->bindValue(':' . $key, $value);
+    }
+    $listStmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $listStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $listStmt->execute();
+    $rows = $listStmt->fetchAll();
 }
-$listStmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
-$listStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$listStmt->execute();
-$rows = $listStmt->fetchAll();
 
 $postIds = array_column($rows, 'id');
 if (empty($postIds)) {
@@ -149,6 +164,8 @@ foreach ($rows as $row) {
         'published_at' => $row['published_at'],
         'categories' => $categoryMap[$postId] ?? [],
         'tags' => $tagMap[$postId] ?? [],
+        'category_slugs' => $row['category_slugs'] ?? null,
+        'tag_slugs' => $row['tag_slugs'] ?? null,
     ];
 }
 

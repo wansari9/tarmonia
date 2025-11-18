@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
-  <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+  <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
   <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
@@ -65,7 +66,7 @@
                   <button type="submit">Login</button>
                   <label style="font-size:12px;display:flex;align-items:center;gap:4px;"><input type="checkbox"/> Remember me</label>
                 </div>
-                <div class="small-note"><a href="#">Forgot password?</a> · <a href="/tarmonia/admin-login.php">Admin login</a></div>
+                <div class="small-note"><a href="request-password-reset.html">Forgot password?</a></div>
               </form>
               <form id="registerForm" class="auth-form" autocomplete="on">
                 <div class="field"><label for="reg_first_name">First Name</label><input id="reg_first_name" name="first_name" type="text" required /></div>
@@ -152,7 +153,9 @@
         if(!res.ok || !data.success){
           throw new Error(data.error || 'Login failed');
         }
-        window.location.href = 'index.html';
+        // If user is admin, route to admin dashboard; otherwise go to site
+        const isAdmin = data && data.user && (parseInt(data.user.is_admin || 0, 10) === 1);
+        window.location.href = isAdmin ? 'admin-dashboard.php' : 'index.html';
       })
       .catch(err=>{
         alert(err.message || 'Login failed');
@@ -160,6 +163,7 @@
     });
   </script>
   <script type="text/javascript" src="js/cart-api.js"></script>
-  <script type="text/javascript" src="js/mini-cart.js"></script>
+  <script defer type="text/javascript" src="js/cart-api.js"></script>
+  <script defer type="text/javascript" src="js/mini-cart.js"></script>
 </body>
 </html>

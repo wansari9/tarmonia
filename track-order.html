@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Track Your Order - Tarmonia</title>
+  <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+  <style>.track-box{max-width:600px;margin:48px auto;padding:24px;background:#fff;border-radius:8px;} label{display:block;margin-bottom:8px;} input{width:100%;padding:8px;margin-bottom:12px;} button{padding:10px 16px;background:#72b16a;color:#fff;border:0;border-radius:6px;} .result{margin-top:16px;padding:12px;background:#f8f8f8;border-radius:6px;}</style>
+</head>
+<body>
+  <div class="track-box">
+    <h2>Track your order</h2>
+    <p>Enter your order number and email address.</p>
+    <form id="trackForm">
+      <label>Order number</label>
+      <input id="order_number" required>
+      <label>Email</label>
+      <input id="email" type="email" required>
+      <button type="submit">Track</button>
+    </form>
+    <div id="result" class="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    document.getElementById('trackForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const order = document.getElementById('order_number').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const resEl = document.getElementById('result');
+      resEl.style.display = 'none';
+      try{
+        const resp = await fetch('api/orders/track.php?order_number=' + encodeURIComponent(order) + '&email=' + encodeURIComponent(email));
+        const j = await resp.json();
+        if(!j.success){ resEl.style.display='block'; resEl.textContent = j.error || 'Not found'; return; }
+        const o = j.order;
+        resEl.style.display='block';
+        resEl.innerHTML = `<div><strong>Order:</strong> ${o.order_number}</div>` +
+                        `<div><strong>Status:</strong> ${o.status} / ${o.shipping_status}</div>` +
+                        `<div><strong>Placed:</strong> ${o.placed_at || '-'}</div>` +
+                        `<div><strong>Shipped:</strong> ${o.shipped_at || '-'}</div>` +
+                        `<div><strong>Tracking:</strong> ${o.tracking_number || 'Not available'}</div>`;
+      }catch(err){ resEl.style.display='block'; resEl.textContent = 'Server error'; }
+    });
+  </script>
+</body>
+</html>

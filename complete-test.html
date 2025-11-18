@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Checkout Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 900px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #45a049; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        pre { background: #f5f5f5; padding: 15px; overflow-x: auto; border-radius: 4px; }
+        .step { margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px; }
+        .step h3 { margin-top: 0; color: #333; }
+        .error { color: red; background: #fee; }
+        .success { color: green; background: #efe; }
+        .info { color: blue; background: #eef; }
+        .status { font-weight: bold; margin: 10px 0; padding: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Complete Checkout Flow Test</h1>
+    <p><strong>This will test the entire flow: Add product → Checkout → Create order</strong></p>
+    
+    <div class="step">
+        <h3>Step 1: Add Product to Cart</h3>
+        <button onclick="addProduct()">Add Evaporated Milk to Cart</button>
+        <div id="step1-output"></div>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: View Cart Summary</h3>
+        <button onclick="viewCart()" id="btn-view">View Cart</button>
+        <div id="step2-output"></div>
+    </div>
+    
+    <div class="step">
+        <h3>Step 3: Submit Checkout</h3>
+        <button onclick="doCheckout()" id="btn-checkout">Submit Test Order</button>
+        <div id="step3-output"></div>
+    </div>
+    
+    <script>
+        function log(step, msg, type = 'info') {
+            const el = document.getElementById('step' + step + '-output');
+            const div = document.createElement('div');
+            div.className = 'status ' + type;
+            div.innerHTML = '<pre>' + msg + '</pre>';
+            el.innerHTML = '';
+            el.appendChild(div);
+        }
+        
+        async function addProduct() {
+            log(1, 'Adding product to cart...', 'info');
+            
+            try {
+                const formData = new FormData();
+                formData.append('product_id', '1'); // Evaporated Milk
+                formData.append('quantity', '2');
+                formData.append('weight', '250g');
+                
+                const response = await fetch('includes/cart_add_item.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    log(1, '✅ SUCCESS! Product added to cart\n\n' + JSON.stringify(data, null, 2), 'success');
+                    document.getElementById('btn-view').disabled = false;
+                } else {
+                    log(1, '❌ Failed to add product\n\n' + JSON.stringify(data, null, 2), 'error');
+                }
+            } catch(e) {
+                log(1, '❌ Error: ' + e.message + '\n' + e.stack, 'error');
+            }
+        }
+        
+        async function viewCart() {
+            log(2, 'Loading cart...', 'info');
+            
+            try {
+                const response = await fetch('includes/cart_mini.php', {
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const cart = data.cart;
+                    const summary = `✅ CART LOADED
+
+Items: ${cart.counts.items}
+Subtotal: RM ${cart.totals.subtotal}
+Shipping: RM ${cart.totals.shipping_total}
+Tax: RM ${cart.totals.tax_total}
+TOTAL: RM ${cart.totals.grand_total}
+
+Products:
+${cart.items.map(item => `- ${item.product_name} x${item.quantity} @ RM${item.unit_price}`).join('\n')}`;
+                    
+                    log(2, summary, 'success');
+                    
+                    if (cart.counts.items > 0) {
+                        document.getElementById('btn-checkout').disabled = false;
+                    }
+                } else {
+                    log(2, '❌ Failed to load cart\n\n' + JSON.stringify(data, null, 2), 'error');
+                }
+            } catch(e) {
+                log(2, '❌ Error: ' + e.message, 'error');
+            }
+        }
+        
+        async function doCheckout() {
+            log(3, 'Submitting order...', 'info');
+            
+            const orderData = {
+                first_name: 'Test',
+                last_name: 'User',
+                email: 'test@example.com',
+                phone: '0123456789',
+                address: '123 Test Street',
+                address2: 'Apt 4B',
+                city: 'Kuala Lumpur',
+                state: 'Selangor',
+                postal_code: '50000',
+                country: 'MY',
+                payment_method: 'manual',
+                notes: 'Test order from complete checkout test'
+            };
+            
+            try {
+                const response = await fetch('api/checkout.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                const text = await response.text();
+                console.log('Response text:', text);
+                
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch(e) {
+                    log(3, '❌ Response is not JSON:\n\n' + text, 'error');
+                    return;
+                }
+                
+                console.log('Parsed response:', data);
+                
+                if (data.ok) {
+                    const summary = `🎉 ORDER CREATED SUCCESSFULLY!
+
+Order ID: ${data.data.order_id}
+Order Number: ${data.data.order_number}
+Total: RM ${data.data.total}
+Currency: ${data.data.currency}
+
+Status: awaiting_confirmation
+
+Next steps:
+1. Check admin panel at: admin-orders.php
+2. Admin should see this order
+3. Admin can click "Confirm Order"
+
+Full API Response:
+${JSON.stringify(data, null, 2)}`;
+                    
+                    log(3, summary, 'success');
+                    
+                    setTimeout(() => {
+                        if (confirm('Order created! View in admin panel?')) {
+                            window.open('admin-orders.php', '_blank');
+                        }
+                    }, 1000);
+                    
+                } else {
+                    const errorMsg = `❌ CHECKOUT FAILED
+
+Error Code: ${data.error?.code || 'Unknown'}
+Error Message: ${data.error?.message || 'No message'}
+
+Full Response:
+${JSON.stringify(data, null, 2)}`;
+                    
+                    log(3, errorMsg, 'error');
+                }
+                
+            } catch(e) {
+                log(3, '❌ Network Error:\n\n' + e.message + '\n\n' + e.stack, 'error');
+            }
+        }
+        
+        // Initial setup
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btn-view').disabled = true;
+            document.getElementById('btn-checkout').disabled = true;
+        });
+    </script>
+</body>
+</html>
