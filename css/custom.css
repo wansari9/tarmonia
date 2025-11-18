@@ -3469,17 +3469,6 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 	animation: fadeInUp 0.6s ease-out 0.3s both;
 }
 
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
 /* Form entrance animation */
 .modern-contact-form-wrapper {
 	animation: fadeInRight 0.8s ease-out 0.2s both;
@@ -4072,5 +4061,83 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 	.post_item_classic_3 .post_info_counters {
 		flex-wrap: wrap;
 		gap: 12px;
+	}
+}
+
+
+/* ============================================
+   FRESH FROM THE FARM - HERO ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(40px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleAccent {
+	from {
+		width: 0;
+		opacity: 0;
+	}
+	to {
+		width: 80px;
+		opacity: 1;
+	}
+}
+
+@keyframes glow {
+	0%, 100% {
+		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(254, 195, 33, 0);
+	}
+	50% {
+		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(254, 195, 33, 0.3);
+	}
+}
+
+.fresh-from-farm-overlay {
+	animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.fresh-from-farm-overlay h1 {
+	font-size: 56px;
+	font-weight: 300;
+	color: #ffffff;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-family: 'Raleway', sans-serif;
+	margin: 0;
+	padding: 0;
+	line-height: 1.2;
+	text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+	animation: fadeInUp 1s ease-out 0.4s both, glow 4s ease-in-out 1.4s infinite;
+}
+
+.fresh-from-farm-overlay .accent-line {
+	width: 80px;
+	height: 3px;
+	background: linear-gradient(90deg, #FEC321, #F8A500);
+	margin: 24px auto;
+	animation: scaleAccent 0.8s ease-out 0.8s both;
+	box-shadow: 0 0 20px rgba(254, 195, 33, 0.4);
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+	.fresh-from-farm-overlay h1 {
+		font-size: 42px;
+		letter-spacing: 2px;
+	}
+}
+
+@media (max-width: 480px) {
+	.fresh-from-farm-overlay h1 {
+		font-size: 32px;
+		letter-spacing: 1px;
 	}
 }
