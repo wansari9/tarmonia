@@ -55,11 +55,12 @@
 
         /* Layout: stack cards and place the contact form in a separate container under them */
         .contact_layout_container {
-            min-height: 100vh !important;
+            /* shorter by 30%: use 70vh instead of 100vh */
+            max-height: 140vh;
             display: grid !important;
             grid-template-columns: 1fr; /* single column so form sits under the cards */
             gap: 40px;
-            background: linear-gradient(135deg, #F8F8F8 0%, #ECECEC 50%, #F5F5F5 100%) !important;
+            background: linear-gradient(135deg, #fec321 25%, #c0c404 50%, #c2d60c 100%) !important;
             align-items: start;
             overflow: visible; /* allow children to overflow and overlap previous sections */
         }
@@ -191,8 +192,9 @@
             .contact-icon { font-size: 24px; }
         }
 
-        /* Small compensation so content below doesn't collide when cards overlap */
-        .contact_form_section { margin-top: 260px; }
+          /* Small compensation so content below doesn't collide when cards overlap.
+              Reduced by ~30% to match shorter container (260px -> ~182px). */
+          .contact_form_section { margin-top: 182px; }
 
         /* Layer overrides: ensure cards are on the very front and breadcrumbs/top title sit behind */
         .contact_info_grid {
@@ -757,7 +759,8 @@
 </div>
 
 <script>
-// Enhanced positioning: animate overlay and pin/unpin when the midpoint leaves viewport.
+// Positioning: overlay is visible ONLY when the viewport overlaps the gap
+// between the bottom of `.bg_cust_7` and the top of `.page_content_wrap`.
 function positionFloatingCards(){
     var overlay = document.getElementById('floating-contact-cards');
     if (!overlay) return;
@@ -774,39 +777,32 @@ function positionFloatingCards(){
     var bandBottom = topRect.bottom + scroll;
     var contentTop = contentRect.top + scroll;
 
-    // midpoint between them
-    var midpoint = (bandBottom + contentTop) / 2;
-
-    var overlayHeight = overlay.offsetHeight || 200;
+    // viewport document coordinates
     var viewportTop = scroll;
     var viewportBottom = scroll + window.innerHeight;
 
-    // margin from viewport edges - when midpoint is within these margins, keep the overlay between sections
-    var margin = Math.max(80, Math.round(window.innerHeight * 0.12));
+    // visible if viewport overlaps the gap (bandBottom, contentTop)
+    var overlapsGap = (viewportBottom > bandBottom) && (viewportTop < contentTop);
 
-    // If midpoint is comfortably inside the viewport, place overlay so its center matches midpoint.
-    if (midpoint >= (viewportTop + margin) && midpoint <= (viewportBottom - margin)) {
-        overlay.classList.remove('pinned', 'hidden');
-        // absolute in document flow so it visually sits between the two sections
+    if (overlapsGap) {
+        // show overlay and position it at the midpoint between bandBottom and contentTop
+        overlay.classList.remove('hidden');
+        overlay.classList.remove('pinned');
+
+        var midpoint = (bandBottom + contentTop) / 2;
+        var overlayHeight = overlay.offsetHeight || 200;
+
         overlay.style.position = 'absolute';
         overlay.style.top = (midpoint - overlayHeight/2) + 'px';
         overlay.style.left = '50%';
         overlay.style.transform = 'translateX(-50%)';
     } else {
-        // Pin state: keep overlay visible by fixing near top or near bottom depending on where midpoint is
-        overlay.classList.add('pinned');
-        var pinnedTop;
-        if (midpoint < (viewportTop + margin)) {
-            // midpoint is above viewport -> pin to a safe top offset below the header
-            pinnedTop = Math.max(60, margin * 0.6); // e.g. ~60px or a fraction of margin
-        } else {
-            // midpoint is below viewport -> pin above the bottom of the viewport
-            pinnedTop = Math.max(60, window.innerHeight - overlayHeight - 60);
-        }
-        overlay.style.position = 'fixed';
-        overlay.style.top = pinnedTop + 'px';
-        overlay.style.left = '50%';
-        overlay.style.transform = 'translateX(-50%)';
+        // hide overlay when not in the target interval
+        overlay.classList.add('hidden');
+        overlay.classList.remove('pinned');
+        // reset inline top so it doesn't block layout when shown later
+        overlay.style.top = '';
+        overlay.style.position = 'absolute';
     }
 }
 
@@ -821,10 +817,9 @@ function debounce(fn, wait){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    // run once immediately
+    // initial positioning
     positionFloatingCards();
 
-    // update on load/resize/scroll, with debounce to keep it smooth
     var debounced = debounce(positionFloatingCards, 80);
     window.addEventListener('load', positionFloatingCards);
     window.addEventListener('resize', debounced);
