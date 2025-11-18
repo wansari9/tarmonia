@@ -1,15 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US" class="scheme_original">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkout – Dairy Farm</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext&display=swap' type='text/css' media='all' />
+    <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <link rel="preload" href="css/checkout.css" as="style" onload="this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/checkout.css"></noscript>
+    <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce-layout.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce-smallscreen.css' type='only screen and (max-width: 768px)' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
     <!-- REQUIRE LOGIN BEFORE CHECKOUT -->
     <script>
         (function() {
@@ -30,275 +47,538 @@
                 });
         })();
     </script>
+
 </head>
-<body>
-    <div class="checkout-bg" style="background: url('./images/background-checkout.png') ">
-        <header style="display:flex;align-items:center;gap:12px;justify-content:space-between;">
-            <h3>Checkout</h3>
-            <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                <a href="javascript:history.back()" class="back-button">
-                    <div class="go-back-box">Go Back</div>
-                </a>
-                <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
-                <a href="user-profile.php" class="user_icon_button sc_button sc_button_style_border sc_button_size_small" style="padding:6px 10px;display:none;align-items:center;justify-content:center;border-radius:50%;width:34px;height:34px;" title="Account">
-                    <span class="user_initial" style="font-weight:600;">U</span>
-                </a>
-            </div>
-        </header>
+<body class="archive shoppg post-type-archive post-type-archive-product woocommerce woocommerce-page body_style_wide body_filled article_style_stretch layout_excerpt template_excerpt scheme_original top_panel_show top_panel_above sidebar_show sidebar_left sidebar_outer_hide vc_responsive">
 
-        <main>
-            <section class="checkout-form">
-                <!-- Multistep Form -->
-                <form id="msform">
-                    <!-- Progressbar -->
-                    <ul id="progressbar">
-                        <li class="active">Contact Information</li>
-                        <li>Shipping Address</li>
-                        <li>Payment</li>
-                    </ul>
-                    <!-- Fieldsets -->
-                    <fieldset>
-                        <h2 class="fs-title">Contact Information</h2>
-                        
-                        <p>First Name *</p>
-                        <input type="text" name="fname" placeholder="First Name" required />
-                        <p>Last Name *</p>
-                        <input type="text" name="lname" placeholder="Last Name" required />
-                      
-                        <p>Email *</p>
-                        <input type="email" name="email" placeholder="Email" required />
-                        <p>Phone *</p>
-                        <input type="tel" name="phone" placeholder="Phone Number" required />
-                        <input type="button" name="next" class="next action-button" value="Next" />
-                    </fieldset>   
-                    <fieldset>
-                        <h2 class="fs-title">Shipping Address</h2>
-                       
-                        <p>Address *</p>
-                        <input type="text" name="address" placeholder="Street Address" required />
-                        <p>Address Line 2</p>
-                        <input type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" />
-                        <div class="state-city-container">
-                            <div class="state-container">
-                                <p>State *</p>
-                                <select name="state" id="state-dropdown" required>
-                                    <option value="" disabled selected>Select your state</option>
-                                    <option value="Pahang">Pahang</option>
-                                    <option value="Perak">Perak</option>
-                                    <option value="Terengganu">Terengganu</option>
-                                    <option value="Perlis">Perlis</option>
-                                    <option value="Selangor">Selangor</option>
-                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
-                                    <option value="Johor">Johor</option>
-                                    <option value="Kelantan">Kelantan</option>
-                                    <option value="Kedah">Kedah</option>
-                                    <option value="Pulau Pinang">Pulau Pinang</option>
-                                    <option value="Melaka">Melaka</option>
-                                    <option value="Sabah">Sabah</option>
-                                    <option value="Sarawak">Sarawak</option>
-                                </select>
-                            </div>
-                            <div class="city-container">
-                                <p>City *</p>
-                                <input type="text" name="city" id="city-input" placeholder="City" required />
+        <div class="body_wrap">
+            <div class="page_wrap">
+                <div class="top_panel_fixed_wrap"></div>
+                <header class="top_panel_wrap top_panel_style_1 scheme_original">
+                    <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+                        <div class="top_panel_top">
+                            <div class="content_wrap clearfix">
+                                <div class="top_panel_top_contact_area icons icon-phone-1">1(800)-456-789 </div>
+                                <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
+                                <div class="top_panel_top_user_area">
+                                    <div class="top_panel_top_socials">
+                                        <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_twitter">
+                                                    <span class="icon-twitter"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_facebook">
+                                                    <span class="icon-facebook"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                                    <span class="icon-gplus-1"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_linkedin">
+                                                    <span class="icon-linkedin"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul id="menu_user" class="menu_user_nav"></ul>
+                                </div>
                             </div>
                         </div>
-                        <p>Postal Code *</p>
-                        <input type="text" name="postal_code" placeholder="Postal Code" required />
-                        <div class="action-buttons">
-                            <input type="button" name="previous" class="previous action-button" value="Previous" />
-                            <input type="button" name="next" class="next action-button" value="Next" />
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <h2 class="fs-title">Payments</h2>
-
-
-                        <p style="margin-bottom:10px;">Select Payment Method *</p>
-                        <div class="checkout-options padded">
-                            <div>
-                                <input type="radio" id="option-1" name="payment-option" value="stripe" tabindex="0" required>
-                                <label for="option-1" class="checkout-option rounded text text--dark">
-                                    <i class="fas fa-credit-card payment-icon"></i>
-                                    <span class="checkout-option-name">Credit Card</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" id="option-2" name="payment-option" value="paypal" tabindex="0">
-                                <label for="option-2" class="checkout-option rounded text text--dark">
-                                    <i class="fab fa-paypal payment-icon"></i>
-                                    <span class="checkout-option-name">PayPal</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" id="option-3" name="payment-option" value="fpx" tabindex="0">
-                                <label for="option-3" class="checkout-option rounded text text--dark">
-                                    <i class="fas fa-university payment-icon"></i>
-                                    <span class="checkout-option-name">FPX</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input type="radio" id="option-4" name="payment-option" value="manual" tabindex="0">
-                                <label for="option-4" class="checkout-option rounded text text--dark">
-                                    <i class="fas fa-wallet payment-icon"></i>
-                                    <span class="checkout-option-name">Manual Payment</span>
-                                </label>
+                        <div class="top_panel_middle">
+                            <div class="content_wrap">
+                                <div class="columns_wrap columns_fluid">
+                                    <div class="column-4_5 contact_logo">
+                                        <div class="logo">
+                                            <a href="index.html">
+                                                <img src="images/tarmonia-new-tag.png" class="logo_main" alt="" width="239" height="59">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="column-1_5 contact_field contact_cart">
+                                        <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
+                                            <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                                <span class="contact_icon icon-1"></span>
+                                                <span class="contact_label contact_cart_label">cart:</span>
+                                                <span class="contact_cart_totals">
+                                                    <span class="cart_items">0 Items</span>
+                                                    <span class="cart_summa">&#36;0.00</span>
+                                                </span>
+                                            </a>
+                                            <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                                            <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                                <span class="user_initial" style="font-weight:600;">U</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <hr class="divider">
-                        
-                        <div class="action-buttons">
-                            <input type="button" name="previous" class="previous action-button" value="Previous" />
-                            <button type="button" class="submit action-button" id="submit-order-btn">Place Order</button>
+                        <div class="top_panel_bottom">
+                            <div class="content_wrap clearfix">
+                                <nav class="menu_main_nav_area menu_hover_fade">
+                                    <ul id="menu_main" class="menu_main_nav">
+                                        <li class="menu-item menu-item-has-children"><a href="index.html"><span>Home</span></a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="index.html"><span>Homepage 1</span></a></li>
+                                                <li class="menu-item"><a href="home-2.html"><span>Homepage 2</span></a></li>
+                                                <li class="menu-item"><a href="home-3.html"><span>Homepage 3</span></a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children"><a href="about-2.html"><span>About us</span></a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="about-1.html"><span>About 1</span></a></li>
+                                                <li class="menu-item"><a href="about-2.html"><span>About 2</span></a></li>
+                                                <li class="menu-item menu-item-has-children"><a href="#"><span>Features</span></a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="shortcodes.html"><span>Shortcodes</span></a></li>
+                                                        <li class="menu-item"><a href="typography.html"><span>Typography</span></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="menu-item menu-item-has-children"><a href="#"><span>Gallery</span></a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="cobbles.html"><span>Gallery Cobbles</span></a></li>
+                                                        <li class="menu-item"><a href="grid.html"><span>Gallery Grid</span></a></li>
+                                                        <li class="menu-item"><a href="masonry.html"><span>Gallery Masonry</span></a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children"><a href="classic.html"><span>News</span></a>
+                                            <ul class="sub-menu">
+                                                <li class="menu-item"><a href="classic.html"><span>Classic</span></a></li>
+                                                <li class="menu-item menu-item-has-children"><a href="#"><span>Masonry</span></a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="masonry-2-columns.html"><span>Masonry 2 columns</span></a></li>
+                                                        <li class="menu-item"><a href="masonry-3-columns.html"><span>Masonry 3 columns</span></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="menu-item menu-item-has-children"><a href="#"><span>Portfolio</span></a>
+                                                    <ul class="sub-menu">
+                                                        <li class="menu-item"><a href="portfolio-2-columns.html"><span>Portfolio 2 columns</span></a></li>
+                                                        <li class="menu-item"><a href="portfolio-3-columns.html"><span>Portfolio 3 columns</span></a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item current-menu-item"><a href="shop.html"><span>Products</span></a></li>
+                                        <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
-                    </fieldset>
-                </form>
-            </section>
-
-            <section class="checkout-details">
-                <div class="checkout-details-inner">
-                    <div class="checkout-lists" id="checkout-items"></div>
-                    <div class="checkout-shipping">
-                        <h6>Shipping</h6>
-                        <p class="shipping-price" data-shipping-price="5.99">RM5.99</p>
                     </div>
-                    <div class="checkout-total">
-                        <h6>Total</h6>
-                        <p class="order-total" id="checkout-order-total">RM0.00</p>
+                </header>
+                <div class="header_mobile">
+                    <div class="content_wrap">
+                        <div class="menu_button icon-menu"></div>
+                        <div class="logo">
+                            <a href="index.html">
+                                <img src="images/logo.png" class="logo_main" alt="" width="239" height="59">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side_wrap">
+                        <div class="close">Close</div>
+                        <div class="panel_top">
+                            <nav class="menu_main_nav_area">
+                                <ul id="menu_mobile" class="menu_main_nav">
+                                    <li class="menu-item menu-item-has-children"><a href="index.html"><span>Home</span></a>
+                                        <ul class="sub-menu">
+                                            <li class="menu-item"><a href="index.html"><span>Homepage 1</span></a></li>
+                                            <li class="menu-item"><a href="home-2.html"><span>Homepage 2</span></a></li>
+                                            <li class="menu-item"><a href="home-3.html"><span>Homepage 3</span></a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-has-children"><a href="about-2.html"><span>About us</span></a>
+                                        <ul class="sub-menu">
+                                            <li class="menu-item"><a href="about-1.html"><span>About 1</span></a></li>
+                                            <li class="menu-item"><a href="about-2.html"><span>About 2</span></a></li>
+                                            <li class="menu-item menu-item-has-children"><a href="#"><span>Features</span></a>
+                                                <ul class="sub-menu">
+                                                    <li class="menu-item"><a href="shortcodes.html"><span>Shortcodes</span></a></li>
+                                                    <li class="menu-item"><a href="typography.html"><span>Typography</span></a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="menu-item menu-item-has-children"><a href="#"><span>Gallery</span></a>
+                                                <ul class="sub-menu">
+                                                    <li class="menu-item"><a href="cobbles.html"><span>Gallery Cobbles</span></a></li>
+                                                    <li class="menu-item"><a href="grid.html"><span>Gallery Grid</span></a></li>
+                                                    <li class="menu-item"><a href="masonry.html"><span>Gallery Masonry</span></a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="panel_bottom"></div>
+                    </div>
+                    <div class="mask"></div>
+                </div>
+
+                <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
+                    <!-- removed .bg_cust_6 inner div to eliminate the decorative header image on checkout -->
+                </div>
+
+                <main>
+                <div class="content_wrap">
+                    <h2>Checkout</h2>
+                    <div id="checkout-container">
+                        <!-- Keep the checkout form and summary content intact but place inside the site content_wrap -->
+                        <section class="checkout-form">
+                            <!-- Multistep Form -->
+                            <form id="msform">
+                                <!-- Progressbar -->
+                                <ul id="progressbar">
+                                    <li class="active">Contact Information</li>
+                                    <li>Shipping Address</li>
+                                    <li>Payment</li>
+                                </ul>
+                                <!-- Fieldsets -->
+                                <fieldset>
+                                    <h2 class="fs-title">Contact Information</h2>
+                                    
+                                    <p>First Name *</p>
+                                    <input type="text" name="fname" placeholder="First Name" required />
+                                    <p>Last Name *</p>
+                                    <input type="text" name="lname" placeholder="Last Name" required />
+                                  
+                                    <p>Email *</p>
+                                    <input type="email" name="email" placeholder="Email" required />
+                                    <p>Phone *</p>
+                                    <input type="tel" name="phone" placeholder="Phone Number" required />
+                                    <input type="button" name="next" class="next action-button" value="Next" />
+                                </fieldset>   
+                                <fieldset>
+                                    <h2 class="fs-title">Shipping Address</h2>
+                                   
+                                    <p>Address *</p>
+                                    <input type="text" name="address" placeholder="Street Address" required />
+                                    <p>Address Line 2</p>
+                                    <input type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" />
+                                    <div class="state-city-container">
+                                        <div class="state-container">
+                                            <p>State *</p>
+                                            <select name="state" id="state-dropdown" required>
+                                                <option value="" disabled selected>Select your state</option>
+                                                <option value="Pahang">Pahang</option>
+                                                <option value="Perak">Perak</option>
+                                                <option value="Terengganu">Terengganu</option>
+                                                <option value="Perlis">Perlis</option>
+                                                <option value="Selangor">Selangor</option>
+                                                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                                <option value="Johor">Johor</option>
+                                                <option value="Kelantan">Kelantan</option>
+                                                <option value="Kedah">Kedah</option>
+                                                <option value="Pulau Pinang">Pulau Pinang</option>
+                                                <option value="Melaka">Melaka</option>
+                                                <option value="Sabah">Sabah</option>
+                                                <option value="Sarawak">Sarawak</option>
+                                            </select>
+                                        </div>
+                                        <div class="city-container">
+                                            <p>City *</p>
+                                            <input type="text" name="city" id="city-input" placeholder="City" required />
+                                        </div>
+                                    </div>
+                                    <p>Postal Code *</p>
+                                    <input type="text" name="postal_code" placeholder="Postal Code" required />
+                                    <div class="action-buttons">
+                                        <input type="button" name="previous" class="previous action-button" value="Previous" />
+                                        <input type="button" name="next" class="next action-button" value="Next" />
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <h2 class="fs-title">Payments</h2>
+                                    
+                                    <p style="margin-bottom:10px;">Select Payment Method *</p>
+                                    <div class="checkout-options padded">
+                                        <div>
+                                            <input type="radio" id="option-1" name="payment-option" value="stripe" tabindex="0" required>
+                                            <label for="option-1" class="checkout-option rounded text text--dark">
+                                                <i class="fas fa-credit-card payment-icon"></i>
+                                                <span class="checkout-option-name">Credit Card</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="option-2" name="payment-option" value="paypal" tabindex="0">
+                                            <label for="option-2" class="checkout-option rounded text text--dark">
+                                                <i class="fab fa-paypal payment-icon"></i>
+                                                <span class="checkout-option-name">PayPal</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="option-3" name="payment-option" value="fpx" tabindex="0">
+                                            <label for="option-3" class="checkout-option rounded text text--dark">
+                                                <i class="fas fa-university payment-icon"></i>
+                                                <span class="checkout-option-name">FPX</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="option-4" name="payment-option" value="manual" tabindex="0">
+                                            <label for="option-4" class="checkout-option rounded text text--dark">
+                                                <i class="fas fa-wallet payment-icon"></i>
+                                                <span class="checkout-option-name">Manual Payment</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr class="divider">
+                                    <div class="action-buttons">
+                                        <input type="button" name="previous" class="previous action-button" value="Previous" />
+                                        <button type="button" class="submit action-button" id="submit-order-btn">Place Order</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </section>
+                        <section class="checkout-details">
+                            <div class="checkout-details-inner">
+                                <div class="checkout-lists" id="checkout-items"></div>
+                                <div class="checkout-shipping">
+                                    <h6>Shipping</h6>
+                                    <p class="shipping-price" data-shipping-price="5.99">RM5.99</p>
+                                </div>
+                                <div class="checkout-total">
+                                    <h6>Total</h6>
+                                    <p class="order-total" id="checkout-order-total">RM0.00</p>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <footer>
-          
-        </footer>
+                </main>
+                <footer class="call_wrap">
+                    <div class="call_wrap_inner">
+                        <div class="content_wrap">
+                            <h2 class="call-title">Where to Buy</h2>
+                            <div class="call-text">Our Products are currently available at select retailers in Connecticut and New York..</div>
+                            <a class="sc_button sc_button_size_large sc_button_style_border" href="#">Store Locator</a>
+                        </div>
+                    </div>
+                </footer>
+                <footer class="footer_wrap widget_area scheme_original">
+                    <div class="footer_wrap_inner widget_area_inner">
+                        <div class="content_wrap">
+                            <div class="columns_wrap">
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">On the Farm</h4>
+                                    <div class="menu-footer-menu-1-container">
+                                        <ul id="menu-footer-menu-1" class="menu">
+                                            <li class="menu-item"><a href="farm.html">Meet Our Farmers</a></li>
+                                            <li class="menu-item"><a href="recipes.html">Meet the Cows</a></li>
+                                            <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
+                                            <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Dairy Farm Map</a></li>
+                                            <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">In the Kitchen</h4>
+                                    <div class="menu-footer-menu-2-container">
+                                        <ul id="menu-footer-menu-2" class="menu">
+                                            <li class="menu-item"><a href="recipes.html">Recipes</a></li>
+                                            <li class="menu-item"><a href="masonry-2-columns.html">Lactose Intolerance</a></li>
+                                            <li class="menu-item current-menu-item "><a href="shop.html">Milk Imitators</a></li>
+                                            <li class="menu-item"><a href="portfolio-3-columns.html">Organic Milk</a></li>
+                                            <li class="menu-item"><a href="portfolio-2-columns.html">Flavored Milk</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Ask Our Dietitian</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">In the News</h4>
+                                    <div class="menu-footer-menu-3-container">
+                                        <ul id="menu-footer-menu-3" class="menu">
+                                            <li class="menu-item"><a href="masonry-3-columns.html">Local Milk Blog</a></li>
+                                            <li class="menu-item"><a href="classic.html">Contests/Sweepstakes</a></li>
+                                            <li class="menu-item"><a href="cobbles.html">Videos</a></li>
+                                            <li class="menu-item"><a href="about-1.html">News Releases</a></li>
+                                            <li class="menu-item"><a href="about-2.html">Newsletters</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">About Us</h4>
+                                    <div class="menu-footer-menu-4-container">
+                                        <ul id="menu-footer-menu-4" class="menu">
+                                            <li class="menu-item"><a href="contacts.html">FAQ</a></li>
+                                            <li class="menu-item"><a href="farm.html">Our Board</a></li>
+                                            <li class="menu-item"><a href="about-2.html">Our Staff</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Contact Us</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_socials">
+                                    <div class="widget_inner">
+                                        <div class="logo">
+                                            <a href="index.html">
+                                                <img src="images/new-logo-tarmonia.png" class="logo_main" alt="" width="74" height="74">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_text">
+                                    <div class="textwidget">
+                                        B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
+                                        <br>
+                                        <span class="accent1">Phone: 123-456-7890</span>
+                                        <br> Fax: 010-927 7092
+                                        <br> Email: help@conebyte.com
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
     </div>
+
+    <!-- Add vendor + theme script files similar to cart.html -->
+    <script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
+    <script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
+    <script type='text/javascript' src='js/custom/custom.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>
+    <script type='text/javascript' src='js/vendor/modernizr.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/woocommerce.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/superfish.js' defer></script>
+    <script type='text/javascript' src='js/custom/core.utils.js' defer></script>
+    <script type='text/javascript' src='js/custom/core.init.js' defer></script>
+    <script type='text/javascript' src='js/custom/init.js' defer></script>
+    <script type='text/javascript' src='js/custom/core.debug.js' defer></script>
+    <script type='text/javascript' src='js/custom/embed.min.js' defer></script>
+    <script type='text/javascript' src='js/custom/shortcodes.js' defer></script>
+    <script type='text/javascript' src='js/vendor/ui/core.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/ui/widget.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/ui/mouse.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/ui/slider.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/jquery-ui-touch-punch.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/accounting.min.js' defer></script>
+    <script type='text/javascript' src='js/vendor/woo/price-slider.min.js' defer></script>
+
     <script>
-        var current_fs, next_fs, previous_fs; // Fieldsets
-        var animating = false; // Prevent quick multi-click glitches
+        document.addEventListener('DOMContentLoaded', function () {
+            var current_fs, next_fs, previous_fs; // Fieldsets
+            var animating = false; // Prevent quick multi-click glitches
 
-        $(".next").click(function () {
-            if (animating) return false;
-
-            // Find the parent fieldset of the button
-            current_fs = $(this).closest("fieldset");
-            next_fs = current_fs.next();
-
-            // Activate next step on progress bar
-            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-            // Show the next fieldset and hide the current one
-            current_fs.css({ display: "none" });
-            next_fs.css({ display: "block" });
-        });
-
-        $(".previous").click(function () {
-            if (animating) return false;
-
-            // Find the parent fieldset of the button
-            current_fs = $(this).closest("fieldset");
-            previous_fs = current_fs.prev();
-
-            // Deactivate current step on progress bar
-            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-            // Show the previous fieldset and hide the current one
-            current_fs.css({ display: "none" });
-            previous_fs.css({ display: "block" });
-        });
-
-        $("form").submit(function (e) {
-            e.preventDefault();
-            alert("Order placed! (Demo – no backend)");
-        });
-
-        // Render checkout items from localStorage cart and keep totals in sync
-        (function(){
-            function safeParse(v){ try { return JSON.parse(v||'[]'); } catch(e){ return []; } }
-            function getCart(){ return safeParse(localStorage.getItem('cart')); }
-            function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
-            function parsePrice(txt){ if(!txt) return 0; var n = String(txt).replace(/[^0-9.]/g,''); var f = parseFloat(n); return isNaN(f)?0:f; }
-            function format(n){ return 'RM' + Number(n||0).toFixed(2); }
-            // Fallback name/price maps (kept minimal). If PRODUCT_PRICING exists, we don't need these usually.
-            var fallbackNames = { 458:"Evaporated Milk",448:"Farm Sour Cream",438:"Ricotta Salata",412:"Parmesan Cheese",471:"Pecorino Romano",364:"Tested Raw Milk",402:"Brie Cheese",426:"Fromage a Raclette",387:"Camembert Cheese",420:"Fresh Milk",430:"Butter",450:"Yogurt",460:"Chicken Eggs",470:"Duck Eggs",480:"Quail Eggs",490:"Beef",500:"Pork",510:"Chicken",520:"Lamb",530:"Bacon",540:"Sausage" };
-            var fallbackPrices = { 458:23.00,448:25.00,438:50.00,412:35.00,471:45.00,364:10.00,402:30.00,426:45.00,387:35.00,420:3.50,430:8.50,450:5.50,460:3.50,470:5.00,480:6.50,490:18.00,500:12.00,510:6.00,520:20.00,530:18.00,540:15.00 };
-            function normalize(raw){
-                var id = raw.id || raw.productId;
-                var qty = raw.qty || raw.quantity || 1;
-                var price = typeof raw.price==='number' ? raw.price : parsePrice(raw.price);
-                if ((!price || price===0) && id!=null && fallbackPrices[id]!=null) price = fallbackPrices[id];
-                var title = raw.title || fallbackNames[id] || 'Product';
-                var image = raw.image || raw.img || '';
-                var variant = raw.variant || raw.variation || '';
-                return { id:id, qty:qty, price:price, title:title, image:image, variant:variant };
-            }
-            function render(){
-                var list = document.getElementById('checkout-items');
-                if (!list) return;
-                var cart = getCart().map(normalize);
-                if (!cart.length){
-                    list.innerHTML = '<p>Your cart is empty.</p>';
-                    updateTotals(cart);
-                    return;
-                }
-                var html = '';
-                cart.forEach(function(it){
-                    var variantText = it.variant ? ' <small>(' + it.variant + ')</small>' : '';
-                    html += '\n<div class="card" data-id="' + it.id + '" data-variant="' + (it.variant||'') + '">\n' +
-                            '  <div class="card-image">' + (it.image ? '<img loading="lazy" decoding="async" src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
-                            '  <div class="card-details">\n' +
-                            '    <div class="card-name">' + (it.title || 'Product') + variantText + '</div>\n' +
-                            '    <div class="card-price">\n' +
-                            '      <span class="current-price">' + format(it.price) + '</span>\n' +
-                            '    </div>\n' +
-                            '    <div class="card-wheel">\n' +
-                            '      <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease quantity">-</button>\n' +
-                            '      <span class="qty" aria-live="polite">' + (it.qty||1) + '</span>\n' +
-                            '      <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>\n' +
-                            '    </div>\n' +
-                            '  </div>\n' +
-                            '</div>';
-                });
-                list.innerHTML = html;
-                updateTotals(cart);
-            }
-            function updateTotals(cart){
-                cart = cart || getCart().map(normalize);
-                var subtotal = cart.reduce(function(s,it){ return s + (it.price||0) * (it.qty||1); }, 0);
-                var shippingEl = document.querySelector('.shipping-price');
-                var shipping = 0;
-                if (shippingEl){
-                    var raw = parseFloat(shippingEl.getAttribute('data-shipping-price'))||0;
-                    shipping = cart.length ? raw : 0;
-                    shippingEl.textContent = format(shipping);
-                }
-                var totalEl = document.getElementById('checkout-order-total');
-                if (totalEl) totalEl.textContent = format(subtotal + shipping);
-            }
-            function adjustQty(id, variant, delta){
-                var cart = getCart();
-                var idx = cart.findIndex(function(r){ var rid = r.id||r.productId; var v = r.variant||r.variation||''; return String(rid)===String(id) && String(v)===String(variant||''); });
-                if (idx === -1) return;
-                var item = cart[idx];
-                var qty = (item.qty || item.quantity || 1) + delta;
-                if (qty <= 0) { cart.splice(idx,1); } else { item.qty = qty; }
-                saveCart(cart);
-                render();
-            }
-            document.addEventListener('click', function(e){
-                var btn = e.target.closest && e.target.closest('#checkout-items .qty-btn');
-                if (!btn) return;
-                var action = btn.getAttribute('data-action');
-                var card = btn.closest('.card');
-                if (!card) return;
-                var id = card.getAttribute('data-id');
-                var variant = card.getAttribute('data-variant') || '';
-                adjustQty(id, variant, action==='inc' ? 1 : -1);
+            // Next button handler
+            $(".next").click(function () {
+                if (animating) return false;
+                current_fs = $(this).closest("fieldset");
+                next_fs = current_fs.next();
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                current_fs.css({ display: "none" });
+                next_fs.css({ display: "block" });
             });
-            render();
-        })();
+
+            // Previous button handler
+            $(".previous").click(function () {
+                if (animating) return false;
+                current_fs = $(this).closest("fieldset");
+                previous_fs = current_fs.prev();
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+                current_fs.css({ display: "none" });
+                previous_fs.css({ display: "block" });
+            });
+
+            // Prevent normal form submission during demos
+            $("form").submit(function (e) {
+                e.preventDefault();
+                alert("Order placed! (Demo – no backend)");
+            });
+
+            // Render checkout items from localStorage cart and keep totals in sync
+            (function(){
+                function safeParse(v){ try { return JSON.parse(v||'[]'); } catch(e){ return []; } }
+                function getCart(){ return safeParse(localStorage.getItem('cart')); }
+                function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
+                function parsePrice(txt){ if(!txt) return 0; var n = String(txt).replace(/[^0-9.]/g,''); var f = parseFloat(n); return isNaN(f)?0:f; }
+                function format(n){ return 'RM' + Number(n||0).toFixed(2); }
+                var fallbackNames = { 458:"Evaporated Milk",448:"Farm Sour Cream",438:"Ricotta Salata",412:"Parmesan Cheese",471:"Pecorino Romano",364:"Tested Raw Milk",402:"Brie Cheese",426:"Fromage a Raclette",387:"Camembert Cheese",420:"Fresh Milk",430:"Butter",450:"Yogurt",460:"Chicken Eggs",470:"Duck Eggs",480:"Quail Eggs",490:"Beef",500:"Pork",510:"Chicken",520:"Lamb",530:"Bacon",540:"Sausage" };
+                var fallbackPrices = { 458:23.00,448:25.00,438:50.00,412:35.00,471:45.00,364:10.00,402:30.00,426:45.00,387:35.00,420:3.50,430:8.50,450:5.50,460:3.50,470:5.00,480:6.50,490:18.00,500:12.00,510:6.00,520:20.00,530:18.00,540:15.00 };
+                function normalize(raw){
+                    var id = raw.id || raw.productId;
+                    var qty = raw.qty || raw.quantity || 1;
+                    var price = typeof raw.price==='number' ? raw.price : parsePrice(raw.price);
+                    if ((!price || price===0) && id!=null && fallbackPrices[id]!=null) price = fallbackPrices[id];
+                    var title = raw.title || fallbackNames[id] || 'Product';
+                    var image = raw.image || raw.img || '';
+                    var variant = raw.variant || raw.variation || '';
+                    return { id:id, qty:qty, price:price, title:title, image:image, variant:variant };
+                }
+                function render(){
+                    var list = document.getElementById('checkout-items');
+                    if (!list) return;
+                    var cart = getCart().map(normalize);
+                    if (!cart.length){
+                        list.innerHTML = '<p>Your cart is empty.</p>';
+                        updateTotals(cart);
+                        return;
+                    }
+                    var html = '';
+                    cart.forEach(function(it){
+                        var variantText = it.variant ? ' <small>(' + it.variant + ')</small>' : '';
+                        html += '\n<div class="card" data-id="' + it.id + '" data-variant="' + (it.variant||'') + '">\n' +
+                                '  <div class="card-image">' + (it.image ? '<img loading="lazy" decoding="async" src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
+                                '  <div class="card-details">\n' +
+                                '    <div class="card-name">' + (it.title || 'Product') + variantText + '</div>\n' +
+                                '    <div class="card-price">\n' +
+                                '      <span class="current-price">' + format(it.price) + '</span>\n' +
+                                '    </div>\n' +
+                                '    <div class="card-wheel">\n' +
+                                '      <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease quantity">-</button>\n' +
+                                '      <span class="qty" aria-live="polite">' + (it.qty||1) + '</span>\n' +
+                                '      <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>\n' +
+                                '    </div>\n' +
+                                '  </div>\n' +
+                                '</div>';
+                    });
+                    list.innerHTML = html;
+                    updateTotals(cart);
+                }
+                function updateTotals(cart){
+                    cart = cart || getCart().map(normalize);
+                    var subtotal = cart.reduce(function(s,it){ return s + (it.price||0) * (it.qty||1); }, 0);
+                    var shippingEl = document.querySelector('.shipping-price');
+                    var shipping = 0;
+                    if (shippingEl){
+                        var raw = parseFloat(shippingEl.getAttribute('data-shipping-price'))||0;
+                        shipping = cart.length ? raw : 0;
+                        shippingEl.textContent = format(shipping);
+                    }
+                    var totalEl = document.getElementById('checkout-order-total');
+                    if (totalEl) totalEl.textContent = format(subtotal + shipping);
+                }
+                function adjustQty(id, variant, delta){
+                    var cart = getCart();
+                    var idx = cart.findIndex(function(r){ var rid = r.id||r.productId; var v = r.variant||r.variation||''; return String(rid)===String(id) && String(v)===String(variant||''); });
+                    if (idx === -1) return;
+                    var item = cart[idx];
+                    var qty = (item.qty || item.quantity || 1) + delta;
+                    if (qty <= 0) { cart.splice(idx,1); } else { item.qty = qty; }
+                    saveCart(cart);
+                    render();
+                }
+                document.addEventListener('click', function(e){
+                    var btn = e.target.closest && e.target.closest('#checkout-items .qty-btn');
+                    if (!btn) return;
+                    var action = btn.getAttribute('data-action');
+                    var card = btn.closest('.card');
+                    if (!card) return;
+                    var id = card.getAttribute('data-id');
+                    var variant = card.getAttribute('data-variant') || '';
+                    adjustQty(id, variant, action==='inc' ? 1 : -1);
+                });
+                render();
+            })();
+        });
     </script>
     <!-- Global cart script so checkout can reflect the mini-cart/cart totals -->
     <script defer type='text/javascript' src='js/local-cart.js'></script>

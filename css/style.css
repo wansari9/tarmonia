@@ -2250,7 +2250,7 @@ fieldset legend {
   padding-right: 15px;
 }
 .row, .columns_wrap {
-  margin-left: 0px;		/* -15px; */
+  margin-left: -140px;		/* -15px; */
   margin-right: -140px;	/* -15px; */
 }
 .row > [class*="column-"], .columns_wrap > [class*="column-"] {
@@ -3693,7 +3693,7 @@ li.opened > a > .open_child_menu:before {
 }
 /* Contact fields */
 .top_panel_wrap .contact_field {
-	margin-top: 2.3em;
+	margin-top: 1.3em;
     padding-left: 6.1em;
 }
 .top_panel_wrap.top_panel_style_4 .contact_field {
@@ -8271,3 +8271,272 @@ body .blog-yumprint-recipe .blog-yumprint-header .blog-yumprint-save a {
 .menu_main_nav > li ul li + li {
     border-top: 1px solid rgba(0,0,0,0.05);
 }
+
+/* --------------------------------------------
+   Custom footer redesign (override legacy floats)
+   Makes footer & CTA bars fully responsive,
+   centers content and provides clean column layout
+   -------------------------------------------- */
+footer, .call_wrap_inner, .footer_wrap_inner, .copyright_wrap {
+	background-color: #231f1f; /* deep brown/near-black */
+	color: #bfb8b3; /* soft text color */
+}
+
+/* CTA / Where To Buy bar */
+.call_wrap_inner .content_wrap {
+	max-width: 1200px;
+	margin: 0 auto;
+	width: 100%;
+	padding: 36px 20px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center; /* center the inner div horizontally */
+	gap: 24px;
+	flex-wrap: wrap; /* allow items to wrap onto multiple lines */
+	text-align: center; /* center text inside the CTA */
+}
+
+/* Footer content (keeps columns distributed) */
+footer .footer_wrap_inner .content_wrap {
+	max-width: 1200px;
+	margin: 0 auto;
+	width: 100%;
+	padding: 36px 20px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+}
+
+.call_wrap_inner .call-title {
+	color: #FEC321;
+	font-family: "Lora", serif;
+	font-size: 34px;
+	margin: 0;
+	flex: 0 0 auto;
+}
+.call_wrap_inner .call-text {
+	color: #e0d7c9;
+	flex: 1 1 600px;
+	max-width: 720px;
+	font-size: 16px;
+	line-height: 1.6;
+	margin: 0 auto;
+}
+.call_wrap_inner .sc_button {
+	margin: 0;
+	float: none !important;
+}
+
+/* Footer columns layout */
+.footer_wrap_inner .content_wrap {
+	display: flex;
+	gap: 48px;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding: 56px 20px;
+	box-sizing: border-box;
+}
+.footer_wrap_inner aside {
+	flex: 0 1 23%; /* try to fit four columns evenly */
+	min-width: 180px;
+	text-align: left; /* ensure lists are left-aligned */
+}
+.footer_wrap_inner .widget_title,
+footer .widget_area .widget-title {
+	color: #FEC321;
+	font-family: "Lora", serif;
+	font-size: 24px;
+	margin-bottom: 14px;
+}
+.footer_wrap_inner ul { list-style: none; margin: 0; padding: 0; }
+.footer_wrap_inner ul li { margin-bottom: 10px; color: #bfb8b3; }
+.footer_wrap_inner a { color: #cfc6c0; text-decoration: none; }
+.footer_wrap_inner a:hover { color: #fff; text-decoration: underline; }
+
+/* Copyright area */
+.copyright_wrap_inner {
+	background: transparent;
+	padding: 18px 20px 40px;
+	color: #9f9994;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+/* copyright layout: left logo, centered address block, right-side extras */
+.copyright_wrap_inner .logo {
+	flex: 0 0 auto;
+}
+.copyright_wrap_inner .contacts_address,
+.copyright_wrap_inner .copyright_text {
+	flex: 1 1 60%;
+	text-align: left;
+}
+
+/* Responsive: stack CTA and footer columns on small screens */
+@media screen and (max-width: 768px) {
+	.call_wrap_inner .content_wrap,
+	.footer_wrap_inner .content_wrap {
+		display: block;
+		padding: 28px 16px;
+	}
+	.call_wrap_inner .call-title { text-align: center; font-size: 28px; margin-bottom: 10px; }
+	.call_wrap_inner .call-text { text-align: center; margin-bottom: 14px; }
+	.call_wrap_inner .sc_button { display: block; margin: 0 auto; }
+	.footer_wrap_inner aside { width: 100%; min-width: 0; margin-bottom: 18px; }
+}
+
+/* Ensure footer inner content isn't clipped by overflow rules elsewhere */
+footer .footer_wrap_inner .content_wrap,
+body .footer_wrap_inner .content_wrap {
+	overflow: visible !important;
+}
+
+/* Make outer wrappers full-bleed so background bars extend edge-to-edge
+   even when the page content is centered/limited */
+.call_wrap, .footer_wrap, footer.call_wrap {
+	position: relative;
+	width: 100vw;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	background-color: #231f1f; /* ensure outer wrapper matches inner color */
+	box-sizing: border-box;
+	z-index: 0;
+}
+
+/* Reduce default inner padding on the outer wrappers so content_wrap controls spacing */
+.call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner {
+	padding: 0;
+}
+
+/* Desktop alignment: keep content left-aligned on wide screens, center on mobile */
+@media screen and (min-width: 769px) {
+	/* Keep footer columns left-aligned on desktop, but keep CTA centered */
+	footer .footer_wrap_inner .content_wrap {
+		text-align: left;
+	}
+	.footer_wrap_inner aside {
+		text-align: left;
+	}
+	.copyright_wrap_inner {
+		text-align: center; /* keep copyright centered */
+	}
+}
+
+/* Enforce full-bleed footers across the site: ensure footer wrappers
+   use the browser viewport edges as their borders while keeping inner
+   `.content_wrap` constrained and centered. This prevents gaps at the
+   sides and matches the design used on other pages. */
+.call_wrap, .footer_wrap, footer.call_wrap, footer.footer_wrap {
+	position: relative !important;
+	left: 50% !important;
+	right: 50% !important;
+	width: 100vw !important;
+	margin-left: -50vw !important;
+	margin-right: -50vw !important;
+	box-sizing: border-box !important;
+	z-index: 0;
+}
+
+/* Keep inner content constrained and centered inside the full-bleed wrapper */
+.call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner,
+footer.call_wrap .call_wrap_inner, footer.footer_wrap .footer_wrap_inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	 /* Align inner content with the centered page container edges.
+		 Use a fixed horizontal offset so content never gets clipped.
+		 Change this value if you want more/less left/right space. */
+	 padding-left: 80px;
+	 padding-right: 80px;
+	box-sizing: border-box;
+}
+
+/* Small screens: fall back to normal flow so content stacks nicely */
+@media screen and (max-width: 768px) {
+	.call_wrap, .footer_wrap, footer.call_wrap, footer.footer_wrap {
+		position: static !important;
+		width: 100% !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+	.call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner {
+		padding: 12px !important;
+	}
+}
+
+/* Site-wide footer refinements: tighter columns, widget ordering, CTA alignment */
+/* Reduce spacing between footer lists so they fit on a single line where possible */
+.footer_wrap_inner .columns_wrap {
+	gap: 16px;
+}
+.footer_wrap_inner .columns_wrap > aside {
+	min-width: 140px;
+	flex: 0 1 auto;
+}
+@media screen and (min-width: 1200px) {
+	.footer_wrap_inner .columns_wrap {
+		flex-wrap: nowrap;
+	}
+	.footer_wrap_inner .columns_wrap > aside {
+		min-width: 120px;
+	}
+}
+
+/* Force social/logo/address widgets to appear below link lists and center them */
+aside.widget_socials,
+aside.widget_text,
+.widget_socials,
+.widget_text {
+	flex: 0 0 100% !important;
+	order: 999 !important;
+	text-align: center !important;
+}
+
+/* CTA alignment: right on desktop, centered on mobile */
+footer.call_wrap .call_wrap_inner .content_wrap {
+	justify-content: flex-end;
+	text-align: right;
+	padding-left: 80px;
+	padding-right: 80px;
+}
+@media screen and (max-width: 768px) {
+	footer.call_wrap .call_wrap_inner .content_wrap {
+		justify-content: center !important;
+		text-align: center !important;
+		padding-left: 12px !important;
+		padding-right: 12px !important;
+	}
+}
+
+/* Further tighten lists and move footer blocks to the right on desktop */
+.footer_wrap_inner .columns_wrap {
+	gap: 12px; /* slightly tighter spacing so lists fit */
+}
+.footer_wrap_inner .columns_wrap > aside {
+	min-width: 120px; /* slightly smaller columns */
+}
+@media screen and (min-width: 1200px) {
+	.footer_wrap_inner .columns_wrap > aside {
+		min-width: 100px;
+	}
+}
+
+@media screen and (min-width: 769px) {
+	/* push footer content toward the right edge while keeping link lists left-aligned inside their columns */
+	footer .footer_wrap_inner .content_wrap {
+		justify-content: flex-end !important;
+		text-align: right !important;
+	}
+	.footer_wrap_inner aside {
+		text-align: left !important; /* keep list items readable */
+	}
+}
+

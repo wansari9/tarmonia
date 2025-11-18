@@ -19,6 +19,18 @@
     if (window.AuthSession) {
       window.AuthSession.checkSession();
     }
+
+    // Ensure first fieldset and progress are marked active
+    var fieldsets = document.querySelectorAll('#msform fieldset');
+    var progressItems = document.querySelectorAll('#progressbar li');
+    if (fieldsets && fieldsets[0]) fieldsets[0].classList.add('active-step');
+    if (progressItems && progressItems[0]) progressItems[0].classList.add('active');
+
+    // If the first step is already valid (e.g., user data), auto advance to next
+    if (allRequiredInputsValid(0)) {
+      saveCurrentStepData();
+      goToNextStep();
+    }
   }
 
   function setupProgressButtons() {
@@ -39,6 +51,74 @@
         goToPreviousStep();
       });
     });
+    // Attach auto-advance behavior
+    attachAutoAdvance();
+  }
+
+  // Debounced auto-advance: when all required inputs in current step are valid, auto-advance
+  function attachAutoAdvance() {
+    var fieldsets = document.querySelectorAll('#msform fieldset');
+    var debounceTimers = [];
+
+    fieldsets.forEach(function(fieldset, index) {
+      var inputs = fieldset.querySelectorAll('input[required], select[required]');
+      if (!inputs || inputs.length === 0) return;
+
+      inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+          if (debounceTimers[index]) clearTimeout(debounceTimers[index]);
+          debounceTimers[index] = setTimeout(function() {
+            // Only auto-advance if this is the currently visible step
+            if (currentStep !== index) return;
+            // If all required inputs for this step are valid, auto-advance
+            if (allRequiredInputsValid(index)) {
+              saveCurrentStepData();
+              goToNextStep();
+            }
+          }, 400);
+        });
+        input.addEventListener('change', function() {
+          if (debounceTimers[index]) clearTimeout(debounceTimers[index]);
+          debounceTimers[index] = setTimeout(function() {
+            if (currentStep !== index) return;
+            if (input.type === 'radio') {
+              if (input.checked) input.classList.add('valid');
+              else input.classList.remove('valid');
+            }
+            if (allRequiredInputsValid(index)) {
+              saveCurrentStepData();
+              goToNextStep();
+            }
+          }, 200);
+        });
+      });
+    });
+  }
+
+  function allRequiredInputsValid(index) {
+    var fieldsets = document.querySelectorAll('#msform fieldset');
+    var fieldset = fieldsets[index];
+    if (!fieldset) return false;
+    var inputs = fieldset.querySelectorAll('input[required], select[required]');
+    var valid = true;
+    inputs.forEach(function(input) {
+      if (input.type === 'radio') {
+        // check if any radio in the group is selected
+        var group = fieldset.querySelectorAll('input[name="' + input.name + '"]');
+        var selected = Array.prototype.slice.call(group).some(function(r) { return r.checked; });
+        if (!selected) valid = false;
+      } else if (input.type === 'email') {
+        var value = (input.value || '').trim();
+        if (!value) valid = false;
+        else {
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) valid = false;
+        }
+      } else {
+        if (!input.value || !input.value.trim()) valid = false;
+      }
+    });
+    return valid;
   }
 
   function validateCurrentStep() {
@@ -48,15 +128,17 @@
     var valid = true;
 
     inputs.forEach(function(input) {
-      // Clear previous error styling
-      input.style.borderColor = '';
-      input.style.boxShadow = '';
+      // Clear previous styling
+      input.classList.remove('invalid');
+      input.classList.remove('valid');
 
       if (!input.value || !input.value.trim()) {
         valid = false;
-        input.style.borderColor = '#ff0000';
-        input.style.boxShadow = '0 0 5px rgba(255,0,0,0.3)';
+        input.classList.add('invalid');
         input.focus();
+      }
+      else {
+        if (input.type !== 'email') input.classList.add('valid');
       }
 
       // Email validation
@@ -64,8 +146,10 @@
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(input.value)) {
           valid = false;
-          input.style.borderColor = '#ff0000';
-          input.style.boxShadow = '0 0 5px rgba(255,0,0,0.3)';
+          input.classList.add('invalid');
+        }
+        else {
+          input.classList.add('valid');
         }
       }
 
@@ -74,6 +158,9 @@
         var paymentSelected = document.querySelector('input[name="payment-option"]:checked');
         if (!paymentSelected) {
           valid = false;
+          // mark the radio group invalid visually
+          var radios = currentFieldset.querySelectorAll('input[name="payment-option"]');
+          if (radios && radios[0]) radios[0].classList.add('invalid');
           alert('Please select a payment method');
         }
       }
@@ -105,13 +192,18 @@
     if (currentStep < fieldsets.length - 1) {
       // Hide current fieldset
       fieldsets[currentStep].style.display = 'none';
+      fieldsets[currentStep].classList.remove('active-step');
       
       // Show next fieldset
       currentStep++;
       fieldsets[currentStep].style.display = 'block';
       
       // Update progress bar
+      // mark the previous step as passed
+      if (progressItems[currentStep - 1]) progressItems[currentStep - 1].classList.add('passed');
       progressItems[currentStep].classList.add('active');
+      // mark the new fieldset as active-step
+      fieldsets[currentStep].classList.add('active-step');
       
       // Scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -125,13 +217,17 @@
     if (currentStep > 0) {
       // Hide current fieldset
       fieldsets[currentStep].style.display = 'none';
+      fieldsets[currentStep].classList.remove('active-step');
       
       // Remove active from current progress
       progressItems[currentStep].classList.remove('active');
+      // when going back, remove 'passed' from the step we just left
+      if (progressItems[currentStep - 1]) progressItems[currentStep - 1].classList.remove('passed');
       
       // Show previous fieldset
       currentStep--;
       fieldsets[currentStep].style.display = 'block';
+      fieldsets[currentStep].classList.add('active-step');
       
       // Scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });

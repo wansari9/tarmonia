@@ -5,282 +5,104 @@
 }
 body {
     font-family: "Roboto", sans-serif; /* Changed font to Roboto */
-    height: 100vh;
     width: 100%;
     margin: 0px auto;
-    
     background-color: #ffffff; /* Added a light background for contrast */
     color: #4E5150;
     overflow-x: hidden; /* Prevent horizontal overflow */
-
-    header {
-        position: relative; /* Allow positioning of child elements */
-        display: flex;
-        justify-content: space-between; /* Space out the "Checkout" heading and "Go Back" button */
-        align-items: center; /* Align items vertically */
-      
-        
-        > h3 {
-            margin: 0; /* Remove default margin */
-            font-family: "Lora", serif; /* Changed header font to Lora */
-            font-size: 50px;
-            color: #FEC321;
-            font-weight: 500;
-            margin-left: 20px;
-        }
-    }
-
-    main {
-        height: 85%;
-        display: flex;
-column-gap: 50px;
-        flex-wrap: wrap; /* Allow wrapping to prevent overflow */
-        justify-content: center ;
-        align-items: flex-start; /* Align the top of the left and right sections */
-        
-        .checkout-form  {
-            width: 50%;
-            max-width: 100%;
-            box-sizing: border-box; /* Include padding and border in width calculation */
-            align-items: flex-start; /* Align the form content to the left */
-
-            form {
-                background-color: #fff7d5;
-                height: 720px;
-                padding: 10px; /* Increased padding for better spacing */
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
-                transition: transform 0.2s ease-in-out; /* Added hover effect */
-            }
-
-            form:hover {
-                transform: scale(1.02); /* Slight zoom on hover */
-            }
-
-            h6 {
-                color: #997E33;
-                font-size: 30px;
-                font-weight: 500;
-                font-family: 'Times New Roman', Times, serif;
-            }
-
-            .form-control  {
-                margin: 10px 0px;
-                position: relative;
-
-                label:not([for="checkout-checkbox"]) {
-                    display: block;
-                    font-size: 18px;
-                    font-weight: 300;
-                    margin-bottom: 2px;
-                    font-family: Georgia, 'Times New Roman', Times, serif;
-                }
-
-                input:not([type="checkbox"]) {
-                    width: 100%;
-                    padding: 10px 10px 10px 40px;
-                    border-radius: 10px;
-                    height: 50px;
-                    outline: none;
-                    border: .2px solid #4e515085;
-                    font-size: 15px;
-                    font-weight: thin;
-
-                    &::placeholder {
-                        font-size: 10px;
-                        font-weight: 500;
-                    }
-                }
-
-                label[for="checkout-checkbox"] {
-                    font-size: 15px;
-                    font-weight: 500;
-                    line-height: 10px;
-                }
-
-                > div {
-                    position: relative;
-
-                    span.fa {
-                        position: absolute;
-                        top: 50%;
-                        left: 0%;
-                        transform: translate(15px, -50%);
-                    }
-                }
-            }
-
-            .form-group {
-                display: flex;
-                column-gap: 25px;
-            }
-
-            .checkbox-control {
-                display: flex;
-                align-items: center;
-                column-gap: 10px;
-            }
-
-            .form-control-btn {
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-
-                button {
-                    padding: 10px 25px;
-                    font-size: 20px;
-                    color: #fff;
-                    background: #FEC321;
-                    border: 0;
-                    border-radius: 7px;
-                    letter-spacing: .5px;
-                    font-weight: bold;
-                    cursor: pointer;
-                }
-                button:hover{
-                    background-color: #967212;
-                }
-            }
-        }
-
-        .checkout-details {
-            width: 40%;
-            max-width: 100%;
-            
-            box-sizing: border-box; /* Include padding and border in width calculation */
-
-            .checkout-details-inner {
-                background: #fff7d5;
-                border-radius: 10px;
-                padding: 10px; /* Increased padding for better spacing */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
-
-                .checkout-lists {
-                    display: flex;
-                    flex-direction: column;
-                    row-gap: 15px;
-                    margin-bottom: 40px;
-
-                    .card {
-                        width: 100%;
-                        display: flex;
-                        column-gap: 210px;
-                        border: 1px solid #ddd; /* Added border for better separation */
-                        border-radius: 10px;
-                        padding: 10px; /* Added padding for better spacing */
-                        transition: box-shadow 0.2s ease-in-out; /* Added hover effect */
-
-                        .card-image {
-                            width: 35%;
-
-                            img {
-                                width: 100%;
-                                object-fit: fill;
-                                border-radius: 10px;
-                            }
-                        }
-
-                        .card-details {
-                            display: flex;
-                            flex-direction: column;
-
-                            .card-name {
-                                font-family: 'Times New Roman', Times, serif;
-                                font-size: 20px;
-                                font-weight: 500;
-                            }
-                            .card-price {
-                                font-size: 18px;
-                                font-weight: 500;
-                                color: #F2994A;
-                                margin-top: 5px;
-
-                                span {
-                                    color: #4E5150;
-                                    text-decoration: line-through;
-                                    margin-left: 10px;
-                                }
-                            }
-                            .card-wheel {
-                                margin-top: 17px;
-                                border: .2px solid #4e515085;
-                                width: 129px;
-                                padding: 8px 8px;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                display: flex;
-                                justify-content: space-between;
-
-                                button {
-                                    background: #E0E0E0;
-                                    color: #828282;
-                                    width: 15px;
-                                    height: 15px;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    border: 0;
-                                    cursor: pointer;
-                                    border-radius: 3px;
-                                    font-weight: 500;
-                                }
-                            }
-                        }
-                    }
-
-                    .card:hover {
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Highlight card on hover */
-                    }
-                }
-
-                .checkout-shipping, .checkout-total {
-                    display: flex;
-                    font-size: 30px;
-                    padding: 5px 0px;
-                    border-top: 1px solid #BDBDBD;
-                    justify-content: space-between;
-
-                    p {
-                        font-size: 15px;
-                        font-weight: 500;
-                    }
-                }
-            }
-        }
-    }
-
-    footer {
-        height: 5%;
-        color: #BDBDBD;
-        display: -ms-grid;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        font-weight: 500; /* Made footer text slightly bolder */
-        text-align: center; /* Centered footer text */
-        padding: 10px 0; /* Added padding for better spacing */
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-    }
 }
+
+/* Header styles */
+header {
+    position: relative; /* Allow positioning of child elements */
+    display: flex;
+    justify-content: space-between; /* Space out the "Checkout" heading and "Go Back" button */
+    align-items: center; /* Align items vertically */
+}
+header > h3 {
+    margin: 0; /* Remove default margin */
+    font-family: "Lora", serif; /* Changed header font to Lora */
+    font-size: 50px;
+    color: #FEC321;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+/* Main layout uses a flexible responsive grid, avoid using a fixed height */
+main {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+    justify-content: center;
+    align-items: flex-start; /* Align the top of the left and right sections */
+    padding: 20px 0;
+}
+
+.checkout-form {
+    flex: 0 1 55%; /* Allow flexibility but prefer ~55% width */
+    max-width: 100%;
+    box-sizing: border-box; /* Include padding and border in width calculation */
+    align-items: flex-start; /* Align the form content to the left */
+}
+.checkout-form form {
+    background-color: #fff7d5;
+    padding: 18px; /* Increased padding for better spacing */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+    transition: transform 0.2s ease-in-out; /* Added hover effect */
+    min-height: 200px; /* allow it to expand with content */
+}
+.checkout-form form:hover{
+    transform: scale(1.01);
+}
+.checkout-form h6 { /* keep heading presentational rules */
+    color: #997E33;
+    font-size: 30px;
+    font-weight: 500;
+    font-family: 'Times New Roman', Times, serif;
+}
+.checkout-form .form-control { margin: 10px 0; position: relative; }
+.checkout-form .form-control label:not([for="checkout-checkbox"]) { display:block; font-size:18px; font-weight:300; margin-bottom:2px; font-family:Georgia, 'Times New Roman', Times, serif; }
+.checkout-form .form-control input:not([type="checkbox"]) { width:100%; padding: 10px 10px 10px 14px; border-radius: 10px; height: 50px; outline:none; border: .2px solid #4e515085; font-size:15px; }
+.checkout-form .form-group { display:flex; gap:25px; }
+.checkout-form .checkbox-control{ display:flex; align-items:center; gap:10px }
+.form-control-btn{ display:flex; align-items:center; justify-content:flex-end }
+.form-control-btn button{ padding:10px 25px; font-size:20px; color:#fff; background: #FEC321; border:0; border-radius:7px; letter-spacing:.5px; font-weight:bold; cursor:pointer; }
+.form-control-btn button:hover{ background: #967212 }
+
+.checkout-details { flex: 0 1 35%; max-width: 100%; box-sizing: border-box }
+.checkout-details-inner{ background:#fff7d5; border-radius:10px; padding:10px; box-shadow: 0 4px 8px rgba(0,0,0,.1)}
+.checkout-lists{ display:flex; flex-direction:column; gap: 15px; margin-bottom: 40px }
+.checkout-lists .card{ width:100%; display:flex; gap: 12px; border: 1px solid #ddd; border-radius:10px; padding: 10px; align-items:center }
+.card-image { width: 35%; min-width: 90px }
+.card-image img{ width:100%; object-fit: cover; border-radius:10px }
+.card-details{ flex:1; display:flex; flex-direction:column }
+.card-name{ font-family:'Times New Roman', Times, serif; font-size:20px; font-weight:500 }
+.card-price{ font-size:18px; font-weight:500; color:#F2994A; margin-top:5px }
+.card-wheel{ margin-top: 12px; border: .2px solid #4e515085; width: 129px; padding:8px; border-radius:10px; font-size:12px; display:flex; justify-content:space-between }
+.card-wheel button{ background: #E0E0E0; color:#828282; width: 22px; height: 22px; min-width:22px; min-height:22px; display:flex; justify-content:center; align-items:center; border: 0; cursor:pointer; border-radius:3px }
+.card:hover{ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+.checkout-shipping, .checkout-total{ display:flex; font-size: 18px; padding: 5px 0; border-top: 1px solid #BDBDBD; justify-content: space-between }
+.checkout-shipping p, .checkout-total p{ font-size: 15px; font-weight: 500 }
+
+footer.call_wrap{ height: auto; color: #BDBDBD; display:grid; place-items:center; font-size: 12px; font-weight: 500; text-align:center; padding: 10px 0; width: 100%; box-sizing: border-box; overflow: visible; }
+footer.call_wrap a{ text-decoration:none; color:inherit }
 
 #msform {
     width: 100%; /* Ensure the form takes up the full width */
- 
     text-align: center;
     position: relative;
     max-width: 100%;
-    overflow: hidden; /* Prevent content overflow */
-    height: 650px;
+    overflow: visible; /* allow the form to expand vertically */
+    height: auto; /* do not limit height - let it grow */
+    min-height: 140px;
 }
 
 #msform fieldset {
     background: white;
     border: 0 none;
     border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.05); /* subtle border */
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
     padding: 20px 30px;
     box-sizing: border-box;
@@ -288,16 +110,20 @@ column-gap: 50px;
     margin: 0 10%;
     position: relative;
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth transitions */
-    align-items: flex-start; /* Align fieldset content to the left */
+    align-items: stretch; /* left align by default, stretch width */
     text-align: left; /* Ensure text aligns to the left */
     display: flex;
     flex-direction: column; /* Keep inputs stacked vertically */
-    align-items: center; /* Center-align the content */
+    align-items: stretch; /* stretch to container width */
 }
 
 #msform fieldset:not(:first-of-type) {
     display: none;
     border-radius: 5px;
+}
+#msform fieldset.active-step {
+    border-color: rgba(124, 179, 66, 0.6);
+    box-shadow: 0 8px 20px rgba(124, 179, 66, 0.08);
 }
 
 #msform input, #msform textarea {
@@ -311,6 +137,21 @@ column-gap: 50px;
     color: #2C3E50;
     font-size: 13px;
     height: 50px;
+}
+
+#msform input:focus, #msform select:focus, #msform textarea:focus {
+    outline: none;
+    border-color: #72b16a;
+    box-shadow: 0 0 6px rgba(114,177,106,0.12);
+}
+
+#msform input.valid {
+    border-color: #72b16a !important;
+}
+
+#msform input.invalid {
+    border-color: #ff4d4d !important;
+    box-shadow: 0 0 6px rgba(255,77,77,0.12);
 }
 
 #msform .action-buttons {
@@ -336,6 +177,14 @@ column-gap: 50px;
 #msform .action-button:hover {
     background: #997E33; /* Slightly darker green for hover */
     transition: background 0.3s ease-in-out;
+}
+
+#msform label {
+    display:block;
+    margin: 8px 0 6px 0;
+    font-weight: 600;
+    color: #3b3b3b;
+    font-size: 13px;
 }
 
 #msform fieldset:first-of-type {
@@ -409,6 +258,13 @@ column-gap: 50px;
 
 #progressbar li.active:after {
     background: #FEC321; /* Active connector color */
+}
+
+/* passed step indicator */
+#progressbar li.passed:before {
+    background: #72b16a; /* a green for completed */
+    color: #fff;
+    content: '\2713'; /* checkmark */
 }
 
 #msform fieldset p, #msform fieldset input {
@@ -667,41 +523,16 @@ column-gap: 50px;
 }
 
 @media screen and (max-width: 1024px) {
-    body {
-        width: 80%;
-
-        main {
-            column-gap: 70px;
-        }
-    }
+    body { width: 80%; }
+    main { gap: 70px; }
 }
 
 @media screen and (max-width: 768px) {
-    body {
-        width: 92%;
-
-        main {
-            flex-direction: column-reverse;
-            height: auto;
-            margin-bottom: 50px;
-            padding: 0 10px; /* Add padding to prevent content from touching edges */
-
-            .checkout-form {
-                width: 100%;
-                margin-top: 35px;
-                margin: 0 auto; /* Center elements */
-            }
-
-            .checkout-details {
-                width: 100%;
-                margin: 0 auto; /* Center elements */
-            }
-        }
-
-        footer {
-            height: 10%;
-        }
-    }
+    body { width: 92%; }
+    main { flex-direction: column-reverse; height: auto; margin-bottom: 50px; padding: 0 10px; }
+    .checkout-form { width: 100%; margin-top: 35px; margin: 0 auto; }
+    .checkout-details { width: 100%; margin: 0 auto; }
+    footer { height: auto; }
 }
 
 .payment-icon {
@@ -807,4 +638,223 @@ column-gap: 50px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+/* Ensure call-to-action (Where to buy) section centers content and wraps properly */
+body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap,
+body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
+    max-width: 1070px !important; /* match the standard site content width used in responsive.css */
+    width: 100%;
+    margin: 0 auto; /* center container */
+    padding: 0 20px; /* preserve small side padding */
+    box-sizing: border-box;
+    /* Don't force footer to flex; target call_wrap separately */
+}
+
+/* Make CTA text and buttons inline and aligned, but allow wrapping */
+.call_wrap_inner .call-text,
+.call_wrap_inner .call-title,
+.call_wrap_inner .sc_button {
+    float: none !important; /* neutralize previous float from global styles so it aligns better */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Move button beside the text if there is room, otherwise stack */
+.call_wrap_inner .sc_button {
+    margin-left: 20px;
+}
+
+.call_wrap_inner .call-title { flex: 0 0 auto; }
+.call_wrap_inner .call-text { flex: 1 1 560px; max-width: 580px; }
+body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap { display: flex; align-items: center; justify-content: space-between; }
+
+/* Footer widgets: center and make columns responsive */
+body.woocommerce.woocommerce-page footer .widget_area_inner .content_wrap {
+    max-width: 1000px !important;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+    /* Allow CTA/footer content containers to use full width and avoid clipping on small screens */
+    body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap,
+    body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
+        padding: 0 12px;
+        max-width: 100% !important;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+    .call_wrap_inner .call-text, .call_wrap_inner .call-title, .call_wrap_inner .sc_button { display: block; text-align:center; margin: 0.5rem auto; }
+    .footer_wrap_inner .content_wrap { padding: 0 12px; }
+    body.woocommerce.woocommerce-page .footer_wrap_inner aside { text-align: center; }
+}
+
+/* Ensure footer inner content isn't clipped by overflow rules elsewhere */
+footer .footer_wrap_inner .content_wrap,
+body .footer_wrap_inner .content_wrap {
+    overflow: visible !important;
+}
+
+/* Make outer wrappers full-bleed so background bars extend edge-to-edge
+   even when the page content is centered/limited */
+.call_wrap, .footer_wrap, footer.call_wrap {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: #231f1f; /* ensure outer wrapper matches inner color */
+    box-sizing: border-box;
+    z-index: 0;
+}
+
+/* Reduce default inner padding on the outer wrappers so content_wrap controls spacing */
+.call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner {
+    padding: 0;
+}
+
+/* Checkout-specific: align call/CTA content to the right and vertically center it
+   Keep the background full-bleed but position the inner content to the right side
+   with a comfortable right padding so text isn't clipped. Mobile falls back to centered. */
+footer.call_wrap .call_wrap_inner .content_wrap {
+    display: flex !important;
+    align-items: center !important;     /* vertical centering */
+    justify-content: flex-end !important; /* push content to the right */
+    text-align: right !important;
+    gap: 20px;                          /* spacing between title/text/button */
+    max-width: 1200px;                  /* keep inner constraint */
+    margin: 0 auto;                     /* center inner container inside full-bleed */
+    padding: 20px 80px;                 /* fixed horizontal offset to avoid clipping */
+    box-sizing: border-box;
+}
+
+footer.call_wrap .call_wrap_inner .call-title,
+footer.call_wrap .call_wrap_inner .call-text {
+    margin: 0; /* remove default margins so alignment is predictable */
+}
+
+footer.call_wrap .call_wrap_inner .sc_button {
+    margin: 0; /* button sits at the right edge of the inner content */
+}
+
+@media screen and (max-width: 768px) {
+    footer.call_wrap .call_wrap_inner .content_wrap {
+        justify-content: center !important; /* center on small screens */
+        text-align: center !important;
+        padding: 12px; /* smaller padding on mobile */
+    }
+    footer.call_wrap .call_wrap_inner .sc_button {
+        margin-top: 12px; /* stack nicely under text on mobile */
+    }
+}
+
+/* Desktop alignment: keep content left-aligned on wide screens, center on mobile */
+@media screen and (min-width: 769px) {
+    /* Keep footer columns left-aligned on desktop, but keep CTA centered */
+    footer .footer_wrap_inner .content_wrap {
+        text-align: left;
+    }
+    .footer_wrap_inner aside {
+        text-align: left;
+    }
+    .copyright_wrap_inner {
+        text-align: center; /* keep copyright centered */
+    }
+}
+
+/* Checkout-specific: center footer content and text so it matches other pages */
+body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    align-items: center; /* center vertically if needed */
+    flex-direction: column; /* stack blocks vertically for consistent centering */
+    max-width: 1200px !important; /* keep inner constraint */
+    margin: 0 auto; /* center inside the full-bleed outer wrapper */
+    padding: 20px; /* comfortable padding */
+    text-align: center; /* center text inside */
+}
+
+/* Ensure the columns container uses full width but centers its children */
+body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    gap: 16px; /* reduced spacing between columns so lists fit on one line */
+    flex-wrap: wrap; /* allow wrapping on smaller widths */
+}
+
+/* Make each footer column a flex column and center its content */
+body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 140px; /* reduced min width so more columns fit on one line */
+}
+
+/* On wide desktop screens prefer a single-row layout (no wrap) */
+@media screen and (min-width: 1200px) {
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
+        flex-wrap: nowrap;
+    }
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
+        min-width: 120px; /* allow even narrower columns on wide screens */
+    }
+}
+
+/* Place logo and address widgets under the list of links in the footer.
+   Make social/text widgets full-width and centered below the link columns. */
+@media screen and (min-width: 992px) {
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_socials,
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_text {
+        flex: 0 0 100% !important; /* full width */
+        min-width: 100% !important;
+        order: 999 !important; /* push to the bottom */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        margin-top: 12px;
+    }
+    /* Ensure the parent allows wrapping so the full-width widgets go to a new row */
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
+        flex-wrap: wrap !important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    /* On smaller screens keep default stacked behavior */
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_socials,
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_text {
+        flex: 0 0 100%;
+        min-width: 100%;
+        order: 999;
+        text-align: center;
+    }
+}
+
+/* On small screens keep centered stacking behavior */
+@media screen and (max-width: 768px) {
+    body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
+        display: block;
+        margin: 0 auto;
+        padding: 12px;
+        text-align: center;
+    }
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
+        display: block;
+        gap: 0;
+    }
+    body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
+        width: 100%;
+        min-width: 0;
+        margin-bottom: 12px;
+    }
 }
