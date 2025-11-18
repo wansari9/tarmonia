@@ -767,44 +767,48 @@ footer.call_wrap .call_wrap_inner .sc_button {
     }
 }
 
-/* Checkout-specific: center footer content and text so it matches other pages */
+/* Checkout-specific: keep footer link lists inline on desktop and push blocks right
+   - Desktop: horizontal layout, right-aligned inside the centered inner container.
+   - Mobile: fallback to stacked/centered layout defined in other media queries. */
 body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
     display: flex;
-    justify-content: center; /* center horizontally */
-    align-items: center; /* center vertically if needed */
-    flex-direction: column; /* stack blocks vertically for consistent centering */
+    justify-content: flex-end; /* push footer blocks to the right on desktop */
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
     max-width: 1200px !important; /* keep inner constraint */
     margin: 0 auto; /* center inside the full-bleed outer wrapper */
     padding: 20px; /* comfortable padding */
-    text-align: center; /* center text inside */
+    text-align: right; /* right-align text block */
 }
 
-/* Ensure the columns container uses full width but centers its children */
+/* Columns container: tighter spacing and allow wrapping only when necessary */
 body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
-    width: 100%;
+    width: auto;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
-    gap: 16px; /* reduced spacing between columns so lists fit on one line */
+    justify-content: flex-start; /* keep link columns grouped together */
+    gap: 12px; /* tightened spacing so lists fit on a single line */
     flex-wrap: wrap; /* allow wrapping on smaller widths */
+    align-items: flex-start;
 }
 
-/* Make each footer column a flex column and center its content */
+/* Each column: keep list items left-aligned for readability */
 body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-width: 140px; /* reduced min width so more columns fit on one line */
+    align-items: flex-start;
+    text-align: left;
+    min-width: 100px; /* smaller minimum so more columns fit */
 }
 
-/* On wide desktop screens prefer a single-row layout (no wrap) */
+/* Wide screens: prefer a single-row layout and allow even narrower columns */
 @media screen and (min-width: 1200px) {
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
         flex-wrap: nowrap;
     }
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
-        min-width: 120px; /* allow even narrower columns on wide screens */
+        min-width: 90px; /* allow narrower columns on wide screens */
     }
 }
 
