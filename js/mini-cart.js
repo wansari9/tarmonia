@@ -7,7 +7,7 @@
   function formatRM(n){ return 'RM' + Number(n||0).toFixed(2); }
 
   function updateHeaderCounts(items, total){
-    document.querySelectorAll('.top_panel_cart_button').forEach(function(btn){
+    document.querySelectorAll('.top_panel_cart_button, .top_panel_cart_button_simple').forEach(function(btn){
       try { btn.setAttribute('data-items', items); } catch(e){}
       try { btn.setAttribute('data-summa', formatRM(total)); } catch(e){}
       var totals = btn.querySelector('.contact_cart_totals');
@@ -77,7 +77,7 @@
   document.addEventListener('DOMContentLoaded', function(){
     refreshMini();
     document.body.addEventListener('click', function(e){
-      var btn = e.target.closest && e.target.closest('.top_panel_cart_button');
+      var btn = e.target.closest && e.target.closest('.top_panel_cart_button, .top_panel_cart_button_simple');
       if (!btn) return;
       setTimeout(refreshMini, 10); // after toggle, refresh contents
     });

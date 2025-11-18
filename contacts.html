@@ -168,16 +168,11 @@
                                 </div>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
-                                <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                <div class="header_actions" style="display:flex;align-items:center;gap:20px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
                                         <span class="contact_icon icon-1"></span>
-                                        <span class="contact_label contact_cart_label">cart:</span>
-                                        <span class="contact_cart_totals">
-                                            <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">&#36;0.00</span>
-                                        </span>
                                     </a>
-                                    <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
                                     <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
                                         <span class="user_initial" style="font-weight:600;">U</span>
                                     </a>
@@ -186,7 +181,25 @@
                                     <li>
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
-                                                <div class="widget_shopping_cart_content"></div>
+                                                <div class="widget_shopping_cart_content">
+                                                    <div class="cart-header">
+                                                        <h3>Shopping Cart</h3>
+                                                        <span class="cart-count">0</span>
+                                                    </div>
+                                                    <div class="cart-body">
+                                                        <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                    </div>
+                                                    <div class="cart-footer">
+                                                        <div class="cart-total">
+                                                            <span class="total-label">Total:</span>
+                                                            <span class="total-amount">$0.00</span>
+                                                        </div>
+                                                        <div class="cart-buttons">
+                                                            <a href="cart.html" class="view-cart-button">View Cart</a>
+                                                            <a href="checkout.html" class="checkout-button">Checkout</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
