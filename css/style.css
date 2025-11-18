@@ -4745,18 +4745,18 @@ li.opened > a > .open_child_menu:before {
 
 /* woo */
 .header_mobile .sidebar_cart {
-    position: absolute;
-    top: 35px;
-    left: auto;
-    right: 0;
-    z-index: 1000;
-    display: none;
-    float: none;
-    text-align: left;
-    border: 1px solid #eee;
+	position: absolute;
+	top: 35px;
+	left: auto;
+	right: 0;
+	z-index: 1000;
+	display: none;
+	float: none;
+	text-align: left;
+	border: 1px solid #eee;
 }
 .header_mobile .sidebar_cart {
-	width: 250px !important;
+	width: 175px !important;
 	padding: 1.5em !important;
 	z-index:100000;
 }

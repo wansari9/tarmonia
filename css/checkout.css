@@ -23,7 +23,7 @@ header > h3 {
     margin: 0; /* Remove default margin */
     font-family: "Lora", serif; /* Changed header font to Lora */
     font-size: 50px;
-    color: #FEC321;
+    color: #F4C200;
     font-weight: 500;
     margin-left: 20px;
 }
@@ -67,8 +67,8 @@ main {
 .checkout-form .form-group { display:flex; gap:25px; }
 .checkout-form .checkbox-control{ display:flex; align-items:center; gap:10px }
 .form-control-btn{ display:flex; align-items:center; justify-content:flex-end }
-.form-control-btn button{ padding:10px 25px; font-size:20px; color:#fff; background: #FEC321; border:0; border-radius:7px; letter-spacing:.5px; font-weight:bold; cursor:pointer; }
-.form-control-btn button:hover{ background: #967212 }
+.form-control-btn button{ padding:10px 25px; font-size:20px; color:#0C1A3A; background: #F4C200; border:0; border-radius:7px; letter-spacing:.5px; font-weight:bold; cursor:pointer; }
+.form-control-btn button:hover{ background: #c79b00 }
 
 .checkout-details { flex: 0 1 35%; max-width: 100%; box-sizing: border-box }
 .checkout-details-inner{ background:#fff7d5; border-radius:10px; padding:10px; box-shadow: 0 4px 8px rgba(0,0,0,.1)}
@@ -163,9 +163,9 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 #msform .action-button {
     width: 120px; /* Set a consistent width for buttons */
-    background: #FEC321;
+    background: #F4C200;
     font-weight: bold;
-    color: white;
+    color: #0C1A3A;
     border: 0 none;
     border-radius: 5px;
     cursor: pointer;
@@ -252,12 +252,12 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 }
 
 #progressbar li.active:before {
-    background: #FEC321; /* Active step background color */
-    color: white; /* Active step text color */
+    background: #F4C200; /* Active step background color */
+    color: #0C1A3A; /* Active step text color */
 }
 
 #progressbar li.active:after {
-    background: #FEC321; /* Active connector color */
+    background: #F4C200; /* Active connector color */
 }
 
 /* passed step indicator */
@@ -299,9 +299,9 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 #msform fieldset:nth-of-type(2) .action-button {
     width: 120px; /* Set a consistent width for buttons */
-    background: #FEC321;
+    background: #F4C200;
     font-weight: bold;
-    color: white;
+    color: #0C1A3A;
     border: 0 none;
     border-radius: 5px;
     cursor: pointer;
@@ -325,9 +325,9 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 #msform fieldset:nth-of-type(3) .action-button {
     width: 120px; /* Set a consistent width for buttons */
-    background: #FEC321;
+    background: #F4C200;
     font-weight: bold;
-    color: white;
+    color: #0C1A3A;
     border: 0 none;
     border-radius: 5px;
     cursor: pointer;
@@ -371,7 +371,7 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 }
 
 .payment-options input[type="radio"] {
-    accent-color: #FEC321; /* Customize the radio button color */
+    accent-color: #F4C200; /* Customize the radio button color */
     cursor: pointer; /* Indicate that the radio button is clickable */
     transform: scale(1.2); /* Slightly enlarge the radio button for better visibility */
     margin-right: 10px; /* Add spacing between the radio button and the label text */
@@ -416,8 +416,8 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 .checkout-options input[type="radio"]:checked + .checkout-option {
     background-color: #fef7e4; /* Highlight the selected box */
-    border-color: #FEC321; /* Change the border color for the selected box */
-    outline: 2px solid #FEC321; /* Add an outline for the selected option */
+    border-color: #F4C200; /* Change the border color for the selected box */
+    outline: 2px solid #F4C200; /* Add an outline for the selected option */
     color: black; /* Change text color for better contrast */
 }
 
@@ -543,7 +543,7 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 }
 
 .checkout-options input[type="radio"]:checked + .checkout-option .payment-icon {
-    color: #FEC321; /* Highlight icon color when selected */
+    color: #F4C200; /* Highlight icon color when selected */
 }
 
 #state-dropdown {
@@ -577,8 +577,8 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
     margin-right: 20px; /* Add spacing from the left edge */
     display: inline-block;
     padding: 10px 20px;
-    background-color: #FEC321;
-    color: white;
+    background-color: #F4C200;
+    color: #0C1A3A;
     font-size: 14px;
     font-weight: bold;
     border-radius: 5px;
@@ -589,7 +589,7 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 }
 
 .go-back-box:hover {
-    background-color: #967212;
+    background-color: #c79b00;
 }
 
 .state-city-container {
