@@ -157,11 +157,7 @@ try {
 
     respond_opts(200, ['success' => true, 'options' => $options]);
 } catch (Throwable $e) {
-    // Write diagnostic info to a local log to aid debugging on dev environments
-    try {
-        file_put_contents(__DIR__ . '/product_options_error.log', '[' . date('c') . '] ' . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n", FILE_APPEND);
-    } catch (Throwable $ignore) {
-    }
+    // Diagnostic file writes removed; return error to client
     $debug = isset($_GET['debug']);
     $payload = ['success' => false, 'error' => 'Failed to load option config'];
     if ($debug) {

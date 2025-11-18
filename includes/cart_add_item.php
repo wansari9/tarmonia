@@ -49,11 +49,7 @@ if ($quantity > 200) { // simple anti-abuse cap
 
 try {
     $stage = 'start';
-    // Debug log: record incoming payload minimal info
-    try {
-        $dbg = '[IN] add_item pid=' . $rawProductId . ' qty=' . $quantity . ' weight=' . $weight . ' fat=' . $fat;
-        file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] $dbg\n", FILE_APPEND);
-    } catch (Throwable $ignore) {}
+    // Debug log removed: no longer writing local diagnostic files
     $cart = get_or_create_cart($pdo);
     // ALWAYS assign cart to logged-in user immediately
     $authUser = get_authenticated_user_id();
@@ -220,16 +216,10 @@ try {
             'unit_price_used' => $unitPrice,
         ]
     ];
-    try {
-        $dbg2 = '[OUT] add_item cart_id=' . $cartId . ' item_count=' . ($data['counts']['items'] ?? 0) . ' grand=' . ($data['totals']['grand_total'] ?? 0);
-        file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] $dbg2\n", FILE_APPEND);
-    } catch (Throwable $ignore) {}
+    // Outgoing debug write removed
     cart_json_response(200, $response);
 } catch (Throwable $e) {
-    // Log detailed error for diagnostics
-    try {
-        file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] add_item (stage=$stage): ".$e->getMessage()."\n", FILE_APPEND);
-    } catch (Throwable $ignore) {}
+    // Diagnostic file writes removed; return error to client
     $show = isset($_POST['debug']);
-    cart_json_response(500, ['success' => false, 'error' => 'Failed to add item', 'detail' => $show ? ("$stage: ".$e->getMessage()) : null]);
+    cart_json_response(500, ['success' => false, 'error' => 'Failed to add item', 'detail' => $show ? ("$stage: " . $e->getMessage()) : null]);
 }

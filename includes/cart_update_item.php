@@ -45,7 +45,7 @@ try {
     $data = serialize_cart($pdo, $cartId);
     cart_json_response(200, ['success' => true, 'cart' => $data]);
 } catch (Throwable $e) {
-    try { file_put_contents(__DIR__ . '/cart_error.log', '['.date('c')."] update_item (stage=$stage): ".$e->getMessage()."\n", FILE_APPEND); } catch (Throwable $ignore) {}
+        // Diagnostic file writes removed; return error to client
     $show = isset($_POST['debug']);
     cart_json_response(500, ['success' => false, 'error' => 'Failed to update item', 'detail' => $show ? ("$stage: ".$e->getMessage()) : null]);
 }
