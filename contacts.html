@@ -28,58 +28,142 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .page_content_wrap.page_paddings_no {
             padding: 0 !important;
             margin: 0 !important;
         }
-        
+
         .vc_row.vc_row-no-padding {
             margin: 0 !important;
             padding: 0 !important;
         }
-        
+
         .sc_googlemap_wrap.contact-main-wrapper {
             min-height: 100vh !important;
             display: block !important;
+            position: relative; /* establish containing block for absolute cards */
+            z-index: 1;
         }
-        
+
+        /* Ensure the top panel title background sits behind the floating cards */
+        .top_panel_title .bg_cust_7,
+        .bg_cust_7 {
+            position: relative;
+            z-index: 1; /* lower than the cards (cards use 99999+) */
+        }
+
+        /* Layout: stack cards and place the contact form in a separate container under them */
         .contact_layout_container {
             min-height: 100vh !important;
             display: grid !important;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* single column so form sits under the cards */
             gap: 40px;
             background: linear-gradient(135deg, #F8F8F8 0%, #ECECEC 50%, #F5F5F5 100%) !important;
-            align-items: center;
+            align-items: start;
+            overflow: visible; /* allow children to overflow and overlap previous sections */
         }
-        
+
+        /* Grid for the three contact cards */
+        .contact_info_grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: stretch;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: absolute; /* float the grid above normal flow */
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -60%); /* lift grid up so it sits between header and content */
+            z-index: 99999; /* above all layers */
+            overflow: visible; /* ensure children can rise above previous sections */
+            pointer-events: auto;
+        }
+
+        /* Make each contact card a square and keep consistent padding */
+        .contact-info-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 24px; /* slightly more padding for taller layout */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* center horizontally */
+            text-align: center; /* center text inside */
+            aspect-ratio: 1 / 1.5; /* increased height (20% taller than previous 1.25) */
+            min-height: 240px; /* fallback for older browsers (20% larger) */
+            position: relative;
+            z-index: 100000; /* ensure cards appear above header/top-panel */
+            transform: none; /* grid handles the lift now */
+            width: 80%; /* make each card 20% thinner */
+            justify-self: center; /* keep card centered in its grid column */
+            box-sizing: border-box;
+            transition: transform .2s ease;
+        }
+
+        .contact-icon-wrapper {
+            width: 72px; /* 50% larger */
+            height: 72px; /* 50% larger */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f3f3;
+            border-radius: 50%;
+            margin-bottom: 14px;
+        }
+
+        .contact-icon { font-size: 30px; color: #72b16a; } /* 50% larger */
+
+        .contact-card-title { margin: 8px 0 6px; font-size: 18px; text-align: center; width: 100%; }
+        .contact-card-text { margin: 0; font-size: 14px; color: #555; text-align: center; width: 100%; }
+
+        /* Contact form becomes a distinct container under the cards */
+        .contact_form_section {
+            /* reduced size: 10% narrower, 20% shorter */
+            max-width: 990px; /* 1100px * 0.9 */
+            width: 90%;
+            margin: 0 auto 40px;
+            padding: 24px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transform-origin: top center;
+            transform: scaleY(0.8); /* reduce height by 20% */
+            box-sizing: border-box;
+        }
+
         .sc_googlemap_content {
             position: static !important;
             width: 100% !important;
             z-index: auto;
             pointer-events: auto;
         }
-        
+
         #map-container { position: relative; width: 100%; min-height: 650px; }
         #map-iframe { width: 100%; height: 100%; min-height: 650px; border: 0; }
         #map-overlay { z-index: 10; height: 100%; }
         #deactivate-map { z-index: 1100; }
-        
+
         .contact_map_section {
             margin: 0 calc(50% - 50vw) !important;
             width: 100vw !important;
             position: relative;
             overflow: hidden;
         }
-        
+
+        /* Responsive: reduce card columns on smaller screens */
         @media (max-width: 1024px) {
-            .contact_layout_container {
-                grid-template-columns: 1fr;
-                min-height: auto !important;
-            }
+            .contact_info_grid { grid-template-columns: repeat(2, 1fr); }
+            .contact_layout_container { min-height: auto !important; }
         }
-        
+
         @media (max-width: 900px) {
+            .contact_info_grid { grid-template-columns: 1fr; padding: 24px; }
+            .contact-info-card { width: 100%; }
             .contact_details_section {
                 padding: 50px 24px 40px;
                 padding-right: 24px;
@@ -89,12 +173,8 @@
                 width: 100%;
                 margin-top: 30px;
             }
-            #map-container {
-                min-height: 500px;
-            }
-            #map-iframe {
-                min-height: 500px;
-            }
+            #map-container { min-height: 500px; }
+            #map-iframe { min-height: 500px; }
         }
         @media (max-width: 600px) {
             .sc_googlemap_content {
@@ -103,12 +183,86 @@
                 top: auto;
                 width: auto;
             }
-            #map-container {
-                min-height: 400px;
-            }
-            #map-iframe {
-                min-height: 400px;
-            }
+            #map-container { min-height: 400px; }
+            #map-iframe { min-height: 400px; }
+            .contact-info-card { padding: 20px; min-height: 216px; transform: none; width: 100%; }
+            .contact_form_section { padding: 18px; width: calc(100% - 36px); }
+            .contact-icon-wrapper { width: 56px; height: 56px; }
+            .contact-icon { font-size: 24px; }
+        }
+
+        /* Small compensation so content below doesn't collide when cards overlap */
+        .contact_form_section { margin-top: 260px; }
+
+        /* Layer overrides: ensure cards are on the very front and breadcrumbs/top title sit behind */
+        .contact_info_grid {
+            position: absolute !important;
+            left: 50% !important;
+            top: 0 !important;
+            transform: translate(-50%, -60%) !important;
+            z-index: 2147483646 !important;
+            overflow: visible !important;
+            pointer-events: auto !important;
+        }
+
+        .contact-info-card {
+            z-index: 2147483647 !important;
+            position: relative !important;
+        }
+
+        /* Push top title / breadcrumbs to the back */
+        .top_panel_title,
+        .top_panel_title .top_panel_title_inner,
+        .top_panel_title .bg_cust_7,
+        .bg_cust_7,
+        .breadcrumbs,
+        .breadcrumbs_item,
+        .breadcrumbs_delimiter {
+            position: relative !important;
+            z-index: 0 !important;
+        }
+
+        /* Hide the original in-flow grid (we'll use a fixed overlay instead) */
+        .contact_info_section .contact_info_grid { display: none !important; }
+
+        /* Floating overlay grid placed between the top band and content (positioned in document flow) */
+        .floating-contact-grid {
+            position: absolute; /* will be positioned by script to sit between the two divs */
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: min(1100px, 90%);
+            pointer-events: auto;
+            z-index: 2147483647;
+            /* Smooth movement when script updates `top`/`transform` */
+            transition: top 280ms cubic-bezier(.2,.9,.2,1), transform 280ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+        }
+
+        /* When pinned we use fixed positioning so the overlay stops moving with the document
+           and remains visible (e.g. when the midpoint leaves the viewport). The script will
+           toggle the `pinned` class and compute a sensible `top` value for the fixed state. */
+        .floating-contact-grid.pinned {
+            position: fixed !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            /* top will be set by script inline to preserve animation */
+            z-index: 2147483647 !important;
+            will-change: top, transform;
+        }
+
+        /* Small hidden state (used if we ever want to fade out when off-screen) */
+        .floating-contact-grid.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .floating-contact-grid .contact-info-card {
+            width: 80%;
+            justify-self: center;
+            transform: none;
+            margin: 0;
         }
     </style>
 </head>
@@ -569,6 +723,114 @@
 <a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
 <div class="custom_html_section"></div>
 
+<!-- Floating contact cards overlay (moved out of document flow to avoid stacking context issues) -->
+<div id="floating-contact-cards" class="floating-contact-grid" aria-hidden="false">
+    <div class="contact-info-card">
+        <div class="contact-icon-wrapper">
+            <span class="contact-icon icon-location"></span>
+        </div>
+        <div class="contact-card-content">
+            <h4 class="contact-card-title">Address</h4>
+            <p class="contact-card-text">B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor</p>
+        </div>
+    </div>
+
+    <div class="contact-info-card">
+        <div class="contact-icon-wrapper">
+            <span class="contact-icon icon-phone-1"></span>
+        </div>
+        <div class="contact-card-content">
+            <h4 class="contact-card-title">Phone Number</h4>
+            <p class="contact-card-text">010-927 7092</p>
+        </div>
+    </div>
+
+    <div class="contact-info-card">
+        <div class="contact-icon-wrapper">
+            <span class="contact-icon icon-mail"></span>
+        </div>
+        <div class="contact-card-content">
+            <h4 class="contact-card-title">Email</h4>
+            <p class="contact-card-text">info@tarmonia.com</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enhanced positioning: animate overlay and pin/unpin when the midpoint leaves viewport.
+function positionFloatingCards(){
+    var overlay = document.getElementById('floating-contact-cards');
+    if (!overlay) return;
+
+    var topBand = document.querySelector('.bg_cust_7');
+    var contentWrap = document.querySelector('.page_content_wrap');
+    if (!topBand || !contentWrap) return;
+
+    var topRect = topBand.getBoundingClientRect();
+    var contentRect = contentWrap.getBoundingClientRect();
+    var scroll = window.scrollY || window.pageYOffset;
+
+    // document coordinates
+    var bandBottom = topRect.bottom + scroll;
+    var contentTop = contentRect.top + scroll;
+
+    // midpoint between them
+    var midpoint = (bandBottom + contentTop) / 2;
+
+    var overlayHeight = overlay.offsetHeight || 200;
+    var viewportTop = scroll;
+    var viewportBottom = scroll + window.innerHeight;
+
+    // margin from viewport edges - when midpoint is within these margins, keep the overlay between sections
+    var margin = Math.max(80, Math.round(window.innerHeight * 0.12));
+
+    // If midpoint is comfortably inside the viewport, place overlay so its center matches midpoint.
+    if (midpoint >= (viewportTop + margin) && midpoint <= (viewportBottom - margin)) {
+        overlay.classList.remove('pinned', 'hidden');
+        // absolute in document flow so it visually sits between the two sections
+        overlay.style.position = 'absolute';
+        overlay.style.top = (midpoint - overlayHeight/2) + 'px';
+        overlay.style.left = '50%';
+        overlay.style.transform = 'translateX(-50%)';
+    } else {
+        // Pin state: keep overlay visible by fixing near top or near bottom depending on where midpoint is
+        overlay.classList.add('pinned');
+        var pinnedTop;
+        if (midpoint < (viewportTop + margin)) {
+            // midpoint is above viewport -> pin to a safe top offset below the header
+            pinnedTop = Math.max(60, margin * 0.6); // e.g. ~60px or a fraction of margin
+        } else {
+            // midpoint is below viewport -> pin above the bottom of the viewport
+            pinnedTop = Math.max(60, window.innerHeight - overlayHeight - 60);
+        }
+        overlay.style.position = 'fixed';
+        overlay.style.top = pinnedTop + 'px';
+        overlay.style.left = '50%';
+        overlay.style.transform = 'translateX(-50%)';
+    }
+}
+
+// Debounce helper
+function debounce(fn, wait){
+    var t;
+    return function(){
+        var args = arguments, ctx = this;
+        clearTimeout(t);
+        t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+    };
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    // run once immediately
+    positionFloatingCards();
+
+    // update on load/resize/scroll, with debounce to keep it smooth
+    var debounced = debounce(positionFloatingCards, 80);
+    window.addEventListener('load', positionFloatingCards);
+    window.addEventListener('resize', debounced);
+    window.addEventListener('scroll', debounced);
+});
+</script>
 
 <script defer type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
 <script defer type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
