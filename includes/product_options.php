@@ -157,5 +157,11 @@ try {
 
     respond_opts(200, ['success' => true, 'options' => $options]);
 } catch (Throwable $e) {
-    respond_opts(500, ['success' => false, 'error' => 'Failed to load option config']);
+    // Diagnostic file writes removed; return error to client
+    $debug = isset($_GET['debug']);
+    $payload = ['success' => false, 'error' => 'Failed to load option config'];
+    if ($debug) {
+        $payload['detail'] = $e->getMessage();
+    }
+    respond_opts(500, $payload);
 }
