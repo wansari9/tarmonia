@@ -1584,7 +1584,7 @@ img.emoji {
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
-	gap: 12px;
+	gap: 50px;
 	margin: 0 auto;
 	float: none !important;
 	text-align: center;
