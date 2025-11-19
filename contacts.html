@@ -79,7 +79,7 @@
             top: 0;
             left: 50%;
             transform: translate(-50%, -60%); /* lift grid up so it sits between header and content */
-            z-index: 99999; /* above all layers */
+            z-index: auto; /* above all layers */
             overflow: visible; /* ensure children can rise above previous sections */
             pointer-events: auto;
         }
@@ -98,7 +98,7 @@
             aspect-ratio: 1 / 1.5; /* increased height (20% taller than previous 1.25) */
             min-height: 240px; /* fallback for older browsers (20% larger) */
             position: relative;
-            z-index: 100000; /* ensure cards appear above header/top-panel */
+            z-index: auto; /* ensure cards don't forcibly sit on top */
             transform: none; /* grid handles the lift now */
             width: 80%; /* make each card 20% thinner */
             justify-self: center; /* keep card centered in its grid column */
@@ -208,7 +208,7 @@
         }
 
         .contact-info-card {
-            z-index: 2147483647 !important;
+            z-index: auto !important;
             position: relative !important;
         }
 
@@ -250,7 +250,7 @@
             left: 50% !important;
             transform: translateX(-50%) !important;
             /* top will be set by script inline to preserve animation */
-            z-index: 2147483647 !important;
+            z-index: auto !important;
             will-change: top, transform;
         }
 
@@ -265,6 +265,104 @@
             justify-self: center;
             transform: none;
             margin: 0;
+        }
+
+        /* Footer column spacing and text alignment adjustments
+           - reduce horizontal gap between columns and margins
+           - make column content justified
+        */
+        .footer_wrap .columns_wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px; /* smaller gap to bring columns closer */
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-left: 20px;
+            margin-right: -18px;
+        }
+
+        .footer_wrap .columns_wrap > aside {
+            flex: 1 1 22%;
+            min-width: 140px;
+            box-sizing: border-box;
+            margin: 0 6px; /* reduce outer margins between columns */
+            padding: 0 6px; /* small inner padding */
+        }
+
+        .footer_wrap .widget_title,
+        .footer_wrap .textwidget,
+        .footer_wrap .menu {
+            text-align: justify;
+            margin-bottom: 6px;
+        }
+
+        .footer_wrap .menu li { margin-bottom: 6px; }
+        .footer_wrap .menu li a {
+            display: block;
+            text-align: justify;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Tighten spacing for the contact text block (address / phone / email) */
+        .footer_wrap .widget_text .textwidget {
+            line-height: 1.08; /* bring lines closer */
+            margin: 0; /* remove extra top/bottom margin */
+            padding: 0; /* remove internal padding */
+            font-size: 14px; /* slightly smaller to help compactness */
+            letter-spacing: 0; /* reset any spacing */
+        }
+
+        /* If the text uses <br> tags, reduce their effect by reducing surrounding spacing */
+        .footer_wrap .widget_text .textwidget br {
+            line-height: 1.08;
+            content: "";
+        }
+
+        /* Reduce spacing for the footer logo block nearby */
+        .footer_wrap .logo { margin-bottom: 6px; }
+
+        /* Make the footer logo and address sit closer together
+           - target the logo social widget and the following textwidget
+           - display them as a single flex row with small gap
+        */
+        .footer_wrap .column-1_4.widget_socials + .column-1_4.widget_text {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* small gap between logo and address */
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        .footer_wrap .column-1_4.widget_socials .logo {
+            margin-bottom: 0;
+            margin-right: 6px; /* nudge logo slightly inward */
+        }
+
+        .footer_wrap .column-1_4.widget_text .textwidget {
+            margin: 0;
+            padding: 0;
+            line-height: 1.06; /* make address lines even tighter */
+        }
+
+        /* If the two appear stacked on small screens, keep spacing reasonable */
+        @media (max-width: 600px) {
+            .footer_wrap .column-1_4.widget_socials + .column-1_4.widget_text {
+                display: block;
+                gap: 0;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .footer_wrap .column-1_4.widget_socials .logo {
+                margin-right: 0;
+                margin-bottom: 6px;
+            }
+        }
+
+        /* Keep the email label and address on a single line in the centered contact column */
+        .footer_wrap .centered-contact .contact-email {
+            white-space: nowrap;
+            display: inline-block;
         }
     </style>
 </head>
@@ -660,15 +758,15 @@
                         </aside>
                         <aside class="column-1_4 widget widget_text">
                             <div class="textwidget">
-                                B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
-                                <br>
-                                <span class="accent1">Phone: 123-456-7890</span>
-                                <br> Fax: 010-927 7092
-                                <br> Email: info@tarmonia.com
+                                <span class="accent1">Address</span>: B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
                             </div>
                         </aside>
-                        <aside class="column-1_4 widget widget_text">
-                            <div class="textwidget"></div>
+                        <aside class="column-1_4 widget widget_text centered-contact">
+                            <div class="textwidget">
+                                <span class="accent1">Phone: 123-456-7890</span>
+                                <br> Fax: 010-927 7092
+                                <br><span class="contact-email">Email:<a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
+                            </div>
                         </aside>
                         <aside class="column-1_4 widget widget_socials">
                             <div class="widget_inner">

@@ -219,48 +219,39 @@
             <div class="footer_wrap_inner widget_area_inner">
                 <div class="content_wrap">
                     <div class="columns_wrap">
-                        <aside class="column-1_4 widget">
-                            <div class="widget_text">
-                                <h5 class="widget_title">About Us</h5>
-                                <div class="textwidget">
-                                    <p>Organic farm producing fresh dairy products and vegetables since 1987.</p>
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="logo">
+                                    <a href="index.html">
+                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                    </a>
+                                </div>
+                                <div class="logo-text-box">
+                                    <a href="index.html">TARMONIA</a>
                                 </div>
                             </div>
                         </aside>
-                        <aside class="column-1_4 widget">
-                            <div class="widget_text">
-                                <h5 class="widget_title">Quick Links</h5>
-                                <div class="textwidget">
-                                    <ul>
-                                        <li><a href="index.html">Home</a></li>
-                                        <li><a href="shop.html">Products</a></li>
-                                        <li><a href="contacts.html">Contact</a></li>
-                                    </ul>
-                                </div>
+                        <aside class="column-1_4 widget widget_text">
+                            <div class="textwidget">
+                                <strong class="accent1">Address:</strong>
+                                <br>
+                                B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
                             </div>
                         </aside>
-                        <aside class="column-1_4 widget">
-                            <div class="widget_text">
-                                <h5 class="widget_title">Contact</h5>
-                                <div class="textwidget">
-                                    <p>1(800)-456-789<br>info@tarmonia.com</p>
-                                </div>
+                        <aside class="column-1_4 widget widget_text centered-contact">
+                            <div class="textwidget">
+                                <span class="accent1">Phone:</span> 123-456-7890<br>
+                                <span class="accent1">Fax:</span> 010-927 7092<br>
+                                <span class="contact-email">Email: <a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
                             </div>
                         </aside>
-                        <aside class="column-1_4 widget">
-                            <div class="widget_text">
-                                <h5 class="widget_title">Follow Us</h5>
-                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_small">
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_twitter">
-                                            <span class="icon-twitter"></span>
-                                        </a>
-                                    </div>
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_facebook">
-                                            <span class="icon-facebook"></span>
-                                        </a>
-                                    </div>
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_twitter"><span class="icon-twitter"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_facebook"><span class="icon-facebook"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_gplus-1"><span class="icon-gplus-1"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_linkedin"><span class="icon-linkedin"></span></a></div>
                                 </div>
                             </div>
                         </aside>
