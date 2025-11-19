@@ -4,6 +4,8 @@
 
   var currentStep = 0;
   var formData = {};
+  // Toggle auto-advance behavior: set to false to require explicit 'Next' clicks
+  var AUTO_ADVANCE = false;
 
   // Initialize checkout on page load
   document.addEventListener('DOMContentLoaded', function() {
@@ -26,8 +28,21 @@
     if (fieldsets && fieldsets[0]) fieldsets[0].classList.add('active-step');
     if (progressItems && progressItems[0]) progressItems[0].classList.add('active');
 
+    // set ARIA attributes for progress items
+    if (progressItems && progressItems.length){
+      progressItems.forEach(function(it, i){
+        it.setAttribute('role','tab');
+        it.setAttribute('aria-selected', i===0 ? 'true' : 'false');
+        if (i===0) it.setAttribute('aria-current','step');
+      });
+    }
+
+    // Setup mobile summary toggle if present
+    setupMobileSummaryToggle();
+
     // If the first step is already valid (e.g., user data), auto advance to next
-    if (allRequiredInputsValid(0)) {
+    // This is gated by AUTO_ADVANCE so users who prefer explicit clicks aren't moved forward automatically.
+    if (AUTO_ADVANCE && allRequiredInputsValid(0)) {
       saveCurrentStepData();
       goToNextStep();
     }
@@ -51,12 +66,14 @@
         goToPreviousStep();
       });
     });
-    // Attach auto-advance behavior
-    attachAutoAdvance();
+    // Attach auto-advance behavior (only when enabled)
+    if (AUTO_ADVANCE) attachAutoAdvance();
   }
 
   // Debounced auto-advance: when all required inputs in current step are valid, auto-advance
   function attachAutoAdvance() {
+    // If globally disabled, do nothing.
+    if (!AUTO_ADVANCE) return;
     var fieldsets = document.querySelectorAll('#msform fieldset');
     var debounceTimers = [];
 
@@ -249,10 +266,112 @@
         updateCartTotals(data.cart.totals || {});
       } else {
         console.error('Failed to load cart');
+        // fallback to local cart
+        loadCartFromLocal();
       }
     })
     .catch(function(error) {
       console.error('Error loading cart:', error);
+      // fallback to local cart
+      loadCartFromLocal();
+    });
+  }
+
+  function formatCurrency(amount){
+    return 'RM' + Number(amount||0).toFixed(2);
+  }
+
+  // Local cart fallback (reads localStorage 'cart')
+  function loadCartFromLocal(){
+    try{
+      var raw = localStorage.getItem('cart');
+      var arr = raw ? JSON.parse(raw) : [];
+      if (!arr || !arr.length){
+        displayCartItems([]);
+        updateCartTotals({ subtotal:0, shipping_total:0, grand_total:0 });
+        return;
+      }
+      // Normalize to format expected by displayLocalCartItems
+      var items = arr.map(function(r){
+        var id = r.id || r.productId || r.product_id || 0;
+        var title = r.title || r.name || 'Product';
+        var qty = r.qty || r.quantity || 1;
+        var price = (typeof r.price === 'number') ? r.price : parseFloat(String(r.price||'').replace(/[^0-9.]/g,'')) || 0;
+        var line = price * qty;
+        return { image: r.image || r.img || '', product_name: title, quantity: qty, unit_price: price, line_total: line, id: id };
+      });
+      displayLocalCartItems(items);
+      // compute totals
+      var subtotal = items.reduce(function(s,it){ return s + (it.unit_price||0) * (it.quantity||1); }, 0);
+      var shipping = parseFloat(document.querySelector('.shipping-price') && document.querySelector('.shipping-price').getAttribute('data-shipping-price')||0) || 0;
+      var grand = subtotal + (items.length ? shipping : 0);
+      updateCartTotals({ subtotal: subtotal, shipping_total: shipping, grand_total: grand });
+    }catch(e){
+      console.error('Local cart parse error', e);
+      displayCartItems([]);
+    }
+  }
+
+  function displayLocalCartItems(items){
+    var container = document.getElementById('checkout-items');
+    if (!container) return;
+    if (!items || items.length === 0){ container.innerHTML = '<p style="text-align:center;color:#666;">Your cart is empty</p>'; return; }
+    var html = '';
+    items.forEach(function(it){
+      var title = it.product_name || 'Product';
+      var variant = it.variant || '';
+      var variantText = variant ? ' <small>(' + variant + ')</small>' : '';
+      var image = it.image ? '<img loading="lazy" decoding="async" src="'+it.image+'" alt="'+title+'">' : '';
+            html += '\n<div class="card" data-id="'+(it.id||'')+'">\n' +
+              '  <div class="card-image">'+image+'</div>\n' +
+              '  <div class="card-details">\n' +
+              '    <div class="card-name">' + title + variantText + '</div>\n' +
+              '    <div class="card-price"><span class="current-price">' + formatCurrency(it.unit_price) + '</span></div>\n' +
+              '    <div class="card-wheel">\n' +
+              '      <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease quantity for '+title+'">-</button>\n' +
+              '      <span class="qty" aria-live="polite">' + (it.quantity||1) + '</span>\n' +
+              '      <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity for '+title+'">+</button>\n' +
+              '    </div>\n' +
+              '  </div>\n' +
+              '</div>';
+    });
+    container.innerHTML = html;
+    // attach qty handlers
+    container.querySelectorAll('.qty-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        var action = btn.getAttribute('data-action');
+        var card = btn.closest('.card'); if (!card) return;
+        var id = card.getAttribute('data-id');
+        adjustLocalQty(id, action==='inc' ? 1 : -1);
+      });
+    });
+  }
+
+  function adjustLocalQty(id, delta){
+    try{
+      var raw = localStorage.getItem('cart');
+      var cart = raw ? JSON.parse(raw) : [];
+      var idx = cart.findIndex(function(r){ return String(r.id||r.productId||r.product_id) === String(id); });
+      if (idx === -1) return;
+      var item = cart[idx];
+      var qty = (item.qty || item.quantity || 1) + delta;
+      if (qty <= 0){ cart.splice(idx,1); }
+      else { item.qty = qty; item.quantity = qty; }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCartFromLocal();
+    }catch(e){ console.error('adjustLocalQty error', e); }
+  }
+
+  // Mobile summary toggle setup
+  function setupMobileSummaryToggle(){
+    var toggle = document.getElementById('toggle-summary');
+    var details = document.getElementById('checkout-details');
+    if (!toggle || !details) return;
+    toggle.addEventListener('click', function(){
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', (!expanded).toString());
+      details.classList.toggle('collapsed');
+      this.textContent = expanded ? 'View order summary' : 'Hide order summary';
     });
   }
 
@@ -308,11 +427,11 @@
     var grandTotal = parseFloat(totals.grand_total || 0);
 
     if (shippingEl) {
-      shippingEl.textContent = 'RM' + shippingTotal.toFixed(2);
+      shippingEl.textContent = formatCurrency(shippingTotal);
     }
 
     if (totalEl) {
-      totalEl.textContent = 'RM' + grandTotal.toFixed(2);
+      totalEl.textContent = formatCurrency(grandTotal);
     }
   }
 
