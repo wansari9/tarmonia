@@ -271,22 +271,22 @@
 
                                     <div class="form-control">
                                         <label for="fname">First Name *</label>
-                                        <input id="fname" type="text" name="fname" placeholder="First Name" autocomplete="given-name" required />
+                                        <input id="fname" type="text" name="fname" placeholder="First Name" autocomplete="given-name" maxlength="100" required />
                                     </div>
 
                                     <div class="form-control">
                                         <label for="lname">Last Name *</label>
-                                        <input id="lname" type="text" name="lname" placeholder="Last Name" autocomplete="family-name" required />
+                                        <input id="lname" type="text" name="lname" placeholder="Last Name" autocomplete="family-name" maxlength="100" required />
                                     </div>
 
                                     <div class="form-control">
                                         <label for="email">Email *</label>
-                                        <input id="email" type="email" name="email" placeholder="Email" autocomplete="email" required />
+                                        <input id="email" type="email" name="email" placeholder="Email" autocomplete="email" maxlength="255" required />
                                     </div>
 
                                     <div class="form-control">
                                         <label for="phone">Phone *</label>
-                                        <input id="phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" required />
+                                        <input id="phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" pattern="\+?[0-9\s\-().]{6,30}" maxlength="30" required />
                                     </div>
 
                                     <input type="button" name="next" class="next action-button" value="Next" />
@@ -297,12 +297,12 @@
 
                                     <div class="form-control">
                                         <label for="address">Address *</label>
-                                        <input id="address" type="text" name="address" placeholder="Street Address" autocomplete="street-address" required />
+                                        <input id="address" type="text" name="address" placeholder="Street Address" autocomplete="street-address" maxlength="255" required />
                                     </div>
 
                                     <div class="form-control">
                                         <label for="address2">Address Line 2</label>
-                                        <input id="address2" type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" autocomplete="address-line2" />
+                                        <input id="address2" type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" autocomplete="address-line2" maxlength="255" />
                                     </div>
 
                                     <div class="state-city-container">
@@ -327,13 +327,13 @@
                                         </div>
                                         <div class="city-container">
                                             <label for="city-input">City *</label>
-                                            <input id="city-input" type="text" name="city" placeholder="City" autocomplete="address-level2" required />
+                                            <input id="city-input" type="text" name="city" placeholder="City" autocomplete="address-level2" maxlength="100" required />
                                         </div>
                                     </div>
 
                                     <div class="form-control">
                                         <label for="postal_code">Postal Code *</label>
-                                        <input id="postal_code" type="text" name="postal_code" placeholder="Postal Code" inputmode="numeric" pattern="[0-9]*" autocomplete="postal-code" required />
+                                        <input id="postal_code" type="text" name="postal_code" placeholder="Postal Code" inputmode="numeric" pattern="[0-9A-Za-z \-]{2,20}" maxlength="20" autocomplete="postal-code" required />
                                     </div>
 
                                     <div class="action-buttons">
