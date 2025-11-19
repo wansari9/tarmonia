@@ -17,6 +17,19 @@ img.emoji {
 	height: AUTO
 }
 
+/* Ensure image logo shows in fixed header state */
+.top_panel_fixed .top_panel_wrap .logo_main {
+	display: block !important;
+}
+.top_panel_wrap .logo_fixed {
+	display: none !important;
+}
+
+/* Prevent the header logo container from clipping the image */
+.top_panel_wrap .logo {
+	overflow: visible !important;
+}
+
 .contacts_wrap .logo img {
 	height: 30px
 }
@@ -3010,7 +3023,7 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 
 /* Form Header */
 .form-header-new {
-	background: #F9F9F9;
+	background: #F4C64D;
 	padding: clamp(24px, 4vw, 32px) clamp(20px, 3vw, 28px) clamp(18px, 3vw, 22px);
 	border-bottom: 2px solid rgba(12, 26, 58, 0.1);
 	text-align: left;
@@ -3054,7 +3067,7 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 /* Modern Form */
 .modern-form {
 	padding: clamp(20px, 3vw, 26px) clamp(20px, 3vw, 28px);
-	background: #ffffff;
+	background: #FFF3D0;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
