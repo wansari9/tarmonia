@@ -55,86 +55,113 @@
 
         /* Layout: stack cards and place the contact form in a separate container under them */
         .contact_layout_container {
-            /* shorter by 30%: use 70vh instead of 100vh */
-            max-height: 140vh;
+            min-height: 100vh; /* Ensure it takes at least the full viewport height */
+            height: auto; /* Allow it to grow with content */
             display: grid !important;
-            grid-template-columns: 1fr 2fr; /* two columns: form on left, cards on right */
+            grid-template-columns: 1fr 1.25fr; /* reduce form width, enlarge cards column */
             gap: 40px;
-            background: linear-gradient(135deg, #fec321 30%, #c0c404 50%, #c2d60c 100%) !important;
-            align-items: start;
+            position: relative; /* layer above pseudo full-bleed background */
+            align-items: center; /* vertically center form and info within the row */
             overflow: visible; /* allow children to overflow and overlap previous sections */
-            padding: 0 40px;
+            padding: 0 40px 0 20px;
+            background: transparent !important; /* ensure parent full-bleed image is visible */
+        }
+
+        /* Full-bleed solid background behind contact section */
+        .contact-main-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw; /* span entire viewport width */
+            height: 100%;
+            background-color: #fec321; /* requested solid background color */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Remove decorative shapes defined in global CSS that add a pale center */
+        .contact_layout_container::before,
+        .contact_layout_container::after {
+            content: none !important;
+            display: none !important;
         }
 
         /* Grid for the three contact cards */
         .contact_info_grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr); /* two columns on desktop */
+            gap: 24px; /* larger spacing */
             align-items: stretch;
             width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative; /* changed from absolute */
-            top: auto; /* changed from 0 */
-            left: auto; /* changed from 50% */
-            transform: none; /* removed translate */
-            z-index: 99999; /* above all layers */
+            max-width: 660px; /* slightly reduced cards group width */
+            margin: 0 auto; /* center inside the right column */
+            padding: 0; /* rely on column padding */
+            position: static;
+            top: auto;
+            left: auto;
+            transform: none;
+            z-index: auto;
             overflow: visible; /* ensure children can rise above previous sections */
             pointer-events: auto;
         }
 
         /* Make each contact card a square and keep consistent padding */
         .contact-info-card {
-            background: #fff;
+            background: #fff3d3;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            padding: 12px;
+            padding: 22px; /* larger card padding */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center; /* center horizontally */
             text-align: center; /* center text inside */
-            aspect-ratio: 1 / 1.25;
-            min-height: 180px;
+            min-height: 230px; /* increased size */
             position: relative;
             z-index: auto; /* ensure cards don't forcibly sit on top */
             transform: none; /* grid handles the lift now */
-            width: 60%;
+            width: 100%;
             justify-self: center; /* keep card centered in its grid column */
             box-sizing: border-box;
             transition: transform .2s ease;
         }
 
+        /* Reorder: Phone + Email on top row; Address spans full width below */
+        .contact_info_grid .contact-info-card:nth-child(2) { order: 1; } /* Phone */
+        .contact_info_grid .contact-info-card:nth-child(3) { order: 2; } /* Email */
+        .contact_info_grid .contact-info-card:nth-child(1) { order: 3; grid-column: 1 / -1; } /* Address full width */
+
         .contact-icon-wrapper {
-            width: 44px;
-            height: 44px;
+            width: 60px; /* larger icon badge */
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #f3f3f3;
             border-radius: 50%;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .contact-icon { font-size: 18px; color: #72b16a; }
+        .contact-icon { font-size: 26px; color: #72b16a; }
 
-        .contact-card-title { margin: 4px 0 2px; font-size: 15px; text-align: center; width: 100%; }
-        .contact-card-text { margin: 0; font-size: 12px; color: #555; text-align: center; width: 100%; }
+        .contact-card-title { margin: 6px 0 4px; font-size: 20px; text-align: center; width: 100%; }
+        .contact-card-text { margin: 0; font-size: 15px; color: #555; text-align: center; width: 100%; }
 
         /* Contact form becomes a distinct container under the cards */
         .contact_form_section {
             /* optimized size: taller and narrower */
-            max-width: 100%;
+            max-width: 75%;
             width: 100%;
-            margin: 0;
-            padding: 22px;
-            background: #fff;
+            margin: 24px;
+            padding: 6px;
+            background: #fff3d3;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             transform-origin: top center;
-            transform: scaleY(1.15); /* significantly increased height */
+            transform: translateY(0) scaleY(1.15); /* remove downward nudge */
+            will-change: transform;
             box-sizing: border-box;
             order: -1; /* place form before cards in grid */
         }
@@ -194,16 +221,16 @@
             .contact-icon { font-size: 18px; }
         }
 
-          /* Small compensation so content below doesn't collide when cards overlap.
-              Reduced by ~30% to match shorter container (260px -> ~182px). */
-          .contact_form_section { margin-top: 182px; }
+          /* Adjust margins to position form and add bottom space */
+          .contact_form_section { margin-top: 24px; margin-bottom: 140px; padding-bottom: 36px; }
+          .contact_info_section { margin-top: 24px; align-self: center; } /* vertically center cards next to the form */
 
-        /* Layer overrides: ensure cards are on the very front and breadcrumbs/top title sit behind */
+        /* Layer overrides (reset): keep cards in normal flow next to the form */
         .contact_info_grid {
-            position: absolute !important;
-            left: 50% !important;
-            top: 0 !important;
-            transform: translate(-50%, -60%) !important;
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
             z-index: auto !important;
             overflow: visible !important;
             pointer-events: auto !important;
@@ -226,8 +253,9 @@
             z-index: 0 !important;
         }
 
-        /* Hide the original in-flow grid (we'll use a fixed overlay instead) */
-        .contact_info_section .contact_info_grid { display: none !important; }
+        /* Show the in-flow grid; hide the floating overlay instead */
+        .contact_info_section .contact_info_grid { display: grid !important; }
+        .floating-contact-grid { display: none !important; }
 
         /* Floating overlay grid placed between the top band and content (positioned in document flow) */
         .floating-contact-grid {
