@@ -4129,3 +4129,100 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 		letter-spacing: 1px;
 	}
 }
+
+/* ----------------------------------
+   Compact Footer Styles (site-wide)
+   Copied from contacts.html to apply
+   the tighter footer layout across pages
+----------------------------------- */
+.footer_wrap .columns_wrap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px; /* smaller gap to bring columns closer */
+	align-items: flex-start;
+	justify-content: space-between;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.footer_wrap .columns_wrap > aside {
+	flex: 1 1 22%;
+	min-width: 140px;
+	box-sizing: border-box;
+	margin: 0 6px; /* reduce outer margins between columns */
+	padding: 0 6px; /* small inner padding */
+}
+
+.footer_wrap .widget_title,
+.footer_wrap .textwidget,
+.footer_wrap .menu {
+	text-align: justify;
+	margin-bottom: 6px;
+}
+
+.footer_wrap .menu li { margin-bottom: 6px; }
+.footer_wrap .menu li a {
+	display: block;
+	text-align: justify;
+	padding: 0;
+	margin: 0;
+}
+
+/* Tighten spacing for the contact text block (address / phone / email) */
+.footer_wrap .widget_text .textwidget {
+	line-height: 1.08; /* bring lines closer */
+	margin: 0; /* remove extra top/bottom margin */
+	padding: 0; /* remove internal padding */
+	font-size: 14px; /* slightly smaller to help compactness */
+	letter-spacing: 0; /* reset any spacing */
+}
+
+.footer_wrap .widget_text .textwidget br { line-height: 1.08; }
+
+.footer_wrap .logo { margin-bottom: 6px; }
+
+/* Make the footer logo and address sit closer together */
+.footer_wrap .column-1_4.widget_socials + .column-1_4.widget_text {
+	display: flex;
+	align-items: center;
+	gap: 8px; /* small gap between logo and address */
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.footer_wrap .column-1_4.widget_socials .logo {
+	margin-bottom: 0;
+	margin-right: 6px; /* nudge logo slightly inward */
+}
+
+.footer_wrap .column-1_4.widget_text .textwidget {
+	margin: 0;
+	padding: 0;
+	line-height: 1.06; /* make address lines even tighter */
+}
+
+@media (max-width: 600px) {
+	.footer_wrap .column-1_4.widget_socials + .column-1_4.widget_text {
+		display: block;
+		gap: 0;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.footer_wrap .column-1_4.widget_socials .logo {
+		margin-right: 0;
+		margin-bottom: 6px;
+	}
+}
+
+/* Center phone/fax/email column when a page marks it with `.centered-contact` */
+.footer_wrap .centered-contact .textwidget {
+	text-align: center !important; /* override justified footer rules */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+}
+
+/* Make sure anchor in centered column doesn't inherit justify spacing */
+.footer_wrap .centered-contact .textwidget a { display: inline-block; }
