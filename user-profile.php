@@ -300,7 +300,7 @@
                                     <div class="textwidget">
                                         <span class="accent1">Phone:</span> 123-456-7890<br>
                                         <span class="accent1">Fax:</span> 010-927 7092<br>
-                                        <span class="contact-email">Email: <a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
+                                        <span class="contact-email">Email: <a href="mailto:help@conebyte.com">help@conebyte.com</a></span>
                                     </div>
                                 </aside>
                                 <aside class="column-1_4 widget widget_socials">

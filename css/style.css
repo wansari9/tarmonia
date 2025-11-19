@@ -3537,7 +3537,7 @@ body:not(.top_panel_fixed) .top_panel_position_over .top_panel_bottom {
 }
 .logo img {
 	float:left;
-	margin: 0 52px 0 -45px;
+	margin: 0 52px 0 0px;
 	width: auto;
 	height: 80px;
 }
