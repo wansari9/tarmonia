@@ -58,11 +58,12 @@
             /* shorter by 30%: use 70vh instead of 100vh */
             max-height: 140vh;
             display: grid !important;
-            grid-template-columns: 1fr; /* single column so form sits under the cards */
+            grid-template-columns: 1fr 2fr; /* two columns: form on left, cards on right */
             gap: 40px;
             background: linear-gradient(135deg, #fec321 30%, #c0c404 50%, #c2d60c 100%) !important;
             align-items: start;
             overflow: visible; /* allow children to overflow and overlap previous sections */
+            padding: 0 40px;
         }
 
         /* Grid for the three contact cards */
@@ -75,10 +76,10 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 40px 20px;
-            position: absolute; /* float the grid above normal flow */
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, -60%); /* lift grid up so it sits between header and content */
+            position: relative; /* changed from absolute */
+            top: auto; /* changed from 0 */
+            left: auto; /* changed from 50% */
+            transform: none; /* removed translate */
             z-index: 99999; /* above all layers */
             overflow: visible; /* ensure children can rise above previous sections */
             pointer-events: auto;
@@ -89,52 +90,53 @@
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            padding: 24px; /* slightly more padding for taller layout */
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center; /* center horizontally */
             text-align: center; /* center text inside */
-            aspect-ratio: 1 / 1.5; /* increased height (20% taller than previous 1.25) */
-            min-height: 240px; /* fallback for older browsers (20% larger) */
+            aspect-ratio: 1 / 1.25;
+            min-height: 180px;
             position: relative;
             z-index: 100000; /* ensure cards appear above header/top-panel */
             transform: none; /* grid handles the lift now */
-            width: 80%; /* make each card 20% thinner */
+            width: 60%;
             justify-self: center; /* keep card centered in its grid column */
             box-sizing: border-box;
             transition: transform .2s ease;
         }
 
         .contact-icon-wrapper {
-            width: 72px; /* 50% larger */
-            height: 72px; /* 50% larger */
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #f3f3f3;
             border-radius: 50%;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
-        .contact-icon { font-size: 30px; color: #72b16a; } /* 50% larger */
+        .contact-icon { font-size: 18px; color: #72b16a; }
 
-        .contact-card-title { margin: 8px 0 6px; font-size: 18px; text-align: center; width: 100%; }
-        .contact-card-text { margin: 0; font-size: 14px; color: #555; text-align: center; width: 100%; }
+        .contact-card-title { margin: 4px 0 2px; font-size: 15px; text-align: center; width: 100%; }
+        .contact-card-text { margin: 0; font-size: 12px; color: #555; text-align: center; width: 100%; }
 
         /* Contact form becomes a distinct container under the cards */
         .contact_form_section {
-            /* reduced size: 10% narrower, 20% shorter */
-            max-width: 990px; /* 1100px * 0.9 */
-            width: 90%;
-            margin: 0 auto 40px;
-            padding: 24px;
+            /* optimized size: taller and narrower */
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 22px;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             transform-origin: top center;
-            transform: scaleY(0.8); /* reduce height by 20% */
+            transform: scaleY(1.15); /* significantly increased height */
             box-sizing: border-box;
+            order: -1; /* place form before cards in grid */
         }
 
         .sc_googlemap_content {
@@ -186,10 +188,10 @@
             }
             #map-container { min-height: 400px; }
             #map-iframe { min-height: 400px; }
-            .contact-info-card { padding: 20px; min-height: 216px; transform: none; width: 100%; }
-            .contact_form_section { padding: 18px; width: calc(100% - 36px); }
-            .contact-icon-wrapper { width: 56px; height: 56px; }
-            .contact-icon { font-size: 24px; }
+            .contact-info-card { padding: 12px; min-height: 170px; transform: none; width: 100%; }
+            .contact_form_section { padding: 16px; width: calc(100% - 32px); }
+            .contact-icon-wrapper { width: 42px; height: 42px; }
+            .contact-icon { font-size: 18px; }
         }
 
           /* Small compensation so content below doesn't collide when cards overlap.
@@ -261,7 +263,7 @@
         }
 
         .floating-contact-grid .contact-info-card {
-            width: 80%;
+            width: 58%;
             justify-self: center;
             transform: none;
             margin: 0;
