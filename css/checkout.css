@@ -811,21 +811,21 @@ footer.call_wrap .call_wrap_inner .call-text {
 /* footer.call_wrap .call_wrap_inner .sc_button {
     margin: 0; 
 } */
-
+/* 
 @media screen and (max-width: 768px) {
     footer.call_wrap .call_wrap_inner .content_wrap {
-        justify-content: center !important; /* center on small screens */
+        justify-content: center !important; 
         text-align: center !important;
-        padding: 12px; /* smaller padding on mobile */
+        padding: 12px; 
     }
     footer.call_wrap .call_wrap_inner .sc_button {
-        margin-top: 12px; /* stack nicely under text on mobile */
+        margin-top: 12px; 
     }
-}
+} */
 
 /* Desktop alignment: keep content left-aligned on wide screens, center on mobile */
-@media screen and (min-width: 769px) {
-    /* Keep footer columns left-aligned on desktop, but keep CTA centered */
+/* @media screen and (min-width: 769px) {
+
     footer .footer_wrap_inner .content_wrap {
         text-align: left;
     }
@@ -833,67 +833,64 @@ footer.call_wrap .call_wrap_inner .call-text {
         text-align: left;
     }
     .copyright_wrap_inner {
-        text-align: center; /* keep copyright centered */
+        text-align: center; 
     }
-}
+} */
 
 /* Checkout-specific: keep footer link lists inline on desktop and push blocks right
    - Desktop: horizontal layout, right-aligned inside the centered inner container.
    - Mobile: fallback to stacked/centered layout defined in other media queries. */
-body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
+/* body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
     display: flex;
-    justify-content: flex-end; /* push footer blocks to the right on desktop */
+    justify-content: flex-end; 
     align-items: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 1200px !important; /* keep inner constraint */
-    margin: 0 auto; /* center inside the full-bleed outer wrapper */
-    padding: 20px; /* comfortable padding */
-    text-align: right; /* right-align text block */
-}
+    max-width: 1200px !important; 
+    margin: 0 auto;  
+    padding: 20px; 
+    text-align: right; 
+} */
 
 /* Columns container: tighter spacing and allow wrapping only when necessary */
-body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
+/* body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
     width: auto;
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-start; /* keep link columns grouped together */
-    gap: 12px; /* tightened spacing so lists fit on a single line */
-    flex-wrap: wrap; /* allow wrapping on smaller widths */
+    justify-content: flex-start; 
+    gap: 12px; 
+    flex-wrap: wrap; 
     align-items: flex-start;
-}
+} */
 
 /* Each column: keep list items left-aligned for readability */
-body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
+/* body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    min-width: 100px; /* smaller minimum so more columns fit */
-}
+    min-width: 100px; \
+} */
 
 /* Wide screens: prefer a single-row layout and allow even narrower columns */
-@media screen and (min-width: 1200px) {
+/* @media screen and (min-width: 1200px) {
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap {
         flex-wrap: nowrap;
     }
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
-        min-width: 90px; /* allow narrower columns on wide screens */
+        min-width: 90px; 
     }
-}
+} */
 
 /* Place logo and address widgets under the list of links in the footer.
    Make social/text widgets full-width and centered below the link columns. */
-@media screen and (min-width: 992px) {
-    /* Keep the original behavior for regular footers, but do NOT apply
-       the full-width/order rule to the checkout footer (footer.checkout-custom).
-       Using footer:not(.checkout-custom) keeps the site-wide intent while
-       preserving the four-column checkout layout. */
+/* @media screen and (min-width: 992px) {
+    
     footer:not(.checkout-custom) .footer_wrap_inner .columns_wrap > aside.widget_socials,
     footer:not(.checkout-custom) .footer_wrap_inner .columns_wrap > aside.widget_text {
-        flex: 0 0 100% !important; /* full width */
+        flex: 0 0 100% !important;
         min-width: 100% !important;
-        order: 999 !important; /* push to the bottom */
+        order: 999 !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
@@ -901,15 +898,14 @@ body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
         text-align: center !important;
         margin-top: 12px;
     }
-    /* Ensure the parent allows wrapping so the full-width widgets go to a new row
-       but only for non-checkout footers. */
+  
     footer:not(.checkout-custom) .footer_wrap_inner .columns_wrap {
         flex-wrap: wrap !important;
     }
-}
-
+} */
+/* 
 @media screen and (max-width: 991px) {
-    /* On smaller screens keep default stacked behavior */
+   
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_socials,
     body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside.widget_text {
         flex: 0 0 100%;
@@ -917,10 +913,10 @@ body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
         order: 999;
         text-align: center;
     }
-}
+} */
 
 /* On small screens keep centered stacking behavior */
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     body.woocommerce.woocommerce-page footer .footer_wrap_inner .content_wrap {
         display: block;
         margin: 0 auto;
@@ -936,10 +932,10 @@ body.woocommerce.woocommerce-page .footer_wrap_inner .columns_wrap > aside {
         min-width: 0;
         margin-bottom: 12px;
     }
-}
+} */
 
 /* Checkout page custom footer layout: four columns (logo, address, contact, socials) on one row */
-footer.footer_wrap.checkout-custom .footer_wrap_inner .content_wrap .columns_wrap {
+/* footer.footer_wrap.checkout-custom .footer_wrap_inner .content_wrap .columns_wrap {
     display: flex;
     gap: 24px;
     align-items: flex-start;
@@ -962,13 +958,13 @@ footer.footer_wrap.checkout-custom .footer-socials .icon-facebook,
 footer.footer_wrap.checkout-custom .footer-socials .icon-instagram,
 footer.footer_wrap.checkout-custom .footer-socials .icon-linkedin { font-size: 20px; color: #fff; }
 
-/* Keep columns inline until very small screens (stack only on phones) */
+
 @media (max-width: 575px) {
     footer.footer_wrap.checkout-custom .footer_wrap_inner .content_wrap .columns_wrap { flex-wrap: wrap; }
     footer.footer_wrap.checkout-custom .columns_wrap > aside { flex: 1 1 100%; }
 }
 
-/* Footer contact row: display contact details inline on wide screens */
+
 .footer-contact-row-inner {
     display: flex;
     flex-wrap: wrap;
@@ -981,4 +977,4 @@ footer.footer_wrap.checkout-custom .footer-socials .icon-linkedin { font-size: 2
 
 @media (max-width: 767px) {
     .footer-contact-row-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
-}
+} */
