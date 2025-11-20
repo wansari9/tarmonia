@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/db.php'; // boots $pdo and session
+// Shipping helper provides a shared weight parser used across cart/shipping logic
+require_once __DIR__ . '/shipping_helper.php';
 
 function cart_json_response(int $code, array $payload): void {
     http_response_code($code);
@@ -158,11 +160,23 @@ function resolve_variant(PDO $pdo, int $productId, ?string $weightSlug): array {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':pid' => $productId]);
     $candidates = $stmt->fetchAll();
-    // Normalize by removing spaces, underscores, and dashes
-    $wanted = strtolower(str_replace([' ', '_', '-'], ['', '', ''], $weightSlug));
+    // Try unit-aware numeric matching first (e.g. 3 lb vs 1.36 kg)
+    // Use shared parser from shipping_helper.php which returns grams (float) or 0.0 on failure
+    $wantedGrams = parse_weight_to_grams((string)$weightSlug);
     foreach ($candidates as $row) {
         $opts = json_decode((string)$row['options'], true) ?: [];
+        $candidateWeight = isset($opts['weight']) ? (string)$opts['weight'] : '';
+        $candGrams = $candidateWeight ? parse_weight_to_grams($candidateWeight) : 0.0;
+        if ($wantedGrams > 0.0 && $candGrams > 0.0) {
+            // Consider a match when within 1 gram or 0.5% relative difference
+            $diff = abs($wantedGrams - $candGrams);
+            if ($diff <= 1.0 || $diff <= max($wantedGrams, $candGrams) * 0.005) {
+                return [(int)$row['id'], $row];
+            }
+        }
+        // Fallback to string-normalized matching as before
         $w = isset($opts['weight']) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts['weight'])) : '';
+        $wanted = strtolower(str_replace([' ', '_', '-'], ['', '', ''], $weightSlug));
         if ($w === $wanted) {
             return [(int)$row['id'], $row];
         }
@@ -178,6 +192,8 @@ function resolve_variant(PDO $pdo, int $productId, ?string $weightSlug): array {
  */
 function resolve_variant_by_options(PDO $pdo, int $productId, array $selected): array {
     // Ensure we ignore empty or non-string values; exclude non-variant UI fields like fat
+    // Keep a copy of the raw selected map for unit-aware parsing
+    $rawSelected = $selected;
     $cleanSelected = [];
     foreach ($selected as $k => $v) {
         if (!is_string($k) || $k === '') continue;
@@ -194,6 +210,23 @@ function resolve_variant_by_options(PDO $pdo, int $productId, array $selected): 
         $opts = json_decode((string)$row['options'], true) ?: [];
         $allMatch = true;
         foreach ($cleanSelected as $k => $wanted) {
+            // Special-case numeric/unit-aware matching for weight
+            if ($k === 'weight') {
+                $wantedRaw = is_string($rawSelected[$k] ?? null) ? (string)$rawSelected[$k] : '';
+                $candRaw = isset($opts[$k]) ? (string)$opts[$k] : '';
+                $wantedG = $wantedRaw !== '' ? parse_weight_to_grams($wantedRaw) : 0.0;
+                $candG = $candRaw !== '' ? parse_weight_to_grams($candRaw) : 0.0;
+                if ($wantedG > 0.0 && $candG > 0.0) {
+                    $diff = abs($wantedG - $candG);
+                    if (!($diff <= 1.0 || $diff <= max($wantedG, $candG) * 0.005)) { $allMatch = false; break; }
+                    continue;
+                }
+                // Fallback to string match if parsing failed
+                $have = isset($opts[$k]) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts[$k])) : '';
+                if ($wanted === '' || $have === '') { $allMatch = false; break; }
+                if ($wanted !== $have) { $allMatch = false; break; }
+                continue;
+            }
             $have = isset($opts[$k]) ? strtolower(str_replace([' ', '_', '-'], ['', '', ''], (string)$opts[$k])) : '';
             if ($wanted === '' || $have === '') { $allMatch = false; break; }
             if ($wanted !== $have) { $allMatch = false; break; }

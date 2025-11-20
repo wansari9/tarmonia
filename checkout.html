@@ -8,7 +8,7 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext&display=swap' type='text/css' media='all' />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Lora:wght@400;700&display=swap' type='text/css' media='all' />
     <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <link rel="preload" href="css/checkout.css" as="style" onload="this.rel='stylesheet'">
@@ -18,7 +18,7 @@
     <link rel='stylesheet' href='js/vendor/woo/woocommerce-smallscreen.css' type='only screen and (max-width: 768px)' />
     <link rel='stylesheet' href='js/vendor/woo/woocommerce.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+    <!-- removed duplicate stylesheet include to avoid overrides and extra load -->
     <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="column-1_5 contact_field contact_cart">
                                         <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
-                                            <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                            <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
                                                 <span class="contact_icon icon-1"></span>
                                             </a>
                                             <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
@@ -127,7 +127,7 @@
                                                             <div class="cart-footer">
                                                                 <div class="cart-total">
                                                                     <span class="total-label">Total:</span>
-                                                                    <span class="total-amount">$0.00</span>
+                                                                    <span class="total-amount">RM0.00</span>
                                                                 </div>
                                                                 <div class="cart-buttons">
                                                                     <a href="cart.html" class="view-cart-button">View Cart</a>
@@ -259,37 +259,56 @@
                             <!-- Multistep Form -->
                             <form id="msform">
                                 <!-- Progressbar -->
-                                <ul id="progressbar">
-                                    <li class="active">Contact Information</li>
-                                    <li>Shipping Address</li>
-                                    <li>Payment</li>
+                                <ul id="progressbar" role="tablist" aria-label="Checkout steps">
+                                    <li id="step-contact" role="tab" aria-selected="true" aria-current="step" class="active">Contact Information</li>
+                                    <li id="step-shipping" role="tab" aria-selected="false">Shipping Address</li>
+                                    <li id="step-payment" role="tab" aria-selected="false">Payment</li>
                                 </ul>
                                 <!-- Fieldsets -->
-                                <fieldset>
+                                <fieldset id="panel-contact" role="group" aria-labelledby="step-contact">
+                                    <legend class="visually-hidden">Contact Information</legend>
                                     <h2 class="fs-title">Contact Information</h2>
-                                    
-                                    <p>First Name *</p>
-                                    <input type="text" name="fname" placeholder="First Name" required />
-                                    <p>Last Name *</p>
-                                    <input type="text" name="lname" placeholder="Last Name" required />
-                                  
-                                    <p>Email *</p>
-                                    <input type="email" name="email" placeholder="Email" required />
-                                    <p>Phone *</p>
-                                    <input type="tel" name="phone" placeholder="Phone Number" required />
+
+                                    <div class="form-control">
+                                        <label for="fname">First Name *</label>
+                                        <input id="fname" type="text" name="fname" placeholder="First Name" autocomplete="given-name" maxlength="100" required />
+                                    </div>
+
+                                    <div class="form-control">
+                                        <label for="lname">Last Name *</label>
+                                        <input id="lname" type="text" name="lname" placeholder="Last Name" autocomplete="family-name" maxlength="100" required />
+                                    </div>
+
+                                    <div class="form-control">
+                                        <label for="email">Email *</label>
+                                        <input id="email" type="email" name="email" placeholder="Email" autocomplete="email" maxlength="255" required />
+                                    </div>
+
+                                    <div class="form-control">
+                                        <label for="phone">Phone *</label>
+                                        <input id="phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" pattern="\+?[0-9\s\-().]{6,30}" maxlength="30" required />
+                                    </div>
+
                                     <input type="button" name="next" class="next action-button" value="Next" />
-                                </fieldset>   
-                                <fieldset>
+                                </fieldset>
+                                <fieldset id="panel-shipping" role="group" aria-labelledby="step-shipping">
+                                    <legend class="visually-hidden">Shipping Address</legend>
                                     <h2 class="fs-title">Shipping Address</h2>
-                                   
-                                    <p>Address *</p>
-                                    <input type="text" name="address" placeholder="Street Address" required />
-                                    <p>Address Line 2</p>
-                                    <input type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" />
+
+                                    <div class="form-control">
+                                        <label for="address">Address *</label>
+                                        <input id="address" type="text" name="address" placeholder="Street Address" autocomplete="street-address" maxlength="255" required />
+                                    </div>
+
+                                    <div class="form-control">
+                                        <label for="address2">Address Line 2</label>
+                                        <input id="address2" type="text" name="address2" placeholder="Apartment, suite, etc. (optional)" autocomplete="address-line2" maxlength="255" />
+                                    </div>
+
                                     <div class="state-city-container">
                                         <div class="state-container">
-                                            <p>State *</p>
-                                            <select name="state" id="state-dropdown" required>
+                                            <label for="state-dropdown">State *</label>
+                                            <select name="state" id="state-dropdown" autocomplete="address-level1" required>
                                                 <option value="" disabled selected>Select your state</option>
                                                 <option value="Pahang">Pahang</option>
                                                 <option value="Perak">Perak</option>
@@ -307,20 +326,37 @@
                                             </select>
                                         </div>
                                         <div class="city-container">
-                                            <p>City *</p>
-                                            <input type="text" name="city" id="city-input" placeholder="City" required />
+                                            <label for="city-input">City *</label>
+                                            <input id="city-input" type="text" name="city" placeholder="City" autocomplete="address-level2" maxlength="100" required />
                                         </div>
                                     </div>
-                                    <p>Postal Code *</p>
-                                    <input type="text" name="postal_code" placeholder="Postal Code" required />
+
+                                    <div class="form-control">
+                                        <label for="postal_code">Postal Code *</label>
+                                        <input id="postal_code" type="text" name="postal_code" placeholder="Postal Code" inputmode="numeric" pattern="[0-9A-Za-z \-]{2,20}" maxlength="20" autocomplete="postal-code" required />
+                                    </div>
+
                                     <div class="action-buttons">
                                         <input type="button" name="previous" class="previous action-button" value="Previous" />
                                         <input type="button" name="next" class="next action-button" value="Next" />
                                     </div>
                                 </fieldset>
-                                <fieldset>
+                                <fieldset id="panel-payment" role="group" aria-labelledby="step-payment">
+                                    <legend class="visually-hidden">Payments</legend>
                                     <h2 class="fs-title">Payments</h2>
-                                    
+
+                                    <div class="trust-row" aria-hidden="false">
+                                        <span class="secure">
+                                            <i class="fas fa-lock" aria-hidden="true"></i>
+                                            <strong> Secure checkout</strong> — SSL encrypted
+                                        </span>
+                                        <span class="payment-logos" aria-hidden="true">
+                                            <i class="fab fa-cc-visa" title="Visa" aria-hidden="true"></i>
+                                            <i class="fab fa-cc-mastercard" title="Mastercard" aria-hidden="true"></i>
+                                            <i class="fab fa-cc-paypal" title="PayPal" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+
                                     <p style="margin-bottom:10px;">Select Payment Method *</p>
                                     <div class="checkout-options padded">
                                         <div>
@@ -360,7 +396,8 @@
                                 </fieldset>
                             </form>
                         </section>
-                        <section class="checkout-details">
+                        <button id="toggle-summary" class="toggle-summary" aria-expanded="false" aria-controls="checkout-details">View order summary</button>
+                        <section class="checkout-details" id="checkout-details">
                             <div class="checkout-details-inner">
                                 <div class="checkout-lists" id="checkout-items"></div>
                                 <div class="checkout-shipping">
@@ -369,7 +406,7 @@
                                 </div>
                                 <div class="checkout-total">
                                     <h6>Total</h6>
-                                    <p class="order-total" id="checkout-order-total">RM0.00</p>
+                                    <p class="order-total" id="checkout-order-total" aria-live="polite" role="status">RM0.00</p>
                                 </div>
                             </div>
                         </section>
@@ -385,6 +422,7 @@
                         </div>
                     </div>
                 </footer>
+
                 <footer class="footer_wrap widget_area scheme_original">
                     <div class="footer_wrap_inner widget_area_inner">
                         <div class="content_wrap">
@@ -398,7 +436,7 @@
                                             <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
                                             <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
                                             <li class="menu-item"><a href="contacts.html">Dairy Farm Map</a></li>
-                                            <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
+                                            <li class="menu-item current-menu-item "><a href="classic.html">Farm Practices</a></li>
                                         </ul>
                                     </div>
                                 </aside>
@@ -408,7 +446,7 @@
                                         <ul id="menu-footer-menu-2" class="menu">
                                             <li class="menu-item"><a href="recipes.html">Recipes</a></li>
                                             <li class="menu-item"><a href="masonry-2-columns.html">Lactose Intolerance</a></li>
-                                            <li class="menu-item current-menu-item "><a href="shop.html">Milk Imitators</a></li>
+                                            <li class="menu-item"><a href="shop.html">Milk Imitators</a></li>
                                             <li class="menu-item"><a href="portfolio-3-columns.html">Organic Milk</a></li>
                                             <li class="menu-item"><a href="portfolio-2-columns.html">Flavored Milk</a></li>
                                             <li class="menu-item"><a href="contacts.html">Ask Our Dietitian</a></li>
@@ -420,7 +458,7 @@
                                     <div class="menu-footer-menu-3-container">
                                         <ul id="menu-footer-menu-3" class="menu">
                                             <li class="menu-item"><a href="masonry-3-columns.html">Local Milk Blog</a></li>
-                                            <li class="menu-item"><a href="classic.html">Contests/Sweepstakes</a></li>
+                                            <li class="menu-item current-menu-item "><a href="classic.html">Contests/Sweepstakes</a></li>
                                             <li class="menu-item"><a href="cobbles.html">Videos</a></li>
                                             <li class="menu-item"><a href="about-1.html">News Releases</a></li>
                                             <li class="menu-item"><a href="about-2.html">Newsletters</a></li>
@@ -431,7 +469,7 @@
                                     <h4 class="widget_title">About Us</h4>
                                     <div class="menu-footer-menu-4-container">
                                         <ul id="menu-footer-menu-4" class="menu">
-                                            <li class="menu-item"><a href="contacts.html">FAQ</a></li>
+                                            <li class="menu-item"><a href="FAQ.html">FAQ</a></li>
                                             <li class="menu-item"><a href="farm.html">Our Board</a></li>
                                             <li class="menu-item"><a href="about-2.html">Our Staff</a></li>
                                             <li class="menu-item"><a href="contacts.html">Contact Us</a></li>
@@ -441,13 +479,13 @@
                                 <aside class="column-1_4 widget widget_socials">
                                     <div class="widget_inner">
                                         <div class="logo">
-                                                    <a href="index.html">
-                                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
-                                                    </a>
-                                                    <div class="logo-text-box">
-                                                        <span>TARMONIA</span>
-                                                    </div>
-                                                </div>
+                                            <a href="index.html">
+                                                <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                            </a>
+                                            <div class="logo-text-box">
+                                                <span>TARMONIA</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </aside>
                                 <aside class="column-1_4 widget widget_text">
@@ -459,7 +497,7 @@
                                     <div class="textwidget">
                                         <span class="accent1">Phone: 123-456-7890</span>
                                         <br> Fax: 010-927 7092
-                                        <br><span class="contact-email">Email: <a href="mailto:help@conebyte.com">help@conebyte.com</a></span>
+                                        <br><span class="contact-email">Email:<a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
                                     </div>
                                 </aside>
                                 <aside class="column-1_4 widget widget_socials">
@@ -487,6 +525,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </aside>
                             </div>
                         </div>
@@ -520,123 +559,7 @@
     <script type='text/javascript' src='js/vendor/woo/accounting.min.js' defer></script>
     <script type='text/javascript' src='js/vendor/woo/price-slider.min.js' defer></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var current_fs, next_fs, previous_fs; // Fieldsets
-            var animating = false; // Prevent quick multi-click glitches
-
-            // Next button handler
-            $(".next").click(function () {
-                if (animating) return false;
-                current_fs = $(this).closest("fieldset");
-                next_fs = current_fs.next();
-                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-                current_fs.css({ display: "none" });
-                next_fs.css({ display: "block" });
-            });
-
-            // Previous button handler
-            $(".previous").click(function () {
-                if (animating) return false;
-                current_fs = $(this).closest("fieldset");
-                previous_fs = current_fs.prev();
-                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-                current_fs.css({ display: "none" });
-                previous_fs.css({ display: "block" });
-            });
-
-            // Prevent normal form submission during demos
-            $("form").submit(function (e) {
-                e.preventDefault();
-                alert("Order placed! (Demo – no backend)");
-            });
-
-            // Render checkout items from localStorage cart and keep totals in sync
-            (function(){
-                function safeParse(v){ try { return JSON.parse(v||'[]'); } catch(e){ return []; } }
-                function getCart(){ return safeParse(localStorage.getItem('cart')); }
-                function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
-                function parsePrice(txt){ if(!txt) return 0; var n = String(txt).replace(/[^0-9.]/g,''); var f = parseFloat(n); return isNaN(f)?0:f; }
-                function format(n){ return 'RM' + Number(n||0).toFixed(2); }
-                var fallbackNames = { 458:"Evaporated Milk",448:"Farm Sour Cream",438:"Ricotta Salata",412:"Parmesan Cheese",471:"Pecorino Romano",364:"Tested Raw Milk",402:"Brie Cheese",426:"Fromage a Raclette",387:"Camembert Cheese",420:"Fresh Milk",430:"Butter",450:"Yogurt",460:"Chicken Eggs",470:"Duck Eggs",480:"Quail Eggs",490:"Beef",500:"Pork",510:"Chicken",520:"Lamb",530:"Bacon",540:"Sausage" };
-                var fallbackPrices = { 458:23.00,448:25.00,438:50.00,412:35.00,471:45.00,364:10.00,402:30.00,426:45.00,387:35.00,420:3.50,430:8.50,450:5.50,460:3.50,470:5.00,480:6.50,490:18.00,500:12.00,510:6.00,520:20.00,530:18.00,540:15.00 };
-                function normalize(raw){
-                    var id = raw.id || raw.productId;
-                    var qty = raw.qty || raw.quantity || 1;
-                    var price = typeof raw.price==='number' ? raw.price : parsePrice(raw.price);
-                    if ((!price || price===0) && id!=null && fallbackPrices[id]!=null) price = fallbackPrices[id];
-                    var title = raw.title || fallbackNames[id] || 'Product';
-                    var image = raw.image || raw.img || '';
-                    var variant = raw.variant || raw.variation || '';
-                    return { id:id, qty:qty, price:price, title:title, image:image, variant:variant };
-                }
-                function render(){
-                    var list = document.getElementById('checkout-items');
-                    if (!list) return;
-                    var cart = getCart().map(normalize);
-                    if (!cart.length){
-                        list.innerHTML = '<p>Your cart is empty.</p>';
-                        updateTotals(cart);
-                        return;
-                    }
-                    var html = '';
-                    cart.forEach(function(it){
-                        var variantText = it.variant ? ' <small>(' + it.variant + ')</small>' : '';
-                        html += '\n<div class="card" data-id="' + it.id + '" data-variant="' + (it.variant||'') + '">\n' +
-                                '  <div class="card-image">' + (it.image ? '<img loading="lazy" decoding="async" src="' + it.image + '" alt="' + (it.title||'') + '">' : '') + '</div>\n' +
-                                '  <div class="card-details">\n' +
-                                '    <div class="card-name">' + (it.title || 'Product') + variantText + '</div>\n' +
-                                '    <div class="card-price">\n' +
-                                '      <span class="current-price">' + format(it.price) + '</span>\n' +
-                                '    </div>\n' +
-                                '    <div class="card-wheel">\n' +
-                                '      <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease quantity">-</button>\n' +
-                                '      <span class="qty" aria-live="polite">' + (it.qty||1) + '</span>\n' +
-                                '      <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>\n' +
-                                '    </div>\n' +
-                                '  </div>\n' +
-                                '</div>';
-                    });
-                    list.innerHTML = html;
-                    updateTotals(cart);
-                }
-                function updateTotals(cart){
-                    cart = cart || getCart().map(normalize);
-                    var subtotal = cart.reduce(function(s,it){ return s + (it.price||0) * (it.qty||1); }, 0);
-                    var shippingEl = document.querySelector('.shipping-price');
-                    var shipping = 0;
-                    if (shippingEl){
-                        var raw = parseFloat(shippingEl.getAttribute('data-shipping-price'))||0;
-                        shipping = cart.length ? raw : 0;
-                        shippingEl.textContent = format(shipping);
-                    }
-                    var totalEl = document.getElementById('checkout-order-total');
-                    if (totalEl) totalEl.textContent = format(subtotal + shipping);
-                }
-                function adjustQty(id, variant, delta){
-                    var cart = getCart();
-                    var idx = cart.findIndex(function(r){ var rid = r.id||r.productId; var v = r.variant||r.variation||''; return String(rid)===String(id) && String(v)===String(variant||''); });
-                    if (idx === -1) return;
-                    var item = cart[idx];
-                    var qty = (item.qty || item.quantity || 1) + delta;
-                    if (qty <= 0) { cart.splice(idx,1); } else { item.qty = qty; }
-                    saveCart(cart);
-                    render();
-                }
-                document.addEventListener('click', function(e){
-                    var btn = e.target.closest && e.target.closest('#checkout-items .qty-btn');
-                    if (!btn) return;
-                    var action = btn.getAttribute('data-action');
-                    var card = btn.closest('.card');
-                    if (!card) return;
-                    var id = card.getAttribute('data-id');
-                    var variant = card.getAttribute('data-variant') || '';
-                    adjustQty(id, variant, action==='inc' ? 1 : -1);
-                });
-                render();
-            })();
-        });
-    </script>
+    
     <!-- Global cart script so checkout can reflect the mini-cart/cart totals -->
     <script defer type='text/javascript' src='js/local-cart.js'></script>
     <script defer type='text/javascript' src='js/cart-api.js'></script>

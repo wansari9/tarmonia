@@ -80,6 +80,23 @@ try {
 
     $variantId = null; $variantRow = null; $unitPrice = (float)$productRow['base_price']; $variantSku = null; $sku = $productRow['sku'];
     $variantAttempted = false;
+    // Allow client to include an explicit variant id to avoid string matching issues
+    $postedVariantId = null;
+    if (isset($_POST['variant_id']) && is_numeric($_POST['variant_id'])) {
+        $postedVariantId = (int)$_POST['variant_id'];
+    } elseif (isset($_POST['variation_id']) && is_numeric($_POST['variation_id'])) {
+        $postedVariantId = (int)$_POST['variation_id'];
+    }
+    if ($postedVariantId && $postedVariantId > 0) {
+        // Validate variant belongs to this product and is active
+        $vchk = $pdo->prepare('SELECT id, sku, name, options, price_override, image, stock_qty FROM product_variants WHERE id = :vid AND product_id = :pid AND is_active = 1 LIMIT 1');
+        $vchk->execute([':vid' => $postedVariantId, ':pid' => $productId]);
+        $vrow = $vchk->fetch();
+        if ($vrow) {
+            $variantId = (int)$vrow['id'];
+            $variantRow = $vrow;
+        }
+    }
     if ((int)$productRow['has_variants'] === 1) {
         $variantAttempted = true;
         $stage = 'resolve_variant_by_options';

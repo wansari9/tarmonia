@@ -22,7 +22,7 @@
         }
         .success-icon i {
             font-size: 80px;
-            color: #72b16a;
+            color: var(--accent, #F4C200);
         }
         .success-message {
             text-align: center;
@@ -102,7 +102,7 @@
         }
         .item-price {
             font-weight: 600;
-            color: #72b16a;
+            color: var(--accent, #F4C200);
         }
         .order-summary {
             margin-top: 30px;
@@ -118,7 +118,7 @@
         .summary-row.total {
             font-size: 20px;
             font-weight: 700;
-            color: #72b16a;
+            color: var(--accent, #F4C200);
             border-top: 2px solid #ddd;
             padding-top: 15px;
             margin-top: 15px;
@@ -137,19 +137,19 @@
             transition: all 0.3s;
         }
         .btn-primary {
-            background: #72b16a;
+            background: var(--accent, #F4C200);
             color: #fff;
         }
         .btn-primary:hover {
-            background: #5a9452;
+            filter: brightness(0.95);
         }
         .btn-secondary {
             background: #fff;
-            color: #72b16a;
-            border: 2px solid #72b16a;
+            color: var(--accent, #F4C200);
+            border: 2px solid var(--accent, #F4C200);
         }
         .btn-secondary:hover {
-            background: #72b16a;
+            background: var(--accent, #F4C200);
             color: #fff;
         }
     </style>
@@ -215,24 +215,32 @@
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
                     console.log('Order data:', data);
-                    if (data.ok && data.order) {
-                        displayOrderDetails(data);
-                    } else if (data.success && data.order) {
-                        displayOrderDetails(data);
+                    // api/_response.php returns { ok: true, data: { ... } }
+                    // some older endpoints may return { order: ... } directly, so support both shapes
+                    var payload = data;
+                    if (data && data.data) payload = data.data;
+
+                    if ((data && data.ok && payload.order) || payload.order) {
+                        displayOrderDetails(payload);
                     } else {
-                        document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">Unable to load order details. Error: ' + (data.error?.message || data.message || 'Unknown error') + '</p>';
+                        var errMsg = (data && data.error && data.error.message) || payload.message || 'Unknown error';
+                        document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">Unable to load order details. Error: ' + errMsg + '</p>';
                     }
                 })
                 .catch(function(error) {
                     console.error('Error loading order:', error);
-                    document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#ff0000;">Error loading order details: ' + error.message + '</p>';
+                    document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#ff0000;">Error loading order details: ' + (error && error.message ? error.message : error) + '</p>';
                 });
 
             function displayOrderDetails(data) {
-                var order = data.order;
-                var items = data.items || [];
-                var shippingAddress = data.shipping_address;
-                var billingAddress = data.billing_address;
+                // Accept either direct shape { order: ... } or wrapped { data: { order: ... } }
+                var payload = data || {};
+                if (payload.data) payload = payload.data;
+
+                var order = payload.order || {};
+                var items = payload.items || [];
+                var shippingAddress = payload.shipping_address;
+                var billingAddress = payload.billing_address;
 
                 // Display order info
                 var infoHTML = '';

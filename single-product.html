@@ -235,9 +235,6 @@
                                                 <td class="value">
                                                     <select id="pa_weight" class="custom-dropdown" name="attribute_pa_weight" data-attribute_name="attribute_pa_weight" data-show_option_none="yes">
                                                         <option value="" selected>Choose Weight</option>
-                                                        <option value="1-lb">1 lb</option>
-                                                        <option value="3-lb">3 lb</option>
-                                                        <option value="5-lb">5 lb</option>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -249,9 +246,6 @@
                                                 <td class="value">
                                                     <select id="pa_fat" class="custom-dropdown" name="attribute_pa_fat" data-attribute_name="attribute_pa_fat" data-show_option_none="yes">
                                                         <option value="" selected>Choose fat content</option>
-                                                        <option value="2">2%</option>
-                                                        <option value="3-5">3.5%</option>
-                                                        <option value="low-fat">Low Fat</option>
                                                     </select>
                                                     <a class="reset_variations" href="#">Clear</a>
                                                 </td>
@@ -304,7 +298,7 @@
                                         <tr>
                                             <th>Weight</th>
                                             <td>
-                                                <p>1 lb, 3 lb, 5 lb</p>
+                                                <p><!-- weights shown dynamically from product data --></p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -368,91 +362,76 @@
                             <section class="related products">
                                 <h2>Related products</h2>
                                 <ul class="products">
-                                    <li class="product has-post-thumbnail column-1_4 first instock purchasable">
+                                    <!-- Template (hidden) that JS can clone to render related products -->
+                                    <li id="related-product-template" class="product has-post-thumbnail column-1_4 instock purchasable related-template" style="display:none;">
                                         <div class="post_item_wrap">
                                             <div class="post_featured">
                                                 <div class="post_thumb">
-                                                    <a class="hover_icon hover_icon_link" href="single-product.html?product_id=458">
-                                                        <img src="images/Evaporated Milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
+                                                    <a class="hover_icon hover_icon_link" href="#" data-product-link="#">
+                                                        <img src="images/placeholder.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="post_content">
                                                 <h2 class="woocommerce-loop-product__title">
-                                                    <a href="single-product.html">Evaporated Milk</a>
+                                                    <a href="#" class="related-title">Product Name</a>
                                                 </h2>
                                                 <span class="price">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>23.00
+                                                    <span class="woocommerce-Price-amount amount related-price">
+                                                        <span class="woocommerce-Price-currencySymbol">RM</span>0.00
                                                     </span>
                                                 </span>
-                                                <a rel="nofollow" href="single-product.html?product_id=458" data-quantity="1" data-product_id="458" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                <a rel="nofollow" href="#" class="button add_to_cart_button related-select" data-quantity="1" data-product_id="" data-product_sku="">Select options</a>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="product has-post-thumbnail column-1_4 instock purchasable">
+
+                                    <!-- Lightweight visible placeholders to preserve layout while JS hydrates -->
+                                    <li class="product related-placeholder has-post-thumbnail column-1_4 instock purchasable">
                                         <div class="post_item_wrap">
                                             <div class="post_featured">
-                                                <div class="post_thumb">
-                                                    <a class="hover_icon hover_icon_link" href="single-product.html?product_id=448">
-                                                        <img src="images/Farm sour Cream.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
-                                                    </a>
-                                                </div>
+                                                <div class="post_thumb"><img src="images/placeholder.png" alt="" loading="lazy" /></div>
                                             </div>
                                             <div class="post_content">
-                                                <h2 class="woocommerce-loop-product__title">
-                                                    <a href="single-product.html?product_id=448">Farm Sour Cream</a>
-                                                </h2>
-                                                <span class="price">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>25.00
-                                                    </span>
-                                                </span>
-                                                <a rel="nofollow" href="single-product.html?product_id=448" data-quantity="1" data-product_id="448" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                <h2 class="woocommerce-loop-product__title"><a href="#">&nbsp;</a></h2>
+                                                <span class="price"><span class="woocommerce-Price-amount amount">&nbsp;</span></span>
+                                                <a class="button" href="#">&nbsp;</a>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="product has-post-thumbnail column-1_4 instock purchasable">
+                                    <li class="product related-placeholder has-post-thumbnail column-1_4 instock purchasable">
                                         <div class="post_item_wrap">
                                             <div class="post_featured">
-                                                <div class="post_thumb">
-                                                    <a class="hover_icon hover_icon_link" href="single-product.html?product_id=364">
-                                                        <img src="images/Tested raw milk.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
-                                                    </a>
-                                                </div>
+                                                <div class="post_thumb"><img src="images/placeholder.png" alt="" loading="lazy" /></div>
                                             </div>
                                             <div class="post_content">
-                                                <h2 class="woocommerce-loop-product__title">
-                                                    <a href="single-product.html">Tested Raw Milk</a>
-                                                </h2>
-                                                <span class="price">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>10.00
-                                                    </span>
-                                                </span>
-                                                <a rel="nofollow" href="single-product.html?product_id=364" data-quantity="1" data-product_id="364" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                <h2 class="woocommerce-loop-product__title"><a href="#">&nbsp;</a></h2>
+                                                <span class="price"><span class="woocommerce-Price-amount amount">&nbsp;</span></span>
+                                                <a class="button" href="#">&nbsp;</a>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="product has-post-thumbnail column-1_4 last instock purchasable">
+                                    <li class="product related-placeholder has-post-thumbnail column-1_4 instock purchasable">
                                         <div class="post_item_wrap">
                                             <div class="post_featured">
-                                                <div class="post_thumb">
-                                                    <a class="hover_icon hover_icon_link" href="single-product.html?product_id=426">
-                                                        <img src="images/fromage a raclette.png" class="attachment-shop_catalog size-shop_catalog" alt="" loading="lazy" />
-                                                    </a>
-                                                </div>
+                                                <div class="post_thumb"><img src="images/placeholder.png" alt="" loading="lazy" /></div>
                                             </div>
                                             <div class="post_content">
-                                                <h2 class="woocommerce-loop-product__title">
-                                                    <a href="single-product.html">Fromage a Raclette Cheese</a>
-                                                </h2>
-                                                <span class="price">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <span class="woocommerce-Price-currencySymbol">RM</span>45.00
-                                                    </span>
-                                                </span>
-                                                <a rel="nofollow" href="single-product.html?product_id=426" data-quantity="1" data-product_id="426" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                <h2 class="woocommerce-loop-product__title"><a href="#">&nbsp;</a></h2>
+                                                <span class="price"><span class="woocommerce-Price-amount amount">&nbsp;</span></span>
+                                                <a class="button" href="#">&nbsp;</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="product related-placeholder has-post-thumbnail column-1_4 instock purchasable">
+                                        <div class="post_item_wrap">
+                                            <div class="post_featured">
+                                                <div class="post_thumb"><img src="images/placeholder.png" alt="" loading="lazy" /></div>
+                                            </div>
+                                            <div class="post_content">
+                                                <h2 class="woocommerce-loop-product__title"><a href="#">&nbsp;</a></h2>
+                                                <span class="price"><span class="woocommerce-Price-amount amount">&nbsp;</span></span>
+                                                <a class="button" href="#">&nbsp;</a>
                                             </div>
                                         </div>
                                     </li>
@@ -576,6 +555,7 @@
 <script type='text/javascript' src='js/custom/product-reviews.js' defer></script>
 <script type='text/javascript' src='js/auth-session.js' defer></script>
 <!-- Title now updated dynamically by single-product.js after API response -->
+<script type='text/javascript' src='js/related-products.js' defer></script>
 
 </body>
 

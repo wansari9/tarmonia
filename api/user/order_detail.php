@@ -66,9 +66,19 @@ try {
     $stmt->execute([$order_id]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Add modification capability flag
+    // Normalize item keys for front-end expectations
+    foreach ($items as &$it) {
+        // front-end expects `image_url` and `subtotal`
+        $it['image_url'] = isset($it['image']) ? $it['image'] : null;
+        $it['subtotal'] = isset($it['line_total']) ? $it['line_total'] : (isset($it['quantity'], $it['unit_price']) ? $it['quantity'] * $it['unit_price'] : 0);
+        // keep existing keys for backward compatibility
+    }
+
+    // Add modification capability flag and normalize totals
     $order['can_modify'] = ($order['status'] === 'awaiting_confirmation' && empty($order['admin_confirmed_at']));
     $order['currency'] = $order['currency'] ?: 'RM';
+    // Provide `total` key expected by the frontend (alias of grand_total)
+    $order['total'] = isset($order['grand_total']) ? $order['grand_total'] : (isset($order['subtotal'], $order['shipping_total'], $order['tax_total']) ? $order['subtotal'] + $order['shipping_total'] + $order['tax_total'] : 0);
 
     echo json_encode([
         'success' => true,

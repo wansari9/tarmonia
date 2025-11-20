@@ -48,8 +48,11 @@ try {
     }
 
     if (!$productRow && $lookupExternal !== null && $lookupExternal !== '') {
-        $stmt = $pdo->prepare('SELECT * FROM products WHERE external_id = :ext OR sku = :ext LIMIT 1');
-        $stmt->execute([':ext' => $lookupExternal]);
+        // Use distinct parameter names for the two placeholders because native
+        // MySQL prepared statements (when PDO emulation is disabled) do not
+        // allow the same named placeholder to appear multiple times.
+        $stmt = $pdo->prepare('SELECT * FROM products WHERE external_id = :ext OR sku = :ext2 LIMIT 1');
+        $stmt->execute([':ext' => $lookupExternal, ':ext2' => $lookupExternal]);
         $productRow = $stmt->fetch();
     }
 
@@ -125,5 +128,9 @@ try {
 
     respond_detail(200, ['success' => true, 'product' => $payload]);
 } catch (Throwable $e) {
-    respond_detail(500, ['success' => false, 'error' => 'Failed to load product']);
+    // When debugging locally, include the exception message to aid diagnosis.
+    $debug = isset($_GET['debug']) ? true : false;
+    $payload = ['success' => false, 'error' => 'Failed to load product'];
+    if ($debug) $payload['detail'] = $e->getMessage();
+    respond_detail(500, $payload);
 }

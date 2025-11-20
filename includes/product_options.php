@@ -60,8 +60,9 @@ try {
         respond_opts(400, ['success' => false, 'error' => 'Invalid product id']);
     }
 
-    $stmt = $pdo->prepare('SELECT id, category FROM products WHERE external_id = :x OR id = :x LIMIT 1');
-    $stmt->execute([':x' => $pid]);
+    // Use distinct parameter names to avoid repeated named placeholder issues
+    $stmt = $pdo->prepare('SELECT id, category FROM products WHERE external_id = :x OR id = :x2 LIMIT 1');
+    $stmt->execute([':x' => $pid, ':x2' => $pid]);
     $prod = $stmt->fetch();
     if (!$prod) {
         respond_opts(404, ['success' => false, 'error' => 'Product not found']);

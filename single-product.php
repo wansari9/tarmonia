@@ -1,0 +1,580 @@
+<?php
+// single-product.php - dynamic related products by category
+declare(strict_types=1);
+require_once __DIR__ . '/includes/db.php';
+
+function fmt_price($amount, $currency = 'RM'){
+    if ($amount === null || $amount === '') return '';
+    return htmlspecialchars($currency . number_format((float)$amount, 2), ENT_QUOTES, 'UTF-8');
+}
+
+$requested = $_GET['product_id'] ?? null;
+$currentProduct = null;
+if ($requested !== null) {
+    $pid = is_numeric($requested) ? (int)$requested : null;
+    if ($pid) {
+        try {
+            $sql = "SELECT p.id, p.external_id, p.name, p.category, p.image, p.currency,
+                       COALESCE((SELECT MIN(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.lower_price) AS price_min,
+                       COALESCE((SELECT MAX(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.upper_price) AS price_max
+                    FROM products p
+                    WHERE (p.id = ? OR p.external_id = ?)
+                    LIMIT 1";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$pid, $pid]);
+            $currentProduct = $stmt->fetch();
+        } catch (Throwable $e) {
+            $currentProduct = null;
+        }
+    }
+}
+
+$relatedProducts = [];
+if (!empty($currentProduct) && !empty($currentProduct['category'])){
+    try {
+        $cat = $currentProduct['category'];
+        $curId = (int)$currentProduct['id'];
+        $sql = "SELECT p.id AS internal_id, COALESCE(p.external_id, p.id) AS public_id, p.name, p.slug, p.image, p.currency,
+                       COALESCE((SELECT MIN(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.lower_price) AS price_min,
+                       COALESCE((SELECT MAX(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.upper_price) AS price_max
+                FROM products p
+                WHERE p.status = 'active' AND p.category = :cat AND p.id != :cur
+                ORDER BY p.id ASC
+                LIMIT 4";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':cat' => $cat, ':cur' => $curId]);
+        $relatedProducts = $stmt->fetchAll();
+    } catch (Throwable $e) {
+        $relatedProducts = [];
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en-US" class="scheme_original">
+
+<head>
+    <title id="dynamic-title">Product - Dairy Farm</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&subset=latin-ext&display=swap' type='text/css' media='all' />
+    <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/ui/default-skin.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/prettyPhoto/ver/prettyPhoto.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce-layout.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce-smallscreen.css' type='only screen and (max-width: 768px)' />
+    <link rel='stylesheet' href='js/vendor/woo/woocommerce.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
+    <link rel="stylesheet" href='css/custom-styles.css' type='text/css' media='all'/>
+        <!-- Open Graph/Twitter placeholders (filled by client-side product loader) -->
+        <meta property="og:title" content="">
+        <meta property="og:description" content="">
+        <meta property="og:image" content="">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="">
+        <meta name="twitter:description" content="">
+
+        <!-- Minimal JSON-LD product schema; client JS should replace values when loading product -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "",
+            "image": [""],
+            "description": "",
+            "sku": "",
+            "offers": {
+                "@type": "Offer",
+                "url": "",
+                "priceCurrency": "MYR",
+                "price": "",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+        </script>
+</head>
+
+<body class="product-template-default single single-product woocommerce woocommerce-page body_style_wide body_filled article_style_stretch layout_single-standard template_single-standard scheme_original top_panel_show top_panel_above sidebar_hide sidebar_outer_hide vc_responsive">
+
+<a id="toc_home" class="sc_anchor" title="Home" data-description="<i>Return to Home</i> - <br>navigate to home page of the site" data-icon="icon-home" data-url="index.html" data-separator="yes"></a>
+<a id="toc_top" class="sc_anchor" title="To Top" data-description="<i>Back to top</i> - <br>scroll to top of the page" data-icon="icon-double-up" data-url="" data-separator="yes"></a>
+
+<div class="body_wrap">
+    <div class="page_wrap">
+        <div class="top_panel_fixed_wrap"></div>
+        <header class="top_panel_wrap top_panel_style_1 scheme_original">
+            <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+                <div class="top_panel_top">
+                    <div class="content_wrap clearfix">
+                        <div class="top_panel_top_contact_area icons icon-phone-1">1(800)-456-789 </div>
+                        <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
+                        <div class="top_panel_top_user_area">
+                            <div class="top_panel_top_socials">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_twitter">
+                                            <span class="icon-twitter"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_facebook">
+                                            <span class="icon-facebook"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                            <span class="icon-gplus-1"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_linkedin">
+                                            <span class="icon-linkedin"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul id="menu_user" class="menu_user_nav">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="top_panel_middle">
+                    <div class="content_wrap">
+                        <div class="columns_wrap columns_fluid">
+                            <div class="column-4_5 contact_logo">
+                                <div class="logo" style="display:flex;align-items:center;gap:15px;">
+                                    <a href="index.html" style="flex-shrink:0;">
+                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                    </a>
+                                    <div class="logo-text-box">
+                                        <span>TARMONIA</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column-1_5 contact_field contact_cart">
+                                <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                        <span class="contact_icon icon-1"></span>
+                                    </a>
+                                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
+                                    <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                        <span class="user_initial">U</span>
+                                    </a>
+                                </div>
+                                <ul class="widget_area sidebar_cart sidebar">
+                                    <li>
+                                        <div class="widget woocommerce widget_shopping_cart">
+                                            <div class="hide_cart_widget_if_empty">
+                                                <div class="widget_shopping_cart_content">
+                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="top_panel_bottom">
+                    <div class="content_wrap clearfix">
+                        <nav class="menu_main_nav_area menu_hover_fade">
+                            <ul id="menu_main" class="menu_main_nav">
+                                <li class="menu-item"><a href="index.html"><span>Home</span></a></li>
+                                <li class="menu-item"><a href="about-2.html"><span>About us</span></a></li>
+                                <!-- <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li> -->
+                                <li class="menu-item"><a href="classic.html"><span>News</span></a></li>
+                                <li class="menu-item  current-menu-ancestor current-menu-parent"><a href="shop.html"><span>Products</span></a></li>
+                                <!-- <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li> -->
+                                <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="header_mobile">
+            <div class="content_wrap">
+                <div class="menu_button icon-menu"></div>
+                <div class="logo" style="display:flex;align-items:center;gap:15px;">
+                    <a href="index.html" style="flex-shrink:0;">
+                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                    </a>
+                    <div class="logo-text-box">
+                        <span>TARMONIA</span>
+                    </div>
+                </div>
+            </div>
+            <div class="side_wrap">
+                <div class="close">Close</div>
+                <div class="panel_top">
+                    <nav class="menu_main_nav_area">
+                        <ul id="menu_mobile" class="menu_main_nav">
+                            <li class="menu-item"><a href="index"><span>Home</span></a></li>
+                            <li class="menu-item"><a href="#"><span>About us</span></a></li>
+                            <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li>
+                            <li class="menu-item"><a href="#"><span>Blog</span></a></li>
+                            <li class="menu-item current-menu-ancestor current-menu-parent"><a href="shop.html"><span>Products</span></a></li>
+                            <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li>
+                            <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="panel_bottom"></div>
+            </div>
+            <div class="mask"></div>
+        </div>
+        <div class="top_panel_title top_panel_style_1 title_present navi_present breadcrumbs_present scheme_original">
+            <div  class="bg_cust_1 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
+                <!-- <div class="content_wrap">
+                    <div class="post_navi"></div>
+                    <div class="breadcrumbs">
+                        <a class="breadcrumbs_item home" href="index.html">Home</a>
+                        <span class="breadcrumbs_delimiter"></span>
+                        <a class="breadcrumbs_item all" href="shop.html">Shop</a>
+                        <span class="breadcrumbs_delimiter"></span>
+                        <span class="breadcrumbs_item current">Product Name</span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="page_content_wrap page_paddings_yes">
+            <div class="content_wrap">
+                <div class="content">
+                    <article class="post_item post_item_single post_item_product">
+                        <nav class="woocommerce-breadcrumb">
+                            <a href="index.html">Home</a> / 
+                            <a href="shop.html">Shop</a> / Product
+                        </nav>
+                        <div class="product has-post-thumbnail first instock purchasable">
+
+                            <div class="images">
+                                <a href="" class="woocommerce-main-image zoom" title="" data-rel="prettyPhoto">
+                                    <img width="600" height="765" src="" class="attachment-shop_single size-shop_single " alt="" loading="eager" /></a>
+                            </div>
+                            <div class="summary entry-summary">
+                                <h1 class="product_title entry-title"></h1>
+                                <p class="price">
+                                    <span class="woocommerce-Price-amount amount">
+                                        <span class="woocommerce-Price-currencySymbol"></span>
+                                    </span> 
+                                </p>
+                                <div class="woocommerce-product-details__short-description">
+                                    <p></p>
+                                </div>
+
+                                <form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="" data-product_variations="">
+                                    
+                                                                 
+                                    <table class="variations" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="label">
+                                                    <label for="pa_weight">Weight</label>
+                                                </td>
+                                                <td class="value">
+                                                    <select id="pa_weight" class="custom-dropdown" name="attribute_pa_weight" data-attribute_name="attribute_pa_weight" data-show_option_none="yes">
+                                                        <option value="" selected>Choose Weight</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tbody>
+                                            <tr>
+                                                <td class="label">
+                                                    <label for="pa_fat">Fat</label>
+                                                </td>
+                                                <td class="value">
+                                                    <select id="pa_fat" class="custom-dropdown" name="attribute_pa_fat" data-attribute_name="attribute_pa_fat" data-show_option_none="yes">
+                                                        <option value="" selected>Choose fat content</option>
+                                                    </select>
+                                                    <a class="reset_variations" href="#">Clear</a>
+                                                </td>
+                                            </tr>
+                                            <tbody>
+                                            <tr>
+                                                <td class="label">
+                                                    <label for="pa_price">Price</label>
+                                                </td>
+                                                <td class="value">
+                                                    <span id="pa_price" class="product-price-display">RM0.00</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="single_variation_wrap">
+                                        <div class="woocommerce-variation single_variation"></div>
+                                        <div class="woocommerce-variation-add-to-cart variations_button">
+                                            <div class="quantity">
+                                                <input type="number" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                            </div>
+                                            <button type="submit" class="single_add_to_cart_button button alt add-to-cart-button">Add to cart</button>
+                                            <input type="hidden" name="add-to-cart" value="" />
+                                            <input type="hidden" name="product_id" value="" />
+                                            <input type="hidden" name="variation_id" class="variation_id" value="0" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="woocommerce-tabs wc-tabs-wrapper">
+                                <ul class="tabs wc-tabs" role="tablist">
+                                    <li class="description_tab" id="tab-title-description" role="tab" aria-controls="tab-description">
+                                        <a href="#tab-description">Description</a>
+                                    </li>
+                                    <li class="additional_information_tab" id="tab-title-additional_information" role="tab" aria-controls="tab-additional_information">
+                                        <a href="#tab-additional_information">Additional information</a>
+                                    </li>
+                                    <li class="reviews_tab" id="tab-title-reviews" role="tab" aria-controls="tab-reviews">
+                                        <a href="#tab-reviews">Reviews (0)</a>
+                                    </li>
+                                </ul>
+                                <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" data-product-id="412">
+                                    <h2>Description</h2>
+                                    <p id="product-description"></p>
+                                </div>
+                                <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--additional_information panel entry-content wc-tab" id="tab-additional_information" role="tabpanel" aria-labelledby="tab-title-additional_information">
+                                    <h2>Additional information</h2>
+                                    <table class="shop_attributes">
+                                        <tr>
+                                            <th>Weight</th>
+                                            <td>
+                                                <p><!-- weights shown dynamically from product data --></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Fat</th>
+                                            <td>
+                                                <p>2%, 3.5%, Low Fat</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--reviews panel entry-content wc-tab" id="tab-reviews" role="tabpanel" aria-labelledby="tab-title-reviews">
+                                    <div id="reviews" class="woocommerce-Reviews">
+                                        <div id="comments">
+                                            <h2 class="woocommerce-Reviews-title">Reviews</h2>
+                                            <p class="woocommerce-noreviews">There are no reviews yet.</p>
+                                        </div>
+                                        <div id="review_form_wrapper">
+                                            <div id="review_form">
+                                                <div id="respond" class="comment-respond">
+                                                    <form action="#" method="post" id="commentform" class="comment-form">
+                                                        <p class="comment-notes">
+                                                            <span id="email-notes">Your email address will not be published.</span> Required fields are marked
+                                                            <span class="required">*</span>
+                                                        </p>
+                                                        <p class="comment-form-author">
+                                                            <label for="author">Name <span class="required">*</span></label>
+                                                            <input id="author" name="author" type="text" value="" size="30" aria-required="true" required />
+                                                        </p>
+                                                        <p class="comment-form-email">
+                                                            <label for="email">Email <span class="required">*</span></label>
+                                                            <input id="email" name="email" type="email" value="" size="30" aria-required="true" required />
+                                                        </p>
+                                                        <div class="comment-form-rating">
+                                                            <label for="rating">Your rating</label>
+                                                            <select name="rating" id="rating" aria-required="true" required>
+                                                                <option value="">Rate6hellip;</option>
+                                                                <option value="5">Perfect</option>
+                                                                <option value="4">Good</option>
+                                                                <option value="3">Average</option>
+                                                                <option value="2">Not that bad</option>
+                                                                <option value="1">Very poor</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="comment-form-comment">
+                                                            <label for="comment">Your review <span class="required">*</span></label>
+                                                            <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true" required></textarea>
+                                                        </p>
+                                                        <p class="form-submit">
+                                                            <input name="submit" type="submit" id="submit" class="submit" value="Submit" />
+                                                            <input type='hidden' name='comment_post_ID' value='412' id='comment_post_ID' />
+                                                            <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+                                                        </p>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <section class="related products">
+                                <h2>Related products</h2>
+                                <ul class="products">
+<?php
+if (!empty($relatedProducts)):
+    foreach ($relatedProducts as $rp):
+        $publicId = htmlspecialchars((string)($rp['public_id'] ?? $rp['internal_id']), ENT_QUOTES, 'UTF-8');
+        $name = htmlspecialchars($rp['name'], ENT_QUOTES, 'UTF-8');
+        $img = htmlspecialchars($rp['image'] ?? 'images/placeholder.png', ENT_QUOTES, 'UTF-8');
+        $currency = $rp['currency'] ?: 'RM';
+        $pmin = $rp['price_min'];
+        $pmax = $rp['price_max'];
+        if ($pmin !== null && $pmax !== null && (float)$pmin !== (float)$pmax) {
+            $priceHtml = fmt_price($pmin, $currency) . ' &ndash; ' . fmt_price($pmax, $currency);
+        } else {
+            $priceHtml = fmt_price($pmin ?: $pmax, $currency);
+        }
+?>
+                                    <li class="product has-post-thumbnail column-1_4 instock purchasable">
+                                        <div class="post_item_wrap">
+                                            <div class="post_featured">
+                                                <div class="post_thumb">
+                                                    <a class="hover_icon hover_icon_link" href="single-product.php?product_id=<?php echo $publicId; ?>">
+                                                        <img src="<?php echo $img; ?>" class="attachment-shop_catalog size-shop_catalog" alt="<?php echo $name; ?>" loading="lazy" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="post_content">
+                                                <h2 class="woocommerce-loop-product__title">
+                                                    <a href="single-product.php?product_id=<?php echo $publicId; ?>"><?php echo $name; ?></a>
+                                                </h2>
+                                                <span class="price">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <?php echo $priceHtml; ?>
+                                                    </span>
+                                                </span>
+                                                <a rel="nofollow" href="single-product.php?product_id=<?php echo $publicId; ?>" data-quantity="1" data-product_id="<?php echo $publicId; ?>" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                            </div>
+                                        </div>
+                                    </li>
+<?php
+    endforeach;
+endif;
+?>
+                                </ul>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <footer class="call_wrap">
+            <div class="call_wrap_inner">
+                <div class="content_wrap">
+                    <h2 class="call-title">Where to Buy</h2>
+                    <div class="call-text">Our Products are currently available at select retailers in Connecticut and New York..</div>
+                    <a class="sc_button sc_button_size_large sc_button_style_border" href="#">Store Locator</a>
+                </div>
+            </div>
+        </footer>
+        <footer class="footer_wrap widget_area scheme_original">
+            <div class="footer_wrap_inner widget_area_inner">
+                <div class="content_wrap">
+                    <div class="columns_wrap">
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="logo">
+                                    <a href="index.html">
+                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                    </a>
+                                </div>
+                                <div class="logo-text-box">
+                                    <a href="index.html">TARMONIA</a>
+                                </div>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_text">
+                            <div class="textwidget">
+                                <strong class="accent1">Address:</strong>
+                                <br>
+                                B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_text centered-contact">
+                            <div class="textwidget">
+                                <span class="accent1">Phone:</span> 123-456-7890<br>
+                                <span class="accent1">Fax:</span> 010-927 7092<br>
+                                <span class="contact-email">Email: <a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_twitter"><span class="icon-twitter"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_facebook"><span class="icon-facebook"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_gplus-1"><span class="icon-gplus-1"></span></a></div>
+                                    <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_linkedin"><span class="icon-linkedin"></span></a></div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="copyright_wrap copyright_style_menu  scheme_original">
+            <div class="copyright_wrap_inner">
+                <div class="content_wrap">
+                    <ul id="menu_footer" class="menu_footer_nav">
+                        <li class="menu-item"><a href="farm.html"><span>FAQ</span></a></li>
+                        <li class="menu-item"><a href="classic.html"><span>News</span></a></li>
+                        <li class="menu-item"><a href="contacts.html"><span>Contact Us</span></a></li>
+                    </ul>
+                    <div class="copyright_text">
+                        <p>
+                            2025 Tarmonia
+                            <a href="http://ancorathemes.com/about/">Terms of Use</a> and
+                            <a href="http://ancorathemes.com/about/">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
+<div class="custom_html_section"></div>
+
+<script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
+<script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
+<script type='text/javascript' src='js/custom/custom.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>
+<script type='text/javascript' src='js/vendor/modernizr.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/prettyPhoto/ver/jquery.prettyPhoto.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/prettyPhoto/jquery.prettyPhoto.init.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/ui/jquery.zoom.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/comp/jquery.flexslider-min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/single-product.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/woocommerce.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js' defer></script>
+<script type='text/javascript' src='js/vendor/superfish.js' defer></script>
+<script type='text/javascript' src='js/custom/core.reviews.js' defer></script>
+<script type='text/javascript' src='js/custom/core.utils.js' defer></script>
+<script type='text/javascript' src='js/custom/core.init.js' defer></script>
+<script type='text/javascript' src='js/custom/init.js' defer></script>
+<script type='text/javascript' src='js/custom/comment-reply.min.js' defer></script>
+<script type='text/javascript' src='js/custom/core.debug.js' defer></script>
+<script type='text/javascript' src='js/custom/embed.min.js' defer></script>
+<script type='text/javascript' src='js/custom/shortcodes.js' defer></script>
+<script type='text/javascript' src='js/vendor/underscore.min.js' defer></script>
+<script type='text/javascript' src='js/custom/util.min.js' defer></script>
+<!-- Server-side cart API integration: load API first -->
+<script type="text/javascript" src="js/cart-api.js" defer></script>
+<script type="text/javascript" src="js/mini-cart.js" defer></script>
+<script type='text/javascript' src='js/local-cart.js' defer></script>
+<script type='text/javascript' src='js/product-data.js' defer></script>
+<script>window.APP_VERSION = '2025111301';</script>
+<script type='text/javascript' src='js/single-product.js?v=2025111301' defer></script>
+<script type='text/javascript' src='js/custom/product-reviews.js' defer></script>
+<script type='text/javascript' src='js/auth-session.js' defer></script>
+<!-- Title now updated dynamically by single-product.js after API response -->
+
+</body>
+
+</html>

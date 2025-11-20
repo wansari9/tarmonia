@@ -74,12 +74,12 @@
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
                                         <span class="contact_icon icon-1"></span>
                                         <span class="contact_label contact_cart_label">cart:</span>
                                         <span class="contact_cart_totals">
                                             <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">&#36;0.00</span>
+                                            <span class="cart_summa">RM0.00</span>
                                         </span>
                                     </a>
                                     <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
@@ -102,7 +102,7 @@
                                                     <div class="cart-footer">
                                                         <div class="cart-total">
                                                             <span class="total-label">Total:</span>
-                                                            <span class="total-amount">$0.00</span>
+                                                            <span class="total-amount">RM0.00</span>
                                                         </div>
                                                         <div class="cart-buttons">
                                                             <a href="cart.html" class="view-cart-button">View Cart</a>
@@ -164,7 +164,7 @@
                                         </div>
                                         <div>
                                             <div style="font-size:13px;color:#999;margin-bottom:4px;">Total Amount</div>
-                                            <div style="font-size:18px;font-weight:700;color:#72b16a;" data-order-total>$0.00</div>
+                                            <div style="font-size:18px;font-weight:700;color:#72b16a;" data-order-total>RM0.00</div>
                                         </div>
                                         <div data-tracking-section style="display:none;">
                                             <div style="font-size:13px;color:#999;margin-bottom:4px;">Tracking Number</div>
@@ -173,7 +173,7 @@
                                     </div>
 
                                     <h3 style="margin:30px 0 16px;font-size:18px;">Order Items</h3>
-                                    <div class="order-items-list" data-items-list>
+                                        <div class="order-items-list" data-items-list>
                                         <div class="loading-state">Loading items...</div>
                                     </div>
 
@@ -188,24 +188,24 @@
                                         </div>
                                     </div>
 
-                                    <div style="margin-top:40px;padding:20px;background:#f8f8f8;border-radius:8px;">
-                                        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                                            <span>Subtotal:</span>
-                                            <span data-subtotal>$0.00</span>
+                                        <div style="margin-top:40px;padding:20px;background:#f8f8f8;border-radius:8px;">
+                                            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                                                <span>Subtotal:</span>
+                                                <span data-subtotal>RM0.00</span>
+                                            </div>
+                                            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                                                <span>Shipping:</span>
+                                                <span data-shipping>RM0.00</span>
+                                            </div>
+                                            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                                                <span>Tax:</span>
+                                                <span data-tax>RM0.00</span>
+                                            </div>
+                                            <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;padding-top:12px;border-top:2px solid #e5e5e5;color:#72b16a;">
+                                                <span>Total:</span>
+                                                <span data-total>RM0.00</span>
+                                            </div>
                                         </div>
-                                        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                                            <span>Shipping:</span>
-                                            <span data-shipping>$0.00</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                                            <span>Tax:</span>
-                                            <span data-tax>$0.00</span>
-                                        </div>
-                                        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;padding-top:12px;border-top:2px solid #e5e5e5;color:#72b16a;">
-                                            <span>Total:</span>
-                                            <span data-total>$0.00</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -274,6 +274,7 @@
 
 <script src="js/auth-session.js"></script>
 <script src="js/mini-cart.js"></script>
+<script src="js/formatting-override.js"></script>
 <script src="js/user-order-detail.js"></script>
 
 </body>

@@ -94,12 +94,12 @@
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
                                         <span class="contact_icon icon-1"></span>
                                         <span class="contact_label contact_cart_label">cart:</span>
                                         <span class="contact_cart_totals">
                                             <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">&#36;0.00</span>
+                                            <span class="cart_summa">RM0.00</span>
                                         </span>
                                     </a>
                                     <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
@@ -122,7 +122,7 @@
                                                     <div class="cart-footer">
                                                         <div class="cart-total">
                                                             <span class="total-label">Total:</span>
-                                                            <span class="total-amount">$0.00</span>
+                                                            <span class="total-amount">RM0.00</span>
                                                         </div>
                                                         <div class="cart-buttons">
                                                             <a href="cart.html" class="view-cart-button">View Cart</a>
@@ -277,6 +277,55 @@
                     <div class="footer_wrap_inner widget_area_inner">
                         <div class="content_wrap">
                             <div class="columns_wrap">
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">On the Farm</h4>
+                                    <div class="menu-footer-menu-1-container">
+                                        <ul id="menu-footer-menu-1" class="menu">
+                                            <li class="menu-item"><a href="farm.html">Meet Our Farmers</a></li>
+                                            <li class="menu-item"><a href="recipes.html">Meet the Cows</a></li>
+                                            <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
+                                            <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Dairy Farm Map</a></li>
+                                            <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">In the Kitchen</h4>
+                                    <div class="menu-footer-menu-2-container">
+                                        <ul id="menu-footer-menu-2" class="menu">
+                                            <li class="menu-item"><a href="recipes.html">Recipes</a></li>
+                                            <li class="menu-item"><a href="masonry-2-columns.html">Lactose Intolerance</a></li>
+                                            <li class="menu-item"><a href="shop.html">Milk Imitators</a></li>
+                                            <li class="menu-item"><a href="portfolio-3-columns.html">Organic Milk</a></li>
+                                            <li class="menu-item"><a href="portfolio-2-columns.html">Flavored Milk</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Ask Our Dietitian</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">In the News</h4>
+                                    <div class="menu-footer-menu-3-container">
+                                        <ul id="menu-footer-menu-3" class="menu">
+                                            <li class="menu-item"><a href="masonry-3-columns.html">Local Milk Blog</a></li>
+                                            <li class="menu-item"><a href="classic.html">Contests/Sweepstakes</a></li>
+                                            <li class="menu-item"><a href="cobbles.html">Videos</a></li>
+                                            <li class="menu-item"><a href="about-1.html">News Releases</a></li>
+                                            <li class="menu-item"><a href="about-2.html">Newsletters</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside class="column-1_4 widget widget_nav_menu">
+                                    <h4 class="widget_title">About Us</h4>
+                                    <div class="menu-footer-menu-4-container">
+                                        <ul id="menu-footer-menu-4" class="menu">
+                                            <li class="menu-item"><a href="FAQ.html">FAQ</a></li>
+                                            <li class="menu-item"><a href="farm.html">Our Board</a></li>
+                                            <li class="menu-item"><a href="about-2.html">Our Staff</a></li>
+                                            <li class="menu-item"><a href="contacts.html">Contact Us</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
                                 <aside class="column-1_4 widget widget_socials">
                                     <div class="widget_inner">
                                         <div class="logo">
@@ -291,27 +340,42 @@
                                 </aside>
                                 <aside class="column-1_4 widget widget_text">
                                     <div class="textwidget">
-                                        <strong class="accent1">Address:</strong>
-                                        <br>
-                                        B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
+                                        <span class="accent1">Address</span>: B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
                                     </div>
                                 </aside>
                                 <aside class="column-1_4 widget widget_text centered-contact">
                                     <div class="textwidget">
-                                        <span class="accent1">Phone:</span> 123-456-7890<br>
-                                        <span class="accent1">Fax:</span> 010-927 7092<br>
-                                        <span class="contact-email">Email: <a href="mailto:help@conebyte.com">help@conebyte.com</a></span>
+                                        <span class="accent1">Phone: 123-456-7890</span>
+                                        <br> Fax: 010-927 7092
+                                        <br> Email: <a href="mailto:help@conebyte.com">help@conebyte.com</a>
                                     </div>
                                 </aside>
                                 <aside class="column-1_4 widget widget_socials">
                                     <div class="widget_inner">
                                         <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
-                                            <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_twitter"><span class="icon-twitter"></span></a></div>
-                                            <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_facebook"><span class="icon-facebook"></span></a></div>
-                                            <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_gplus-1"><span class="icon-gplus-1"></span></a></div>
-                                            <div class="sc_socials_item"><a href="#" target="_blank" class="social_icons social_linkedin"><span class="icon-linkedin"></span></a></div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_twitter">
+                                                    <span class="icon-twitter"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_facebook">
+                                                    <span class="icon-facebook"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                                    <span class="icon-gplus-1"></span>
+                                                </a>
+                                            </div>
+                                            <div class="sc_socials_item">
+                                                <a href="#" target="_blank" class="social_icons social_linkedin">
+                                                    <span class="icon-linkedin"></span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </aside>
                             </div>
                         </div>
@@ -332,6 +396,7 @@
 
 <script src="js/auth-session.js"></script>
 <script src="js/mini-cart.js"></script>
+<script src="js/formatting-override.js"></script>
 <script src="js/user-profile-enhanced.js"></script>
 
 </body>
