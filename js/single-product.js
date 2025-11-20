@@ -280,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderProduct(p){
         if (!p) return;
     CURRENT_PRODUCT = p;
+    try { console.log('[pdp] renderProduct product loaded', p); } catch(e) {}
     var normalizedCategory = normalizeCategory(p.category);
     CURRENT_PRODUCT.normalizedCategory = normalizedCategory;
         // Set document title from DB
@@ -370,13 +371,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 (product.variants||[]).forEach(function(v){
                     var w = (v.options && v.options.weight) ? String(v.options.weight) : '';
                     if (!w) return;
+                    // dedupe using a normalized slug, but set the option value to the
+                    // canonical DB string so the client posts the exact DB value.
                     var slug = w.toLowerCase().replace(/\s+/g,'-');
                     if (added[slug]) return; added[slug] = true;
                     var opt = document.createElement('option');
-                    opt.value = slug; opt.textContent = w;
+                    opt.value = w; opt.textContent = w;
                     newSel.appendChild(opt);
                 });
                 try { parent.replaceChild(newSel, sel); } catch(e) { sel.innerHTML = newSel.innerHTML; newSel = sel; }
+                try { console.log('[pdp] populateWeightDropdown options:', Array.from(newSel.options).map(function(o){ return { value:o.value, text:o.text }; })); } catch(e) {}
                 // Attach listener again since we replaced the element
                 try { newSel.addEventListener('change', updatePrice); } catch(e){}
                 // Auto-select first non-empty option
@@ -654,9 +658,11 @@ document.addEventListener('DOMContentLoaded', function () {
         (product.variants||[]).forEach(function(v){
             var val = v && v.options ? v.options[optKey] : null;
             if (!val) return;
+            // keep dedupe by slug but set the option.value to the canonical DB value
+            // so the server receives the exact stored string.
             var slug = slugify(val);
             if (added[slug]) return; added[slug] = true;
-            var o = document.createElement('option'); o.value = slug; o.textContent = String(val);
+            var o = document.createElement('option'); o.value = String(val); o.textContent = String(val);
             newSel.appendChild(o);
         });
         try { selectEl.parentNode.replaceChild(newSel, selectEl); } catch(e){ selectEl.innerHTML = newSel.innerHTML; newSel = selectEl; }
@@ -944,12 +950,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 quantity_option: qtyOptVal || undefined
             };
             // If we can resolve an explicit variant id, include it to avoid server 'variant_required' errors
-            try {
-                var resolvedVariant = resolveSelectedVariant();
-                if (resolvedVariant) {
-                    optionsPayload.variation_id = resolvedVariant.id || resolvedVariant.variant_id || resolvedVariant.variation_id || null;
-                }
-            } catch(e) { /* ignore resolution errors */ }
+                try {
+                    var resolvedVariant = resolveSelectedVariant();
+                    if (resolvedVariant) {
+                        var vid = resolvedVariant.id || resolvedVariant.variant_id || resolvedVariant.variation_id || null;
+                        optionsPayload.variation_id = vid;
+                        // Also send `variant_id` for servers that expect that field name.
+                        optionsPayload.variant_id = vid;
+                    }
+                } catch(e) { /* ignore resolution errors */ }
 
             // Helpful debug: log selected options and resolved variant to console
             try {

@@ -14,7 +14,7 @@
 
   // Format currency
   function formatMoney(amount){
-    return '$' + parseFloat(amount || 0).toFixed(2);
+    return 'RM' + parseFloat(amount || 0).toFixed(2);
   }
 
   // Format date

@@ -90,3 +90,4 @@ Homestead.json
 # yarn.lock
 includes/cart_error.log
 logs/admin.log
+.github/copilot-instructions.md

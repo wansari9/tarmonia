@@ -44,7 +44,10 @@
       return this._listPromise;
     },
     detail: function(productId){
-      var url = EP + 'product_detail.php?id=' + encodeURIComponent(productId);
+      // The frontend passes an external product identifier as `product_id` in the URL.
+      // Request the detail endpoint using the legacy `product_id` parameter so the
+      // server can lookup by external_id when internal id is not known.
+      var url = EP + 'product_detail.php?product_id=' + encodeURIComponent(productId);
       return api(url).then(function(res){ return res && res.success ? res : { success:false, error:'Failed' }; });
     }
   };

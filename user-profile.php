@@ -94,12 +94,12 @@
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
                                         <span class="contact_icon icon-1"></span>
                                         <span class="contact_label contact_cart_label">cart:</span>
                                         <span class="contact_cart_totals">
                                             <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">&#36;0.00</span>
+                                            <span class="cart_summa">RM0.00</span>
                                         </span>
                                     </a>
                                     <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
@@ -122,7 +122,7 @@
                                                     <div class="cart-footer">
                                                         <div class="cart-total">
                                                             <span class="total-label">Total:</span>
-                                                            <span class="total-amount">$0.00</span>
+                                                            <span class="total-amount">RM0.00</span>
                                                         </div>
                                                         <div class="cart-buttons">
                                                             <a href="cart.html" class="view-cart-button">View Cart</a>
@@ -396,6 +396,7 @@
 
 <script src="js/auth-session.js"></script>
 <script src="js/mini-cart.js"></script>
+<script src="js/formatting-override.js"></script>
 <script src="js/user-profile-enhanced.js"></script>
 
 </body>

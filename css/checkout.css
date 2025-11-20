@@ -5,7 +5,7 @@
 }
 :root{
     /* Design tokens (Warm / Organic) */
-    --brand:#72b16a; /* primary green */
+    --brand:#72b16a; /* primary green (kept for legacy components) */
     --brand-strong:#4f8a48;
     --accent:#F4C200; /* warm accent */
     --muted:#9aa3a0;
@@ -25,11 +25,9 @@ body {
 }
 
 /* Header: avoid overriding theme header layout. Keep header styles minimal here. */
-
 /* Constrain logo size so header items stay aligned */
 .top_panel_middle .logo img, .logo img { max-height: 64px; width: auto; display: block; }
 .header_actions a, .top_panel_top_contact_area, .top_panel_top_open_hours { line-height: 1; }
-.header_actions a { height: 36px; padding: 6px 10px; display:inline-flex; align-items:center; }
 
 /* Main layout uses a flexible responsive grid, avoid using a fixed height */
 main {
@@ -82,13 +80,13 @@ main {
 .card-price{ font-size:18px; font-weight:500; color:#F2994A; margin-top:5px }
 .card-wheel{ margin-top: 12px; border: .2px solid #4e515085; width: 129px; padding:8px; border-radius:10px; font-size:12px; display:flex; justify-content:space-between }
 .card-wheel button{ background: #E0E0E0; color:#222; width: 34px; height: 34px; min-width:34px; min-height:34px; display:flex; justify-content:center; align-items:center; border: 0; cursor:pointer; border-radius:6px; font-weight:700 }
-.card-wheel button:focus{ outline: 3px solid rgba(114,177,106,0.18); outline-offset: 2px }
+.card-wheel button:focus{ outline: 3px solid rgba(244,194,0,0.18); outline-offset: 2px }
 .card:hover{ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
 .checkout-shipping, .checkout-total{ display:flex; font-size: 18px; padding: 5px 0; border-top: 1px solid #BDBDBD; justify-content: space-between }
 .checkout-shipping p, .checkout-total p{ font-size: 15px; font-weight: 500 }
 
-footer.call_wrap{ height: auto; color: #BDBDBD; display:grid; place-items:center; font-size: 12px; font-weight: 500; text-align:center; padding: 30px 0; width: 100%; box-sizing: border-box; overflow: visible; }
-footer.call_wrap a{ text-decoration:none; color:inherit }
+/* footer.call_wrap{ height: auto; color: #BDBDBD; display:grid; place-items:center; font-size: 12px; font-weight: 500; text-align:center; padding: 30px 0; width: 100%; box-sizing: border-box; overflow: visible; }
+footer.call_wrap a{ text-decoration:none; color:inherit } */
 
 #msform {
     width: 100%; /* Ensure the form takes up the full width */
@@ -142,12 +140,12 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 #msform input:focus, #msform select:focus, #msform textarea:focus {
     outline: none;
-    border-color: #72b16a;
-    box-shadow: 0 0 6px rgba(114,177,106,0.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 6px rgba(244,194,0,0.12);
 }
 
 #msform input.valid {
-    border-color: #72b16a !important;
+    border-color: var(--accent) !important;
 }
 
 #msform input.invalid {
@@ -263,7 +261,7 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
 
 /* passed step indicator */
 #progressbar li.passed:before {
-    background: #72b16a; /* a green for completed */
+    background: var(--brand); /* keep legacy green for completed */
     color: #fff;
     content: '\2713'; /* checkmark */
 }
@@ -470,7 +468,7 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
     border: 0;
     cursor: pointer;
 }
-.btn-primary:focus, .action-button.submit:focus { outline: 3px solid rgba(114,177,106,0.18); outline-offset: 2px }
+.btn-primary:focus, .action-button.submit:focus { outline: 3px solid rgba(244,194,0,0.18); outline-offset: 2px }
 
 .action-button[disabled], .btn-primary[disabled]{ opacity: .6; cursor: not-allowed }
 
@@ -720,16 +718,15 @@ footer.call_wrap a{ text-decoration:none; color:inherit }
     flex-direction: column;
 }
 
-/* Ensure call-to-action (Where to buy) section centers content and wraps properly */
+
 body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap,
-body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
-    max-width: 1070px !important; /* match the standard site content width used in responsive.css */
+/* body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
+    max-width: 1070px !important; 
     width: 100%;
-    margin: 0 auto; /* center container */
-    padding: 0 20px; /* preserve small side padding */
-    box-sizing: border-box;
-    /* Don't force footer to flex; target call_wrap separately */
-}
+    margin: 0 auto;
+    padding: 0 20px; 
+    box-sizing: border-box; 
+} */
 
 /* Make CTA text and buttons inline and aligned, but allow wrapping */
 .call_wrap_inner .call-text,
@@ -749,17 +746,17 @@ body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
 .call_wrap_inner .call-text { flex: 1 1 560px; max-width: 580px; }
 body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap { display: flex; align-items: center; justify-content: space-between; }
 
-/* Footer widgets: center and make columns responsive */
+/* Footer widgets: center and make columns responsive
 body.woocommerce.woocommerce-page footer .widget_area_inner .content_wrap {
     max-width: 1000px !important;
     margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
-}
+} */
 
-@media screen and (max-width: 768px) {
-    /* Allow CTA/footer content containers to use full width and avoid clipping on small screens */
-    body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap,
+/* @media screen and (max-width: 768px) { */
+
+    /* body.woocommerce.woocommerce-page .call_wrap_inner .content_wrap,
     body.woocommerce.woocommerce-page .footer_wrap_inner .content_wrap {
         padding: 0 12px;
         max-width: 100% !important;
@@ -767,53 +764,53 @@ body.woocommerce.woocommerce-page footer .widget_area_inner .content_wrap {
         margin: 0 auto;
         box-sizing: border-box;
         overflow: visible;
-    }
-    .call_wrap_inner .call-text, .call_wrap_inner .call-title, .call_wrap_inner .sc_button { display: block; text-align:center; margin: 0.5rem auto; }
+    } */
+    /* .call_wrap_inner .call-text, .call_wrap_inner .call-title, .call_wrap_inner .sc_button { display: block; text-align:center; margin: 0.5rem auto; }
     .footer_wrap_inner .content_wrap { padding: 0 12px; }
     body.woocommerce.woocommerce-page .footer_wrap_inner aside { text-align: center; }
-}
+} */
 
 /* Ensure footer inner content isn't clipped by overflow rules elsewhere */
-footer .footer_wrap_inner .content_wrap,
+/* footer .footer_wrap_inner .content_wrap,
 body .footer_wrap_inner .content_wrap {
     overflow: visible !important;
-}
+} */
 
 /* Outer wrappers: keep full-width backgrounds without causing horizontal overflow */
-.call_wrap, .footer_wrap, footer.call_wrap {
+/* .call_wrap, .footer_wrap, footer.call_wrap {
     width: 100%;
-    background-color: #231f1f; /* outer wrapper background */
+    background-color: #231f1f;
     box-sizing: border-box;
-}
+} */
 
 /* Reduce default inner padding on the outer wrappers so content_wrap controls spacing */
-.call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner {
+/* .call_wrap .call_wrap_inner, .footer_wrap .footer_wrap_inner {
     padding: 0;
-}
+} */
 
 /* Checkout-specific: align call/CTA content to the right and vertically center it
    Keep the background full-bleed but position the inner content to the right side
    with a comfortable right padding so text isn't clipped. Mobile falls back to centered. */
-footer.call_wrap .call_wrap_inner .content_wrap {
+/* footer.call_wrap .call_wrap_inner .content_wrap {
     display: flex !important;
-    align-items: center !important;     /* vertical centering */
-    justify-content: flex-end !important; /* push content to the right */
+    align-items: center !important;     
+    justify-content: flex-end !important; 
     text-align: right !important;
-    gap: 20px;                          /* spacing between title/text/button */
-    max-width: 1200px;                  /* keep inner constraint */
-    margin: 0 auto;                     /* center inner container inside full-bleed */
-    padding: 20px;                      /* avoid large fixed offset which shifts content */
+    gap: 20px;                          
+    max-width: 1200px;                  
+    margin: 0 auto;                    
+    padding: 20px;                      
     box-sizing: border-box;
-}
+} */
 
-footer.call_wrap .call_wrap_inner .call-title,
+/* footer.call_wrap .call_wrap_inner .call-title,
 footer.call_wrap .call_wrap_inner .call-text {
-    margin: 0; /* remove default margins so alignment is predictable */
-}
+    margin: 0; 
+}   */
 
-footer.call_wrap .call_wrap_inner .sc_button {
-    margin: 0; /* button sits at the right edge of the inner content */
-}
+/* footer.call_wrap .call_wrap_inner .sc_button {
+    margin: 0; 
+} */
 
 @media screen and (max-width: 768px) {
     footer.call_wrap .call_wrap_inner .content_wrap {
