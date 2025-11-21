@@ -24,9 +24,7 @@ try {
 }
 
 // Test 3: Check session
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+// Session should be active after including `includes/db.php` above
 $checks['session_id'] = session_id();
 $checks['session_active'] = session_status() === PHP_SESSION_ACTIVE;
 

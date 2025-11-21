@@ -209,6 +209,7 @@
                                         <!-- Order actions (cancel / pay) shown when unpaid -->
                                         <div id="order-actions" style="margin-top:20px;display:none;gap:12px;">
                                             <button id="cancel-order-btn" class="sc_button sc_button_style_filled sc_button_size_small" style="background:#e74c3c;border:none;padding:10px 14px;color:#fff;border-radius:6px;">Cancel Order</button>
+                                            <button id="refund-order-btn" class="sc_button sc_button_style_filled sc_button_size_small" style="background:#6c7ae0;border:none;padding:10px 14px;color:#fff;border-radius:6px;display:none;">Request Refund / Return</button>
                                             <button id="pay-order-btn" class="sc_button sc_button_style_filled sc_button_size_small" style="background:#F4C200;border:none;padding:10px 14px;color:#000;border-radius:6px;">Pay Now</button>
                                         </div>
                                 </div>

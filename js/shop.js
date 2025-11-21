@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const a = element.querySelector('a');
 
             if (a && productId) {
-                a.href = `single-product.html?product_id=${productId}`;
+                a.href = `single-product.php?product_id=${productId}`;
             }
         } else {
             console.warn("No parent .product found for .post_featured element.");
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const pid = productEl && productEl.getAttribute('data-product_id');
         const label = (button.textContent || '').toLowerCase();
         if (pid && label.indexOf('select options') !== -1) {
-            button.setAttribute('href', `single-product.html?product_id=${pid}`);
+            button.setAttribute('href', `single-product.php?product_id=${pid}`);
         }
 
         button.addEventListener('click', function (event) {

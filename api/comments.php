@@ -20,7 +20,7 @@ if ($targetType === '' || $targetId === null) {
 // If client requests non-approved statuses, require admin authentication
 if ($status !== 'approved') {
     // this will enforce admin session and set appropriate headers for API
-    require_once __DIR__ . '/../includes/admin_auth.php';
+    require_once __DIR__ . '/../includes/admin_api.php';
 }
 
 $validSorts = ['newest','oldest','highest_rating','lowest_rating'];

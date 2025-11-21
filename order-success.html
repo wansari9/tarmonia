@@ -204,6 +204,7 @@
         (function() {
             var urlParams = new URLSearchParams(window.location.search);
             var orderNumber = urlParams.get('order');
+            var orderIdParam = urlParams.get('id');
             var sessionId = urlParams.get('session_id');
 
             // If we were redirected from Stripe with a session id, poll Stripe once or twice
@@ -271,8 +272,23 @@
                 return;
             }
 
-            // Load order details
-            fetch('api/order_detail.php?order_number=' + encodeURIComponent(orderNumber))
+            // Load order details (support either order_number or id)
+            var detailQuery = '';
+            if (orderNumber) {
+                detailQuery = 'order_number=' + encodeURIComponent(orderNumber);
+            } else if (orderIdParam) {
+                detailQuery = 'id=' + encodeURIComponent(orderIdParam);
+            }
+
+            if (!detailQuery) {
+                document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">No order information available.</p>';
+                // update button to My Orders
+                var viewBtnEmpty = document.getElementById('view-order-btn');
+                if (viewBtnEmpty) { viewBtnEmpty.textContent = 'My Orders'; viewBtnEmpty.href = 'user-profile.php'; }
+                return;
+            }
+
+            fetch('api/order_detail.php?' + detailQuery)
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
                     console.log('Order data:', data);
@@ -387,8 +403,12 @@
 
                 document.getElementById('order-summary').innerHTML = summaryHTML;
 
-                // Update view order button - link to order details page
-                document.getElementById('view-order-btn').href = 'user-order-detail.php?id=' + encodeURIComponent(order.id);
+                // Update view button to point to My Orders (user profile)
+                var vb = document.getElementById('view-order-btn');
+                if (vb) {
+                    vb.textContent = 'My Orders';
+                    vb.href = 'user-profile.php';
+                }
             }
 
             function formatDate(dateString) {

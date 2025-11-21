@@ -3,15 +3,7 @@
 header('Content-Type: application/json');
 
 // Reuse DB/session bootstrap (starts session)
-$dbPath = __DIR__ . '/db.php';
-if (file_exists($dbPath)) {
-    require_once $dbPath;
-} else {
-    // Fallback: start session if db.php is unavailable
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-}
+require_once __DIR__ . '/db.php';
 
 $isAuth = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 $user = null;

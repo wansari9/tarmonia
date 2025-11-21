@@ -1,0 +1,498 @@
+<?php
+// support.php - simple support / refund request form
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/email_helper.php';
+
+$errors = [];
+$success = false;
+
+// Allow prefill from query (order id/number and subject)
+$prefillOrder = isset($_GET['order']) ? trim((string)$_GET['order']) : '';
+$prefillSubject = isset($_GET['subject']) ? trim((string)$_GET['subject']) : '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim((string)($_POST['name'] ?? ''));
+    $email = trim((string)($_POST['email'] ?? ''));
+    $orderRef = trim((string)($_POST['order_ref'] ?? ''));
+    $subject = trim((string)($_POST['subject'] ?? 'Support request'));
+    $message = trim((string)($_POST['message'] ?? ''));
+    $csrf = trim((string)($_POST['csrf_token'] ?? ''));
+
+    if (!verify_csrf_token($csrf)) {
+        $errors[] = 'Invalid session. Please reload the page and try again.';
+    }
+    if ($name === '') $errors[] = 'Please provide your name.';
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please provide a valid email address.';
+    if ($message === '') $errors[] = 'Please describe your request in the message field.';
+
+    if (empty($errors)) {
+        $to = 'support@tarmonia.com';
+        $html = '<p><strong>From:</strong> ' . htmlspecialchars($name, ENT_QUOTES) . ' &lt;' . htmlspecialchars($email, ENT_QUOTES) . '&gt;</p>';
+        if ($orderRef !== '') $html .= '<p><strong>Order:</strong> ' . htmlspecialchars($orderRef, ENT_QUOTES) . '</p>';
+        $html .= '<p><strong>Message:</strong></p><div>' . nl2br(htmlspecialchars($message, ENT_QUOTES)) . '</div>';
+        $html .= '<hr><p>Site: ' . ($_SERVER['HTTP_HOST'] ?? '') . ', IP: ' . ($_SERVER['REMOTE_ADDR'] ?? '') . '</p>';
+        $text = "From: $name <$email>\n" . ($orderRef !== '' ? "Order: $orderRef\n" : '') . "\n" . $message . "\n\nSite: " . ($_SERVER['HTTP_HOST'] ?? '') . "\nIP: " . ($_SERVER['REMOTE_ADDR'] ?? '');
+
+        $sent = send_email($to, $subject, $html, $text);
+        if ($sent) {
+            $success = true;
+        } else {
+            $errors[] = 'Failed to send message. Please try again later.';
+        }
+    }
+}
+
+// Render page (simple copy of site's header/footer patterns for consistent look)
+?><!DOCTYPE html>
+<html lang="en-US" class="scheme_original">
+<head>
+    <title>Support / Contact Us &#8211; Tarmonia</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
+</head>
+<body class="page body_style_wide body_filled scheme_original top_panel_show top_panel_above sidebar_hide">
+<div class="body_wrap">
+    <div class="page_wrap">
+        <div class="top_panel_fixed_wrap"></div>
+        <header class="top_panel_wrap top_panel_style_1 scheme_original">
+            <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+                <div class="top_panel_top">
+                    <div class="content_wrap clearfix">
+                        <div class="top_panel_top_contact_area icons icon-phone-1">1(800)-456-789 </div>
+                        <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
+                        <div class="top_panel_top_user_area">
+                            <div class="top_panel_top_socials">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_twitter">
+                                            <span class="icon-twitter"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_facebook">
+                                            <span class="icon-facebook"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                            <span class="icon-gplus-1"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_linkedin">
+                                            <span class="icon-linkedin"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul id="menu_user" class="menu_user_nav"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="top_panel_middle">
+                    <div class="content_wrap">
+                        <div class="columns_wrap columns_fluid">
+                            <div class="column-4_5 contact_logo">
+                                <div class="logo" style="display:flex;align-items:center;gap:15px;">
+                                    <a href="index.html" style="flex-shrink:0;">
+                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                    </a>
+                                    <div class="logo-text-box">
+                                        <span>TARMONIA</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column-1_5 contact_field contact_cart">
+                                <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                        <span class="contact_icon icon-1"></span>
+                                    </a>
+                                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
+                                    <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                        <span class="user_initial" style="font-weight:600;">U</span>
+                                    </a>
+                                </div>
+                                <ul class="widget_area sidebar_cart sidebar">
+                                    <li>
+                                        <div class="widget woocommerce widget_shopping_cart">
+                                            <div class="hide_cart_widget_if_empty">
+                                                <div class="widget_shopping_cart_content">
+                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top_panel_bottom">
+                    <div class="content_wrap clearfix">
+                        <nav class="menu_main_nav_area menu_hover_fade">
+                            <ul id="menu_main" class="menu_main_nav">
+                                <li class="menu-item menu-item-has-children"><a href="index.html"><span>Home</span></a></li>
+                                <li class="menu-item current-menu-ancestor current-menu-parent menu-item-has-children"><a href="about-2.html"><span>About us</span></a></li>
+                                <!-- <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li> -->
+                                <li class="menu-item menu-item-has-children"><a href="classic.html"><span>News</span></a></li>
+                                <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
+                                <!-- <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li> -->
+                                <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="header_mobile">
+            <div class="content_wrap">
+                <div class="menu_button icon-menu"></div>
+                <div class="logo" style="display:flex;align-items:center;gap:15px;">
+                    <a href="index.html" style="flex-shrink:0;">
+                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                    </a>
+                    <div class="logo-text-box">
+                        <span>TARMONIA</span>
+                    </div>
+                </div>
+            </div>
+            <div class="side_wrap">
+                <div class="close">Close</div>
+                <div class="panel_top">
+                    <nav class="menu_main_nav_area">
+                        <ul id="menu_mobile" class="menu_main_nav">
+                            <li class="menu-item"><a href="index.html"><span>Home</span></a></li>
+                            <li class="menu-item current-menu-item"><a href="about-2.html"><span>About us</span></a></li>
+                            <!-- <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li> -->
+                            <li class="menu-item"><a href="classic.html"><span>News</span></a></li>
+                            <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
+                            <!-- <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li> -->
+                            <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="panel_bottom">
+                </div>
+            </div>
+            <div class="mask"></div>
+        </div>
+        <div class="top_panel_title top_panel_style_1  title_present breadcrumbs_present scheme_original">
+            <div  class="bg_cust_2 top_panel_title_inner top_panel_inner_style_1  title_present_inner breadcrumbs_present_inner">
+                <div class="fresh-from-farm-overlay" style="animation: fadeInUp 1s ease-out 0.2s both;">
+                    <h1 style="animation: fadeInUp 1s ease-out 0.4s both, glow 4s ease-in-out 1.4s infinite;">Contact Support</h1>
+                    <div class="accent-line" style="animation: scaleAccent 0.8s ease-out 0.8s both;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page_content_wrap page_paddings_yes">
+            <div class="content_wrap">
+                <div class="content">
+                    <article class="post_item_single post_type_page">
+                        <div class="post_content entry-content">
+                            <div class="profile-container" style="max-width:900px;margin:0 auto;">
+                                <div style="margin:24px 0;">
+                                    <h1>Contact Support</h1>
+                                    <p>If you need help with an order (refunds, returns or other issues), please fill the form below. Our support team will respond by email.</p>
+                                </div>
+
+                                <?php if ($success): ?>
+                                    <div class="sc_message success" style="padding:18px;background:#e6f9ec;border:1px solid #c7f0d1;border-radius:6px;margin-bottom:18px;">Your message has been sent. Our support team will contact you shortly.</div>
+                                <?php else: ?>
+                                    <?php if (!empty($errors)): ?>
+                                        <div class="sc_message error" style="padding:12px;background:#fff1f1;border:1px solid #f2c2c2;border-radius:6px;margin-bottom:18px;">
+                                            <ul style="margin:0;padding-left:18px;">
+                                            <?php foreach ($errors as $err): ?>
+                                                <li><?= htmlspecialchars($err, ENT_QUOTES) ?></li>
+                                            <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <form method="post" action="support.php" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensure_csrf_token(), ENT_QUOTES) ?>">
+                                        <div style="grid-column:1/3;display:flex;gap:12px;">
+                                            <input type="text" name="name" placeholder="Your name" value="<?= htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES) ?>" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">
+                                            <input type="email" name="email" placeholder="Your email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES) ?>" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">
+                                        </div>
+                                        <div style="grid-column:1/3;">
+                                            <input type="text" name="subject" placeholder="Subject" value="<?= htmlspecialchars($_POST['subject'] ?? $prefillSubject, ENT_QUOTES) ?>" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">
+                                        </div>
+                                        <div style="grid-column:1/3;">
+                                            <input type="text" name="order_ref" placeholder="Order number (optional)" value="<?= htmlspecialchars($_POST['order_ref'] ?? $prefillOrder, ENT_QUOTES) ?>" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">
+                                        </div>
+                                        <div style="grid-column:1/3;">
+                                            <textarea name="message" placeholder="Describe your issue" rows="8" style="width:100%;padding:12px;border:1px solid #e0e0e0;border-radius:6px;"><?= htmlspecialchars($_POST['message'] ?? '', ENT_QUOTES) ?></textarea>
+                                        </div>
+                                        <div style="grid-column:1/3;display:flex;align-items:center;justify-content:flex-end;">
+                                            <button type="submit" class="sc_button sc_button_style_filled sc_button_size_medium" style="background:#72b16a;border:none;color:#fff;padding:12px 18px;border-radius:6px;">Send Message</button>
+                                        </div>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        <footer class="call_wrap">
+            <div class="call_wrap_inner">
+                <div class="content_wrap">
+                    <h2 class="call-title">Where to Buy</h2>
+                    <div class="call-text">Our Products are currently available at select retailers in Connecticut and New York..</div>
+                    <a class="sc_button sc_button_size_large sc_button_style_border" href="contacts.html">Store Locator</a>
+                </div>
+            </div>
+        </footer>
+        <footer class="footer_wrap widget_area scheme_original">
+            <div class="footer_wrap_inner widget_area_inner">
+                <div class="content_wrap">
+                    <div class="columns_wrap">
+                        <aside class="column-1_4 widget widget_nav_menu">
+                            <h4 class="widget_title">On the Farm</h4>
+                            <div class="menu-footer-menu-1-container">
+                                <ul id="menu-footer-menu-1" class="menu">
+                                    <li class="menu-item"><a href="farm.html">Meet Our Farmers</a></li>
+                                    <li class="menu-item"><a href="recipes.html">Meet the Cows</a></li>
+                                    <li class="menu-item"><a href="cobbles.html">Famous Dairy Facts</a></li>
+                                    <li class="menu-item"><a href="grid.html">From the Farm to the Fridge</a></li>
+                                    <li class="menu-item"><a href="contacts.html">Dairy Farm Map</a></li>
+                                    <li class="menu-item"><a href="classic.html">Farm Practices</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_nav_menu">
+                            <h4 class="widget_title">In the Kitchen</h4>
+                            <div class="menu-footer-menu-2-container">
+                                <ul id="menu-footer-menu-2" class="menu">
+                                    <li class="menu-item"><a href="recipes.html">Recipes</a></li>
+                                    <li class="menu-item"><a href="masonry-2-columns.html">Lactose Intolerance</a></li>
+                                    <li class="menu-item"><a href="shop.html">Milk Imitators</a></li>
+                                    <li class="menu-item"><a href="portfolio-3-columns.html">Organic Milk</a></li>
+                                    <li class="menu-item"><a href="portfolio-2-columns.html">Flavored Milk</a></li>
+                                    <li class="menu-item"><a href="contacts.html">Ask Our Dietitian</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_nav_menu">
+                            <h4 class="widget_title">In the News</h4>
+                            <div class="menu-footer-menu-3-container">
+                                <ul id="menu-footer-menu-3" class="menu">
+                                    <li class="menu-item"><a href="masonry-3-columns.html">Local Milk Blog</a></li>
+                                    <li class="menu-item"><a href="classic.html">Contests/Sweepstakes</a></li>
+                                    <li class="menu-item"><a href="cobbles.html">Videos</a></li>
+                                    <li class="menu-item"><a href="about-1.html">News Releases</a></li>
+                                    <li class="menu-item current-menu-item page-item-171 "><a href="about-2.html">Newsletters</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_nav_menu">
+                            <h4 class="widget_title">About Us</h4>
+                            <div class="menu-footer-menu-4-container">
+                                <ul id="menu-footer-menu-4" class="menu">
+                                    <li class="menu-item"><a href="FAQ.html">FAQ</a></li>
+                                    <li class="menu-item"><a href="farm.html">Our Board</a></li>
+                                    <li class="menu-item current-menu-item page-item-171 "><a href="about-2.html">Our Staff</a></li>
+                                    <li class="menu-item"><a href="contacts.html">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="logo">
+                                    <a href="index.html">
+                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                                    </a>
+                                    <div class="logo-text-box">
+                                        <span>TARMONIA</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </aside>
+                        <aside class="column-1_4 widget widget_text">
+                            <div class="textwidget"> 
+                                <span class="accent1">Address</span>: B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_text centered-contact">
+                            <div class="textwidget">
+                                <span class="accent1">Phone: 123-456-7890</span>
+                                <br> Fax: 010-927 7092
+                                <br><span class="contact-email">Email:<a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
+                            </div>
+                        </aside>
+                        <aside class="column-1_4 widget widget_socials">
+                            <div class="widget_inner">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_twitter">
+                                            <span class="icon-twitter"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_facebook">
+                                            <span class="icon-facebook"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                            <span class="icon-gplus-1"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_linkedin">
+                                            <span class="icon-linkedin"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="copyright_wrap copyright_style_menu  scheme_original">
+            <div class="copyright_wrap_inner">
+                <div class="content_wrap">
+                    <ul id="menu_footer" class="menu_footer_nav">
+                        <li class="menu-item"><a href="FAQ.html"><span>FAQ</span></a></li>
+                        <li class="menu-item"><a href="classic.html"><span>News</span></a></li>
+                        <li class="menu-item"><a href="contacts.html"><span>Contact Us</span></a></li>
+                    </ul>
+                    <div class="copyright_text">
+                        <p>2025 Tarmonia
+                            <a href="http://ancorathemes.com/about/">Terms of Use</a> and
+                            <a href="http://ancorathemes.com/about/">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
+<div class="custom_html_section"></div>
+
+<script defer type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
+<script defer type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
+<script defer type='text/javascript' src='js/custom/custom.js'></script>
+<script defer type='text/javascript' src='js/vendor/modernizr.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/jquery/js.cookie.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/superfish.js'></script>
+<script defer type='text/javascript' src='js/custom/core.utils.js'></script>
+<script defer type='text/javascript' src='js/custom/core.init.js'></script>
+<script defer type='text/javascript' src='js/custom/init.js'></script>
+<script defer type='text/javascript' src='js/custom/core.debug.js'></script>
+<script defer type='text/javascript' src='js/custom/embed.min.js'></script>
+<script defer type='text/javascript' src='js/custom/shortcodes.js'></script>
+<script defer type='text/javascript' src='js/vendor/comp/comp_front.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/core.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/widget.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/ui/tabs.min.js'></script>
+<script defer type='text/javascript' src='js/vendor/isotope.pkgd.min.js'></script>
+
+<!-- Global cart script -->
+<script defer type='text/javascript' src='js/local-cart.js'></script>
+<script defer type='text/javascript' src='js/cart-api.js'></script>
+<script defer type='text/javascript' src='js/mini-cart.js'></script>
+<script defer type='text/javascript' src='js/auth-session.js'></script>
+<script defer type='text/javascript' src='js/blog-dynamic.js'></script>
+<script>
+// Dynamic year tabs pagination (2017-2025, show 5 at a time)
+document.addEventListener('DOMContentLoaded', function() {
+    var tabsContainer = document.querySelector('#sc_tabs_113');
+    if(!tabsContainer) return;
+    var list = tabsContainer.querySelector('.sc_tabs_titles.years-list');
+    var items = Array.prototype.slice.call(list.querySelectorAll('li.sc_tabs_title'));
+    var prevBtn = tabsContainer.querySelector('.years-prev');
+    var nextBtn = tabsContainer.querySelector('.years-next');
+    var visibleCount = parseInt(list.getAttribute('data-visible-count'), 10) || 5;
+    var startIndex = 0;
+
+    function updateButtons() {
+        prevBtn.disabled = (startIndex <= 0);
+        nextBtn.disabled = (startIndex + visibleCount >= items.length);
+        prevBtn.classList.toggle('disabled', prevBtn.disabled);
+        nextBtn.classList.toggle('disabled', nextBtn.disabled);
+    }
+
+    function renderWindow() {
+        items.forEach(function(li, idx){
+            if(idx >= startIndex && idx < startIndex + visibleCount) {
+                li.style.display = 'block';
+            } else {
+                li.style.display = 'none';
+            }
+        });
+        updateButtons();
+    }
+
+    prevBtn.addEventListener('click', function(){
+        if(startIndex <= 0) return;
+        startIndex -= visibleCount;
+        if(startIndex < 0) startIndex = 0;
+        renderWindow();
+    });
+    nextBtn.addEventListener('click', function(){
+        if(startIndex + visibleCount >= items.length) return;
+        startIndex += visibleCount;
+        if(startIndex > items.length - visibleCount) startIndex = items.length - visibleCount;
+        renderWindow();
+    });
+
+    // Activate first tab content logic if existing theme JS doesn't already do it
+    function activateFirstVisible() {
+        var firstVisible = items.find(function(li){ return li.style.display !== 'none'; });
+        if(!firstVisible) return;
+        var anchor = firstVisible.querySelector('a');
+        if(anchor && anchor.getAttribute('href')) {
+            var targetId = anchor.getAttribute('href');
+            try {
+                // Deactivate all
+                var contents = tabsContainer.querySelectorAll('.sc_tabs_content');
+                contents.forEach(function(c){ c.style.display = 'none'; });
+                var target = tabsContainer.querySelector(targetId);
+                if(target) target.style.display = 'block';
+            } catch(e) { /* silent */ }
+        }
+    }
+
+    // Bind clicking of year anchors to show content
+    items.forEach(function(li){
+        var a = li.querySelector('a');
+        if(!a) return;
+        a.addEventListener('click', function(ev){
+            ev.preventDefault();
+            var targetId = a.getAttribute('href');
+            if(!targetId) return;
+            // Hide all
+            var contents = tabsContainer.querySelectorAll('.sc_tabs_content');
+            contents.forEach(function(c){ c.style.display = 'none'; });
+            var target = tabsContainer.querySelector(targetId);
+            if(target) target.style.display = 'block';
+            // Mark active
+            items.forEach(function(other){ other.classList.remove('active'); });
+            li.classList.add('active');
+        });
+    });
+
+    renderWindow();
+    activateFirstVisible();
+});
+</script>
+
+</body>
+</html>

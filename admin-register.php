@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/includes/db.php';
 
 if (isset($_SESSION['admin_id'], $_SESSION['admin_active']) && (int)$_SESSION['admin_active'] === 1) {
     header('Location: admin-dashboard.php');

@@ -29,7 +29,7 @@ function require_valid_csrf(): void {
 }
 
 function current_session_id(): string {
-    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    // Expect session to be active (bootstrapped via includes/db.php)
     // Use PHP's session_id as cart session identifier
     $sid = session_id();
     if (!$sid) {

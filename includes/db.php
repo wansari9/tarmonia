@@ -4,44 +4,8 @@
 
 declare(strict_types=1);
 
-// Include security headers and HTTPS enforcement before starting session
-require_once __DIR__ . '/security.php';
-
-// Load environment variables from project .env (if present)
-require_once __DIR__ . '/env.php';
-
-// Configure secure session cookie params before session_start()
-if (session_status() === PHP_SESSION_NONE) {
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-    $isLocal = in_array($host, ['localhost', '127.0.0.1', '::1'], true) || str_starts_with($host, 'localhost');
-    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-        (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') ||
-        (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
-
-    $cookieSecure = $isHttps && !$isLocal;
-
-    // Prefer PHP 7.3+ array-style session cookie params to include SameSite
-    if (PHP_VERSION_ID >= 70300) {
-        session_set_cookie_params([
-            'lifetime' => 0,
-            'path' => '/',
-            'domain' => $host,
-            'secure' => $cookieSecure,
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
-    } else {
-        // Fallback for older PHP: samesite handled in cookie path
-        $lifetime = 0;
-        $path = "/; samesite=Lax";
-        $domain = $host;
-        $secureFlag = $cookieSecure;
-        $httponly = true;
-        session_set_cookie_params($lifetime, $path, $domain, $secureFlag, $httponly);
-    }
-
-    session_start();
-}
+// Centralized bootstrap starts the session and sets secure cookie params
+require_once __DIR__ . '/bootstrap.php';
 
 function db_json_error(int $code, string $message): void {
     http_response_code($code);

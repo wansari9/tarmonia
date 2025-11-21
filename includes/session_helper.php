@@ -2,18 +2,8 @@
 // Session helper - initializes session and provides user info without outputting JSON
 // Unlike auth_session.php, this does NOT echo/exit - safe to include in other scripts
 
-// Start session via db.php
-$dbPath = __DIR__ . '/db.php';
-if (file_exists($dbPath)) {
-    require_once $dbPath;
-} else {
-    // Fallback: start session if db.php is unavailable
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-}
-
-// Ensure CSRF token exists in session
+// Use central DB/session bootstrap and CSRF helpers
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/csrf.php';
 ensure_csrf_token();
 

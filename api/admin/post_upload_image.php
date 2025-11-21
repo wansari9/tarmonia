@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../_response.php';
-require_once __DIR__ . '/../../includes/admin_auth.php';
+require_once __DIR__ . '/../../includes/admin_api.php';
 
 // CSRF is enforced by admin_auth for POST
 

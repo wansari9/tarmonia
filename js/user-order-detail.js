@@ -127,15 +127,48 @@
       document.querySelector('[data-tax]').textContent = formatMoney(order.tax_total);
       document.querySelector('[data-total]').textContent = formatMoney(order.total);
 
-      // Show order actions when unpaid (cancel / pay)
+      // Show/hide order actions depending on payment and shipping status
       try {
         const actionsEl = document.getElementById('order-actions');
-        if (actionsEl && (order.payment_status || '').toLowerCase() !== 'paid') {
-          actionsEl.style.display = 'flex';
-          const cancelBtn = document.getElementById('cancel-order-btn');
-          const payBtn = document.getElementById('pay-order-btn');
+        const cancelBtn = document.getElementById('cancel-order-btn');
+        const payBtn = document.getElementById('pay-order-btn');
+        const refundBtn = document.getElementById('refund-order-btn');
 
-          if (cancelBtn) {
+        // Default hide
+        if (actionsEl) actionsEl.style.display = 'none';
+        if (cancelBtn) cancelBtn.style.display = '';
+        if (payBtn) payBtn.style.display = '';
+        if (refundBtn) refundBtn.style.display = 'none';
+
+        const isPaid = (order.payment_status || '').toLowerCase() === 'paid';
+        const isShipped = (order.status || '').toLowerCase() === 'shipped' || (order.shipping_status || '').toLowerCase() === 'shipped';
+
+        // Show actions in these cases:
+        // - If shipped: show only refund
+        // - Else if paid: show only refund (allow refund requests before return)
+        // - Else (unpaid & not shipped): show cancel + pay
+        if (actionsEl && (isShipped || isPaid || !isPaid)) {
+          actionsEl.style.display = 'flex';
+
+          if (isShipped) {
+            // When shipped: only show refund (no cancel, no pay)
+            if (cancelBtn) cancelBtn.style.display = 'none';
+            if (payBtn) payBtn.style.display = 'none';
+            if (refundBtn) refundBtn.style.display = '';
+          } else if (isPaid) {
+            // Paid but not shipped: allow refund requests (no cancel, no pay)
+            if (cancelBtn) cancelBtn.style.display = 'none';
+            if (payBtn) payBtn.style.display = 'none';
+            if (refundBtn) refundBtn.style.display = '';
+          } else {
+            // Not shipped and not paid: regular actions (cancel + pay)
+            if (cancelBtn) cancelBtn.style.display = '';
+            if (payBtn) payBtn.style.display = '';
+            if (refundBtn) refundBtn.style.display = 'none';
+          }
+
+          // Attach cancel behaviour (only if visible)
+          if (cancelBtn && cancelBtn.style.display !== 'none') {
             cancelBtn.addEventListener('click', function() {
               if (!confirm('Cancel this order? This will delete the order and cannot be undone.')) return;
               cancelBtn.disabled = true;
@@ -148,7 +181,6 @@
               })
               .then(r => r.json())
               .then(d => {
-                // support both shapes: { ok:true, data:... } and legacy { success:true }
                 if ((d && d.ok) || (d && d.success)) {
                   window.location.href = 'user-profile.php#orders';
                 } else {
@@ -163,7 +195,8 @@
             });
           }
 
-          if (payBtn) {
+          // Attach pay behaviour (only if visible)
+          if (payBtn && payBtn.style.display !== 'none') {
             payBtn.addEventListener('click', function() {
               payBtn.disabled = true;
               payBtn.textContent = 'Redirecting to payment...';
@@ -179,7 +212,6 @@
                   window.location.href = d.data.url;
                   return;
                 }
-                // fallback for other shapes
                 if (d && d.url) {
                   window.location.href = d.url;
                   return;
@@ -191,6 +223,18 @@
                 payBtn.disabled = false;
                 payBtn.textContent = 'Pay Now';
               });
+            });
+          }
+
+          // Attach refund button behaviour: navigate to support form with order prefilled (only if visible)
+          if (refundBtn && refundBtn.style.display !== 'none') {
+            refundBtn.addEventListener('click', function() {
+              const orderRef = encodeURIComponent(order.order_number || order.id || '');
+              const subj = encodeURIComponent('Refund/Return request for order ' + (order.order_number || ('#' + order.id)));
+              let url = 'support.php?';
+              if (orderRef) url += 'order=' + orderRef + '&';
+              url += 'subject=' + subj;
+              window.location.href = url;
             });
           }
         } else if (actionsEl) {

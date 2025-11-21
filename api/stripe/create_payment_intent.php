@@ -35,9 +35,7 @@ $input = json_decode(file_get_contents('php://input'), true) ?? [];
 require_valid_csrf();
 
 // Simple per-session rate limiting to reduce automated abuse
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+// Note: session must be active via central bootstrap (includes/db.php)
 $rateKey = 'stripe_create_attempts';
 $now = time();
 $window = 60; // seconds

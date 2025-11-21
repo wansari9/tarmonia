@@ -25,7 +25,7 @@ try {
     // Get order - ensure it belongs to the logged-in user
     $stmt = $pdo->prepare("
         SELECT 
-            id, user_id, order_number, status, currency, subtotal, shipping_total, tax_total, 
+            id, user_id, order_number, status, shipping_status, payment_status, currency, subtotal, shipping_total, tax_total, 
             discount_total, grand_total,
             billing_first_name, billing_last_name, billing_email, billing_phone,
             billing_address_line1, billing_address_line2,
@@ -79,6 +79,10 @@ try {
     $order['currency'] = $order['currency'] ?: 'RM';
     // Provide `total` key expected by the frontend (alias of grand_total)
     $order['total'] = isset($order['grand_total']) ? $order['grand_total'] : (isset($order['subtotal'], $order['shipping_total'], $order['tax_total']) ? $order['subtotal'] + $order['shipping_total'] + $order['tax_total'] : 0);
+
+    // Ensure payment_status and shipping_status keys exist for frontend logic
+    if (!isset($order['payment_status'])) $order['payment_status'] = 'unpaid';
+    if (!isset($order['shipping_status'])) $order['shipping_status'] = '';
 
     echo json_encode([
         'success' => true,

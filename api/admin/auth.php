@@ -16,9 +16,7 @@ function auth_log(string $message, ?Throwable $e = null): void {
     } catch (Throwable $_) { /* ignore */ }
 }
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Session is started by includes/db.php (required above)
 
 function read_json(): array {
     $ct = $_SERVER['CONTENT_TYPE'] ?? '';

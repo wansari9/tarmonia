@@ -23,15 +23,15 @@
         '<div class="post_item_wrap">\n'
         + '  <div class="post_featured">\n'
         + '    <div class="post_thumb">\n'
-        + '      <a class="hover_icon hover_icon_link" href="single-product.html?product_id='+encodeURIComponent(p.id)+'">\n'
+        + '      <a class="hover_icon hover_icon_link" href="single-product.php?product_id='+encodeURIComponent(p.id)+'">\n'
         + '        <img src="'+(p.image||'images/placeholder.png')+'" class="attachment-shop_catalog size-shop_catalog" alt="" />\n'
         + '      </a>\n'
         + '    </div>\n'
         + '  </div>\n'
         + '  <div class="post_content">\n'
-        + '    <h2 class="woocommerce-loop-product__title"><a href="single-product.html?product_id='+encodeURIComponent(p.id)+'">'+ (p.name||'Product') +'</a></h2>\n'
+        + '    <h2 class="woocommerce-loop-product__title"><a href="single-product.php?product_id='+encodeURIComponent(p.id)+'">'+ (p.name||'Product') +'</a></h2>\n'
         + '    <span class="price" data-dynamic-price="'+p.id+'">'+ priceHtml +'</span>\n'
-        + '    <a rel="nofollow" href="single-product.html?product_id='+encodeURIComponent(p.id)+'" data-quantity="1" data-product_id="'+p.id+'" class="button add_to_cart_button">Select options</a>\n'
+        + '    <a rel="nofollow" href="single-product.php?product_id='+encodeURIComponent(p.id)+'" data-quantity="1" data-product_id="'+p.id+'" class="button add_to_cart_button">Select options</a>\n'
         + '  </div>\n'
         + '</div>';
       container.appendChild(li);

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 // Admin: moderate a comment (approve/reject/spam/delete)
 require_once __DIR__ . '/../../api/_db.php';
-require_once __DIR__ . '/../../includes/admin_auth.php';
+require_once __DIR__ . '/../../includes/admin_api.php';
 
 $pdo = api_get_pdo();
 
