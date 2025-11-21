@@ -67,7 +67,7 @@
             background: transparent !important; /* ensure parent full-bleed image is visible */
         }
 
-        /* Full-bleed solid background behind contact section */
+        /* Full-bleed background image behind contact section */
         .contact-main-wrapper::before {
             content: '';
             position: absolute;
@@ -76,7 +76,10 @@
             transform: translateX(-50%);
             width: 100vw; /* span entire viewport width */
             height: 100%;
-            background-color: #fec321; /* requested solid background color */
+            background-image: url('images/contact_form_background.png?v=2');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             z-index: 0;
             pointer-events: none;
         }
@@ -144,24 +147,21 @@
             margin-bottom: 12px;
         }
 
-        .contact-icon { font-size: 26px; color: #72b16a; }
+        .contact-icon { font-size: 26px; color: #ffa500; }
 
         .contact-card-title { margin: 6px 0 4px; font-size: 20px; text-align: center; width: 100%; }
         .contact-card-text { margin: 0; font-size: 15px; color: #555; text-align: center; width: 100%; }
 
         /* Contact form becomes a distinct container under the cards */
         .contact_form_section {
-            /* optimized size: taller and narrower */
+            /* container stripped: show only form fields */
             max-width: 75%;
             width: 100%;
             margin: 24px;
-            padding: 6px;
-            background: #fff3d3;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 0;
+            background: transparent !important;
+            box-shadow: none;
             transform-origin: top center;
-            transform: translateY(0) scaleY(1.15); /* remove downward nudge */
-            will-change: transform;
             box-sizing: border-box;
             order: -1; /* place form before cards in grid */
         }
@@ -216,13 +216,13 @@
             #map-container { min-height: 400px; }
             #map-iframe { min-height: 400px; }
             .contact-info-card { padding: 12px; min-height: 170px; transform: none; width: 100%; }
-            .contact_form_section { padding: 16px; width: calc(100% - 32px); }
+            .contact_form_section { padding: 0; width: 100%; }
             .contact-icon-wrapper { width: 42px; height: 42px; }
             .contact-icon { font-size: 18px; }
         }
 
           /* Adjust margins to position form and add bottom space */
-          .contact_form_section { margin-top: 24px; margin-bottom: 140px; padding-bottom: 36px; }
+          .contact_form_section { margin-top: 24px; margin-bottom: 140px; padding-bottom: 0; }
           .contact_info_section { margin-top: 24px; align-self: center; } /* vertically center cards next to the form */
 
         /* Layer overrides (reset): keep cards in normal flow next to the form */
@@ -528,6 +528,10 @@
         </div>
         <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
             <div  class="bg_cust_7 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
+                <div class="fresh-from-farm-overlay" style="animation: fadeInUp 1s ease-out 0.2s both;">
+                    <h1 style="animation: fadeInUp 1s ease-out 0.4s both, glow 4s ease-in-out 1.4s infinite;">Get in Touch</h1>
+                    <div class="accent-line" style="animation: scaleAccent 0.8s ease-out 0.8s both;"></div>
+                </div>
                 <!-- <div class="content_wrap">
                     <h1 class="page_title">Contacts</h1>
                     <div class="breadcrumbs">
@@ -687,7 +691,13 @@
                                             <div class="contact_map_section">
                                                 <div id="map-container">
                                                     <div id="map-overlay" style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(0,0,0,0.1); z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                        <div style="background: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px;">Double-click to activate the map</div>
+                                                        <div style="background: linear-gradient(135deg, rgba(255,165,0,0.95) 0%, rgba(255,140,0,0.95) 50%, rgba(218,112,0,0.95) 100%); padding: 24px 40px; border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 50px rgba(255,165,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3); font-weight: 700; color: #fff; font-size: 18px; letter-spacing: 1.2px; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); animation: mapPulse 2.5s ease-in-out infinite;" onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 16px 50px rgba(0,0,0,0.4), 0 0 70px rgba(255,165,0,0.6), inset 0 1px 0 rgba(255,255,255,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.3), 0 0 50px rgba(255,165,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3)';">📍 Double-Click to Activate Map</div>
+                                                        <style>
+                                                            @keyframes mapPulse {
+                                                                0%, 100% { transform: scale(1); }
+                                                                50% { transform: scale(1.02); }
+                                                            }
+                                                        </style>
                                                     </div>
                                                     <button id="deactivate-map" style="position: absolute; top: 24px; right: 20px; z-index: 1100; background: white; padding: 10px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: none; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-tap-highlight-color: transparent;">
                                                         Cancel Interaction
