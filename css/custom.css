@@ -906,10 +906,16 @@ img.emoji {
 
 /* for blog page */
 .bg_cust_4 {
-	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/cropped-agricultural-machinery.jpg);
+	/* Updated background for News page hero */
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/new_page.png);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 350px;
 }
 
 /* for recipes page */
@@ -922,10 +928,16 @@ img.emoji {
 
 /* for shop page */
 .bg_cust_6 {
-	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/7360.avif);
+	/* Updated products (shop) hero background and sizing to match About */
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/products_page.png);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 350px;
 }
 
 /* for shop page */
@@ -947,6 +959,15 @@ img.emoji {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+	.bg_cust_4 { min-height: 280px; }
+	.bg_cust_6 { min-height: 280px; }
+}
+@media (max-width: 480px) {
+	.bg_cust_4 { min-height: 220px; }
+	.bg_cust_6 { min-height: 220px; }
 }
 
 /* for single post page content 1 */
@@ -1710,7 +1731,6 @@ img.emoji {
 	/* Shift content slightly left & reclaim right space for price */
 	padding:14px 10px 8px 8px; /* top right bottom left */
 	overflow-y:auto;
-	overflow-x:hidden; /* prevent horizontal scrollbar */
 	flex:1 1 auto;
 }
 .mini-cart .cart-items-wrapper::-webkit-scrollbar { width:8px; }
@@ -2968,18 +2988,8 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 }
 
 .contact-icon-wrapper::before {
-	content: '';
-	position: absolute;
-	top: -5px;
-	left: -5px;
-	right: -5px;
-	bottom: -5px;
-	background: linear-gradient(135deg, #0C1A3A 0%, #FEC321 33%, #F57F17 66%, #0C1A3A 100%);
-	border-radius: 50%;
-	opacity: 0;
-	transition: opacity 0.5s ease;
-	z-index: -1;
-	animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	/* Glow and animation removed */
+	display: none;
 }
 
 @keyframes pulse-ring {
