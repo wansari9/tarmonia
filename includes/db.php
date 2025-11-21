@@ -7,6 +7,9 @@ declare(strict_types=1);
 // Include security headers and HTTPS enforcement before starting session
 require_once __DIR__ . '/security.php';
 
+// Load environment variables from project .env (if present)
+require_once __DIR__ . '/env.php';
+
 // Configure secure session cookie params before session_start()
 if (session_status() === PHP_SESSION_NONE) {
     $host = $_SERVER['HTTP_HOST'] ?? '';

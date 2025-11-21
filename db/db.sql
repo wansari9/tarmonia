@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2025 at 03:15 AM
+-- Generation Time: Nov 20, 2025 at 07:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -21,9 +21,10 @@ SET time_zone = "+00:00";
 -- Database: `tarmonia`
 --
 
-
 -- --------------------------------------------------------
--- End additional variants
+
+--
+-- Table structure for table `addresses`
 --
 
 CREATE TABLE `addresses` (
@@ -120,7 +121,31 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 (46, NULL, 'nr9a8ab4egg3884pofe7n1bjb9', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:21', '2025-11-17 09:35:21'),
 (47, NULL, 'a176shrfs2fkjr4j3m25j1iine', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:33', '2025-11-17 09:35:33'),
 (48, NULL, 'tbr05d1enn91urfeq34ju589mu', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:38:02', '2025-11-17 09:38:02'),
-(49, 12, 'avmbm8tuu0kfm13ncj3d7uf645', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:38:40', '2025-11-17 09:38:40');
+(49, 12, 'avmbm8tuu0kfm13ncj3d7uf645', 'converted', 'RM', NULL, 55.15, 0.00, 0.00, 5.99, 61.14, '2025-11-17 09:38:40', '2025-11-19 09:35:29'),
+(50, NULL, '8tpae2sdbavo0u78s43uo27qnf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 14:34:28', '2025-11-18 14:34:28'),
+(51, NULL, 'slp6tad2uhk3mn2ng68gg0ccb9', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 14:44:08', '2025-11-18 14:44:08'),
+(52, NULL, '5kqba62mbhtgtsadpjgg84iatj', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:11:19', '2025-11-18 15:11:19'),
+(53, NULL, '1o3g0u8qvpl4f2i9aaa2halb8l', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:42:20', '2025-11-18 15:42:20'),
+(54, NULL, 'ges3fvplehvt1q9sfojsikojp4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:42:51', '2025-11-18 15:42:51'),
+(55, NULL, '8qmlhhntm2s82jo2bejqnga6mv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:48:40', '2025-11-18 15:48:40'),
+(56, NULL, '0iide7ahhmnsv3j31v26vb8798', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:25:15', '2025-11-18 16:25:15'),
+(57, NULL, 'hv3dmcgjrnqjsbpuconq33pl2i', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:29:24', '2025-11-18 16:29:24'),
+(58, NULL, 'flg2mcn71oro6isslgkfvph47b', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:58:12', '2025-11-18 16:58:12'),
+(59, NULL, '1ka8pifjirg4rd91n1tfdr7pqj', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:58:35', '2025-11-18 16:58:35'),
+(60, NULL, 'k6iaeiitop34omkpfquiln0qpu', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 09:24:33', '2025-11-19 09:24:33'),
+(61, 12, 's7kpk0ejer3ssbgj7ah25c0an5', 'converted', 'RM', NULL, 5.15, 0.00, 0.00, 5.99, 11.14, '2025-11-19 09:35:51', '2025-11-20 09:22:03'),
+(62, NULL, 'jqrrit93nsd11nlb9qssljq4bt', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 10:00:43', '2025-11-19 10:00:43'),
+(63, NULL, '844gj9uv882vml8lf8dlka2tgs', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 10:06:49', '2025-11-19 10:06:49'),
+(64, NULL, '5kceeem1u6011ge5lpd3o2cjrd', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 14:41:33', '2025-11-19 14:41:33'),
+(65, NULL, '0t844brc6fpt6dr18igeulifs4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 14:53:02', '2025-11-19 14:53:02'),
+(66, NULL, 'ffmom8ltu5o8424go2c0pepls4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 09:21:04', '2025-11-20 09:21:04'),
+(67, 12, 'k7jrr1r7af7m5tn6r288ohrgse', 'converted', 'RM', NULL, 86.00, 0.00, 0.00, 5.99, 91.99, '2025-11-20 09:29:55', '2025-11-20 13:41:33'),
+(68, NULL, 'krlju2oe2abhrjvg5uf3q37o3h', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 10:18:09', '2025-11-20 10:18:09'),
+(69, NULL, '5cah4ab2v92k995fqf1rkess5n', 'open', 'RM', NULL, 40.00, 0.00, 0.00, 5.99, 45.99, '2025-11-20 10:18:31', '2025-11-20 10:18:31'),
+(70, NULL, 'qi5h4bnf7ji889qs0a5gfp60nb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 10:56:46', '2025-11-20 10:56:46'),
+(71, NULL, '4n583giouvo0aum10prq6b5jea', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 11:00:49', '2025-11-20 11:00:49'),
+(72, 12, 'lju0qlaschc5joc9drnfu6utev', 'converted', 'RM', NULL, 4.90, 0.00, 0.00, 5.99, 10.89, '2025-11-20 13:41:39', '2025-11-20 13:46:44'),
+(73, 12, 'lju0qlaschc5joc9drnfu6utev', 'open', 'RM', NULL, 3.92, 0.00, 0.00, 5.99, 9.91, '2025-11-20 14:12:40', '2025-11-20 14:13:34');
 
 -- --------------------------------------------------------
 
@@ -172,7 +197,9 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_
 (120, 30, 4, 10, 'Parmesan Cheese', 'PARM-001', 'PARM-001-250G', '{\"weight\":\"250g\"}', 1, 35.00, 35.00, 'images/parmesan cheese.png', '2025-11-10 16:00:00'),
 (121, 30, 11, 22, 'Butter', 'BUTTER-001', 'BUTTER-001-500G', '{\"weight\":\"500g\"}', 2, 16.00, 32.00, 'images/Butter.png', '2025-11-10 16:05:00'),
 (122, 31, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:25:17'),
-(123, 32, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:53:33');
+(123, 32, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:53:33'),
+(131, 69, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\"}', 1, 40.00, 40.00, 'images/Farm sour Cream.png', '2025-11-20 10:18:31'),
+(134, 73, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"skim\"}', 1, 3.92, 3.92, 'images/Evaporated Milk.png', '2025-11-20 14:12:49');
 
 -- --------------------------------------------------------
 
@@ -260,6 +287,7 @@ INSERT INTO `communications` (`id`, `direction`, `channel`, `from_email`, `to_em
 
 CREATE TABLE `orders` (
   `id` bigint(20) NOT NULL,
+  `stripe_payment_intent_id` varchar(255) DEFAULT NULL,
   `order_number` varchar(30) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `status` enum('awaiting_confirmation','pending','paid','packed','shipped','delivered','canceled','refunded') NOT NULL DEFAULT 'awaiting_confirmation',
@@ -297,6 +325,10 @@ CREATE TABLE `orders` (
   `billing_address_id` int(11) DEFAULT NULL,
   `fulfillment_status` enum('unfulfilled','partial','fulfilled') NOT NULL DEFAULT 'unfulfilled',
   `payment_status` enum('unpaid','paid','refunded','failed') NOT NULL DEFAULT 'unpaid',
+  `payment_method` varchar(100) DEFAULT NULL,
+  `stripe_charge_id` varchar(255) DEFAULT NULL,
+  `paid_at` datetime DEFAULT NULL,
+  `payment_metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payment_metadata`)),
   `notes` text DEFAULT NULL,
   `placed_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -309,21 +341,25 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_number`, `user_id`, `status`, `shipping_status`, `tracking_number`, `shipped_at`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `shipping_method_id`, `grand_total`, `billing_first_name`, `billing_last_name`, `billing_email`, `billing_phone`, `billing_address_line1`, `billing_address_line2`, `billing_city`, `billing_state`, `billing_postal_code`, `billing_country`, `shipping_first_name`, `shipping_last_name`, `shipping_email`, `shipping_phone`, `shipping_address_line1`, `shipping_address_line2`, `shipping_city`, `shipping_state`, `shipping_postal_code`, `shipping_country`, `shipping_address_id`, `billing_address_id`, `fulfillment_status`, `payment_status`, `notes`, `placed_at`, `created_at`, `updated_at`, `admin_confirmed_at`, `admin_confirmed_by`) VALUES
-(1, 'ORD-20251101-A7B2C', 2, 'delivered', 'delivered', 'TRK-MY-1001234567', '2025-11-02 09:00:00', 'RM', 156.90, 0.00, 0.00, 8.00, 1, 164.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 3, 'fulfilled', 'paid', 'Please deliver before 5 PM', '2025-11-01 14:20:00', '2025-11-01 14:20:00', '2025-11-05 16:30:00', NULL, NULL),
-(2, 'ORD-20251103-B8C3D', 3, 'shipped', 'shipped', 'TRK-MY-2001234568', '2025-11-04 10:30:00', 'RM', 245.50, 0.00, 0.00, 10.00, 4, 255.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 5, 'fulfilled', 'paid', NULL, '2025-11-03 16:45:00', '2025-11-03 16:45:00', '2025-11-04 10:30:00', NULL, NULL),
-(3, 'ORD-20251106-C9D4E', 4, 'packed', 'packed', NULL, NULL, 'RM', 340.00, 0.00, 0.00, 10.00, 4, 350.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'partial', 'paid', 'Gift wrapping requested', '2025-11-06 11:30:00', '2025-11-06 11:30:00', '2025-11-07 09:00:00', NULL, NULL),
-(4, 'ORD-20251108-D0E5F', 5, 'paid', 'pending', NULL, NULL, 'RM', 199.90, 0.00, 0.00, 15.00, 7, 214.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, 9, 'unfulfilled', 'paid', NULL, '2025-11-08 15:20:00', '2025-11-08 15:20:00', '2025-11-08 15:20:00', NULL, NULL),
-(5, 'ORD-20251110-E1F6G', 1, 'paid', 'pending', NULL, NULL, 'RM', 125.40, 0.00, 0.00, 8.00, 1, 133.40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 'unfulfilled', 'unpaid', NULL, '2025-11-10 09:15:00', '2025-11-10 09:15:00', '2025-11-14 12:35:28', NULL, NULL),
-(6, 'ORD-20251105-F2G7H', 2, 'canceled', 'canceled', NULL, NULL, 'RM', 89.90, 0.00, 0.00, 8.00, 1, 97.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, 4, 'unfulfilled', 'refunded', 'Customer requested cancellation', '2025-11-05 13:00:00', '2025-11-05 13:00:00', '2025-11-06 10:00:00', NULL, NULL),
-(7, 'ORD-20251112-G3H8I', 4, 'paid', 'pending', NULL, NULL, 'RM', 280.50, 0.00, 0.00, 12.00, 9, 292.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'unfulfilled', 'paid', NULL, '2025-11-12 10:45:00', '2025-11-12 10:45:00', '2025-11-12 10:45:00', NULL, NULL),
-(8, 'ORD-20251104-H4I9J', 1, 'delivered', 'delivered', 'TRK-MY-3001234569', '2025-11-05 08:30:00', 'RM', 450.00, 0.00, 0.00, 0.00, 3, 450.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 'fulfilled', 'paid', 'Free shipping - order over RM100', '2025-11-04 12:30:00', '2025-11-04 12:30:00', '2025-11-08 14:00:00', NULL, NULL),
-(9, 'ORD-20251107-I5J0K', 7, 'shipped', 'shipped', 'TRK-MY-4001234570', '2025-11-08 11:00:00', 'RM', 220.00, 0.00, 0.00, 10.00, 4, 230.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 10, 'fulfilled', 'paid', NULL, '2025-11-07 14:30:00', '2025-11-07 14:30:00', '2025-11-08 11:00:00', NULL, NULL),
-(10, 'ORD-20251109-J6K1L', 8, 'paid', 'pending', NULL, NULL, 'RM', 167.50, 0.00, 0.00, 8.00, 1, 175.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 12, 'unfulfilled', 'paid', 'Contact before delivery', '2025-11-09 10:15:00', '2025-11-09 10:15:00', '2025-11-09 10:15:00', NULL, NULL),
-(11, 'ORD-20251111-K7L2M', 9, 'delivered', 'delivered', 'TRK-MY-5001234571', '2025-11-12 09:30:00', 'RM', 310.00, 0.00, 0.00, 15.00, 7, 325.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 14, 'fulfilled', 'paid', NULL, '2025-11-11 16:00:00', '2025-11-11 16:00:00', '2025-11-13 14:00:00', NULL, NULL),
-(12, 'ORD-20251113-L8M3N', 10, 'paid', 'pending', NULL, NULL, 'RM', 189.00, 0.00, 0.00, 10.00, 4, 199.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 15, 'unfulfilled', 'paid', NULL, '2025-11-13 13:45:00', '2025-11-13 13:45:00', '2025-11-13 13:45:00', NULL, NULL),
-(13, 'ORD-20251114-727241A6', 11, '', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', NULL, NULL, NULL),
-(14, 'ORD-20251114-C737D1B1', 11, 'canceled', 'pending', NULL, NULL, 'RM', 39.81, 0.00, 0.00, 5.99, NULL, 45.80, 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', '', '2025-11-14 14:53:48', '2025-11-14 14:53:48', '2025-11-14 15:08:10', NULL, NULL);
+INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id`, `status`, `shipping_status`, `tracking_number`, `shipped_at`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `shipping_method_id`, `grand_total`, `billing_first_name`, `billing_last_name`, `billing_email`, `billing_phone`, `billing_address_line1`, `billing_address_line2`, `billing_city`, `billing_state`, `billing_postal_code`, `billing_country`, `shipping_first_name`, `shipping_last_name`, `shipping_email`, `shipping_phone`, `shipping_address_line1`, `shipping_address_line2`, `shipping_city`, `shipping_state`, `shipping_postal_code`, `shipping_country`, `shipping_address_id`, `billing_address_id`, `fulfillment_status`, `payment_status`, `payment_method`, `stripe_charge_id`, `paid_at`, `payment_metadata`, `notes`, `placed_at`, `created_at`, `updated_at`, `admin_confirmed_at`, `admin_confirmed_by`) VALUES
+(1, NULL, 'ORD-20251101-A7B2C', 2, 'delivered', 'delivered', 'TRK-MY-1001234567', '2025-11-02 09:00:00', 'RM', 156.90, 0.00, 0.00, 8.00, 1, 164.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 3, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, 'Please deliver before 5 PM', '2025-11-01 14:20:00', '2025-11-01 14:20:00', '2025-11-05 16:30:00', NULL, NULL),
+(2, NULL, 'ORD-20251103-B8C3D', 3, 'shipped', 'shipped', 'TRK-MY-2001234568', '2025-11-04 10:30:00', 'RM', 245.50, 0.00, 0.00, 10.00, 4, 255.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 5, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-03 16:45:00', '2025-11-03 16:45:00', '2025-11-04 10:30:00', NULL, NULL),
+(3, NULL, 'ORD-20251106-C9D4E', 4, 'packed', 'packed', NULL, NULL, 'RM', 340.00, 0.00, 0.00, 10.00, 4, 350.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'partial', 'paid', NULL, NULL, NULL, NULL, 'Gift wrapping requested', '2025-11-06 11:30:00', '2025-11-06 11:30:00', '2025-11-07 09:00:00', NULL, NULL),
+(4, NULL, 'ORD-20251108-D0E5F', 5, 'paid', 'pending', NULL, NULL, 'RM', 199.90, 0.00, 0.00, 15.00, 7, 214.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, 9, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-08 15:20:00', '2025-11-08 15:20:00', '2025-11-08 15:20:00', NULL, NULL),
+(5, NULL, 'ORD-20251110-E1F6G', 1, 'paid', 'pending', NULL, NULL, 'RM', 125.40, 0.00, 0.00, 8.00, 1, 133.40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-10 09:15:00', '2025-11-10 09:15:00', '2025-11-14 12:35:28', NULL, NULL),
+(6, NULL, 'ORD-20251105-F2G7H', 2, 'canceled', 'canceled', NULL, NULL, 'RM', 89.90, 0.00, 0.00, 8.00, 1, 97.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, 4, 'unfulfilled', 'refunded', NULL, NULL, NULL, NULL, 'Customer requested cancellation', '2025-11-05 13:00:00', '2025-11-05 13:00:00', '2025-11-06 10:00:00', NULL, NULL),
+(7, NULL, 'ORD-20251112-G3H8I', 4, 'paid', 'pending', NULL, NULL, 'RM', 280.50, 0.00, 0.00, 12.00, 9, 292.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-12 10:45:00', '2025-11-12 10:45:00', '2025-11-12 10:45:00', NULL, NULL),
+(8, NULL, 'ORD-20251104-H4I9J', 1, 'delivered', 'delivered', 'TRK-MY-3001234569', '2025-11-05 08:30:00', 'RM', 450.00, 0.00, 0.00, 0.00, 3, 450.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, 'Free shipping - order over RM100', '2025-11-04 12:30:00', '2025-11-04 12:30:00', '2025-11-08 14:00:00', NULL, NULL),
+(9, NULL, 'ORD-20251107-I5J0K', 7, 'shipped', 'shipped', 'TRK-MY-4001234570', '2025-11-08 11:00:00', 'RM', 220.00, 0.00, 0.00, 10.00, 4, 230.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 10, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-07 14:30:00', '2025-11-07 14:30:00', '2025-11-08 11:00:00', NULL, NULL),
+(10, NULL, 'ORD-20251109-J6K1L', 8, 'paid', 'pending', NULL, NULL, 'RM', 167.50, 0.00, 0.00, 8.00, 1, 175.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 12, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, 'Contact before delivery', '2025-11-09 10:15:00', '2025-11-09 10:15:00', '2025-11-09 10:15:00', NULL, NULL),
+(11, NULL, 'ORD-20251111-K7L2M', 9, 'delivered', 'delivered', 'TRK-MY-5001234571', '2025-11-12 09:30:00', 'RM', 310.00, 0.00, 0.00, 15.00, 7, 325.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 14, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-11 16:00:00', '2025-11-11 16:00:00', '2025-11-13 14:00:00', NULL, NULL),
+(12, NULL, 'ORD-20251113-L8M3N', 10, 'paid', 'pending', NULL, NULL, 'RM', 189.00, 0.00, 0.00, 10.00, 4, 199.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 15, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-13 13:45:00', '2025-11-13 13:45:00', '2025-11-13 13:45:00', NULL, NULL),
+(13, NULL, 'ORD-20251114-727241A6', 11, '', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', NULL, NULL, NULL),
+(14, NULL, 'ORD-20251114-C737D1B1', 11, 'canceled', 'pending', NULL, NULL, 'RM', 39.81, 0.00, 0.00, 5.99, NULL, 45.80, 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-14 14:53:48', '2025-11-14 14:53:48', '2025-11-14 15:08:10', NULL, NULL),
+(15, NULL, 'ORD-20251119-99C935B8', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 55.15, 0.00, 0.00, 5.99, NULL, 61.14, 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-19 09:35:29', '2025-11-19 09:35:29', NULL, NULL, NULL),
+(16, NULL, 'ORD-20251120-CFF5AA93', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 09:22:03', '2025-11-20 09:22:03', NULL, NULL, NULL),
+(17, NULL, 'ORD-20251120-185C0973', 12, '', 'pending', NULL, NULL, 'RM', 86.00, 0.00, 0.00, 5.99, NULL, 91.99, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:41:33', '2025-11-20 13:41:33', NULL, NULL, NULL),
+(19, NULL, 'ORD-20251120-3390D197', 12, '', 'pending', NULL, NULL, 'RM', 4.90, 0.00, 0.00, 5.99, NULL, 10.89, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:46:44', '2025-11-20 13:46:44', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -393,7 +429,13 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 (40, 12, 11, 21, 'Butter', 'BUTTER-001', 'BUTTER-001-250G', '{\"weight\":\"250g\"}', 2, 8.50, 17.00, 'images/Butter.png'),
 (41, 13, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
 (42, 14, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
-(43, 14, 2, NULL, 'Farm Sour Cream', 'SCREAM-001', NULL, '{\"weight\":\"3-lb\"}', 2, 16.50, 34.66, 'images/Farm sour Cream.png');
+(43, 14, 2, NULL, 'Farm Sour Cream', 'SCREAM-001', NULL, '{\"weight\":\"3-lb\"}', 2, 16.50, 34.66, 'images/Farm sour Cream.png'),
+(44, 15, 1, 82, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-3LB', '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
+(45, 15, 3, 85, 'Ricotta Salata Cheese', 'RICOTTA-SAL-001', 'RICOTTA-SAL-001-3LB', '{\"weight\":\"3-lb\"}', 1, 50.00, 50.00, 'images/Ricotta Salata.png'),
+(46, 16, 1, 83, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-5LB', '{\"weight\":\"5-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
+(47, 17, 3, 85, 'Ricotta Salata Cheese', 'RICOTTA-SAL-001', 'RICOTTA-SAL-001-3LB', '{\"weight\":\"3-lb\"}', 1, 50.00, 50.00, 'images/Ricotta Salata.png'),
+(48, 17, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\",\"fat\":\"2%\"}', 1, 36.00, 36.00, 'images/Farm sour Cream.png'),
+(49, 19, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png');
 
 -- --------------------------------------------------------
 
@@ -407,7 +449,8 @@ CREATE TABLE `payments` (
   `method` enum('manual','paypal','stripe','cod') NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `currency` char(3) NOT NULL DEFAULT 'USD',
-  `status` enum('initiated','authorized','captured','failed','refunded') NOT NULL DEFAULT 'initiated',
+  `status` enum('initiated','authorized','captured','paid','failed','refunded') NOT NULL DEFAULT 'initiated',
+  `external_id` varchar(255) DEFAULT NULL,
   `transaction_ref` varchar(150) DEFAULT NULL,
   `processed_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -416,21 +459,9 @@ CREATE TABLE `payments` (
 -- Dumping data for table `payments`
 --
 
-INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `status`, `transaction_ref`, `processed_at`) VALUES
-(1, 1, 'stripe', 164.90, 'RM', 'captured', 'pi_1ABC123XYZ456789', '2025-11-01 14:25:00'),
-(2, 2, 'cod', 255.50, 'RM', 'captured', NULL, '2025-11-03 16:50:00'),
-(3, 3, 'paypal', 350.00, 'RM', 'captured', 'PAYPAL-TXN-789456123', '2025-11-06 11:35:00'),
-(4, 4, 'stripe', 214.90, 'RM', 'captured', 'pi_2DEF456ABC789012', '2025-11-08 15:25:00'),
-(5, 5, 'manual', 133.40, 'RM', 'initiated', NULL, '2025-11-10 09:20:00'),
-(6, 6, 'stripe', 97.90, 'RM', 'refunded', 'pi_3GHI789DEF012345', '2025-11-05 13:05:00'),
-(7, 7, 'cod', 292.50, 'RM', 'captured', NULL, '2025-11-12 10:50:00'),
-(8, 8, 'stripe', 450.00, 'RM', 'captured', 'pi_4JKL012GHI345678', '2025-11-04 12:35:00'),
-(9, 9, 'paypal', 230.00, 'RM', 'captured', 'PAYPAL-TXN-234567890', '2025-11-07 14:35:00'),
-(10, 10, 'stripe', 175.50, 'RM', 'captured', 'pi_5MNO345JKL678901', '2025-11-09 10:20:00'),
-(11, 11, 'cod', 325.00, 'RM', 'captured', NULL, '2025-11-11 16:05:00'),
-(12, 12, 'stripe', 199.00, 'RM', 'captured', 'pi_6PQR678MNO901234', '2025-11-13 13:50:00'),
-(13, 13, 'manual', 11.14, 'RM', 'initiated', NULL, '2025-11-14 14:30:25'),
-(14, 14, '', 45.80, 'RM', 'initiated', NULL, '2025-11-14 14:53:48');
+INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `status`, `external_id`, `transaction_ref`, `processed_at`) VALUES
+(17, 17, 'stripe', 91.99, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:41:33'),
+(19, 19, 'stripe', 10.89, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:46:44');
 
 -- --------------------------------------------------------
 
@@ -786,7 +817,13 @@ INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `p
 (77, 20, 'BACON-001-1KG', 'Bacon 1kg', '{\"weight\": \"1kg\"}', 90.00, 55, 1, NULL, NULL, '2025-11-13 11:02:14', NULL),
 (78, 21, 'SAUSAGE-001-250G', 'Sausage 250g', '{\"weight\": \"250g\"}', 24.00, 95, 1, NULL, NULL, '2025-11-13 11:02:14', NULL),
 (79, 21, 'SAUSAGE-001-500G', 'Sausage 500g', '{\"weight\": \"500g\"}', 44.00, 80, 1, NULL, NULL, '2025-11-13 11:02:14', NULL),
-(80, 21, 'SAUSAGE-001-1KG', 'Sausage 1kg', '{\"weight\": \"1kg\"}', 78.00, 60, 1, NULL, NULL, '2025-11-13 11:02:14', NULL);
+(80, 21, 'SAUSAGE-001-1KG', 'Sausage 1kg', '{\"weight\": \"1kg\"}', 78.00, 60, 1, NULL, NULL, '2025-11-13 11:02:14', NULL),
+(81, 1, 'EVAP-001-1LB', 'Evaporated Milk 1 lb', '{\"weight\": \"1-lb\"}', NULL, 100, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
+(82, 1, 'EVAP-001-3LB', 'Evaporated Milk 3 lb', '{\"weight\": \"3-lb\"}', NULL, 100, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
+(83, 1, 'EVAP-001-5LB', 'Evaporated Milk 5 lb', '{\"weight\": \"5-lb\"}', NULL, 100, 1, NULL, 2268, '2025-11-18 06:00:00', NULL),
+(84, 3, 'RICOTTA-SAL-001-1LB', 'Ricotta Salata Cheese 1 lb', '{\"weight\": \"1-lb\"}', NULL, 50, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
+(85, 3, 'RICOTTA-SAL-001-3LB', 'Ricotta Salata Cheese 3 lb', '{\"weight\": \"3-lb\"}', NULL, 40, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
+(86, 3, 'RICOTTA-SAL-001-5LB', 'Ricotta Salata Cheese 5 lb', '{\"weight\": \"5-lb\"}', NULL, 20, 1, NULL, 2268, '2025-11-18 06:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -882,6 +919,17 @@ INSERT INTO `shipping_zones` (`id`, `name`, `country`, `region`, `postcode_patte
 (3, 'Penang', 'MY', 'Penang', '1%', 1, '2025-10-15 08:10:00'),
 (4, 'Johor', 'MY', 'Johor', '8%', 1, '2025-10-15 08:15:00'),
 (5, 'Rest of Malaysia', 'MY', NULL, '%', 1, '2025-10-15 08:20:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stripe_events`
+--
+
+CREATE TABLE `stripe_events` (
+  `event_id` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1070,8 @@ ALTER TABLE `orders`
   ADD KEY `shipping_status` (`shipping_status`),
   ADD KEY `tracking_number` (`tracking_number`),
   ADD KEY `placed_at` (`placed_at`),
-  ADD KEY `shipping_method_id` (`shipping_method_id`);
+  ADD KEY `shipping_method_id` (`shipping_method_id`),
+  ADD KEY `idx_stripe_payment_intent` (`stripe_payment_intent_id`(191));
 
 --
 -- Indexes for table `order_items`
@@ -1039,7 +1088,8 @@ ALTER TABLE `order_items`
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
-  ADD KEY `status` (`status`);
+  ADD KEY `status` (`status`),
+  ADD KEY `external_id` (`external_id`(191));
 
 --
 -- Indexes for table `posts`
@@ -1132,6 +1182,12 @@ ALTER TABLE `shipping_zones`
   ADD KEY `active` (`active`);
 
 --
+-- Indexes for table `stripe_events`
+--
+ALTER TABLE `stripe_events`
+  ADD PRIMARY KEY (`event_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1162,13 +1218,13 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -1186,19 +1242,19 @@ ALTER TABLE `communications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -1370,14 +1426,6 @@ ALTER TABLE `wishlist`
   ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `wishlist_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
--- Additional product_variants appended by migration helper
-INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `price_override`, `stock_qty`, `is_active`, `image`, `weight_grams`, `created_at`, `updated_at`) VALUES
-(81, 1, 'EVAP-001-1LB', 'Evaporated Milk 1 lb', '{"weight": "1-lb"}', NULL, 100, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
-(82, 1, 'EVAP-001-3LB', 'Evaporated Milk 3 lb', '{"weight": "3-lb"}', NULL, 100, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
-(83, 1, 'EVAP-001-5LB', 'Evaporated Milk 5 lb', '{"weight": "5-lb"}', NULL, 100, 1, NULL, 2268, '2025-11-18 06:00:00', NULL),
-(84, 3, 'RICOTTA-SAL-001-1LB', 'Ricotta Salata Cheese 1 lb', '{"weight": "1-lb"}', NULL, 50, 1, NULL, 454, '2025-11-18 06:00:00', NULL),
-(85, 3, 'RICOTTA-SAL-001-3LB', 'Ricotta Salata Cheese 3 lb', '{"weight": "3-lb"}', NULL, 40, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
-(86, 3, 'RICOTTA-SAL-001-5LB', 'Ricotta Salata Cheese 5 lb', '{"weight": "5-lb"}', NULL, 20, 1, NULL, 2268, '2025-11-18 06:00:00', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

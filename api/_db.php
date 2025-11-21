@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/_response.php';
+// Load environment variables from project .env when running API endpoints
+require_once __DIR__ . '/../includes/env.php';
 
 /**
  * Returns a shared PDO instance configured for UTF-8 MySQL access.

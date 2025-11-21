@@ -127,6 +127,79 @@
       document.querySelector('[data-tax]').textContent = formatMoney(order.tax_total);
       document.querySelector('[data-total]').textContent = formatMoney(order.total);
 
+      // Show order actions when unpaid (cancel / pay)
+      try {
+        const actionsEl = document.getElementById('order-actions');
+        if (actionsEl && (order.payment_status || '').toLowerCase() !== 'paid') {
+          actionsEl.style.display = 'flex';
+          const cancelBtn = document.getElementById('cancel-order-btn');
+          const payBtn = document.getElementById('pay-order-btn');
+
+          if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+              if (!confirm('Cancel this order? This will delete the order and cannot be undone.')) return;
+              cancelBtn.disabled = true;
+              cancelBtn.textContent = 'Cancelling...';
+              fetch('api/order_cancel.php', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ id: order.id })
+              })
+              .then(r => r.json())
+              .then(d => {
+                // support both shapes: { ok:true, data:... } and legacy { success:true }
+                if ((d && d.ok) || (d && d.success)) {
+                  window.location.href = 'user-profile.php#orders';
+                } else {
+                  throw new Error((d && d.error && d.error.message) || (d && d.message) || 'Unable to cancel');
+                }
+              })
+              .catch(e => {
+                alert('Failed to cancel order: ' + (e.message || e));
+                cancelBtn.disabled = false;
+                cancelBtn.textContent = 'Cancel Order';
+              });
+            });
+          }
+
+          if (payBtn) {
+            payBtn.addEventListener('click', function() {
+              payBtn.disabled = true;
+              payBtn.textContent = 'Redirecting to payment...';
+              fetch('api/stripe/create_checkout_for_order.php', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ id: order.id })
+              })
+              .then(r => r.json())
+              .then(d => {
+                if (d && d.ok && d.data && d.data.url) {
+                  window.location.href = d.data.url;
+                  return;
+                }
+                // fallback for other shapes
+                if (d && d.url) {
+                  window.location.href = d.url;
+                  return;
+                }
+                throw new Error((d && d.error && d.error.message) || 'Unable to start payment');
+              })
+              .catch(e => {
+                alert('Unable to start payment: ' + (e.message || e));
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay Now';
+              });
+            });
+          }
+        } else if (actionsEl) {
+          actionsEl.style.display = 'none';
+        }
+      } catch (errActions) {
+        console.error('order actions error', errActions);
+      }
+
     } catch(e) {
       console.error(e);
       alert('Failed to load order: ' + (e.message || 'Unknown error'));

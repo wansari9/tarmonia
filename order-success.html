@@ -204,6 +204,67 @@
         (function() {
             var urlParams = new URLSearchParams(window.location.search);
             var orderNumber = urlParams.get('order');
+            var sessionId = urlParams.get('session_id');
+
+            // If we were redirected from Stripe with a session id, poll Stripe once or twice
+            // to allow the payment to finalize server-side. If still pending, go back to checkout.
+            if (sessionId && !orderNumber) {
+                document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#666;">Processing payment — please wait...</p>';
+
+                var attempts = 0;
+                var maxAttempts = 3; // maximum 3 polls
+
+                function showPaidNoOrder() {
+                    document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#066;">Payment received. Your order is being processed — please check your Orders in your profile shortly.</p>' +
+                        '<div style="text-align:center;margin-top:12px;"><a class="btn btn-primary" href="user-profile.php">View My Orders</a></div>';
+                    document.getElementById('view-order-btn').style.display = 'none';
+                }
+
+                function checkSession() {
+                    attempts++;
+                    fetch('api/stripe/check_session_status.php?session_id=' + encodeURIComponent(sessionId))
+                        .then(function(r) { return r.json(); })
+                        .then(function(st) {
+                            var status = st && st.data && st.data.status ? st.data.status : (st && st.status ? st.status : null);
+                            var orderNum = st && st.data && st.data.order_number ? st.data.order_number : (st && st.order_number ? st.order_number : null);
+                            var orderId = st && st.data && st.data.order_id ? st.data.order_id : (st && st.order_id ? st.order_id : null);
+
+                            if (status === 'paid') {
+                                if (orderNum) {
+                                    window.location.search = '?order=' + encodeURIComponent(orderNum) + '&id=' + encodeURIComponent(orderId || '');
+                                } else {
+                                    // Payment is complete but order mapping not available yet — show stable success message
+                                    showPaidNoOrder();
+                                }
+                                return;
+                            }
+
+                            if (status === 'failed') {
+                                window.location.href = 'payment-failed.html?session_id=' + encodeURIComponent(sessionId);
+                                return;
+                            }
+
+                            if (attempts < maxAttempts) {
+                                setTimeout(checkSession, 2000);
+                                return;
+                            }
+
+                            // After maxAttempts, send user back to checkout to retry
+                            window.location.href = 'checkout.html?session_id=' + encodeURIComponent(sessionId);
+                        })
+                        .catch(function() {
+                            if (attempts < maxAttempts) {
+                                setTimeout(checkSession, 2000);
+                            } else {
+                                window.location.href = 'checkout.html?session_id=' + encodeURIComponent(sessionId);
+                            }
+                        });
+                }
+
+                // Start first check immediately
+                checkSession();
+                return;
+            }
 
             if (!orderNumber) {
                 document.getElementById('order-details').innerHTML = '<p style="text-align:center;color:#999;">No order information available.</p>';
@@ -326,8 +387,8 @@
 
                 document.getElementById('order-summary').innerHTML = summaryHTML;
 
-                // Update view order button - link to user profile orders
-                document.getElementById('view-order-btn').href = 'user-profile.php#order-' + order.id;
+                // Update view order button - link to order details page
+                document.getElementById('view-order-btn').href = 'user-order-detail.php?id=' + encodeURIComponent(order.id);
             }
 
             function formatDate(dateString) {

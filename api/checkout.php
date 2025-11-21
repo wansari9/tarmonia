@@ -5,6 +5,7 @@ require_once __DIR__ . '/_response.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/cart_common.php';
 require_once __DIR__ . '/../includes/session_helper.php';
+require_once __DIR__ . '/../includes/order_helper.php';
 
 global $pdo;
 
@@ -110,137 +111,56 @@ try {
     // Calculate cart totals (includes $5.99 shipping)
     $totals = recalc_cart_totals($pdo, $cartId);
     
-    // Generate order number
-    $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(md5(uniqid((string)mt_rand(), true)), 0, 8));
-    
-    // Create order
-    $orderStmt = $pdo->prepare('
-        INSERT INTO orders (
-            order_number, user_id, status, shipping_status, currency,
-            subtotal, discount_total, tax_total, shipping_total, grand_total,
-            billing_first_name, billing_last_name, billing_email, billing_phone,
-            billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
-            shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
-            shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country,
-            fulfillment_status, payment_status, notes, placed_at
-        ) VALUES (
-            :order_number, :user_id, :status, :shipping_status, :currency,
-            :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
-            :billing_first_name, :billing_last_name, :billing_email, :billing_phone,
-            :billing_address_line1, :billing_address_line2, :billing_city, :billing_state, :billing_postal_code, :billing_country,
-            :shipping_first_name, :shipping_last_name, :shipping_email, :shipping_phone,
-            :shipping_address_line1, :shipping_address_line2, :shipping_city, :shipping_state, :shipping_postal_code, :shipping_country,
-            :fulfillment_status, :payment_status, :notes, NOW()
-        )
-    ');
-    
-    $orderStmt->execute([
-        ':order_number' => $orderNumber,
-        ':user_id' => $userId,
-        ':status' => 'awaiting_confirmation',
-        ':shipping_status' => 'pending',
-        ':currency' => $cart['currency'] ?? 'RM',
-        ':subtotal' => $totals['subtotal'],
-        ':discount_total' => $totals['discount_total'],
-        ':tax_total' => $totals['tax_total'],
-        ':shipping_total' => $totals['shipping_total'],
-        ':grand_total' => $totals['grand_total'],
-        ':billing_first_name' => $input['first_name'],
-        ':billing_last_name' => $input['last_name'],
-        ':billing_email' => $input['email'],
-        ':billing_phone' => $input['phone'],
-        ':billing_address_line1' => $input['address'],
-        ':billing_address_line2' => $input['address2'] ?? null,
-        ':billing_city' => $input['city'],
-        ':billing_state' => $input['state'] ?? null,
-        ':billing_postal_code' => $input['postal_code'],
-        ':billing_country' => $input['country'] ?? 'MY',
-        ':shipping_first_name' => $input['first_name'],
-        ':shipping_last_name' => $input['last_name'],
-        ':shipping_email' => $input['email'],
-        ':shipping_phone' => $input['phone'],
-        ':shipping_address_line1' => $input['address'],
-        ':shipping_address_line2' => $input['address2'] ?? null,
-        ':shipping_city' => $input['city'],
-        ':shipping_state' => $input['state'] ?? null,
-        ':shipping_postal_code' => $input['postal_code'],
-        ':shipping_country' => $input['country'] ?? 'MY',
-        ':fulfillment_status' => 'unfulfilled',
-        ':payment_status' => 'unpaid',
-        ':notes' => $input['notes'] ?? null
-    ]);
-    
-    $orderId = (int)$pdo->lastInsertId();
-    
-    // Copy cart items to order items
-    $cartItems = $pdo->prepare('
-        SELECT product_id, variant_id, product_name, sku, variant_sku,
-               options_snapshot, quantity, unit_price, line_total, image
-        FROM cart_items WHERE cart_id = :cid
-    ');
-    $cartItems->execute([':cid' => $cartId]);
-    
-    $orderItemStmt = $pdo->prepare('
-        INSERT INTO order_items (
-            order_id, product_id, variant_id, product_name, sku, variant_sku,
-            options_snapshot, quantity, unit_price, line_total, image
-        ) VALUES (
-            :order_id, :product_id, :variant_id, :product_name, :sku, :variant_sku,
-            :options_snapshot, :quantity, :unit_price, :line_total, :image
-        )
-    ');
-    
-    while ($item = $cartItems->fetch(PDO::FETCH_ASSOC)) {
-        $orderItemStmt->execute([
-            ':order_id' => $orderId,
-            ':product_id' => $item['product_id'],
-            ':variant_id' => $item['variant_id'],
-            ':product_name' => $item['product_name'],
-            ':sku' => $item['sku'],
-            ':variant_sku' => $item['variant_sku'],
-            ':options_snapshot' => $item['options_snapshot'],
-            ':quantity' => $item['quantity'],
-            ':unit_price' => $item['unit_price'],
-            ':line_total' => $item['line_total'],
-            ':image' => $item['image']
+    // If client selected Stripe, return a thin wrapper response so the
+    // frontend can call the dedicated Stripe Checkout session endpoint.
+    if ($input['payment_method'] === 'stripe') {
+        // Do minimal validation already done above; return the endpoint URL
+        // Client will POST the same order payload to this endpoint.
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        api_json_success([
+            'stripe' => true,
+            'create_url' => '/api/stripe/create_checkout_session.php'
         ]);
     }
-    
-    // Create payment record
-    $paymentMethod = $input['payment_method'] ?? 'manual';
-    $paymentStmt = $pdo->prepare('
-        INSERT INTO payments (order_id, method, amount, currency, status)
-        VALUES (:order_id, :method, :amount, :currency, :status)
-    ');
-    
-    $paymentStmt->execute([
-        ':order_id' => $orderId,
-        ':method' => $paymentMethod,
-        ':amount' => $totals['grand_total'],
-        ':currency' => $cart['currency'] ?? 'RM',
-        ':status' => 'initiated'
-    ]);
-    
-    $paymentId = (int)$pdo->lastInsertId();
-    
-    // Clear cart
-    $pdo->prepare('DELETE FROM cart_items WHERE cart_id = :cid')->execute([':cid' => $cartId]);
-    $pdo->prepare('UPDATE carts SET status = :status, updated_at = NOW() WHERE id = :cid')
-        ->execute([':status' => 'converted', ':cid' => $cartId]);
-    
-    // Commit transaction
-    $pdo->commit();
-    
-    // Return success with order details
-    api_json_success([
-        'order_id' => $orderId,
-        'order_number' => $orderNumber,
-        'payment_id' => $paymentId,
-        'payment_method' => $paymentMethod,
-        'total' => $totals['grand_total'],
-        'currency' => $cart['currency'] ?? 'RM',
-        'redirect_url' => null // Can be populated for payment gateways
-    ]);
+
+    // Use shared helper to create order/payment and convert cart
+    $billing = [
+        'first_name' => $input['first_name'],
+        'last_name' => $input['last_name'],
+        'email' => $input['email'],
+        'phone' => $input['phone'],
+        'address' => $input['address'],
+        'address2' => $input['address2'] ?? null,
+        'city' => $input['city'],
+        'state' => $input['state'] ?? null,
+        'postal_code' => $input['postal_code'],
+        'country' => $input['country'] ?? 'MY'
+    ];
+
+    $opts = [
+        'payment_method' => $input['payment_method'] ?? 'manual',
+        'payment_status' => 'unpaid',
+        'order_status' => 'awaiting_confirmation',
+        'notes' => $input['notes'] ?? null,
+        'currency' => $cart['currency'] ?? null
+    ];
+
+    try {
+        $res = create_order_from_cart($pdo, $userId, $cartId, $billing, $opts);
+        api_json_success([
+            'order_id' => $res['order_id'],
+            'order_number' => $res['order_number'],
+            'payment_id' => $res['payment_id'],
+            'payment_method' => $opts['payment_method'],
+            'total' => $res['totals']['grand_total'],
+            'currency' => $res['currency'] ?? ($cart['currency'] ?? 'RM'),
+            'redirect_url' => null
+        ]);
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        error_log('Checkout helper error: ' . $e->getMessage());
+        api_json_error(500, 'checkout_failed', 'Unable to process checkout: ' . $e->getMessage());
+    }
     
 } catch (Throwable $e) {
     if ($pdo->inTransaction()) {

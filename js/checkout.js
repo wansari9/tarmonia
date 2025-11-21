@@ -56,6 +56,11 @@
       btn.addEventListener('click', function() {
         if (validateCurrentStep()) {
           saveCurrentStepData();
+          // If we've just completed the shipping step (index 1), start Stripe Checkout flow
+          if (currentStep === 1) {
+            startStripeCheckoutFlow();
+            return;
+          }
           goToNextStep();
         }
       });
@@ -68,6 +73,52 @@
     });
     // Attach auto-advance behavior (only when enabled)
     if (AUTO_ADVANCE) attachAutoAdvance();
+  }
+
+  // Start Stripe Checkout by creating a Checkout Session on the server
+  function startStripeCheckoutFlow() {
+    var submitBtn = document.getElementById('submit-order-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Redirecting to payment…'; }
+
+    var orderData = {
+      first_name: formData.fname || '',
+      last_name: formData.lname || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+      address: formData.address || '',
+      address2: formData.address2 || '',
+      city: formData.city || '',
+      state: formData.state || '',
+      postal_code: formData.postal_code || '',
+      country: 'MY',
+      notes: ''
+    };
+
+    fetch('api/stripe/create_checkout_session.php', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    })
+    .then(function(resp) {
+      return resp.json();
+    })
+    .then(function(data) {
+      if (data && data.ok && data.data && data.data.url) {
+        // Redirect browser to Stripe Checkout
+        window.location.href = data.data.url;
+        return;
+      }
+      throw new Error('Failed to create checkout session');
+    })
+    .catch(function(err) {
+      alert('Unable to start payment: ' + (err.message || 'Unknown error'));
+      console.error('Stripe checkout start error:', err);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order'; }
+    });
   }
 
   // Debounced auto-advance: when all required inputs in current step are valid, auto-advance
@@ -472,7 +523,7 @@
       state: formData.state || '',
       postal_code: formData.postal_code || '',
       country: 'MY',
-      payment_method: formData['payment-option'] || 'manual',
+      payment_method: formData['payment-option'] || 'stripe',
       notes: ''
     };
 
@@ -494,8 +545,31 @@
     .then(function(data) {
       // Debug: log the actual response
       console.log('Checkout API Response:', data);
-      
-      // API uses 'ok' not 'success'
+
+      // If server instructed to use Stripe, call the Stripe session endpoint
+      if (data && data.ok && data.data && data.data.stripe && data.data.create_url) {
+        // POST same orderData to the Stripe session creator and redirect when returned
+        return fetch(data.data.create_url, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+        })
+        .then(function(resp) { if (!resp.ok) throw new Error('HTTP ' + resp.status); return resp.json(); })
+        .then(function(sessData) {
+          if (sessData && sessData.ok && sessData.data && sessData.data.url) {
+            window.location.href = sessData.data.url;
+            return;
+          }
+          console.error('Stripe session creation failed:', sessData);
+          throw new Error('Unable to create Stripe Checkout session');
+        });
+      }
+
+      // API uses 'ok' not 'success' for non-Stripe flows
       if (data.ok && data.data) {
         // Redirect to order success page
         var orderId = data.data.order_id;

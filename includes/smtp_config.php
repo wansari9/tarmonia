@@ -1,20 +1,14 @@
 <?php
 // SMTP configuration for PHPMailer
-// Copy this file to fill in your SMTP details. Keep this file OUT of version control if it contains secrets.
+// This file reads SMTP settings from environment variables when available.
+// Keep secrets out of source control. You may still customize values here if needed.
 
 return [
-    // Gmail (recommended with App Password)
-    // Set 'username' to your full Gmail address and 'password' to the App Password you generated in your Google Account.
-    // Example steps:
-    // 1. Enable 2-Step Verification for your Google account.
-    // 2. Create an App Password (Mail) and copy it.
-    // 3. Put your gmail address in 'username' and the app password in 'password' below.
-
-    'host' => 'smtp.gmail.com',
-    'username' => 'wansari000@gmail.com', // your.email@gmail.com
-    'password' => 'qoyqjgnhdwsjqnzs', // <--- your Gmail App Password (do NOT check into source control)
-    'port' => 587,
-    'secure' => 'tls', // use 'ssl' with port 465 if you prefer
-    'from_email' => '', // e.g. your.email@gmail.com (leave empty to use username)
-    'from_name' => 'Tarmonia',
+    'host' => getenv('SMTP_HOST') ?: 'smtp.gmail.com',
+    'username' => getenv('SMTP_USERNAME') ?: '',
+    'password' => getenv('SMTP_PASSWORD') ?: '',
+    'port' => getenv('SMTP_PORT') !== false ? (int)getenv('SMTP_PORT') : 587,
+    'secure' => getenv('SMTP_SECURE') ?: 'tls',
+    'from_email' => getenv('MAIL_FROM_EMAIL') ?: (getenv('SMTP_USERNAME') ?: 'noreply@tarmonia.com'),
+    'from_name' => getenv('MAIL_FROM_NAME') ?: 'Tarmonia',
 ];
