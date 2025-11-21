@@ -109,15 +109,29 @@
     document.querySelectorAll('.widget_shopping_cart_content .mini-cart').forEach(function(mc){
       var rows = mc.querySelectorAll('.cart-items-wrapper .cart-item');
       var total = 0;
+      var itemsCount = 0; // sum of quantities
       rows.forEach(function(row){
         var priceEl = row.querySelector(priceSelector);
-        if (priceEl) total += parsePrice(priceEl.textContent);
+        var qtyEl = row.querySelector('.qty-input, .qty input[type=number], .qty select');
+        var qty = 1;
+        if (qtyEl) {
+          qty = parseInt(qtyEl.value || qtyEl.getAttribute('value') || '1', 10) || 1;
+        }
+        // Determine unit price: prefer data-unit-price, fallback to displayed price
+        var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : (priceEl ? parsePrice(priceEl.textContent) : 0);
+        // Ensure dataset stores unit price for future updates
+        if (unit && !row.dataset.unitPrice) row.dataset.unitPrice = String(unit);
+        var line = unit * qty;
+        // Update row display to show line total
+        if (priceEl) priceEl.textContent = formatRM(line);
+        total += line;
+        itemsCount += qty;
       });
       var totalEl = mc.querySelector(totalSelector);
       if (totalEl) totalEl.textContent = formatRM(total);
       var countBadge = mc.querySelector(countBadgeSelector);
-      if (countBadge) countBadge.textContent = String(rows.length);
-      updateHeaderCounts(rows.length, total);
+      if (countBadge) countBadge.textContent = String(itemsCount);
+      updateHeaderCounts(itemsCount, total);
     });
   }
 
@@ -129,12 +143,8 @@
     if (!qty || qty < 1) { qty = 1; el.value = String(qty); }
     var priceEl = row.querySelector(priceSelector);
     if (!priceEl) return Promise.resolve();
-    var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : (function(){
-      var current = parsePrice(priceEl.textContent);
-      var existingQty = parseInt(el.getAttribute('value') || raw, 10);
-      if (!existingQty || existingQty < 1) existingQty = qty;
-      return existingQty > 0 ? (current / existingQty) : current;
-    })();
+    var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : parsePrice(priceEl.textContent);
+    // store unit price for reliable future calculations
     row.dataset.unitPrice = String(unit);
     priceEl.textContent = formatRM(unit * qty);
     recomputeMiniCartTotals();
