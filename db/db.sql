@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2025 at 07:15 AM
+-- Generation Time: Nov 21, 2025 at 04:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -145,7 +145,37 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 (70, NULL, 'qi5h4bnf7ji889qs0a5gfp60nb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 10:56:46', '2025-11-20 10:56:46'),
 (71, NULL, '4n583giouvo0aum10prq6b5jea', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 11:00:49', '2025-11-20 11:00:49'),
 (72, 12, 'lju0qlaschc5joc9drnfu6utev', 'converted', 'RM', NULL, 4.90, 0.00, 0.00, 5.99, 10.89, '2025-11-20 13:41:39', '2025-11-20 13:46:44'),
-(73, 12, 'lju0qlaschc5joc9drnfu6utev', 'open', 'RM', NULL, 3.92, 0.00, 0.00, 5.99, 9.91, '2025-11-20 14:12:40', '2025-11-20 14:13:34');
+(73, 12, 'lju0qlaschc5joc9drnfu6utev', 'converted', 'RM', NULL, 43.82, 0.00, 0.00, 5.99, 49.81, '2025-11-20 14:12:40', '2025-11-21 09:51:48'),
+(74, NULL, '2ek6k9srvs5u4cpjdbd3aq3lgr', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:18:52', '2025-11-20 15:18:52'),
+(75, NULL, 'pm5holnb8boggcqvvkrptl6dg3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:20:02', '2025-11-20 15:20:02'),
+(76, NULL, '5qo9v5vtog2jgtcchu71doc1im', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:06', '2025-11-20 15:21:06'),
+(77, NULL, '5shn0e2ocfpodelfaccbe7t4ln', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:08', '2025-11-20 15:21:08'),
+(78, NULL, 'uns6evuaonar2bohi7k9k7c5bv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:30', '2025-11-20 15:21:30'),
+(79, NULL, 'canq4q5hos3i0qou65sp5552ln', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:22:48', '2025-11-20 15:22:48'),
+(80, NULL, '93ktnfb6g29qv2sa4kd31nkfp4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:22:51', '2025-11-20 15:22:51'),
+(81, NULL, 'c6597to0t7jc9726ao3gp8ivq0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:04', '2025-11-20 15:24:04'),
+(82, NULL, '7928lnh5acp0tlt8vq7fns038s', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:06', '2025-11-20 15:24:06'),
+(83, NULL, 'lfc246g5ml51qkof61aup1cdm4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:08', '2025-11-20 15:24:08'),
+(84, NULL, '2h9d0k3ev2904oof85r3abrh50', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:11', '2025-11-20 15:24:11'),
+(85, NULL, '6m2pvk4daaosup8v9selqjv6uo', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:30', '2025-11-20 15:29:30'),
+(86, NULL, 'qjr06qplvhqgs6367rgtoj9lcv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:52', '2025-11-20 15:29:52'),
+(87, NULL, 'pm2vu3gnq06kls194isv1721qk', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:57', '2025-11-20 15:29:57'),
+(88, NULL, '2sqsnv0avl02q9et7jg0tbj618', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:41', '2025-11-20 15:33:41'),
+(89, NULL, 'pvooc1mbes5game80fvt1knl5k', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:43', '2025-11-20 15:33:43'),
+(90, NULL, 'h8rr5oqj8mphe931b7rdspa514', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:45', '2025-11-20 15:33:45'),
+(91, NULL, 'mg40csbo6721ach8jrt92ckrir', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:50:01', '2025-11-20 15:50:01'),
+(92, NULL, 'sp6alke9eskhulr8jq32o7avgf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:52:15', '2025-11-20 15:52:15'),
+(93, NULL, '3o7l3lu4p8vg7fcijme4bg5lba', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 09:50:58', '2025-11-21 09:50:58'),
+(94, 12, '9396qk35pibuql2uompnbarn8r', 'open', 'RM', NULL, 4.90, 0.00, 0.00, 5.99, 10.89, '2025-11-21 09:53:52', '2025-11-21 11:25:09'),
+(95, NULL, 'npvtucqh7q638r7lj2sbeu65kq', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 10:57:56', '2025-11-21 10:57:56'),
+(96, NULL, 'o6vsn8art8e8mdl8t7mt6rmjlr', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 10:57:56', '2025-11-21 10:57:56'),
+(97, NULL, '79qpofis8fc16b24l6afc6q2j3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 10:59:26', '2025-11-21 10:59:26'),
+(98, NULL, 'ivk7pb5m5vnfrgcejagl409h7v', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 11:11:16', '2025-11-21 11:11:16'),
+(99, NULL, '531pt6nnitk67035dc1pllin6m', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:11:16', '2025-11-21 11:11:16'),
+(100, NULL, '2il4rd4mmjlap5ueg15qtvdaib', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:24:07', '2025-11-21 11:24:07'),
+(101, NULL, 'cd27rdgtt3vndurrc9ebf67rsf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:27:50', '2025-11-21 11:27:50'),
+(102, NULL, '3f5p6mvvh9ri4b0n8jtmscqr57', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 11:27:50', '2025-11-21 11:27:50'),
+(103, NULL, 'on2eghilsn0cirtlfb1m1lcbkk', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:31:08', '2025-11-21 11:31:08');
 
 -- --------------------------------------------------------
 
@@ -199,7 +229,7 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_
 (122, 31, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:25:17'),
 (123, 32, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:53:33'),
 (131, 69, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\"}', 1, 40.00, 40.00, 'images/Farm sour Cream.png', '2025-11-20 10:18:31'),
-(134, 73, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"skim\"}', 1, 3.92, 3.92, 'images/Evaporated Milk.png', '2025-11-20 14:12:49');
+(136, 94, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png', '2025-11-21 09:55:35');
 
 -- --------------------------------------------------------
 
@@ -282,6 +312,22 @@ INSERT INTO `communications` (`id`, `direction`, `channel`, `from_email`, `to_em
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `moderation_logs`
+--
+
+CREATE TABLE `moderation_logs` (
+  `id` bigint(20) NOT NULL,
+  `admin_id` int(11) DEFAULT NULL,
+  `comment_id` bigint(20) DEFAULT NULL,
+  `action` varchar(50) NOT NULL,
+  `reason` text DEFAULT NULL,
+  `meta` longtext DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -354,12 +400,13 @@ INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id
 (10, NULL, 'ORD-20251109-J6K1L', 8, 'paid', 'pending', NULL, NULL, 'RM', 167.50, 0.00, 0.00, 8.00, 1, 175.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 12, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, 'Contact before delivery', '2025-11-09 10:15:00', '2025-11-09 10:15:00', '2025-11-09 10:15:00', NULL, NULL),
 (11, NULL, 'ORD-20251111-K7L2M', 9, 'delivered', 'delivered', 'TRK-MY-5001234571', '2025-11-12 09:30:00', 'RM', 310.00, 0.00, 0.00, 15.00, 7, 325.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 14, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-11 16:00:00', '2025-11-11 16:00:00', '2025-11-13 14:00:00', NULL, NULL),
 (12, NULL, 'ORD-20251113-L8M3N', 10, 'paid', 'pending', NULL, NULL, 'RM', 189.00, 0.00, 0.00, 10.00, 4, 199.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 15, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-13 13:45:00', '2025-11-13 13:45:00', '2025-11-13 13:45:00', NULL, NULL),
-(13, NULL, 'ORD-20251114-727241A6', 11, '', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', NULL, NULL, NULL),
+(13, NULL, 'ORD-20251114-727241A6', 11, 'packed', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', '2025-11-21 11:14:12', NULL, NULL),
 (14, NULL, 'ORD-20251114-C737D1B1', 11, 'canceled', 'pending', NULL, NULL, 'RM', 39.81, 0.00, 0.00, 5.99, NULL, 45.80, 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-14 14:53:48', '2025-11-14 14:53:48', '2025-11-14 15:08:10', NULL, NULL),
-(15, NULL, 'ORD-20251119-99C935B8', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 55.15, 0.00, 0.00, 5.99, NULL, 61.14, 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-19 09:35:29', '2025-11-19 09:35:29', NULL, NULL, NULL),
+(15, 'pi_3SVjakL3fl5j5DYE04OAhpHh', 'ORD-20251119-99C935B8', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 55.15, 0.00, 0.00, 5.99, NULL, 61.14, 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', NULL, NULL, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, '', '2025-11-19 09:35:29', '2025-11-19 09:35:29', '2025-11-21 09:57:07', NULL, NULL),
 (16, NULL, 'ORD-20251120-CFF5AA93', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 09:22:03', '2025-11-20 09:22:03', NULL, NULL, NULL),
 (17, NULL, 'ORD-20251120-185C0973', 12, '', 'pending', NULL, NULL, 'RM', 86.00, 0.00, 0.00, 5.99, NULL, 91.99, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:41:33', '2025-11-20 13:41:33', NULL, NULL, NULL),
-(19, NULL, 'ORD-20251120-3390D197', 12, '', 'pending', NULL, NULL, 'RM', 4.90, 0.00, 0.00, 5.99, NULL, 10.89, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:46:44', '2025-11-20 13:46:44', NULL, NULL, NULL);
+(19, NULL, 'ORD-20251120-3390D197', 12, '', 'pending', NULL, NULL, 'RM', 4.90, 0.00, 0.00, 5.99, NULL, 10.89, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:46:44', '2025-11-20 13:46:44', NULL, NULL, NULL),
+(20, 'pi_3SVjW1L3fl5j5DYE02tNrseX', 'ORD-20251121-8A90FF27', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 43.82, 0.00, 0.00, 5.99, NULL, 49.81, 'wes', 'wes', 'was@gmail.com', '0123456897', 'fgh', 'fgh', 'pj', 'Selangor', '478110', 'MY', 'wes', 'wes', 'was@gmail.com', '0123456897', 'fgh', 'fgh', 'pj', 'Selangor', '478110', 'MY', NULL, NULL, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, '', '2025-11-21 09:51:48', '2025-11-21 09:51:48', '2025-11-21 09:52:15', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -435,7 +482,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 (46, 16, 1, 83, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-5LB', '{\"weight\":\"5-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png'),
 (47, 17, 3, 85, 'Ricotta Salata Cheese', 'RICOTTA-SAL-001', 'RICOTTA-SAL-001-3LB', '{\"weight\":\"3-lb\"}', 1, 50.00, 50.00, 'images/Ricotta Salata.png'),
 (48, 17, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\",\"fat\":\"2%\"}', 1, 36.00, 36.00, 'images/Farm sour Cream.png'),
-(49, 19, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png');
+(49, 19, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png'),
+(50, 20, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"skim\"}', 2, 3.92, 8.82, 'images/Evaporated Milk.png'),
+(51, 20, 4, 10, 'Parmesan Cheese', 'PARM-001', 'PARM-001-250G', '{\"weight\":\"250g\"}', 1, 35.00, 35.00, 'images/parmesan cheese.png');
 
 -- --------------------------------------------------------
 
@@ -461,7 +510,9 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `status`, `external_id`, `transaction_ref`, `processed_at`) VALUES
 (17, 17, 'stripe', 91.99, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:41:33'),
-(19, 19, 'stripe', 10.89, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:46:44');
+(19, 19, 'stripe', 10.89, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:46:44'),
+(0, 20, 'stripe', 49.81, 'RM', 'paid', 'cs_test_a1DAvZJNZjFMqdOHs4Oh4i4rXwbzhQV3SxkChJNBljKruEgviggw0UBbsF', 'pi_3SVjakL3fl5j5DYE04OAhpHh', '2025-11-21 09:57:07'),
+(0, 15, 'stripe', 61.14, 'RM', 'paid', 'cs_test_a1YuErVbKP04Qxq3DT1EPQCzqMj8qNyxFMUC1m6HWqVtxZKwn2aBX7xqcd', 'pi_3SVjakL3fl5j5DYE04OAhpHh', '2025-11-21 09:57:07');
 
 -- --------------------------------------------------------
 
@@ -967,7 +1018,8 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, 
 (9, 'david.lim@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'David', 'Lim', '+60137894561', 'customer', NULL, NULL, '2025-11-07 09:20:00', NULL, 0),
 (10, 'emily.chen@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'Emily', 'Chen', '+60126547893', 'customer', NULL, NULL, '2025-11-08 11:45:00', NULL, 0),
 (11, 'wes@gmail.com', '$2y$10$29adSka3Lk008R4mQOFBcOn23hOY8f3HCI9TaKQsYzJIxDNgpdL5m', 'wes', 'ansari', '+601128098103', 'customer', NULL, NULL, '2025-11-14 12:55:07', '2025-11-17 09:25:19', 1),
-(12, 'wansari000@gmail.com', '$2y$10$w1lP7Tca9X.8vTQhQp4rT.MJKUJgfilljazyVRI/A9h3abVi.ogy.', 'wasi', 'ansri', '123456789', 'customer', NULL, NULL, '2025-11-17 09:38:39', NULL, 0);
+(12, 'wansari000@gmail.com', '$2y$10$w1lP7Tca9X.8vTQhQp4rT.MJKUJgfilljazyVRI/A9h3abVi.ogy.', 'wasi', 'ansri', '123456789', 'customer', NULL, NULL, '2025-11-17 09:38:39', NULL, 0),
+(13, 'wasnari000@gmail.com', '$2y$10$av8OC9A/61NAtkfZ175nwOeStAJigV03yspquUGmuHwCOl2fMAq7e', 'wasi', 'ansari', '+60112233445', 'customer', NULL, NULL, '2025-11-20 15:21:05', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1058,6 +1110,14 @@ ALTER TABLE `communications`
   ADD KEY `related_type_id` (`related_type`,`related_id`);
 
 --
+-- Indexes for table `moderation_logs`
+--
+ALTER TABLE `moderation_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_admin_id` (`admin_id`),
+  ADD KEY `idx_comment_id` (`comment_id`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
@@ -1081,15 +1141,6 @@ ALTER TABLE `order_items`
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`),
   ADD KEY `variant_id` (`variant_id`);
-
---
--- Indexes for table `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `status` (`status`),
-  ADD KEY `external_id` (`external_id`(191));
 
 --
 -- Indexes for table `posts`
@@ -1218,13 +1269,13 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -1239,22 +1290,22 @@ ALTER TABLE `communications`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `moderation_logs`
+--
+ALTER TABLE `moderation_logs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
-
---
--- AUTO_INCREMENT for table `payments`
---
-ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -1314,7 +1365,7 @@ ALTER TABLE `shipping_zones`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `wishlist`
@@ -1368,12 +1419,6 @@ ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `posts`

@@ -63,4 +63,4 @@ function send_email(string $to, string $subject, string $htmlBody = '', string $
     return (bool)$sent;
 }
 
-?>
+

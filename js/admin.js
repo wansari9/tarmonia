@@ -63,7 +63,37 @@
             error.status = response.status;
             throw error;
         }
-        return response;
+
+        // Wrap the native Response so callers can safely call `.json()` or `.text()`
+        // and receive a clearer error when the server returns non-JSON content.
+        let _rawBody = null;
+        return {
+            ok: response.ok,
+            status: response.status,
+            headers: response.headers,
+            url: response.url,
+            // read raw text (cached so multiple calls are safe)
+            text: async () => {
+                if (_rawBody !== null) return _rawBody;
+                _rawBody = await response.text();
+                return _rawBody;
+            },
+            // safe json parser: reads body once and attempts JSON.parse
+            json: async () => {
+                if (_rawBody === null) {
+                    _rawBody = await response.text();
+                }
+                if (!_rawBody) return null;
+                try {
+                    return JSON.parse(_rawBody);
+                } catch (e) {
+                    const err = new Error('Invalid JSON response from server');
+                    err.raw = _rawBody;
+                    err.status = response.status;
+                    throw err;
+                }
+            },
+        };
     };
 
     const logoutButton = document.querySelector('[data-admin-logout]');

@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/admin_auth.php';
-require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/head_template.php';
 require_once __DIR__ . '/includes/assets.php';
 

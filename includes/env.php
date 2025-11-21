@@ -30,4 +30,3 @@ foreach ($lines as $line) {
     $_SERVER[$key] = $val;
 }
 
-?>

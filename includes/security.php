@@ -43,4 +43,4 @@ if (!headers_sent()) {
 // This file intentionally does not call session_start() to allow the
 // including file to control session lifecycle.
 
-?>
+
