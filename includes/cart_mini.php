@@ -31,7 +31,7 @@ try {
                         $subLine = implode(' • ', $subParts);
                         if ($subLine === '') $subLine = '&nbsp;'; // preserve layout height
                         // Add data-cart-item-id on root <li> for easier JS access
-                        $itemsHtml .= '<li class="mini_cart_item cart-item" data-cart-item-id="'.(int)$it['id'].'">'
+                        $itemsHtml .= '<li class="mini_cart_item cart-item" data-cart-item-id="'.(int)$it['id'].'" data-unit-price="'.htmlspecialchars((string)$it['unit_price']).'">'
                             . '<div class="cart-col-1">'
                                 . '<button class="remove" data-cart-item-id="'.(int)$it['id'].'" aria-label="Remove">&times;</button>'
                                 . ($imgSrc ? '<img src="'.$imgSrc.'" alt="" class="thumb" />' : '')

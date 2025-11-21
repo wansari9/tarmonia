@@ -1716,6 +1716,24 @@ img.emoji {
 .mini-cart .cart-items-wrapper::-webkit-scrollbar { width:8px; }
 .mini-cart .cart-items-wrapper::-webkit-scrollbar-thumb { background:#e1d2b3; border-radius:4px; }
 
+/* Ensure mini-cart does not produce a horizontal scrollbar */
+.widget_shopping_cart_content,
+.widget_area.sidebar_cart .widget_shopping_cart_content,
+.widget_area.sidebar_cart .mini-cart,
+.mini-cart {
+	overflow-x: hidden !important;
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+/* Allow grid items to shrink to avoid forced horizontal overflow */
+.mini-cart .cart-item,
+.widget_area.sidebar_cart .cart_list li.cart-item {
+	min-width: 0; /* allow flex/grid children to shrink */
+	box-sizing: border-box;
+}
+.mini-cart .cart-item .details { min-width: 0; }
+
 /* Cart item row grid layout */
 .mini-cart .cart_list { list-style:none; margin:0; padding:0; }
 .mini-cart .cart-list, .mini-cart ul.product_list_widget { margin:0; padding:0; }
