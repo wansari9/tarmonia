@@ -7,6 +7,18 @@ declare(strict_types=1);
 
 function head_template_render(array $meta = []): void
 {
+    // Compute a base href for relative URLs so client-side code using
+    // relative paths (e.g. "includes/..." or "css/...") resolves correctly
+    // even when the page URL is a file like /index.html. This helps avoid
+    // requests being resolved as /index.html/includes/... which 404.
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/';
+    $baseDir = rtrim(dirname($scriptName), "\/");
+    if ($baseDir === '' || $baseDir === '.') {
+        $baseHref = '/';
+    } else {
+        $baseHref = $baseDir . '/';
+    }
+
     $title = $meta['title'] ?? ($meta['site_title'] ?? 'Tarmonia');
     $description = $meta['description'] ?? '';
     $canonical = $meta['canonical'] ?? ($_SERVER['REQUEST_SCHEME'] ?? 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . ($_SERVER['REQUEST_URI'] ?? '/');
@@ -52,6 +64,10 @@ function head_template_render(array $meta = []): void
     // Resource hints: preconnect to Google Fonts to speed up font loading
     echo "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n";
     echo "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n";
+
+    // Provide a base href so relative client-side fetch() calls resolve
+    // against the site's root or subdirectory correctly.
+    echo "    <base href=\"" . htmlspecialchars($baseHref, ENT_QUOTES, 'UTF-8') . "\">\n";
 
     // Preload main stylesheet to reduce render blocking (onload swap)
     echo "    <link rel=\"preload\" href=\"css/style.css\" as=\"style\" onload=\"this.rel='stylesheet'\">\n";

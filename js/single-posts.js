@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Ensure post id is present
                     if (!fd.get('comment_post_ID') && post.id) fd.append('comment_post_ID', post.id);
 
-                    fetch('includes/comment_submit.php', { method: 'POST', credentials: 'same-origin', body: fd })
+                    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/comment_submit.php') : 'includes/comment_submit.php'), { method: 'POST', credentials: 'same-origin', body: fd })
                         .then(r => r.json().catch(() => null))
                         .then(res => {
                             if (!res || res.success !== true) {

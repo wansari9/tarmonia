@@ -83,7 +83,7 @@
         } else {
           itemsList.innerHTML = data.items.map(item => `
             <div style="display:grid;grid-template-columns:80px 1fr auto auto;gap:16px;padding:16px;background:#f8f8f8;border-radius:8px;margin-bottom:12px;align-items:center;">
-              <img src="${item.image_url || 'images/placeholder.png'}" alt="${item.product_name}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+              <img src="${item.image_url || (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/placeholder.png') : 'images/placeholder.png')}" alt="${item.product_name}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
               <div>
                 <div style="font-weight:600;font-size:16px;margin-bottom:4px;">${item.product_name}</div>
                 <div style="font-size:14px;color:#999;">Quantity: ${item.quantity}</div>
@@ -254,7 +254,7 @@
   // Initialize
   function init(){
     // Check authentication
-    fetch('includes/auth_session.php', { credentials: 'same-origin' })
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(data => {
         if(!data || !data.authenticated) {

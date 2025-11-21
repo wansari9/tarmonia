@@ -103,7 +103,7 @@
             event.preventDefault();
             btn.disabled = true;
             try {
-                    await fetchWithCSRF('includes/auth_logout.php', { method: 'POST' });
+                    await fetchWithCSRF((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_logout.php') : 'includes/auth_logout.php'), { method: 'POST' });
                 } catch (_err) { /* ignore */ }
                 window.location.href = 'login.html';
         });

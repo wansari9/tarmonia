@@ -58,7 +58,7 @@
     e.preventDefault();
     
     // Check if user is logged in before proceeding to checkout
-    fetch('includes/auth_session.php', { credentials: 'same-origin' })
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin' })
       .then(function(r) { return r.json(); })
       .then(function(session) {
         if (!session || !session.authenticated) {
