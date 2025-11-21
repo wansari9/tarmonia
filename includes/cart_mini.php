@@ -14,17 +14,36 @@ try {
         $itemsHtml = '<p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>';
     } else {
         $itemsHtml .= '<ul class="cart_list product_list_widget">';
-        foreach ($data['items'] as $it) {
-            $title = htmlspecialchars((string)$it['product_name']);
-            $qty = (int)$it['quantity'];
-            $price = number_format((float)$it['unit_price'], 2);
-            $img = $it['image'] ? '<a href="#" class="mini_cart_image"><img src="'.htmlspecialchars((string)$it['image']).'" alt="" width="45"/></a>' : '';
-            $variant = '';
-            if (!empty($it['options']) && isset($it['options']['weight'])) {
-                $variant = ' - ' . htmlspecialchars((string)$it['options']['weight']);
-            }
-            $itemsHtml .= '<li class="mini_cart_item">' . $img . '<a href="#" class="mini_cart_title">' . $title . $variant . '</a><span class="quantity"> ' . $qty . ' × <span class="amount">RM' . $price . '</span></span></li>';
-        }
+                foreach ($data['items'] as $it) {
+                        $titleRaw = (string)$it['product_name'];
+                        $title = htmlspecialchars($titleRaw);
+                        $qty = (int)$it['quantity'];
+                        $price = number_format((float)$it['unit_price'], 2);
+                        $imgSrc = $it['image'] ? htmlspecialchars((string)$it['image']) : '';
+                        // Extract weight & fat from options if available
+                        $weight = (!empty($it['options']) && isset($it['options']['weight'])) ? htmlspecialchars((string)$it['options']['weight']) : '';
+                        $fatRaw = (!empty($it['options']) && isset($it['options']['fat'])) ? (string)$it['options']['fat'] : '';
+                        // Ensure fat has % if numeric
+                        $fat = $fatRaw !== '' ? htmlspecialchars(rtrim($fatRaw, '%')) . '%' : '';
+                        $subParts = [];
+                        if ($weight !== '') $subParts[] = $weight;
+                        if ($fat !== '') $subParts[] = $fat;
+                        $subLine = implode(' • ', $subParts);
+                        if ($subLine === '') $subLine = '&nbsp;'; // preserve layout height
+                        // Add data-cart-item-id on root <li> for easier JS access
+                        $itemsHtml .= '<li class="mini_cart_item cart-item" data-cart-item-id="'.(int)$it['id'].'">'
+                            . '<div class="cart-col-1">'
+                                . '<button class="remove" data-cart-item-id="'.(int)$it['id'].'" aria-label="Remove">&times;</button>'
+                                . ($imgSrc ? '<img src="'.$imgSrc.'" alt="" class="thumb" />' : '')
+                            . '</div>'
+                            . '<div class="details">'
+                                . '<div class="name" title="'.htmlspecialchars($titleRaw).'">'.$title.'</div>'
+                                . '<div class="sub">'.$subLine.'</div>'
+                            . '</div>'
+                            . '<div class="qty"><input type="number" class="qty-input" data-cart-item-id="'.(int)$it['id'].'" min="1" value="'.$qty.'" /></div>'
+                            . '<div class="price">RM'.$price.'</div>'
+                        . '</li>';
+                }
         $itemsHtml .= '</ul>';
     }
 
@@ -35,7 +54,8 @@ try {
             'body' => $itemsHtml,
             'totals' => [
                 'label' => 'Total:',
-                'amount' => 'RM' . number_format((float)$data['totals']['grand_total'], 2),
+                // Show subtotal (exclude shipping) per user request
+                'amount' => 'RM' . number_format((float)$data['totals']['subtotal'], 2),
             ]
         ]
     ]);

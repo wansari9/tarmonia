@@ -18,27 +18,32 @@
   function renderMiniCart(res){
     if (!res || !res.success) return;
     var cart = res.cart; var itemsCount = cart.counts && cart.counts.items || 0;
-    var total = cart.totals && cart.totals.grand_total || 0;
+    // Use subtotal (exclude shipping) instead of grand_total
+    var total = cart.totals && cart.totals.subtotal || 0;
     updateHeaderCounts(itemsCount, total);
     document.querySelectorAll('.widget_shopping_cart_content').forEach(function(w){
       if (!w) return;
-      var bodyHtml = (res.html && res.html.body) || '<p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>';
-      // Ensure scaffold exists
-      if (!w.querySelector('.cart-footer')) {
-        w.innerHTML = '' +
-          '<div class="cart-header"><h3>Shopping Cart</h3><span class="cart-count">0</span></div>' +
-          '<div class="cart-body"></div>' +
+      var itemsHtml = (res.html && res.html.body) || '<p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>';
+
+      // Build required structure EXACTLY
+      var scaffold = '' +
+        '<div class="mini-cart">' +
+          '<div class="cart-header">' +
+            '<div class="cart-title">Shopping Cart</div>' +
+            '<div class="cart-count-badge">' + itemsCount + '</div>' +
+          '</div>' +
+          '<div class="cart-items-wrapper">' + itemsHtml + '</div>' +
           '<div class="cart-footer">' +
-          '  <div class="cart-total"><span class="total-label">Total:</span><span class="total-amount">' + formatRM(0) + '</span></div>' +
-          '  <div class="cart-buttons"><a href="cart.html" class="view-cart-button">View Cart</a><a href="checkout.html" class="checkout-button"><span>Checkout</span></a></div>' +
-          '</div>';
-      }
-      var body = w.querySelector('.cart-body');
-      var countEl = w.querySelector('.cart-count');
-      var totalEl = w.querySelector('.total-amount');
-      if (body) body.innerHTML = bodyHtml;
-      if (countEl) countEl.textContent = String(itemsCount);
-      if (totalEl) totalEl.textContent = formatRM(total);
+            '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>' +
+            '<div class="cart-buttons">' +
+              '<button class="view-cart-btn" type="button">VIEW CART</button>' +
+              '<button class="checkout-btn" type="button">CHECKOUT</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      w.innerHTML = scaffold;
+      // After injecting, bind interactions
+      initializeMiniCartInteractions(w);
     });
   }
 
@@ -73,6 +78,92 @@
       });
   }
 
+  // Support both select-based and input[type=number] quantity controls
+  var qtySelectors = '.qty select, .qty-input, .qty input[type=number]';
+  var priceSelector = '.price';
+  var totalSelector = '.cart-total';
+  var removeSelector = '.remove';
+  var countBadgeSelector = '.cart-count-badge';
+
+  function handleRemoveClick(e) {
+    var removeBtn = e.target.closest && e.target.closest(removeSelector);
+    if (!removeBtn) return;
+    e.preventDefault();
+    var row = removeBtn.closest('.cart-item');
+    if (!row) return;
+    var cartItemId = removeBtn.getAttribute('data-cart-item-id') || removeBtn.getAttribute('data-item-id');
+    row.classList.add('removing');
+    setTimeout(function(){ if (row.parentNode) row.parentNode.removeChild(row); recomputeMiniCartTotals(); }, 150);
+    if (cartItemId && window.CartAPI && window.CartAPI.removeItem) {
+      window.CartAPI.removeItem(Number(cartItemId)).then(function(){ refreshMini(); }).catch(function(){ refreshMini(); });
+    }
+  }
+
+  function parsePrice(text){
+    if (!text) return 0;
+    var m = text.replace(/[,\s]/g,'').match(/([0-9]+(?:\.[0-9]+)?)/);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  function recomputeMiniCartTotals(){
+    document.querySelectorAll('.widget_shopping_cart_content .mini-cart').forEach(function(mc){
+      var rows = mc.querySelectorAll('.cart-items-wrapper .cart-item');
+      var total = 0;
+      rows.forEach(function(row){
+        var priceEl = row.querySelector(priceSelector);
+        if (priceEl) total += parsePrice(priceEl.textContent);
+      });
+      var totalEl = mc.querySelector(totalSelector);
+      if (totalEl) totalEl.textContent = formatRM(total);
+      var countBadge = mc.querySelector(countBadgeSelector);
+      if (countBadge) countBadge.textContent = String(rows.length);
+      updateHeaderCounts(rows.length, total);
+    });
+  }
+
+  function applyQtyChange(el){
+    var row = el.closest('.cart-item');
+    if (!row) return Promise.resolve();
+    var raw = el.value;
+    var qty = parseInt(raw, 10);
+    if (!qty || qty < 1) { qty = 1; el.value = String(qty); }
+    var priceEl = row.querySelector(priceSelector);
+    if (!priceEl) return Promise.resolve();
+    var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : (function(){
+      var current = parsePrice(priceEl.textContent);
+      var existingQty = parseInt(el.getAttribute('value') || raw, 10);
+      if (!existingQty || existingQty < 1) existingQty = qty;
+      return existingQty > 0 ? (current / existingQty) : current;
+    })();
+    row.dataset.unitPrice = String(unit);
+    priceEl.textContent = formatRM(unit * qty);
+    recomputeMiniCartTotals();
+    var itemId = row.getAttribute('data-cart-item-id') || el.getAttribute('data-cart-item-id') || row.getAttribute('data-item-id');
+    if (itemId && window.CartAPI && window.CartAPI.updateQty) {
+      // Return promise so caller can wait before refreshing
+      return window.CartAPI.updateQty(Number(itemId), qty).catch(function(){ /* swallow error */ });
+    }
+    return Promise.resolve();
+  }
+
+  function initializeMiniCartInteractions(container){
+    if (!container) return;
+    container.querySelectorAll(qtySelectors).forEach(function(el){
+      // Change or input events (covers typing then focus-out) - local update only
+      ['change','input'].forEach(function(evt){
+        el.addEventListener(evt, function(){ applyQtyChange(el); });
+      });
+      // Pressing Enter commits to server then refreshes mini cart with authoritative data
+      el.addEventListener('keydown', function(e){
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applyQtyChange(el).then(function(){ refreshMini(); });
+          el.blur();
+        }
+      });
+    });
+  }
+
   // Fetch on open of mini cart, and once on page load to sync header counters
   document.addEventListener('DOMContentLoaded', function(){
     refreshMini();
@@ -83,5 +174,7 @@
     });
     // Add click handler for checkout buttons in mini-cart
     document.body.addEventListener('click', handleCheckoutClick);
+    // Add click handler for remove buttons in mini-cart
+    document.body.addEventListener('click', handleRemoveClick);
   });
 })();

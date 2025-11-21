@@ -23,6 +23,42 @@
     <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
+    <!-- Page-specific overrides -->
+    <style>
+        /* Adjusted hero/banner height - reduced */
+        .top_panel_title,
+        .top_panel_title .top_panel_title_inner {min-height:300px;height:300px;}
+        .top_panel_title .top_panel_title_inner {background-size:cover;background-position:center;}
+
+        /* Mini cart styling with scrollable content */
+        .widget_shopping_cart {max-height:500px;display:flex;flex-direction:column;}
+        .widget_shopping_cart .widget_shopping_cart_content {flex:1;overflow-y:auto;max-height:400px;padding-right:8px;}
+        .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar {width:6px;}
+        .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar-track {background:#f1f1f1;}
+        .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar-thumb {background:#ccc;border-radius:3px;}
+        .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar-thumb:hover {background:#999;}
+
+        /* New dedicated cart section */
+        .cart-section-wrapper {background:#f9f9f9;padding:20px 0 100px 0;}
+        .cart-section-wrapper .content_wrap {max-width:1400px;}
+
+        /* Cart layout expansion with scrollable items */
+        .cart-container {max-width:1400px;margin-bottom:0;margin-top:0;}
+        .cart-page {display:flex;flex-wrap:nowrap;gap:40px;}
+        .cart-items {flex:1;max-height:600px;overflow-y:auto;padding-right:8px;border:1px solid #e0e0e0;border-radius:4px;background:#fff;}
+        .cart-items::-webkit-scrollbar {width:6px;}
+        .cart-items::-webkit-scrollbar-track {background:#f1f1f1;}
+        .cart-items::-webkit-scrollbar-thumb {background:#ccc;border-radius:3px;}
+        .cart-items::-webkit-scrollbar-thumb:hover {background:#999;}
+        .cart-summary {width:360px;flex-shrink:0;display:flex;flex-direction:column;}
+        .summary-card {display:flex;flex-direction:column;height:100%;}
+        .summary-actions, .coupon-wrap {margin-top:auto;padding-top:20px;border-top:1px solid #e0e0e0;}
+        @media (max-width: 1024px){
+            .cart-page {flex-direction:column;}
+            .cart-summary {width:100%;}
+            .cart-items {max-height:400px;}
+        }
+    </style>
 
 </head>
 
@@ -245,31 +281,33 @@
             </div>
         </div>
         
-        <div class="content_wrap">
-            <h2>Your Cart</h2>
-            <p id="empty-cart-message" class="empty-cart-message" style="display:none;">Your cart is currently empty.</p>
+        <div class="cart-section-wrapper">
+            <div class="content_wrap cart-container">
+                <h2>Your Cart</h2>
+                <p id="empty-cart-message" class="empty-cart-message" style="display:none;">Your cart is currently empty.</p>
 
-            <div class="cart-page" id="cart-page" style="display:none;">
-                <div class="cart-items" id="cart-items">
-                    <!-- Items render here -->
-                </div>
-                <aside class="cart-summary" id="cart-summary">
-                    <div class="summary-card">
-                        <h3 class="summary-title">Order Summary</h3>
-                        <div class="summary-row"><span>Subtotal</span><span class="summary-subtotal">RM0.00</span></div>
-                        <div class="summary-row"><span>Shipping</span><span class="summary-shipping">RM0.00</span></div>
-                        <div class="summary-divider"></div>
-                        <div class="summary-row total"><span>Total</span><span class="summary-total">RM0.00</span></div>
-                        <div class="summary-actions">
-                            <a href="shop.html" class="continue-link">Continue Shopping</a>
-                            <button id="proceed-to-checkout" class="checkout-button"><span>Proceed to Checkout</span></button>
-                        </div>
-                        <div class="coupon-wrap" style="display:none;">
-                            <input type="text" id="coupon-code" placeholder="Coupon code" aria-label="Coupon code">
-                            <button class="apply-coupon" type="button">Apply</button>
-                        </div>
+                <div class="cart-page" id="cart-page" style="display:none;">
+                    <div class="cart-items" id="cart-items">
+                        <!-- Items render here -->
                     </div>
-                </aside>
+                    <aside class="cart-summary" id="cart-summary">
+                        <div class="summary-card">
+                            <h3 class="summary-title">Order Summary</h3>
+                            <div class="summary-row"><span>Subtotal</span><span class="summary-subtotal">RM0.00</span></div>
+                            <div class="summary-row"><span>Shipping</span><span class="summary-shipping">RM0.00</span></div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-row total"><span>Total</span><span class="summary-total">RM0.00</span></div>
+                            <div class="summary-actions">
+                                <a href="shop.html" class="continue-link">Continue Shopping</a>
+                                <button id="proceed-to-checkout" class="checkout-button"><span>Proceed to Checkout</span></button>
+                            </div>
+                            <div class="coupon-wrap" style="display:none;">
+                                <input type="text" id="coupon-code" placeholder="Coupon code" aria-label="Coupon code">
+                                <button class="apply-coupon" type="button">Apply</button>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
         </div>
         <footer class="call_wrap">

@@ -166,6 +166,8 @@
     return apiFetch(EP + 'cart_clear.php', { method:'POST', body: fd });
   }
   function mini(){ return apiFetch(EP + 'cart_mini.php'); }
+  // Provide updateQty alias for legacy code expectations
+  function updateQty(itemId, quantity){ return updateItem(itemId, quantity); }
 
-  window.CartAPI = { getCart, addItem, updateItem, removeItem, clearCart, mini };
+  window.CartAPI = { getCart, addItem, updateItem, updateQty, removeItem, clearCart, mini };
 })();

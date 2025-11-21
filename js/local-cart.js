@@ -70,10 +70,10 @@
         '<div class="ci-info">' +
           '<div class="ci-title">'+ title +'<span class="ci-variant">'+ variant +'</span></div>'+
           '<div class="ci-meta">'+
-            '<div class="qty-group" data-item-id="'+ it.id +'">'+
-              '<button class="qty-btn qty-dec" aria-label="Decrease">−</button>'+
-              '<input class="qty-input" type="number" min="1" value="'+ (it.quantity||1) +'" />'+
-              '<button class="qty-btn qty-inc" aria-label="Increase">+</button>'+
+            '<div class="qty-control" data-item-id="'+ it.id +'">'+
+              '<button class="qc-btn dec" aria-label="Decrease quantity">−</button>'+
+              '<input class="qc-input" type="number" inputmode="numeric" min="1" value="'+ (it.quantity||1) +'" />'+
+              '<button class="qc-btn inc" aria-label="Increase quantity">+</button>'+
             '</div>'+
           '</div>'+
         '</div>'+
@@ -203,15 +203,15 @@
   }
 
   function initQuantityDelegation(){
-    // + / - buttons
+    // + / - buttons (new .qc-btn) and legacy .qty-btn support
     document.addEventListener('click', function(e){
-      var inc = e.target.closest && e.target.closest('.qty-inc');
-      var dec = e.target.closest && e.target.closest('.qty-dec');
+      var inc = e.target.closest && (e.target.closest('.qc-btn.inc') || e.target.closest('.qty-inc'));
+      var dec = e.target.closest && (e.target.closest('.qc-btn.dec') || e.target.closest('.qty-dec'));
       if (!inc && !dec) return;
       e.preventDefault();
-      var group = e.target.closest('.qty-group');
+      var group = (e.target.closest('.qty-control') || e.target.closest('.qty-group'));
       if (!group) return;
-      var input = group.querySelector('.qty-input');
+      var input = group.querySelector('.qc-input, .qty-input');
       var id = group.getAttribute('data-item-id');
       if (!input || !id) return;
       var val = parseInt(input.value, 10) || 1;
@@ -225,11 +225,11 @@
       }).catch(function(err){ console.error('[cart] qty update failed', err); });
     });
 
-    // manual input change
+    // manual input change (new .qc-input and legacy .qty-input)
     document.addEventListener('change', function(e){
-      var input = e.target.closest && e.target.closest('.qty-input');
+      var input = e.target.closest && (e.target.closest('.qc-input') || e.target.closest('.qty-input'));
       if (!input) return;
-      var group = input.closest('.qty-group');
+      var group = input.closest('.qty-control') || input.closest('.qty-group');
       var id = group && group.getAttribute('data-item-id');
       if (!id) return;
       var val = Math.max(1, parseInt(input.value, 10) || 1);
