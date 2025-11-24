@@ -44,6 +44,34 @@
       w.innerHTML = scaffold;
       // After injecting, bind interactions
       initializeMiniCartInteractions(w);
+      // Add click handlers for cart buttons
+      var viewBtn = w.querySelector('.view-cart-btn');
+      if (viewBtn) {
+        viewBtn.addEventListener('click', function(){
+          window.location.href = 'cart.html';
+        });
+      }
+      var checkoutBtn = w.querySelector('.checkout-btn');
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function(){
+          // Check if user is logged in before proceeding to checkout
+          fetch('includes/auth_session.php', { credentials: 'same-origin' })
+            .then(function(r) { return r.json(); })
+            .then(function(session) {
+              if (!session || !session.authenticated) {
+                var returnUrl = encodeURIComponent('checkout.html');
+                var message = encodeURIComponent('Please log in to checkout');
+                window.location.href = 'login.html?redirect=' + returnUrl + '&message=' + message;
+              } else {
+                window.location.href = 'checkout.html';
+              }
+            })
+            .catch(function() {
+              var returnUrl = encodeURIComponent('checkout.html');
+              window.location.href = 'login.html?redirect=' + returnUrl;
+            });
+        });
+      }
     });
   }
 
@@ -85,6 +113,28 @@
   var removeSelector = '.remove';
   var countBadgeSelector = '.cart-count-badge';
 
+  function applyQtyChange(el){
+    var row = el.closest('.cart-item');
+    if (!row) return Promise.resolve();
+    var raw = el.value;
+    var qty = parseInt(raw, 10);
+    if (!qty || qty < 1) { qty = 1; el.value = String(qty); }
+    var priceEl = row.querySelector(priceSelector);
+    if (!priceEl) return Promise.resolve();
+    // Always use data-unit-price from PHP for correct calculation
+    var unit = row.getAttribute('data-unit-price') ? parseFloat(row.getAttribute('data-unit-price')) : (row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : parsePrice(priceEl.textContent));
+    row.dataset.unitPrice = String(unit);
+    // Do not update priceEl.textContent locally; rely on server refresh
+    // Do not call recomputeMiniCartTotals here; rely on refreshMini()
+    var itemId = row.getAttribute('data-cart-item-id') || el.getAttribute('data-cart-item-id') || row.getAttribute('data-item-id');
+    if (itemId && window.CartAPI && window.CartAPI.updateQty) {
+      // Return promise so caller can wait before refreshing
+      return window.CartAPI.updateQty(Number(itemId), qty).then(function(){ refreshMini(); }).catch(function(){ refreshMini(); });
+    }
+    refreshMini();
+    return Promise.resolve();
+  }
+
   function handleRemoveClick(e) {
     var removeBtn = e.target.closest && e.target.closest(removeSelector);
     if (!removeBtn) return;
@@ -93,7 +143,7 @@
     if (!row) return;
     var cartItemId = removeBtn.getAttribute('data-cart-item-id') || removeBtn.getAttribute('data-item-id');
     row.classList.add('removing');
-    setTimeout(function(){ if (row.parentNode) row.parentNode.removeChild(row); recomputeMiniCartTotals(); }, 150);
+    setTimeout(function(){ if (row.parentNode) row.parentNode.removeChild(row); recomputeMiniCartTotals(); refreshMini(); }, 150);
     if (cartItemId && window.CartAPI && window.CartAPI.removeItem) {
       window.CartAPI.removeItem(Number(cartItemId)).then(function(){ refreshMini(); }).catch(function(){ refreshMini(); });
     }
@@ -117,12 +167,10 @@
         if (qtyEl) {
           qty = parseInt(qtyEl.value || qtyEl.getAttribute('value') || '1', 10) || 1;
         }
-        // Determine unit price: prefer data-unit-price, fallback to displayed price
-        var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : (priceEl ? parsePrice(priceEl.textContent) : 0);
-        // Ensure dataset stores unit price for future updates
-        if (unit && !row.dataset.unitPrice) row.dataset.unitPrice = String(unit);
+        // Always use data-unit-price from PHP for correct calculation
+        var unit = row.getAttribute('data-unit-price') ? parseFloat(row.getAttribute('data-unit-price')) : (row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : (priceEl ? parsePrice(priceEl.textContent) : 0));
+        row.dataset.unitPrice = String(unit); // keep for JS
         var line = unit * qty;
-        // Update row display to show line total
         if (priceEl) priceEl.textContent = formatRM(line);
         total += line;
         itemsCount += qty;
@@ -133,27 +181,6 @@
       if (countBadge) countBadge.textContent = String(itemsCount);
       updateHeaderCounts(itemsCount, total);
     });
-  }
-
-  function applyQtyChange(el){
-    var row = el.closest('.cart-item');
-    if (!row) return Promise.resolve();
-    var raw = el.value;
-    var qty = parseInt(raw, 10);
-    if (!qty || qty < 1) { qty = 1; el.value = String(qty); }
-    var priceEl = row.querySelector(priceSelector);
-    if (!priceEl) return Promise.resolve();
-    var unit = row.dataset.unitPrice ? parseFloat(row.dataset.unitPrice) : parsePrice(priceEl.textContent);
-    // store unit price for reliable future calculations
-    row.dataset.unitPrice = String(unit);
-    priceEl.textContent = formatRM(unit * qty);
-    recomputeMiniCartTotals();
-    var itemId = row.getAttribute('data-cart-item-id') || el.getAttribute('data-cart-item-id') || row.getAttribute('data-item-id');
-    if (itemId && window.CartAPI && window.CartAPI.updateQty) {
-      // Return promise so caller can wait before refreshing
-      return window.CartAPI.updateQty(Number(itemId), qty).catch(function(){ /* swallow error */ });
-    }
-    return Promise.resolve();
   }
 
   function initializeMiniCartInteractions(container){
