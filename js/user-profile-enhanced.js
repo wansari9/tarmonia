@@ -511,7 +511,7 @@
         e.preventDefault();
         if(!confirm('Are you sure you want to logout?')) return;
         try {
-          await fetch('includes/auth_logout.php', { method: 'POST', credentials: 'same-origin' });
+          await fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_logout.php') : 'includes/auth_logout.php'), { method: 'POST', credentials: 'same-origin' });
         } catch (error) {
           console.error('Logout request failed:', error);
         } finally {

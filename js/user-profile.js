@@ -301,7 +301,7 @@
       e.preventDefault();
       
       try {
-        await fetch('includes/auth_logout.php', { method: 'POST', credentials: 'same-origin' });
+        await fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_logout.php') : 'includes/auth_logout.php'), { method: 'POST', credentials: 'same-origin' });
         window.location.href = 'index.html';
       } catch(e) {
         window.location.href = 'index.html';
@@ -341,7 +341,7 @@
   // Initialize on page load
   function init(){
     // Check authentication
-    fetch('includes/auth_session.php', { credentials: 'same-origin' })
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(data => {
         if(!data || !data.authenticated) {

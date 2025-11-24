@@ -3,9 +3,11 @@
 
   function getBasePath(){
     var path = window.location.pathname;
-    var m = path.match(/^(\/[^\/]+)(?:\/|$)/);
-    if (m && m[1] && m[1] !== '/') return m[1];
-    return '';
+    var segs = path.split('/').filter(Boolean);
+    if (segs.length === 0) return '';
+    var first = '/' + segs[0];
+    if (segs[0].indexOf('.') !== -1) return '';
+    return first === '/' ? '' : first;
   }
   window.AppPaths = window.AppPaths || {};
   window.AppPaths.getBasePath = window.AppPaths.getBasePath || getBasePath;

@@ -88,7 +88,7 @@
     }
     for(const it of items){
       const tr = document.createElement('tr');
-      const imgSrc = it.image ? it.image : 'images/placeholder.png';
+      const imgSrc = it.image ? it.image : (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/placeholder.png') : 'images/placeholder.png');
       tr.innerHTML = `
         <td><img src="${imgSrc}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:4px;"></td>
         <td>${it.product_name || ''}</td>

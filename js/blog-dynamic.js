@@ -36,7 +36,7 @@
             + '  <div class="post_featured">\n'
             + '    <div class="post_thumb" data-image="'+escapeHtml(post.featured_image||'')+'" data-title="'+escapeHtml(post.title||'')+'">\n'
             + '      <a class="hover_icon hover_icon_link" href="single-post.html?slug='+encodeURIComponent(post.slug||'')+'">\n'
-            + '        <img alt="" src="'+(post.featured_image||'images/post-placeholder.jpg')+'">\n'
+            + '        <img alt="" src="'+(post.featured_image||(window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/post-placeholder.jpg') : 'images/post-placeholder.jpg'))+'">\n'
             + '      </a>\n'
             + '    </div>\n'
             + '  </div>\n'

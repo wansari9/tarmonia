@@ -11,55 +11,55 @@ document.addEventListener('DOMContentLoaded', function () {
     const recipes = {
         1: {
             name: "Cranberry Homecheese",
-            image: "images/homecheese.jpeg",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/homecheese.jpeg') : 'images/homecheese.jpeg'),
             time: "30 min",
             description: "Ingredients: 1/4 cup lemon juice, 1 liter milk, 1/2 cup dried cranberries, pinch of salt"
         },
         2: {
             name: "Waffles with Cream",
-            image: "images/il_fullxfull.5179313557_c10m.jpg",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/il_fullxfull.5179313557_c10m.jpg') : 'images/il_fullxfull.5179313557_c10m.jpg'),
             time: "40 min",
             description: "Ingredients: 2 cups flour, 2 eggs, 1 cup milk, 1/2 cup cream, 2 tbsp sugar, 1 tsp baking powder, pinch of salt"
         },
         3: {
             name: "Milk & Sugar Cereal",
-            image: "images/card2.webp",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/card2.webp') : 'images/card2.webp'),
             time: "10 min",
             description: "Ingredients: 1 cup cereal, 1 cup milk, 1 tbsp sugar"
         },
         4: {
             name: "Strawberry Ice Cream",
-            image: "images/No-Churn-SIC-004.webp",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/No-Churn-SIC-004.webp') : 'images/No-Churn-SIC-004.webp'),
             time: "90 min",
             description: "Ingredients: 2 cups strawberries, 1 cup cream, 1/2 cup sugar, 1 tsp vanilla extract"
         },
         5: {
             name: "Creamy Granola",
-            image: "images/card2-3-3.webp",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/card2-3-3.webp') : 'images/card2-3-3.webp'),
             time: "50 min",
             description: "Ingredients: 1 cup granola, 1/2 cup yogurt, 1 tbsp honey, fresh berries (optional)"
         },
         6: {
             name: "Corn Waffles",
-            image: "images/unsplash-image-w0PGw7eCAYU.jpg",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/unsplash-image-w0PGw7eCAYU.jpg') : 'images/unsplash-image-w0PGw7eCAYU.jpg'),
             time: "15 min",
             description: "Ingredients: 1 cup cornmeal, 1 cup flour, 2 eggs, 1 cup milk, 2 tbsp butter, 1 tsp baking powder"
         },
         7: {
             name: "Fried Bacon & Eggs",
-            image: "images/bacon.jpeg",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/bacon.jpeg') : 'images/bacon.jpeg'),
             time: "22 min",
             description: "Ingredients: 2 eggs, 3 slices bacon, salt, pepper, butter for frying"
         },
         8: {
             name: "Blueberry Cream Ice",
-            image: "images/black-currant-ice.jpg",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/black-currant-ice.jpg') : 'images/black-currant-ice.jpg'),
             time: "55 min",
             description: "Ingredients: 2 cups blueberries, 1 cup cream, 1/2 cup sugar, 1 tbsp lemon juice"
         },
         9: {
             name: "Marinated Beef Steak",
-            image: "images/Print-Marinade-steak.webp",
+            image: (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/Print-Marinade-steak.webp') : 'images/Print-Marinade-steak.webp'),
             time: "45 min",
             description: "Ingredients: 1 beef steak, 2 tbsp soy sauce, 1 tbsp olive oil, 1 clove garlic, black pepper"
         },

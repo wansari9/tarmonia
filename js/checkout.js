@@ -303,7 +303,7 @@
   }
 
   function loadCartSummary() {
-    fetch('includes/cart_mini.php', {
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/cart_mini.php') : 'includes/cart_mini.php'), {
       method: 'GET',
       credentials: 'same-origin',
       headers: { 'Accept': 'application/json' }
@@ -437,7 +437,7 @@
 
     var html = '';
     items.forEach(function(item) {
-      var image = item.image || 'images/placeholder.png';
+      var image = item.image || (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('images/placeholder.png') : 'images/placeholder.png');
       var title = item.product_name || 'Product';
       var qty = item.quantity || 1;
       var price = parseFloat(item.unit_price || 0);
