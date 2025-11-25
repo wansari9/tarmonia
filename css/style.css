@@ -1,3 +1,102 @@
+.cart-footer .mini-cart-continue {
+	font-size: 28px;
+	font-weight: bold;
+	background-color: #fec321;
+	color: #55330a;
+	border: 3px solid #e0ad1c;
+	padding: 22px 60px;
+	border-radius: 7px;
+	text-transform: uppercase;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+	letter-spacing: 1px;
+}
+.mini-cart-empty-message {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 50px auto 30px auto;
+	color: #4b2d0e;
+	font-family: "Libre Baskerville", "Droid Serif", serif;
+	max-width: 95%;
+}
+.cart-footer .mini-cart-continue {
+	font-size: 22px;
+	font-weight: bold;
+	background-color: #fec321;
+	color: #55330a;
+	border: 2px solid #e0ad1c;
+	padding: 16px 40px;
+	border-radius: 5px;
+	text-transform: uppercase;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.cart-footer .mini-cart-continue {
+	font-size: 20px;
+	font-weight: bold;
+}
+.cart-footer .mini-cart-continue {
+	font-size: 16px;
+	padding: 12px 32px;
+}
+.cart-footer .cart-buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.mini-cart-empty-message {
+	text-align: center;
+	margin: 40px auto;
+	font-size: 17px;
+	color: #4b2d0e;
+	font-family: "Libre Baskerville", "Droid Serif", serif;
+	max-width: 90%;
+}
+.cart-footer .cart-buttons {
+	text-align: center;
+}
+.cart-footer .mini-cart-continue {
+	display: inline-block;
+	margin: 0 auto;
+}
+/* Mini cart empty state styles */
+.mini-cart-empty {
+	text-align: center;
+	padding: 20px 15px;
+}
+.mini-cart-empty .mini-cart-continue {
+	display: inline-block;
+}
+/* Tarmonia empty mini cart styles */
+.tarmonia-empty-cart {
+	text-align: center;
+	background-color: #F5E6C4; /* soft beige background */
+	padding: 40px 20px;
+	border: 1px solid #e2c98f;
+	border-radius: 6px;
+}
+
+.tarmonia-empty-message {
+	font-family: "Libre Baskerville", "Droid Serif", serif;
+	color: #4b2d0e;
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+
+.tarmonia-shop-btn {
+	background-color: #FEC321;
+	color: #55330a;
+	border: 1px solid #e0ad1c;
+	text-transform: uppercase;
+	padding: 8px 20px;
+	border-radius: 3px;
+	text-decoration: none;
+	font-family: "Open Sans", Arial, sans-serif;
+	font-size: 13px;
+}
+
+.tarmonia-shop-btn:hover {
+	background-color: #f5b814;
+	border-color: #cf9b17;
+}
 @charset 'utf-8';
 
 /*

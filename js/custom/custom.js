@@ -1049,7 +1049,7 @@ function initRev() {
 				jsFileLocation: "//dairy-farm.ancorathemes.com/wp-content/plugins/revslider/public/assets/js/",
 				sliderLayout: "auto",
 				dottedOverlay: "none",
-				delay: 9000,
+				delay: 15000,
 				navigation: {
 					keyboardNavigation: "off",
 					keyboard_direction: "horizontal",

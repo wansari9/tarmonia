@@ -163,7 +163,7 @@ try {
 
     $optionsSnapshot = json_encode(array_filter([
         'weight' => $weight ?: null,
-    'fat' => $fat ?: null,
+        'fat' => $fat !== '' ? $fat : null,
         'size' => $size ?: null,
         'quantity' => $qtyOption ?: null,
     ]));
@@ -171,15 +171,21 @@ try {
     // Try to find existing line (same product + variant)
     $stage = 'select_existing_prepare';
     if ($variantId === null) {
-        $selLine = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id IS NULL LIMIT 1');
+        $selLine = $pdo->prepare('SELECT id, quantity, options_snapshot FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id IS NULL');
         $stage = 'select_existing_execute_null_variant';
         $selLine->execute([':cid' => $cartId, ':pid' => $productId]);
     } else {
-        $selLine = $pdo->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id = :vid LIMIT 1');
+        $selLine = $pdo->prepare('SELECT id, quantity, options_snapshot FROM cart_items WHERE cart_id = :cid AND product_id = :pid AND variant_id = :vid');
         $stage = 'select_existing_execute_with_variant';
         $selLine->execute([':cid' => $cartId, ':pid' => $productId, ':vid' => $variantId]);
     }
-    $existing = $selLine->fetch();
+    $existing = null;
+    while ($row = $selLine->fetch()) {
+        if ($row['options_snapshot'] === $optionsSnapshot) {
+            $existing = $row;
+            break;
+        }
+    }
     $existingQty = $existing ? (int)$existing['quantity'] : 0;
     $newQty = $existingQty + $quantity;
 

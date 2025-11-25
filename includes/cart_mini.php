@@ -11,14 +11,15 @@ try {
     // Optionally return pre-rendered HTML snippet for the mini-cart body
     $itemsHtml = '';
     if (empty($data['items'])) {
-        $itemsHtml = '<p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>';
+        $itemsHtml = '';
     } else {
         $itemsHtml .= '<ul class="cart_list product_list_widget">';
                 foreach ($data['items'] as $it) {
                         $titleRaw = (string)$it['product_name'];
                         $title = htmlspecialchars($titleRaw);
                         $qty = (int)$it['quantity'];
-                        $price = number_format((float)$it['unit_price'], 2);
+                        $unitPrice = (float)$it['unit_price'];
+                        $lineTotal = number_format($unitPrice * $qty, 2);
                         $imgSrc = $it['image'] ? htmlspecialchars((string)$it['image']) : '';
                         // Extract weight & fat from options if available
                         $weight = (!empty($it['options']) && isset($it['options']['weight'])) ? htmlspecialchars((string)$it['options']['weight']) : '';
@@ -41,7 +42,7 @@ try {
                                 . '<div class="sub">'.$subLine.'</div>'
                             . '</div>'
                             . '<div class="qty"><input type="number" class="qty-input" data-cart-item-id="'.(int)$it['id'].'" min="1" value="'.$qty.'" /></div>'
-                            . '<div class="price">RM'.$price.'</div>'
+                            . '<div class="price">RM'.$lineTotal.'</div>'
                         . '</li>';
                 }
         $itemsHtml .= '</ul>';

@@ -57,10 +57,14 @@
     itemsWrap.innerHTML = '';
     items.forEach(function(it){
       var title = it.product_name || 'Product';
-      var variant = '';
+      var details = [];
       if (it.options) {
-        if (it.options.weight) variant = ' - ' + it.options.weight;
+        if (it.options.weight) details.push(it.options.weight);
+        if (it.options.fat) details.push(it.options.fat);
+        if (it.options.size) details.push(it.options.size);
+        if (it.options.quantity) details.push(it.options.quantity);
       }
+      var variant = details.length ? ' (' + details.join(', ') + ')' : '';
       var row = document.createElement('div');
       row.className = 'cart-item-card';
       row.innerHTML = ''+
@@ -68,7 +72,7 @@
           (it.image ? '<img src="'+ it.image +'" alt="'+ (title||'') +'">' : '<div class="img-ph"></div>') +
         '</div>'+
         '<div class="ci-info">' +
-          '<div class="ci-title">'+ title +'<span class="ci-variant">'+ variant +'</span></div>'+
+          '<div class="ci-title">'+ title + variant +'</div>'+
           '<div class="ci-meta">'+
             '<div class="qty-control" data-item-id="'+ it.id +'">'+
               '<button class="qc-btn dec" aria-label="Decrease quantity">−</button>'+
@@ -129,8 +133,14 @@
       items.forEach(function(it){
         var tr = document.createElement('tr');
         var title = (it.product_name || 'Product');
-        var variant = '';
-        if (it.options && it.options.weight){ variant = ' - ' + it.options.weight; }
+        var details = [];
+        if (it.options) {
+          if (it.options.weight) details.push(it.options.weight);
+          if (it.options.fat) details.push(it.options.fat);
+          if (it.options.size) details.push(it.options.size);
+          if (it.options.quantity) details.push(it.options.quantity);
+        }
+        var variant = details.length ? ' (' + details.join(', ') + ')' : '';
         tr.innerHTML = ''+
           '<td>' + title + variant + '</td>'+
           '<td>' + (it.quantity||1) + '</td>'+

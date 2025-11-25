@@ -25,14 +25,18 @@
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <!-- Page-specific overrides -->
     <style>
+                /* Hide dropdown submenu under Home in main navigation */
+                .menu_main_nav > li.menu-item-has-children:hover > .sub-menu {
+                    display: none !important;
+                }
         /* Adjusted hero/banner height - reduced */
         .top_panel_title,
         .top_panel_title .top_panel_title_inner {min-height:300px;height:300px;}
         .top_panel_title .top_panel_title_inner {background-size:cover;background-position:center; background: none !important;}
 
         /* Mini cart styling with scrollable content */
-        .widget_shopping_cart {max-height:500px;display:flex;flex-direction:column;}
-        .widget_shopping_cart .widget_shopping_cart_content {flex:1;overflow-y:auto;max-height:400px;padding-right:8px;}
+        .widget_shopping_cart {display:flex;flex-direction:column;box-shadow:none !important;border:none !important;}
+        .widget_shopping_cart .widget_shopping_cart_content {flex:1;}
         .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar {width:6px;}
         .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar-track {background:#f1f1f1;}
         .widget_shopping_cart .widget_shopping_cart_content::-webkit-scrollbar-thumb {background:#ccc;border-radius:3px;}
@@ -45,7 +49,17 @@
         /* Cart layout expansion with scrollable items */
         .cart-container {max-width:1400px;margin-bottom:0;margin-top:0;}
         .cart-page {display:flex;flex-wrap:nowrap;gap:40px;}
-        .cart-items {flex:1;max-height:600px;overflow-y:auto;padding-right:8px;border:1px solid #e0e0e0;border-radius:4px;background:#fff;}
+        .cart-items {
+            flex:1;
+            max-height:408px;
+            overflow-y:auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+            padding: 18px 12px;
+            margin-bottom: 18px;
+            border: 1px solid #e8d8b8;
+        }
         .cart-items::-webkit-scrollbar {width:6px;}
         .cart-items::-webkit-scrollbar-track {background:#f1f1f1;}
         .cart-items::-webkit-scrollbar-thumb {background:#ccc;border-radius:3px;}
@@ -61,10 +75,33 @@
 
         /* Reduce product image size in main cart */
         .cart-items img {
-            width: 60px;
-            height: 60px;
+            width: 54px;
+            height: 54px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border: 1px solid #d4b88a;
+        }
+        .cart-items .cart-item {
+            background: #fff9ed;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 14px 12px;
+            transition: box-shadow 0.2s;
+        }
+        .cart-items .cart-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            background: #fff6e5;
+        }
+        .cart-items .product-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #7a5a2d;
+        }
+        .cart-items .details {
+            font-size: 13px;
+            color: #a67c00;
         }
     </style>
 
@@ -117,14 +154,10 @@
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
                             <div class="column-4_5 contact_logo">
-                                <div class="logo" style="display:flex;align-items:center;gap:15px;">
-                                    <a href="index.html" style="flex-shrink:0;">
-                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
-                                    </a>
-                                    <div class="logo-text-box">
-                                        <span>TARMONIA</span>
-                                    </div>
-                                </div>
+                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                </a>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
@@ -140,9 +173,7 @@
                                     <li>
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
-                                                <div class="widget_shopping_cart_content">
-                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
-                                                </div>
+                                                <div class="widget_shopping_cart_content"></div>
                                             </div>
                                         </div>
                                     </li>
@@ -276,18 +307,7 @@
             </div>
             <div class="mask"></div>
         </div>
-        <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
-            <div class="top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
-                <!-- <div class="content_wrap">
-                    <h1 class="page_title">Shop</h1>
-                    <div class="breadcrumbs">
-                        <a class="breadcrumbs_item home" href="index.html">Home</a>
-                        <span class="breadcrumbs_delimiter"></span>
-                        <span class="breadcrumbs_item current">Shop</span>
-                    </div>
-                </div> -->
-            </div>
-        </div>
+        <!-- Removed top_panel_title section as requested -->
         
         <div class="cart-section-wrapper">
             <div class="content_wrap cart-container">
@@ -381,36 +401,36 @@
                             </div>
                         </aside>
                         <aside class="column-1_4 widget widget_socials">
-                            <div class="widget_inner">
-                                <div class="logo">
-                                    <a href="index.html">
-                                        <img src="images/new-logo-tarmonia.png" class="logo_main" alt="" width="74" height="74">
-                                    </a>
-                                    <div class="logo-text-box">
-                                        <span>TARMONIA</span>
+                            <div class="content_wrap">
+                                <div class="columns_wrap columns_fluid">
+                                    <div class="column-4_5 contact_logo">
+                                        <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                            <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                            <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                        </a>
+                                    </div>
+                                    <div class="column-1_5 contact_field contact_cart">
+                                        <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                                            <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                                <span class="contact_icon icon-1"></span>
+                                            </a>
+                                            <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
+                                            <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                                <span class="user_initial" style="font-weight:600;">U</span>
+                                            </a>
+                                        </div>
+                                        <ul class="widget_area sidebar_cart sidebar">
+                                            <li>
+                                                <div class="widget woocommerce widget_shopping_cart">
+                                                    <div class="hide_cart_widget_if_empty">
+                                                        <div class="widget_shopping_cart_content"></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </aside>
-                        <aside class="column-1_4 widget widget_text">
-                            <div class="textwidget">
-                                <span class="accent1">Address</span>: B-3-13, Pusat Perdagangan, 1B, Jalan SS 8/39, Icon City, 47300 Petaling Jaya, Selangor
-                            </div>
-                        </aside>
-                        <aside class="column-1_4 widget widget_text centered-contact">
-                            <div class="textwidget">
-                                <span class="accent1">Phone: 123-456-7890</span>
-                                <br> Fax: 010-927 7092
-                                <br><span class="contact-email">Email:<a href="mailto:info@tarmonia.com">info@tarmonia.com</a></span>
-                            </div>
-                        </aside>
-                        <aside class="column-1_4 widget widget_socials">
-                            <div class="widget_inner">
-                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny">
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_twitter">
-                                            <span class="icon-twitter"></span>
-                                        </a>
                                     </div>
                                     <div class="sc_socials_item">
                                         <a href="#" target="_blank" class="social_icons social_facebook">
@@ -443,36 +463,36 @@
                         <li class="menu-item"><a href="classic.html"><span>News</span></a></li>
                         <li class="menu-item"><a href="contacts.html"><span>Contact Us</span></a></li>
                     </ul>
-                    <div class="copyright_text">
-                        <p>
-                            2025 Tarmonia
-                            <a href="tnc.html">Terms of Use</a> and
-                            <a href="http://ancorathemes.com/about/">Privacy Policy</a>
-                        </p>
+                    <div class="content_wrap">
+                        <div class="columns_wrap columns_fluid">
+                            <div class="column-4_5 contact_logo">
+                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                </a>
+                            </div>
+                            <div class="column-1_5 contact_field contact_cart">
+                                <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                                        <span class="contact_icon icon-1"></span>
+                                    </a>
+                                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
+                                    <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
+                                        <span class="user_initial" style="font-weight:600;">U</span>
+                                    </a>
+                                </div>
+                                <ul class="widget_area sidebar_cart sidebar">
+                                    <li>
+                                        <div class="widget woocommerce widget_shopping_cart">
+                                            <div class="hide_cart_widget_if_empty">
+                                                <div class="widget_shopping_cart_content"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
-<div class="custom_html_section"></div>
-
-<script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
-<script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
-<script type='text/javascript' src='js/custom/custom.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>
-<script type='text/javascript' src='js/vendor/modernizr.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/superfish.js' defer></script>
-<script type='text/javascript' src='js/custom/core.utils.js' defer></script>
-<script type='text/javascript' src='js/custom/core.init.js' defer></script>
-<script type='text/javascript' src='js/custom/init.js' defer></script>
 <script type='text/javascript' src='js/custom/core.debug.js' defer></script>
 <script type='text/javascript' src='js/custom/embed.min.js' defer></script>
 <script type='text/javascript' src='js/custom/shortcodes.js' defer></script>

@@ -17,30 +17,43 @@
 
   function renderMiniCart(res){
     if (!res || !res.success) return;
-    var cart = res.cart; var itemsCount = cart.counts && cart.counts.items || 0;
-    // Use subtotal (exclude shipping) instead of grand_total
+    var cart = res.cart;
+    var itemsCount = cart.counts && cart.counts.items || 0;
     var total = cart.totals && cart.totals.subtotal || 0;
     updateHeaderCounts(itemsCount, total);
     document.querySelectorAll('.widget_shopping_cart_content').forEach(function(w){
       if (!w) return;
-      var itemsHtml = (res.html && res.html.body) || '<p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>';
-
-      // Build required structure EXACTLY
+      var itemsHtml = (res.html && res.html.body) || '';
       var scaffold = '' +
         '<div class="mini-cart">' +
           '<div class="cart-header">' +
             '<div class="cart-title">Shopping Cart</div>' +
             '<div class="cart-count-badge">' + itemsCount + '</div>' +
-          '</div>' +
-          '<div class="cart-items-wrapper">' + itemsHtml + '</div>' +
-          '<div class="cart-footer">' +
-            '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>' +
-            '<div class="cart-buttons">' +
-              '<button class="view-cart-btn" type="button">VIEW CART</button>' +
-              '<button class="checkout-btn" type="button">CHECKOUT</button>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
+          '</div>';
+      if (itemsCount === 0) {
+        // Show the empty cart message centered in the items area
+        scaffold += '<div class="cart-items-wrapper">'
+          + '<div class="mini-cart-empty-message">Your basket is empty for now. Add some farm-fresh goodies!</div>'
+          + '</div>';
+        scaffold += '<div class="cart-footer">'
+          + '<div class="cart-buttons">'
+          + '<a href="shop.html" class="button mini-cart-continue">Continue Shopping</a>'
+          + '</div>'
+          + '</div>';
+        scaffold += '</div>';
+        w.innerHTML = scaffold;
+        return;
+      }
+      scaffold += '<div class="cart-items-wrapper">' + itemsHtml + '</div>';
+      // Normal cart footer for non-empty cart
+      scaffold += '<div class="cart-footer">'
+        + '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>'
+        + '<div class="cart-buttons">'
+        + '<button class="view-cart-btn" type="button">VIEW CART</button>'
+        + '<button class="checkout-btn" type="button">CHECKOUT</button>'
+        + '</div>'
+        + '</div>';
+      scaffold += '</div>';
       w.innerHTML = scaffold;
       // After injecting, bind interactions
       initializeMiniCartInteractions(w);

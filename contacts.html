@@ -23,6 +23,18 @@
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.messages.css' type='text/css' media='all' />
     <style>
+                /* Add a dark overlay to .bg_cust_2 for a muted look */
+                .bg_cust_2::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(40, 30, 10, 0.45); /* dark brown overlay, adjust opacity as needed */
+                    z-index: 0;
+                    pointer-events: none;
+                }
         /* Contact page full-height layout */
         body, html {
             margin: 0;
@@ -47,10 +59,14 @@
         }
 
         /* Ensure the top panel title background sits behind the floating cards */
-        .top_panel_title .bg_cust_7,
-        .bg_cust_7 {
+        .top_panel_title .bg_cust_2,
+        .bg_cust_2 {
             position: relative;
             z-index: 1; /* lower than the cards (cards use 99999+) */
+            background-image: url('images/contact_page.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         /* Layout: stack cards and place the contact form in a separate container under them */
@@ -445,14 +461,10 @@
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
                             <div class="column-4_5 contact_logo">
-                                <div class="logo" style="display:flex;align-items:center;gap:15px;">
-                                    <a href="index.html" style="flex-shrink:0;">
-                                        <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
-                                    </a>
-                                    <div class="logo-text-box">
-                                        <span>TARMONIA</span>
-                                    </div>
-                                </div>
+                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                </a>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
@@ -527,10 +539,11 @@
             <div class="mask"></div>
         </div>
         <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
-            <div  class="bg_cust_7 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
+            <div  class="bg_cust_2 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
                 <div class="fresh-from-farm-overlay" style="animation: fadeInUp 1s ease-out 0.2s both;">
-                    <h1 style="animation: fadeInUp 1s ease-out 0.4s both, glow 4s ease-in-out 1.4s infinite;">Get in Touch</h1>
+                    <h1 style="animation: fadeInUp 1s ease-out 0.4s both, glow 4s ease-in-out 1.4s infinite;">Got a Question? Just Moo at Us</h1>
                     <div class="accent-line" style="animation: scaleAccent 0.8s ease-out 0.8s both;"></div>
+                    <p class="overlay-tagline" style="margin-top:10px;font-size:16px;font-weight:500;color:#fff;letter-spacing:.5px;animation: fadeInUp 1s ease-out 0.6s both;">Send us a message and we’ll reply as soon as the farm chores are done.</p>
                 </div>
                 <!-- <div class="content_wrap">
                     <h1 class="page_title">Contacts</h1>
