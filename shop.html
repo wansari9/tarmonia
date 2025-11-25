@@ -64,22 +64,25 @@
       max-width: 1800px;
       margin: 0 auto;
     }
-    .products {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px 36px;
-      justify-content: center;
-      list-style: none;
-    }
-    .products .product {
-      max-width: 320px;
-      min-width: 260px;
-      min-height: 440px;
-      margin: 0 auto;
+        .products {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px 36px;
+            /* Ensure the grid starts at the first column and items align to the start of their cells */
+            justify-content: start;
+            justify-items: start;
+            grid-auto-flow: row;
+            list-style: none;
+        }
+        .products .product {
+            max-width: 320px;
+            min-width: 260px;
+            min-height: 440px;
+            margin: 0;
       font-size: 1.12em;
       padding: 38px 24px 46px 24px;
       background: #fffbe6;
@@ -283,6 +286,38 @@
             width: 100%;
             max-width: 1000px;
             margin: 0 auto;
+        }
+        /* Reset the UL defaults and make grid items occupy their natural cells */
+        ul.products {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            list-style: none !important;
+            box-sizing: border-box;
+        }
+
+        /* Ensure each product list item aligns to the start of its grid cell
+           and defensively force the first item into the first column. */
+        .products > li {
+            width: auto;
+            margin: 0;
+            justify-self: start;
+            grid-column: auto;
+        }
+
+        .products > li:first-child {
+            grid-column: 1;
+        }
+        /* Remove decorative pseudo-elements that may render an arrow above the products list */
+        .content .list_products::before,
+        .content .list_products::after,
+        .content .list_products .products::before,
+        .content .list_products .products::after,
+        .woocommerce ul.products::before,
+        .woocommerce ul.products::after,
+        .content .list_products .products > li::before,
+        .content .list_products .products > li::after {
+            display: none !important;
+            content: none !important;
         }
         /* Reduce left-side margins/padding for header logo, top contact, and sidebar
            Use specific selectors and !important to override theme CSS loaded later. */
@@ -493,10 +528,7 @@
                         </div>
                         <p class="woocommerce-result-count">
                             Showing all 9 results</p>
-                        <form class="woocommerce-ordering" method="get" onsubmit="return false;">
-                            <!-- Sort dropdown moved to filters row above -->
-                            <input type="hidden" name="q" value="shop.html" />
-                        </form>
+                        
                     
                         <ul class="products">
                             <!-- Product list populated dynamically by `js/shop-dynamic.js` using `includes/products_list.php` -->
