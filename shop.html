@@ -41,6 +41,200 @@
             width: 100%;
         }
     }
+    body.archive.shoppg {
+      background: #F5E6C4 !important;
+    }
+    .body_wrap, .page_wrap, .page_content_wrap {
+      background: transparent !important;
+    }
+
+    /* Remove outer box styling for .list_products */
+    .list_products {
+      background: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
+      max-width: none !important;
+      width: 100% !important;
+      border: none !important;
+      display: block !important;
+    }
+    .shop-filters, .products {
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    .products {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px 36px;
+      justify-content: center;
+      list-style: none;
+    }
+    .products .product {
+      max-width: 320px;
+      min-width: 260px;
+      min-height: 440px;
+      margin: 0 auto;
+      font-size: 1.12em;
+      padding: 38px 24px 46px 24px;
+      background: #fffbe6;
+      border: 2.5px solid #fec321;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(166,124,0,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s, border 0.2s, transform 0.2s;
+      position: relative;
+      cursor: pointer;
+      font-family: 'Average', serif;
+    }
+    .products .product:hover {
+      box-shadow: 0 16px 40px rgba(166,124,0,0.18);
+      border-color: #a67c00;
+      transform: translateY(-8px) scale(1.03);
+      z-index: 2;
+    }
+    .products .product-card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+    }
+    .products .product img {
+      width: 100%;
+      max-width: 220px;
+      height: 190px;
+      object-fit: cover;
+      margin: 0 auto 22px auto;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.10);
+      border: 2px solid #fec321;
+      display: block;
+    }
+    .products .product .woocommerce-loop-product__title {
+      font-size: 1.32em;
+      min-height: 2.7em;
+      font-family: 'Libre Baskerville', serif;
+      color: #231f20;
+      margin-bottom: 14px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-shadow: 0 1px 0 #fffbe6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .products .product .price {
+      color: #a67c00;
+      font-size: 1.22em;
+      font-family: 'Average', serif;
+      margin-bottom: 18px;
+      display: block;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: #fff3d3;
+      border-radius: 8px;
+      padding: 6px 0;
+      width: 90%;
+      box-shadow: 0 1px 4px rgba(166,124,0,0.07);
+    }
+    .products .product .post_item_wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .products .product .post_content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .shop-pagination {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 36px 0 0 0;
+    }
+    .shop-page-btn {
+      background: #fec321;
+      color: #231f20;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 20px;
+      font-size: 1.08rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      letter-spacing: 0.5px;
+    }
+    .shop-page-btn.active {
+      background: #231f20;
+      color: #fec321;
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(166,124,0,0.10);
+    }
+    .shop-page-btn:hover:not(.active) {
+      background: #ffd966;
+      color: #231f20;
+    }
+    .shop-filters {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto 32px auto;
+      background: #fffbe6;
+      border: 2px solid #fec321;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(166,124,0,0.08);
+      padding: 28px 32px 18px 32px;
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-family: 'Libre Baskerville', serif;
+    }
+    .shop-filters label {
+      color: #a67c00;
+      font-size: 1.08em;
+      font-weight: 700;
+      margin-right: 8px;
+      letter-spacing: 0.5px;
+    }
+    .shop-filters select, .shop-filters input {
+      border: 2px solid #a67c00;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 1.08em;
+      background: #fff;
+      color: #231f20;
+      font-family: inherit;
+      margin-right: 6px;
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 4px rgba(166,124,0,0.07);
+    }
+    .shop-filters select:focus, .shop-filters input:focus {
+      border-color: #fec321;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(166,124,0,0.12);
+    }
+    .shop-filters select {
+      min-width: 120px;
+    }
+    .shop-filters input[type="number"] {
+      min-width: 120px;
+    }
     </style>
 
 </head>
@@ -187,6 +381,35 @@
             <div class="content_wrap">
                 <div class="content">
                     <div class="list_products shop_mode_thumbs">
+                        <!-- Filters Section -->
+                        <div class="shop-filters" style="display:flex;gap:30px;margin-bottom:30px;align-items:center;flex-wrap:wrap;">
+                            <!-- Categories Filter -->
+                            <div>
+                                <label for="filter-category" style="font-weight:600;margin-right:8px;">Category:</label>
+                                <select id="filter-category" onchange="filterByCategorySelect(this.value)" style="padding:6px 12px;">
+                                    <option value="all">All</option>
+                                    <option value="cheese">Cheese</option>
+                                    <option value="butter">Butter</option>
+                                    <option value="milk">Milk</option>
+                                    <option value="yoghurt">Yoghurt</option>
+                                    <option value="eggs">Eggs</option>
+                                    <option value="meat">Meat</option>
+                                </select>
+                            </div>
+                            <!-- Price Filter -->
+                            <div>
+                                <label for="filter-price" style="font-weight:600;margin-right:8px;">Max Price:</label>
+                                <input type="number" id="filter-price" min="0" max="1000" placeholder="Enter max price" style="padding:6px 12px;width:120px;" oninput="filterByPrice(this.value)" />
+                            </div>
+                            <!-- Sort by Price -->
+                            <div>
+                                <label for="sortOrder" style="font-weight:600;margin-right:8px;">Sort by:</label>
+                                <select name="orderby" class="orderby" id="sortOrder" style="padding:6px 12px;">
+                                    <option value="price">Price: low to high</option>
+                                    <option value="price-desc">Price: high to low</option>
+                                </select>
+                            </div>
+                        </div>
                         <nav class="woocommerce-breadcrumb">
                             <a href="index.html">Home</a>&nbsp;&#47;&nbsp;Shop
                         </nav>
@@ -200,67 +423,27 @@
                         <p class="woocommerce-result-count">
                             Showing all 9 results</p>
                         <form class="woocommerce-ordering" method="get" onsubmit="return false;">
-                            <select name="orderby" class="orderby" id="sortOrder">
-                                <option value="price">Sort by price: low to high</option>
-                                <option value="price-desc">Sort by price: high to low</option>
-                            </select>
+                            <!-- Sort dropdown moved to filters row above -->
                             <input type="hidden" name="q" value="shop.html" />
                         </form>
-                        
+                    
                         <ul class="products">
                             <!-- Product list populated dynamically by `js/shop-dynamic.js` using `includes/products_list.php` -->
                         </ul>
-                    </div>
-                </div>
-                <div class="sidebar widget_area scheme_light" role="complementary">
-                    <div class="sidebar_inner widget_area_inner">
-                        <aside id="woocommerce_widget_cart-2" class="widget woocommerce widget_shopping_cart">
-                            <h4 class="widget_title">Your Cart</h4>
-                            <div class="widget_shopping_cart_content">
-                                <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
-                            </div>
-                        </aside>
-                        <aside id="woocommerce_price_filter-2" class="widget woocommerce widget_price_filter">
-                            <h4 class="widget_title">Price Filter</h4>
-                            <form method="get" action="shop.html">
-                                <div class="price_slider_wrapper">
-                                    <div class="price_slider"></div>
-                                    <div class="price_slider_amount">
-                                        <input type="text" id="max_price" name="max_price" value="" data-max="50" placeholder="Max price" onchange="updatePriceSlider()" />
-                                        <button type="submit" class="button">Filter</button>
-                                        <div class="price_label">Price:
-                                            <span class="to"></span>
-                                        </div>
-                                        <input type="hidden" name="q" value="shop.html" />
-                                        <div class="clear"></div>
-                                    </div>
-                                </div>
-                            </form>
-                        </aside>
-                        <aside class="widget woocommerce widget_product_categories">
-                            <h4 class="widget_title">Categories</h4>
-                            <ul class="product-categories">
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('all')">All</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('cheese')">Cheese</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('butter')">Butter</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('milk')">Milk</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('yoghurt')">Yoghurt</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('eggs')">Eggs</a></li>
-                                <li class="cat-item"><a href="#" onclick="filterByCategory('meat')">Meat</a></li>
-                            </ul>
-                        </aside>
-                        <script type="text/javascript">
-                            function filterByCategory(category) {
+                        <script>
+                            // Category filter for select
+                            function filterByCategorySelect(category) {
+                                filterByCategory(category);
+                            }
+                            // Price filter
+                            function filterByPrice(maxPrice) {
                                 const products = document.querySelectorAll('.products .product');
                                 products.forEach(product => {
-                                    const title = product.querySelector('.woocommerce-loop-product__title').textContent.toLowerCase();
-                                    
-                                    // Special case for "Farm Sour Cream" under "Yoghurt"
-                                    if (title.includes('farm sour cream') && category === 'yoghurt') {
-                                        product.style.display = 'block';
-                                    } else if (category === 'all') {
-                                        product.style.display = 'block'; // Show all products
-                                    } else if (title.includes(category)) {
+                                    const priceEl = product.querySelector('.price');
+                                    if (!priceEl) return;
+                                    const priceText = priceEl.textContent.replace(/[^\d.]/g, '');
+                                    const price = parseFloat(priceText);
+                                    if (!maxPrice || price <= maxPrice) {
                                         product.style.display = 'block';
                                     } else {
                                         product.style.display = 'none';
@@ -269,6 +452,9 @@
                             }
                         </script>
                     </div>
+                </div>
+                <div class="sidebar widget_area scheme_light" role="complementary">
+                    <!-- Sidebar with mini cart, price filter, and categories removed as requested. -->
                 </div>
             </div>
         </div>

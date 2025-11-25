@@ -28,7 +28,7 @@
         /* Adjusted hero/banner height - reduced */
         .top_panel_title,
         .top_panel_title .top_panel_title_inner {min-height:300px;height:300px;}
-        .top_panel_title .top_panel_title_inner {background-size:cover;background-position:center;}
+        .top_panel_title .top_panel_title_inner {background-size:cover;background-position:center; background: none !important;}
 
         /* Mini cart styling with scrollable content */
         .widget_shopping_cart {max-height:500px;display:flex;flex-direction:column;}
@@ -57,6 +57,14 @@
             .cart-page {flex-direction:column;}
             .cart-summary {width:100%;}
             .cart-items {max-height:400px;}
+        }
+
+        /* Reduce product image size in main cart */
+        .cart-items img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
         }
     </style>
 
@@ -269,7 +277,7 @@
             <div class="mask"></div>
         </div>
         <div class="top_panel_title top_panel_style_1 title_present breadcrumbs_present scheme_original">
-            <div  class="bg_cust_6 top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
+            <div class="top_panel_title_inner top_panel_inner_style_1 title_present_inner breadcrumbs_present_inner">
                 <!-- <div class="content_wrap">
                     <h1 class="page_title">Shop</h1>
                     <div class="breadcrumbs">
