@@ -37,7 +37,7 @@
             '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>' +
             '<div class="cart-buttons">' +
               '<button class="view-cart-btn" type="button">VIEW CART</button>' +
-              '<button class="checkout-btn" type="button">CHECKOUT</button>' +
+              '<button class="checkout-button" type="button">CHECKOUT</button>' +
             '</div>' +
           '</div>' +
         '</div>';

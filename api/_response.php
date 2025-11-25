@@ -19,7 +19,7 @@ function api_json_success($data, array $meta = []): void
     api_json_response($payload);
 }
 
-function api_json_error(int $status, string $code, string $message = ''): void
+function api_json_error(int $status, string $code, string $message = '', ?array $details = null): void
 {
     $payload = [
         'ok' => false,
@@ -29,6 +29,9 @@ function api_json_error(int $status, string $code, string $message = ''): void
     ];
     if ($message !== '') {
         $payload['error']['message'] = $message;
+    }
+    if (!empty($details) && is_array($details)) {
+        $payload['error']['details'] = $details;
     }
     api_json_response($payload, $status);
 }

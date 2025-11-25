@@ -2,10 +2,8 @@
 // Session helper - initializes session and provides user info without outputting JSON
 // Unlike auth_session.php, this does NOT echo/exit - safe to include in other scripts
 
-// Use central DB/session bootstrap and CSRF helpers
+// Use central DB/session bootstrap
 require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/csrf.php';
-ensure_csrf_token();
 
 // Helper function to check if user is authenticated
 function is_user_authenticated(): bool {

@@ -41,46 +41,8 @@
   }
 
   function ensureCsrfToken(){
-    if (typeof window !== 'undefined' && window.CSRF_TOKEN) {
-      return Promise.resolve(window.CSRF_TOKEN);
-    }
-    if (csrfPromise) return csrfPromise;
-
-    var sessionUrl = joinPath('includes/auth_session.php');
-
-    function sessionFetch(url){
-      return fetch(url, { credentials:'same-origin' });
-    }
-
-    csrfPromise = sessionFetch(sessionUrl)
-      .then(function(r){
-        if (!r.ok) {
-          var err = new Error('missing_csrf');
-          err.code = 'missing_csrf';
-          throw err;
-        }
-        return r.json();
-      })
-      .then(function(data){
-        var token = data && data.csrf_token;
-        if (!token) {
-          var err = new Error('missing_csrf');
-          err.code = 'missing_csrf';
-          throw err;
-        }
-        try { window.CSRF_TOKEN = token; } catch(e){}
-        return token;
-      })
-      .catch(function(err){
-        if (err && typeof err === 'object') {
-          err.fromEnsure = true;
-          if (!err.code && err.message === 'missing_csrf') err.code = 'missing_csrf';
-        }
-        throw err;
-      })
-      .finally(function(){ csrfPromise = null; });
-
-    return csrfPromise;
+    // CSRF removed: no token required. Keep a promise API for compatibility.
+    return Promise.resolve(null);
   }
 
   function attachCsrfHeader(options, token){

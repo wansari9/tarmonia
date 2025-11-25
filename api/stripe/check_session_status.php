@@ -6,10 +6,27 @@ require_once __DIR__ . '/../../includes/db.php';
 // vendor autoload for stripe client
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-// Accept GET or POST ?session_id=...
+// Accept GET or POST ?session_id=... or short token ?tk=... / ?short_token=...
 $sessionId = $_GET['session_id'] ?? $_POST['session_id'] ?? null;
+$shortToken = $_GET['tk'] ?? $_POST['tk'] ?? $_GET['short_token'] ?? $_POST['short_token'] ?? null;
+
+// If caller provided a short token, try to resolve it to the real Stripe session id
+if (empty($sessionId) && !empty($shortToken)) {
+    try {
+        global $pdo;
+        $s = $pdo->prepare('SELECT stripe_session_id FROM stripe_session_short WHERE short_token = :tk ORDER BY id DESC LIMIT 1');
+        $s->execute([':tk' => $shortToken]);
+        $r = $s->fetch(PDO::FETCH_ASSOC);
+        if ($r && !empty($r['stripe_session_id'])) {
+            $sessionId = $r['stripe_session_id'];
+        }
+    } catch (Throwable $e) {
+        // resolution failed; continue and return missing error below
+    }
+}
+
 if (!$sessionId) {
-    api_json_error(400, 'missing_session', 'session_id is required');
+    api_json_error(400, 'missing_session', 'session_id or tk (short token) is required');
 }
 
 $stripeSecret = getenv('STRIPE_SECRET') ?: getenv('STRIPE_SECRET_KEY') ?: getenv('STRIPE_API_KEY') ?: null;
@@ -22,7 +39,7 @@ try {
 
     // Try to retrieve the Checkout Session and expand payment_intent
     try {
-        $session = $stripe->checkout->sessions->retrieve($sessionId, ['expand' => ['payment_intent']]);
+            $session = $stripe->checkout->sessions->retrieve($sessionId, ['expand' => ['payment_intent']]);
     } catch (\Stripe\Exception\ApiErrorException $e) {
         // If session not found, return pending (client should retry or bail)
         api_json_success(['status' => 'pending']);
@@ -111,6 +128,44 @@ try {
             }
         }
 
+        // If still no local mapping found — check if the session metadata contains an order_id
+        try {
+            $meta = $session->metadata ?? null;
+            $orderIdFromMeta = null;
+            if (is_object($meta) && isset($meta->order_id)) $orderIdFromMeta = (int)$meta->order_id;
+            if (is_array($meta) && isset($meta['order_id'])) $orderIdFromMeta = (int)$meta['order_id'];
+
+            if (!empty($orderIdFromMeta)) {
+                // Mark the payments row for that order as paid or create one if missing
+                $pdo->beginTransaction();
+                $sord = $pdo->prepare('SELECT id, order_number FROM orders WHERE id = :id LIMIT 1');
+                $sord->execute([':id' => $orderIdFromMeta]);
+                $ord = $sord->fetch(PDO::FETCH_ASSOC);
+                if ($ord) {
+                    // find or create payment
+                    $pcheck = $pdo->prepare('SELECT id, status FROM payments WHERE order_id = :oid LIMIT 1');
+                    $pcheck->execute([':oid' => $orderIdFromMeta]);
+                    $pcheckRow = $pcheck->fetch(PDO::FETCH_ASSOC);
+                    if ($pcheckRow) {
+                        if ($pcheckRow['status'] !== 'paid') {
+                            $update = $pdo->prepare('UPDATE payments SET status = :status, external_id = COALESCE(external_id, :ext), transaction_ref = :tx, processed_at = NOW() WHERE id = :id');
+                            $update->execute([':status' => 'paid', ':ext' => $sessionId, ':tx' => $paymentIntentId, ':id' => $pcheckRow['id']]);
+                        }
+                    } else {
+                        $insert = $pdo->prepare('INSERT INTO payments (order_id, method, amount, currency, status, external_id, transaction_ref, processed_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())');
+                        $insert->execute([$orderIdFromMeta, 'stripe', 0, $session->currency ?? 'RM', 'paid', $sessionId, $paymentIntentId]);
+                    }
+
+                    $pdo->prepare("UPDATE orders SET payment_status = :status, status = CASE WHEN status IN ('pending','awaiting_confirmation') THEN 'awaiting_confirmation' ELSE status END WHERE id = :id")->execute([':status' => 'paid', ':id' => $orderIdFromMeta]);
+                    $pdo->commit();
+                    api_json_success(['status' => 'paid', 'order_id' => (int)$orderIdFromMeta, 'order_number' => $ord['order_number']]);
+                }
+            }
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) $pdo->rollBack();
+            error_log('check_session_status metadata-order handling error: ' . $e->getMessage());
+        }
+
         // No local mapping found — try to create the order using session metadata (cart_id)
         try {
             $meta = $session->metadata ?? null;
@@ -127,24 +182,7 @@ try {
                     $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(md5(uniqid((string)mt_rand(), true)), 0, 8));
                     $currency = $totals['currency'] ?? ($session->currency ?? 'RM');
 
-                    $orderStmt = $pdo->prepare('INSERT INTO orders (
-                        order_number, user_id, status, shipping_status, currency,
-                        subtotal, discount_total, tax_total, shipping_total, grand_total,
-                        billing_first_name, billing_last_name, billing_email, billing_phone,
-                        billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
-                        shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
-                        shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country,
-                        fulfillment_status, payment_status, notes, placed_at
-                    ) VALUES (
-                        :order_number, :user_id, :status, :shipping_status, :currency,
-                        :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
-                        :billing_first_name, :billing_last_name, :billing_email, :billing_phone,
-                        :billing_address_line1, :billing_address_line2, :billing_city, :billing_state, :billing_postal_code, :billing_country,
-                        :shipping_first_name, :shipping_last_name, :shipping_email, :shipping_phone,
-                        :shipping_address_line1, :shipping_address_line2, :shipping_city, :shipping_state, :shipping_postal_code, :shipping_country,
-                        :fulfillment_status, :payment_status, :notes, NOW()
-                    )');
-
+                    // Create billing/shipping address rows and insert order referencing them
                     $cust = $session->customer_details ?? null;
                     $billingFirst = null;
                     $billingEmail = null;
@@ -155,6 +193,33 @@ try {
                         $billingFirst = $meta['billing_first_name'] ?? null;
                         $billingEmail = $meta['billing_email'] ?? null;
                     }
+
+                    $billingData2 = [];
+                    $billingData2['first_name'] = $billingFirst ?? ($cust->name ?? null);
+                    $billingData2['last_name'] = is_object($meta) ? ($meta->billing_last_name ?? null) : ($meta['billing_last_name'] ?? null);
+                    $billingData2['email'] = $billingEmail ?? ($cust->email ?? null);
+                    $billingData2['phone'] = $cust->phone ?? null;
+                    $billingData2['address'] = null;
+                    $billingData2['address2'] = null;
+                    $billingData2['city'] = $cust->address->city ?? null;
+                    $billingData2['state'] = $cust->address->state ?? null;
+                    $billingData2['postal_code'] = $cust->address->postal_code ?? null;
+                    $billingData2['country'] = $cust->address->country ?? (is_object($meta) ? ($meta->billing_country ?? null) : ($meta['billing_country'] ?? null)) ?? 'MY';
+
+                    $billingAddressId3 = create_address_row($pdo, is_object($meta) && isset($meta->user_id) ? (int)$meta->user_id : (is_array($meta) && isset($meta['user_id']) ? (int)$meta['user_id'] : null), $billingData2, 'Billing');
+                    $shippingAddressId3 = create_address_row($pdo, is_object($meta) && isset($meta->user_id) ? (int)$meta->user_id : (is_array($meta) && isset($meta['user_id']) ? (int)$meta['user_id'] : null), $billingData2, 'Shipping');
+
+                    $orderStmt = $pdo->prepare('INSERT INTO orders (
+                        order_number, user_id, status, shipping_status, currency,
+                        subtotal, discount_total, tax_total, shipping_total, grand_total,
+                        billing_address_id, shipping_address_id,
+                        fulfillment_status, payment_status, notes, placed_at
+                    ) VALUES (
+                        :order_number, :user_id, :status, :shipping_status, :currency,
+                        :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
+                        :billing_address_id, :shipping_address_id,
+                        :fulfillment_status, :payment_status, :notes, NOW()
+                    )');
 
                     $orderStmt->execute([
                         ':order_number' => $orderNumber,
@@ -168,27 +233,8 @@ try {
                         ':tax_total' => $totals['tax_total'],
                         ':shipping_total' => $totals['shipping_total'],
                         ':grand_total' => $totals['grand_total'],
-                        ':billing_first_name' => $billingFirst ?? ($cust->name ?? null),
-                        ':billing_last_name' => is_object($meta) ? ($meta->billing_last_name ?? null) : ($meta['billing_last_name'] ?? null),
-                        ':billing_email' => $billingEmail ?? ($cust->email ?? null),
-                        ':billing_phone' => $cust->phone ?? null,
-                        ':billing_address_line1' => null,
-                        ':billing_address_line2' => null,
-                        ':billing_city' => null,
-                        ':billing_state' => null,
-                        ':billing_postal_code' => null,
-                        // Derive country from session customer details or metadata; fallback to 'MY'
-                        ':billing_country' => $cust->address->country ?? (is_object($meta) ? ($meta->billing_country ?? null) : ($meta['billing_country'] ?? null)) ?? 'MY',
-                        ':shipping_first_name' => $billingFirst ?? ($cust->name ?? null),
-                        ':shipping_last_name' => is_object($meta) ? ($meta->billing_last_name ?? null) : ($meta['billing_last_name'] ?? null),
-                        ':shipping_email' => $billingEmail ?? ($cust->email ?? null),
-                        ':shipping_phone' => $cust->phone ?? null,
-                        ':shipping_address_line1' => null,
-                        ':shipping_address_line2' => null,
-                        ':shipping_city' => null,
-                        ':shipping_state' => null,
-                        ':shipping_postal_code' => null,
-                        ':shipping_country' => $cust->address->country ?? (is_object($meta) ? ($meta->billing_country ?? null) : ($meta['billing_country'] ?? null)) ?? 'MY',
+                        ':billing_address_id' => $billingAddressId3,
+                        ':shipping_address_id' => $shippingAddressId3,
                         ':fulfillment_status' => 'unfulfilled',
                         // mark payment_status paid because Stripe confirmed payment
                         ':payment_status' => 'paid',

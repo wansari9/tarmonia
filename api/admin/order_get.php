@@ -12,32 +12,28 @@ if ($id <= 0) {
 try {
     global $pdo;
     
-    // Order core with inline address fields
-    $stmt = $pdo->prepare('
-        SELECT id, status, currency, subtotal, discount_total, tax_total, shipping_total, grand_total, 
+    // Order core — read columns that match our current schema (address IDs, admin timestamps)
+    $stmt = $pdo->prepare("SELECT id, status, currency, subtotal, discount_total, tax_total, shipping_total, grand_total,
                created_at, updated_at, user_id, admin_confirmed_at, admin_confirmed_by, tracking_number, shipped_at,
-               billing_first_name, billing_last_name, billing_email, billing_phone,
-               billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
-               shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
-               shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country
-        FROM orders 
-        WHERE id = :id LIMIT 1
-    ');
+               billing_address_id, shipping_address_id, shipping_method_id
+        FROM orders
+        WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $id]);
     $orderRow = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$orderRow) {
         api_json_error(404, 'not_found', 'Order not found');
     }
     
-    // Get admin username if confirmed
+    // Get admin/user name if confirmed (users table holds admin accounts)
     $confirmedByAdmin = null;
-    if ($orderRow['admin_confirmed_by']) {
+    if (!empty($orderRow['admin_confirmed_by'])) {
         try {
-            $adminStmt = $pdo->prepare('SELECT username, full_name FROM admins WHERE id = :id LIMIT 1');
+            $adminStmt = $pdo->prepare('SELECT email, first_name, last_name FROM users WHERE id = :id LIMIT 1');
             $adminStmt->execute([':id' => $orderRow['admin_confirmed_by']]);
             $adminRow = $adminStmt->fetch(PDO::FETCH_ASSOC);
             if ($adminRow) {
-                $confirmedByAdmin = $adminRow['full_name'] ?: $adminRow['username'];
+                $name = trim(($adminRow['first_name'] ?? '') . ' ' . ($adminRow['last_name'] ?? ''));
+                $confirmedByAdmin = $name !== '' ? $name : ($adminRow['email'] ?? null);
             }
         } catch (Throwable $e) { /* ignore */ }
     }
@@ -51,11 +47,11 @@ try {
         'tax_total' => (float)$orderRow['tax_total'],
         // Note: shipping_total intentionally omitted for admin view
         'grand_total' => (float)$orderRow['grand_total'],
-        'created_at' => (string)$orderRow['created_at'],
-        'updated_at' => $orderRow['updated_at'],
-        'user_id' => $orderRow['user_id'] ? (int)$orderRow['user_id'] : null,
-        'admin_confirmed_at' => $orderRow['admin_confirmed_at'],
-        'admin_confirmed_by' => $orderRow['admin_confirmed_by'] ? (int)$orderRow['admin_confirmed_by'] : null,
+        'created_at' => (string)($orderRow['created_at'] ?? ''),
+        'updated_at' => $orderRow['updated_at'] ?? null,
+        'user_id' => !empty($orderRow['user_id']) ? (int)$orderRow['user_id'] : null,
+        'admin_confirmed_at' => $orderRow['admin_confirmed_at'] ?? null,
+        'admin_confirmed_by' => !empty($orderRow['admin_confirmed_by']) ? (int)$orderRow['admin_confirmed_by'] : null,
         'confirmed_by_name' => $confirmedByAdmin,
         'tracking_number' => $orderRow['tracking_number'],
         'shipped_at' => $orderRow['shipped_at'],
@@ -79,35 +75,39 @@ try {
         }
     } catch (Throwable $e) { /* tolerate missing tables */ }
 
-    // Build address objects from inline fields
+    // Build address objects. Current schema stores addresses in `addresses` and `orders` has `billing_address_id`/`shipping_address_id`.
     $billing = null;
-    if ($orderRow['billing_first_name'] || $orderRow['billing_address_line1']) {
-        $billing = [
-            'recipient_name' => trim(($orderRow['billing_first_name'] ?? '') . ' ' . ($orderRow['billing_last_name'] ?? '')),
-            'email' => $orderRow['billing_email'],
-            'phone' => $orderRow['billing_phone'],
-            'line1' => $orderRow['billing_address_line1'],
-            'line2' => $orderRow['billing_address_line2'],
-            'city' => $orderRow['billing_city'],
-            'state' => $orderRow['billing_state'],
-            'postal_code' => $orderRow['billing_postal_code'],
-            'country' => $orderRow['billing_country'],
-        ];
-    }
-    
     $shipping = null;
-    if ($orderRow['shipping_first_name'] || $orderRow['shipping_address_line1']) {
-        $shipping = [
-            'recipient_name' => trim(($orderRow['shipping_first_name'] ?? '') . ' ' . ($orderRow['shipping_last_name'] ?? '')),
-            'email' => $orderRow['shipping_email'],
-            'phone' => $orderRow['shipping_phone'],
-            'line1' => $orderRow['shipping_address_line1'],
-            'line2' => $orderRow['shipping_address_line2'],
-            'city' => $orderRow['shipping_city'],
-            'state' => $orderRow['shipping_state'],
-            'postal_code' => $orderRow['shipping_postal_code'],
-            'country' => $orderRow['shipping_country'],
-        ];
+
+    $fetchAddress = function($addrId) use ($pdo) {
+        if (empty($addrId)) {
+            return null;
+        }
+        try {
+            $a = $pdo->prepare('SELECT recipient_name, phone, line1, line2, city, state, postal_code, country, created_at FROM addresses WHERE id = :id LIMIT 1');
+            $a->execute([':id' => $addrId]);
+            $row = $a->fetch(PDO::FETCH_ASSOC);
+            if (!$row) return null;
+            return [
+                'recipient_name' => $row['recipient_name'] ?? null,
+                'phone' => $row['phone'] ?? null,
+                'line1' => $row['line1'] ?? null,
+                'line2' => $row['line2'] ?? null,
+                'city' => $row['city'] ?? null,
+                'state' => $row['state'] ?? null,
+                'postal_code' => $row['postal_code'] ?? null,
+                'country' => $row['country'] ?? null,
+            ];
+        } catch (Throwable $e) {
+            return null;
+        }
+    };
+
+    if (!empty($orderRow['billing_address_id'])) {
+        $billing = $fetchAddress($orderRow['billing_address_id']);
+    }
+    if (!empty($orderRow['shipping_address_id'])) {
+        $shipping = $fetchAddress($orderRow['shipping_address_id']);
     }
 
     // Payments

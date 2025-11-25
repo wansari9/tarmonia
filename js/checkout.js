@@ -104,9 +104,16 @@
       body: JSON.stringify(orderData)
     })
     .then(function(resp) {
-      return resp.json();
+      return resp.json().then(function(body) { return { status: resp.status, body: body }; });
     })
-    .then(function(data) {
+    .then(function(respObj) {
+      var data = respObj.body;
+      // If server returned an error payload, surface that message to the user
+      if (!data || data.ok === false) {
+        var serverMsg = (data && data.error && data.error.message) ? data.error.message : (data && data.error && data.error.code) ? data.error.code : 'Failed to create checkout session';
+        throw new Error(serverMsg);
+      }
+
       if (data && data.ok && data.data && data.data.url) {
         // Redirect browser to Stripe Checkout
         window.location.href = data.data.url;
@@ -221,17 +228,22 @@
         }
       }
 
-      // Radio button validation for payment step
-      if (input.type === 'radio' && currentStep === 2) {
-        var paymentSelected = document.querySelector('input[name="payment-option"]:checked');
-        if (!paymentSelected) {
+      // Phone validation (do in JS to avoid browser RegExp compilation quirks)
+      if (input.id === 'phone' && input.value) {
+        var phoneRegex = /^[+0-9().\s-]{6,30}$/;
+        if (!phoneRegex.test(input.value.trim())) {
           valid = false;
-          // mark the radio group invalid visually
-          var radios = currentFieldset.querySelectorAll('input[name="payment-option"]');
-          if (radios && radios[0]) radios[0].classList.add('invalid');
-          alert('Please select a payment method');
+          input.classList.add('invalid');
+          // provide a concise accessible message via focus
+          input.setAttribute('aria-invalid', 'true');
+        } else {
+          input.classList.add('valid');
+          input.removeAttribute('aria-invalid');
         }
       }
+
+      // Payment selection removed: Stripe is the only payment method.
+      // No radio validation required.
     });
 
     return valid;
@@ -490,15 +502,17 @@
     var submitBtn = document.getElementById('submit-order-btn');
     if (!submitBtn) return;
 
+    // Submit should immediately start the Stripe flow (Stripe-only checkout)
     submitBtn.addEventListener('click', function(e) {
       e.preventDefault();
-      
+
       if (!validateCurrentStep()) {
         return;
       }
 
       saveCurrentStepData();
-      submitOrder();
+      // Start Stripe Checkout directly instead of generic submit
+      startStripeCheckoutFlow();
     });
   }
 

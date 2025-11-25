@@ -18,11 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $orderRef = trim((string)($_POST['order_ref'] ?? ''));
     $subject = trim((string)($_POST['subject'] ?? 'Support request'));
     $message = trim((string)($_POST['message'] ?? ''));
-    $csrf = trim((string)($_POST['csrf_token'] ?? ''));
-
-    if (!verify_csrf_token($csrf)) {
-        $errors[] = 'Invalid session. Please reload the page and try again.';
-    }
+    // CSRF removed: skip verification
     if ($name === '') $errors[] = 'Please provide your name.';
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please provide a valid email address.';
     if ($message === '') $errors[] = 'Please describe your request in the message field.';
@@ -220,7 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php endif; ?>
 
                                     <form method="post" action="support.php" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensure_csrf_token(), ENT_QUOTES) ?>">
                                         <div style="grid-column:1/3;display:flex;gap:12px;">
                                             <input type="text" name="name" placeholder="Your name" value="<?= htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES) ?>" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">
                                             <input type="email" name="email" placeholder="Your email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES) ?>" style="flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:6px;">

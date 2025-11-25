@@ -31,6 +31,35 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 
 // CSRF validation removed per user request
 
+// Optional debug logging: when `debug=1` is included in the POST payload
+// (the client sets this for localhost), write request details to logs/cart-add-debug.log
+// so we can inspect headers, posted fields and any X-CSRF-Token header present.
+try {
+    $logDirDbg = __DIR__ . '/../logs';
+    if (!is_dir($logDirDbg)) @mkdir($logDirDbg, 0755, true);
+    $logFileDbg = $logDirDbg . '/cart-add-debug.log';
+    $shouldLog = isset($_POST['debug']) && ($_POST['debug'] === '1' || $_POST['debug'] === 1);
+    if ($shouldLog) {
+        $hdrs = function_exists('getallheaders') ? getallheaders() : [];
+        $entryDbg = [
+            'time' => date('c'),
+            'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
+            'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+            'uri' => $_SERVER['REQUEST_URI'] ?? null,
+            'host' => $_SERVER['HTTP_HOST'] ?? null,
+            'headers' => $hdrs,
+            'cookies' => $_COOKIE ?? [],
+            'post' => $_POST ?? [],
+            'raw_input' => file_get_contents('php://input')
+        ];
+        // highlight any CSRF header
+        $entryDbg['x_csrf'] = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($_SERVER['HTTP_X_CSRF'] ?? null);
+        file_put_contents($logFileDbg, json_encode($entryDbg) . "\n", FILE_APPEND | LOCK_EX);
+    }
+} catch (Throwable $e) {
+    // ignore logging failures
+}
+
 $rawProductId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
 $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 $weight = isset($_POST['weight']) ? trim((string)$_POST['weight']) : '';

@@ -24,9 +24,10 @@ if (!$isHttps && !$isLocalHost) {
 
 // Only set headers if headers not already sent
 if (!headers_sent()) {
-    header('X-Frame-Options: DENY');
+    header('X-Frame-Options: SAMEORIGIN');
     header('X-Content-Type-Options: nosniff');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
+    // Allow reasonable referrer details so external redirects (e.g., Stripe) include origin
+    header('Referrer-Policy: origin-when-cross-origin');
     header("Permissions-Policy: geolocation=(), microphone=()");
 
     // HSTS only when over HTTPS
@@ -35,7 +36,8 @@ if (!headers_sent()) {
     }
 
     // Content Security Policy (conservative, may need fine-tuning per site)
-    $csp = "default-src 'self'; img-src 'self' data: https:; font-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; connect-src 'self' https:; frame-ancestors 'none';";
+    // Allow connections and frames from Stripe endpoints and permit Stripe to redirect cleanly
+    $csp = "default-src 'self'; img-src 'self' data: https:; font-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; connect-src 'self' https: https://api.stripe.com https://hooks.stripe.com https://checkout.stripe.com; frame-ancestors 'self' https://checkout.stripe.com;";
     header('Content-Security-Policy: ' . $csp);
 }
 

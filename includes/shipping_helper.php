@@ -48,7 +48,7 @@ function compute_shipping_rate_for_method(PDO $pdo, int $methodId, float $subtot
 
     // Force a single flat shipping rate across the store regardless of method/weight.
     // This overrides configured rates and returns the fixed price used by recalc_cart_totals().
-    $flatShipping = 5.99;
+    $flatShipping = 0.0;
     return round($flatShipping, 2);
 }
 

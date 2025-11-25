@@ -5,6 +5,28 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/cart_common.php';
 
 /**
+ * Insert an address row and return the inserted id.
+ * Accepts a $data array with keys: first_name,last_name,phone,address,address2,city,state,postal_code,country
+ */
+function create_address_row(PDO $pdo, ?int $userId, array $data, string $label = 'Default'): int {
+    $stmt = $pdo->prepare('INSERT INTO addresses (user_id, label, recipient_name, phone, line1, line2, city, state, postal_code, country, created_at) VALUES (:user_id, :label, :recipient_name, :phone, :line1, :line2, :city, :state, :postal_code, :country, NOW())');
+    $recipient = trim((string)($data['first_name'] ?? '') . ' ' . trim((string)($data['last_name'] ?? '')));
+    $stmt->execute([
+        ':user_id' => $userId,
+        ':label' => $label,
+        ':recipient_name' => $recipient !== '' ? $recipient : null,
+        ':phone' => $data['phone'] ?? null,
+        ':line1' => $data['address'] ?? null,
+        ':line2' => $data['address2'] ?? null,
+        ':city' => $data['city'] ?? null,
+        ':state' => $data['state'] ?? null,
+        ':postal_code' => $data['postal_code'] ?? null,
+        ':country' => $data['country'] ?? null,
+    ]);
+    return (int)$pdo->lastInsertId();
+}
+
+/**
  * Generate a reasonably unique order number.
  */
 function generate_order_number(): string
@@ -68,59 +90,77 @@ function create_order_from_cart(PDO $pdo, int $userId, int $cartId, array $billi
 
         $orderNumber = generate_order_number();
 
-        $orderStmt = $pdo->prepare('INSERT INTO orders (
-            order_number, user_id, status, shipping_status, currency,
-            subtotal, discount_total, tax_total, shipping_total, grand_total,
-            billing_first_name, billing_last_name, billing_email, billing_phone,
-            billing_address_line1, billing_address_line2, billing_city, billing_state, billing_postal_code, billing_country,
-            shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
-            shipping_address_line1, shipping_address_line2, shipping_city, shipping_state, shipping_postal_code, shipping_country,
-            fulfillment_status, payment_status, notes, placed_at
-        ) VALUES (
-            :order_number, :user_id, :status, :shipping_status, :currency,
-            :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
-            :billing_first_name, :billing_last_name, :billing_email, :billing_phone,
-            :billing_address_line1, :billing_address_line2, :billing_city, :billing_state, :billing_postal_code, :billing_country,
-            :shipping_first_name, :shipping_last_name, :shipping_email, :shipping_phone,
-            :shipping_address_line1, :shipping_address_line2, :shipping_city, :shipping_state, :shipping_postal_code, :shipping_country,
-            :fulfillment_status, :payment_status, :notes, NOW()
-        )');
+        // Create address rows for billing and shipping to match current schema
+        $billingAddressId = create_address_row($pdo, $userId, $billing, 'Billing');
+        // Shipping uses billing values by default (caller may pass separate shipping in future)
+        $shippingAddressId = create_address_row($pdo, $userId, $billing, 'Shipping');
 
-        $orderStmt->execute([
+        // Validate enum-like fields to avoid inserting invalid values that trigger
+        // SQL warnings on some MySQL setups.
+        $allowedOrderStatuses = ['awaiting_confirmation','pending','paid','packed','shipped','delivered','canceled','refunded'];
+        $allowedShippingStatuses = ['pending','packed','shipped','delivered','canceled'];
+        $allowedFulfillmentStatuses = ['unfulfilled','partial','fulfilled'];
+        $allowedPaymentStatuses = ['unpaid','paid','refunded','failed'];
+
+        $orderStatus = in_array($opts['order_status'] ?? '', $allowedOrderStatuses, true) ? $opts['order_status'] : 'awaiting_confirmation';
+        $shippingStatus = in_array('pending', $allowedShippingStatuses, true) ? 'pending' : ($opts['shipping_status'] ?? 'pending');
+        $fulfillmentStatus = in_array($opts['fulfillment_status'] ?? '', $allowedFulfillmentStatuses, true) ? $opts['fulfillment_status'] : 'unfulfilled';
+        $paymentStatus = in_array($opts['payment_status'] ?? '', $allowedPaymentStatuses, true) ? $opts['payment_status'] : 'unpaid';
+
+        $insertParams = [
             ':order_number' => $orderNumber,
             ':user_id' => $userId,
-            ':status' => $opts['order_status'],
-            ':shipping_status' => 'pending',
+            ':status' => $orderStatus,
+            ':shipping_status' => $shippingStatus,
             ':currency' => $currency ?? 'RM',
             ':subtotal' => $totals['subtotal'],
             ':discount_total' => $totals['discount_total'],
             ':tax_total' => $totals['tax_total'],
             ':shipping_total' => $totals['shipping_total'],
             ':grand_total' => $totals['grand_total'],
-            ':billing_first_name' => $billing['first_name'] ?? null,
-            ':billing_last_name' => $billing['last_name'] ?? null,
-            ':billing_email' => $billing['email'] ?? null,
-            ':billing_phone' => $billing['phone'] ?? null,
-            ':billing_address_line1' => $billing['address'] ?? null,
-            ':billing_address_line2' => $billing['address2'] ?? null,
-            ':billing_city' => $billing['city'] ?? null,
-            ':billing_state' => $billing['state'] ?? null,
-            ':billing_postal_code' => $billing['postal_code'] ?? null,
-            ':billing_country' => $billing['country'] ?? 'MY',
-            ':shipping_first_name' => $billing['first_name'] ?? null,
-            ':shipping_last_name' => $billing['last_name'] ?? null,
-            ':shipping_email' => $billing['email'] ?? null,
-            ':shipping_phone' => $billing['phone'] ?? null,
-            ':shipping_address_line1' => $billing['address'] ?? null,
-            ':shipping_address_line2' => $billing['address2'] ?? null,
-            ':shipping_city' => $billing['city'] ?? null,
-            ':shipping_state' => $billing['state'] ?? null,
-            ':shipping_postal_code' => $billing['postal_code'] ?? null,
-            ':shipping_country' => $billing['country'] ?? 'MY',
-            ':fulfillment_status' => $opts['fulfillment_status'],
-            ':payment_status' => $opts['payment_status'],
+            ':billing_address_id' => $billingAddressId,
+            ':shipping_address_id' => $shippingAddressId,
+            ':fulfillment_status' => $fulfillmentStatus,
+            ':payment_status' => $paymentStatus,
+            ':payment_method' => $opts['payment_method'] ?? null,
             ':notes' => $opts['notes'] ?? null
-        ]);
+        ];
+
+        $orderSql = 'INSERT INTO orders (
+            order_number, user_id, status, shipping_status, currency,
+            subtotal, discount_total, tax_total, shipping_total, grand_total,
+            billing_address_id, shipping_address_id,
+            fulfillment_status, payment_status, payment_method, notes, placed_at
+        ) VALUES (
+            :order_number, :user_id, :status, :shipping_status, :currency,
+            :subtotal, :discount_total, :tax_total, :shipping_total, :grand_total,
+            :billing_address_id, :shipping_address_id,
+            :fulfillment_status, :payment_status, :payment_method, :notes, NOW()
+        )';
+        $orderStmt = $pdo->prepare($orderSql);
+
+        // Debug log the exact parameters being inserted to help diagnose enum/DB warnings
+        try {
+            $logDir = __DIR__ . '/../logs';
+            if (!is_dir($logDir)) @mkdir($logDir, 0755, true);
+            $dbgFile = $logDir . '/order_insert.debug.log';
+            $entry = '[' . date('c') . '] order_insert params: ' . json_encode($insertParams, JSON_UNESCAPED_UNICODE) . "\n";
+            @file_put_contents($dbgFile, $entry, FILE_APPEND | LOCK_EX);
+        } catch (Throwable $_) {
+            // ignore logging failures
+        }
+
+        // Defensive: ensure order status is not null
+        if (!isset($insertParams[':status']) || $insertParams[':status'] === null) {
+            $insertParams[':status'] = 'awaiting_confirmation';
+        }
+
+        // Defensive: remove any accidental 'id' keys that would prevent
+        // MySQL from applying AUTO_INCREMENT (strict mode rejects NULL id)
+        if (array_key_exists(':id', $insertParams)) unset($insertParams[':id']);
+        if (array_key_exists('id', $insertParams)) unset($insertParams['id']);
+
+        $orderStmt->execute($insertParams);
 
         $orderId = (int)$pdo->lastInsertId();
 
@@ -148,19 +188,39 @@ function create_order_from_cart(PDO $pdo, int $userId, int $cartId, array $billi
             ]);
         }
 
-        // Create payment row
-        $paymentSql = 'INSERT INTO payments (order_id, method, amount, currency, status' . (isset($opts['external_id']) ? ', external_id' : '') . ') VALUES (:order_id, :method, :amount, :currency, :status' . (isset($opts['external_id']) ? ', :external_id' : '') . ')';
-        $paymentStmt = $pdo->prepare($paymentSql);
+        // Create payment row. Build the INSERT dynamically so we can omit
+        // the `status` column when it's null and allow the DB default
+        // (e.g. 'initiated') to be applied. This avoids inserting NULL
+        // into a NOT NULL enum column on some hosts.
+        $allowedPaymentRowStatuses = ['initiated','authorized','captured','paid','failed','refunded'];
+        $paymentRowStatus = null;
+        if (isset($opts['payment_status']) && in_array($opts['payment_status'], $allowedPaymentRowStatuses, true)) {
+            $paymentRowStatus = $opts['payment_status'];
+        }
+
+        $paymentCols = ['order_id', 'method', 'amount', 'currency'];
+        $placeholders = [':order_id', ':method', ':amount', ':currency'];
         $params = [
             ':order_id' => $orderId,
             ':method' => $opts['payment_method'],
             ':amount' => $totals['grand_total'],
-            ':currency' => $currency ?? 'RM',
-            ':status' => $opts['payment_status']
+            ':currency' => $currency ?? 'RM'
         ];
+
+        if ($paymentRowStatus !== null) {
+            $paymentCols[] = 'status';
+            $placeholders[] = ':status';
+            $params[':status'] = $paymentRowStatus;
+        }
+
         if (isset($opts['external_id']) && $opts['external_id'] !== null) {
+            $paymentCols[] = 'external_id';
+            $placeholders[] = ':external_id';
             $params[':external_id'] = $opts['external_id'];
         }
+
+        $paymentSql = 'INSERT INTO payments (' . implode(', ', $paymentCols) . ') VALUES (' . implode(', ', $placeholders) . ')';
+        $paymentStmt = $pdo->prepare($paymentSql);
         $paymentStmt->execute($params);
         $paymentId = (int)$pdo->lastInsertId();
 
