@@ -235,6 +235,77 @@
     .shop-filters input[type="number"] {
       min-width: 120px;
     }
+        /* Center the shop filters and product grid inside the main content area */
+        .content .list_products {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 24px;
+            width: 100%;
+            /* Stick to top of the viewport when scrolling */
+            position: sticky;
+            top: 0;
+            /* make stacking explicit so the sticky area sits above other content */
+            z-index: 1000;
+            /* Keep a light backdrop so it remains readable when overlapping content */
+            background: rgba(255, 251, 230, 0.95);
+            /* small padding to separate from top */
+            padding-top: 8px;
+        }
+
+        /* Page-scoped override: remove left-sidebar offset only on the shop page */
+        body.body_style_fullwide.sidebar_left .content {
+            padding-left: 0 !important;
+        }
+        /* Force .content to center on this page (undo theme's sidebar_left float) */
+        body.archive.shoppg .content {
+            float: none !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: auto !important;
+            max-width: 1100px !important;
+            box-sizing: border-box !important;
+        }
+        /* Allow sticky children to use viewport scrolling by removing overflow on nearest ancestors
+           Only applied on the shop/archive page to avoid global layout changes. */
+        body.archive.shoppg .page_content_wrap,
+        body.archive.shoppg .content_wrap,
+        body.archive.shoppg .page_wrap,
+        body.archive.shoppg .body_wrap {
+            overflow: visible !important;
+        }
+
+        /* Debug outlines removed */
+
+        /* Ensure the products grid keeps its max-width and centers properly inside the flex container */
+        .content .list_products .products {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        /* Reduce left-side margins/padding for header logo, top contact, and sidebar
+           Use specific selectors and !important to override theme CSS loaded later. */
+        .top_panel_top .content_wrap,
+        .top_panel_middle .content_wrap {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+
+        .column-4_5.contact_logo {
+            margin-left: 0 !important;
+            padding-left: 6px !important;
+        }
+
+        .top_panel_top_contact_area {
+            margin-left: 6px !important;
+            padding-left: 6px !important;
+        }
+
+        .sidebar.widget_area {
+            margin-left: 8px !important;
+            padding-left: 8px !important;
+        }
     </style>
 
 </head>
@@ -650,6 +721,33 @@
                     el.closest('.product') && el.closest('.product').setAttribute('data-highestPrice', best); // could expand if variants
                 }
             });
+        }
+    });
+    // Debugging helper: log computed styles for .list_products ancestors
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            var el = document.querySelector('.content .list_products');
+            if (!el) {
+                console.info('DEBUG: .list_products not found on page');
+                return;
+            }
+            console.group('DEBUG: .list_products ancestor computed styles');
+            var node = el;
+            while (node && node.nodeType === 1) {
+                var cs = window.getComputedStyle(node);
+                console.log(node.tagName.toLowerCase() + (node.className ? ('.' + node.className.replace(/\s+/g, '.')) : ''), {
+                    overflow: cs.overflow + ' / ' + cs.overflowX + ',' + cs.overflowY,
+                    position: cs.position,
+                    transform: cs.transform === 'none' ? '(none)' : cs.transform,
+                    willChange: cs.willChange,
+                    zIndex: cs.zIndex
+                });
+                if (node.tagName.toLowerCase() === 'body') break;
+                node = node.parentElement;
+            }
+            console.groupEnd();
+        } catch (err) {
+            console.error('DEBUG: error while computing ancestor styles', err);
         }
     });
     document.addEventListener('DOMContentLoaded', function () {
