@@ -48,9 +48,32 @@ switch ($action) {
         }
         try {
             global $pdo;
-            $st = $pdo->prepare('SELECT id, username, email, password_hash, full_name, is_active FROM admins WHERE username = :username OR email = :email LIMIT 1');
-            $st->execute([':username' => $username, ':email' => $username]);
-            $adm = $st->fetch(PDO::FETCH_ASSOC) ?: null;
+            // Prefer a dedicated `admins` table when present. If it doesn't exist
+            // fall back to the `users` table (matching email) which may contain
+            // admin accounts in this project's setup.
+            $hasAdmins = false;
+            try {
+                $chk = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'admins' LIMIT 1");
+                $chk->execute();
+                $hasAdmins = (bool)$chk->fetchColumn();
+            } catch (Throwable $_) {
+                $hasAdmins = false;
+            }
+
+            if ($hasAdmins) {
+                $st = $pdo->prepare('SELECT id, username, email, password_hash, full_name, is_active FROM admins WHERE username = :username OR email = :email LIMIT 1');
+                $st->execute([':username' => $username, ':email' => $username]);
+                $adm = $st->fetch(PDO::FETCH_ASSOC) ?: null;
+            } else {
+                $st = $pdo->prepare('SELECT id, email, password_hash, CONCAT(COALESCE(first_name, ""), " ", COALESCE(last_name, "")) AS full_name, role, IFNULL(is_admin, 0) AS is_admin FROM users WHERE email = :u LIMIT 1');
+                $st->execute([':u' => $username]);
+                $adm = $st->fetch(PDO::FETCH_ASSOC) ?: null;
+                if ($adm) {
+                    $adm['username'] = $adm['email'];
+                    // normalize to admins schema for downstream code
+                    $adm['is_active'] = 1;
+                }
+            }
             if (!$adm || !password_verify($password, (string)$adm['password_hash'])) {
                 api_json_error(401, 'invalid_credentials', 'Invalid username or password');
             }

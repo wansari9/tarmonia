@@ -51,6 +51,12 @@ if ($from !== '' && $to !== '') {
 $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
 try {
+    // Detect whether the `admin_confirmed_at` column exists in the current DB.
+    $dbName = (string)($pdo->query('SELECT DATABASE()')->fetchColumn());
+    $colStmt = $pdo->prepare('SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = :db AND TABLE_NAME = :table AND COLUMN_NAME = :col');
+    $colStmt->execute([':db' => $dbName, ':table' => 'orders', ':col' => 'admin_confirmed_at']);
+    $hasAdminConfirmed = (bool)$colStmt->fetchColumn();
+
     $countSql = 'SELECT COUNT(*) FROM orders o ' . $whereSql;
     $countStmt = $pdo->prepare($countSql);
     foreach ($params as $k => $v) {
@@ -59,7 +65,8 @@ try {
     $countStmt->execute();
     $total = (int)$countStmt->fetchColumn();
 
-    $listSql = 'SELECT o.id, o.user_id, o.status, o.currency, o.grand_total, o.created_at, o.tracking_number, o.admin_confirmed_at, u.email as user_email
+    $adminSelect = $hasAdminConfirmed ? ', o.admin_confirmed_at' : '';
+    $listSql = 'SELECT o.id, o.user_id, o.status, o.currency, o.grand_total, o.created_at, o.tracking_number' . $adminSelect . ', u.email as user_email
                 FROM orders o 
                 LEFT JOIN users u ON u.id = o.user_id
                 ' . $whereSql . ' ORDER BY 
@@ -85,7 +92,7 @@ try {
             'grand_total' => (float)$row['grand_total'],
             'created_at' => (string)$row['created_at'],
             'tracking_number' => $row['tracking_number'],
-            'admin_confirmed_at' => $row['admin_confirmed_at'],
+            'admin_confirmed_at' => $hasAdminConfirmed ? ($row['admin_confirmed_at'] ?? null) : null,
         ];
     }
 

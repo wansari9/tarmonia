@@ -7,7 +7,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     cart_json_response(405, ['success' => false, 'error' => 'Method Not Allowed']);
 }
 
-require_valid_csrf();
+// CSRF removed per developer request — no explicit validation required here.
 
 $methodId = isset($_POST['method_id']) ? (int)$_POST['method_id'] : 0;
 if ($methodId <= 0) {

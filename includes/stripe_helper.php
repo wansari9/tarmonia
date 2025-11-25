@@ -39,13 +39,7 @@ function get_stripe_publishable_key(): ?string
     return $pk;
 }
 
-/**
- * Read webhook signing secret
- */
-function get_stripe_webhook_secret(): ?string
-{
-    return getenv('STRIPE_WEBHOOK_SECRET') ?: null;
-}
+// Webhooks are not used in this installation; webhook secret helper removed.
 
 /**
  * Convert a decimal currency amount (e.g., 12.34) to smallest unit integer.

@@ -14,18 +14,8 @@ function cart_json_response(int $code, array $payload): void {
 }
 
 function require_valid_csrf(): void {
-    // Honor APP_ENV: keep CSRF checks disabled in development for local convenience.
-    // Enable strict CSRF enforcement in production.
-    $appEnv = getenv('APP_ENV') ?: 'production';
-    $env = strtolower(trim($appEnv));
-    if ($env === 'development' || $env === 'dev') {
-        return;
-    }
-
-    $headerToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
-    if (!verify_csrf_token($headerToken)) {
-        cart_json_response(403, ['success' => false, 'error' => 'invalid_csrf']);
-    }
+    // CSRF checks removed per developer request — no-op
+    return;
 }
 
 function current_session_id(): string {
@@ -267,7 +257,7 @@ function recalc_cart_totals(PDO $pdo, int $cartId): array {
     
     $discount = 0.0; // placeholder for future promotions
     $tax = 0.0;      // no tax for now
-    $shipping = 5.99; // flat shipping rate
+    $shipping = 0.0; // flat shipping rate (changed from 5.99 to 0)
     $grand = $subtotal - $discount + $tax + $shipping;
     
     $upd = $pdo->prepare('UPDATE carts SET subtotal = :sub, discount_total = :disc, tax_total = :tax, shipping_total = :ship, grand_total = :grand, updated_at = NOW(), currency = COALESCE(currency, :cur) WHERE id = :cid');

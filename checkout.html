@@ -258,7 +258,6 @@
                                 <ul id="progressbar" role="tablist" aria-label="Checkout steps">
                                     <li id="step-contact" role="tab" aria-selected="true" aria-current="step" class="active">Contact Information</li>
                                     <li id="step-shipping" role="tab" aria-selected="false">Shipping Address</li>
-                                    <li id="step-payment" role="tab" aria-selected="false">Payment</li>
                                 </ul>
                                 <!-- Fieldsets -->
                                 <fieldset id="panel-contact" role="group" aria-labelledby="step-contact">
@@ -282,7 +281,9 @@
 
                                     <div class="form-control">
                                         <label for="phone">Phone *</label>
-                                        <input id="phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" pattern="\+?[0-9\s\-().]{6,30}" maxlength="30" required />
+                                        <!-- Accept digits, spaces, plus, parentheses, dots and hyphens (6-30 chars).
+                                            Use a simpler character class (no backslashes) to avoid regexp compilation quirks in some browsers/devtools. -->
+                                        <input id="phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" minlength="6" maxlength="30" required />
                                     </div>
 
                                     <input type="button" name="next" class="next action-button" value="Next" />
@@ -335,47 +336,12 @@
                                     <div class="action-buttons">
                                         <input type="button" name="previous" class="previous action-button" value="Previous" />
                                         <input type="button" name="next" class="next action-button" value="Next" />
-                                    </div>
-                                </fieldset>
-                                <fieldset id="panel-payment" role="group" aria-labelledby="step-payment">
-                                    <legend class="visually-hidden">Payments</legend>
-                                    <h2 class="fs-title">Payments</h2>
-
-                                    <div class="trust-row" aria-hidden="false">
-                                        <span class="secure">
-                                            <i class="fas fa-lock" aria-hidden="true"></i>
-                                            <strong> Secure checkout</strong> — SSL encrypted
-                                        </span>
-                                        <span class="payment-logos" aria-hidden="true">
-                                            <i class="fab fa-cc-visa" title="Visa" aria-hidden="true"></i>
-                                            <i class="fab fa-cc-mastercard" title="Mastercard" aria-hidden="true"></i>
-                                            <i class="fab fa-cc-paypal" title="PayPal" aria-hidden="true"></i>
-                                        </span>
-                                    </div>
-
-                                    <p style="margin-bottom:10px;">Select Payment Method *</p>
-                                    <div class="checkout-options padded">
-                                        <div>
-                                            <input type="radio" id="option-1" name="payment-option" value="stripe" tabindex="0" required>
-                                            <label for="option-1" class="checkout-option rounded text text--dark">
-                                                <i class="fas fa-credit-card payment-icon"></i>
-                                                <span class="checkout-option-name">Credit Card</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" id="option-2" name="payment-option" value="fpx" tabindex="0">
-                                            <label for="option-2" class="checkout-option rounded text text--dark">
-                                                <i class="fas fa-university payment-icon"></i>
-                                                <span class="checkout-option-name">FPX (Bank Transfer)</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <hr class="divider">
-                                    <div class="action-buttons">
-                                        <input type="button" name="previous" class="previous action-button" value="Previous" />
+                                        <!-- Place Order button moved here for Stripe-only flow -->
                                         <button type="button" class="submit action-button" id="submit-order-btn">Place Order</button>
                                     </div>
                                 </fieldset>
+                                <!-- Payment step removed: Stripe-only flow. Submit button exists on shipping step. -->
+                                <!-- Keep a submit button on the shipping step to start Stripe Checkout. -->
                             </form>
                         </section>
                         <button id="toggle-summary" class="toggle-summary" aria-expanded="false" aria-controls="checkout-details">View order summary</button>
@@ -384,7 +350,7 @@
                                 <div class="checkout-lists" id="checkout-items"></div>
                                 <div class="checkout-shipping">
                                     <h6>Shipping</h6>
-                                    <p class="shipping-price" data-shipping-price="5.99">RM5.99</p>
+                                    <p class="shipping-price" data-shipping-price="0.00">RM0.00</p>
                                 </div>
                                 <div class="checkout-total">
                                     <h6>Total</h6>
@@ -516,8 +482,9 @@
     </div>
 
     <!-- Add vendor + theme script files similar to cart.html -->
-    <script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
-    <script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
+    <!-- Load jQuery synchronously so it's available to inline and vendor scripts that execute early -->
+    <script type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
+    <script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>
     <script type='text/javascript' src='js/custom/custom.js' defer></script>
     <script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
     <script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>

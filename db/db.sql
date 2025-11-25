@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 21, 2025 at 04:37 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost:3306
+-- Generation Time: Nov 25, 2025 at 05:24 AM
+-- Server version: 8.0.38
+-- PHP Version: 8.3.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tarmonia`
+-- Database: `tarmonia_db`
 --
 
 -- --------------------------------------------------------
@@ -28,19 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `addresses` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `label` varchar(100) DEFAULT 'Default',
-  `recipient_name` varchar(200) DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
-  `line1` varchar(200) NOT NULL,
-  `line2` varchar(200) DEFAULT NULL,
-  `city` varchar(100) NOT NULL,
-  `state` varchar(100) DEFAULT NULL,
-  `postal_code` varchar(30) DEFAULT NULL,
-  `country` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Default',
+  `recipient_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `line1` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `line2` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `postal_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -62,7 +62,11 @@ INSERT INTO `addresses` (`id`, `user_id`, `label`, `recipient_name`, `phone`, `l
 (12, 8, 'Home', 'Lisa Wong', '+60145678901', '23, Jalan Tun Razak', 'Cheras', 'Kuala Lumpur', 'Kuala Lumpur', '56000', 'MY', '2025-11-06 14:45:00', NULL),
 (13, 9, 'Home', 'David Lim', '+60137894561', '101, Jalan Pudu', 'Bukit Bintang', 'Kuala Lumpur', 'Kuala Lumpur', '55100', 'MY', '2025-11-07 10:00:00', NULL),
 (14, 9, 'Work', 'David Lim', '+60137894561', 'Plaza Sentral', 'Brickfields', 'Kuala Lumpur', 'Kuala Lumpur', '50470', 'MY', '2025-11-07 10:30:00', NULL),
-(15, 10, 'Home', 'Emily Chen', '+60126547893', '45, Persiaran Zaaba', 'Taman Tun Dr Ismail', 'Kuala Lumpur', 'Kuala Lumpur', '60000', 'MY', '2025-11-08 12:00:00', NULL);
+(15, 10, 'Home', 'Emily Chen', '+60126547893', '45, Persiaran Zaaba', 'Taman Tun Dr Ismail', 'Kuala Lumpur', 'Kuala Lumpur', '60000', 'MY', '2025-11-08 12:00:00', NULL),
+(40, 12, 'Billing', 'wasi asnari', '01128098103', 'wasi', 'wassi', 'p', 'Selangor', '47810', 'MY', '2025-11-25 04:51:26', NULL),
+(41, 12, 'Shipping', 'wasi asnari', '01128098103', 'wasi', 'wassi', 'p', 'Selangor', '47810', 'MY', '2025-11-25 04:51:26', NULL),
+(42, 12, 'Billing', 'wasi wasi', '01128098103', 'cova', 'kota damansara', 'petaling jaya', 'Selangor', '47810', 'MY', '2025-11-25 04:59:24', NULL),
+(43, 12, 'Shipping', 'wasi wasi', '01128098103', 'cova', 'kota damansara', 'petaling jaya', 'Selangor', '47810', 'MY', '2025-11-25 04:59:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -71,19 +75,19 @@ INSERT INTO `addresses` (`id`, `user_id`, `label`, `recipient_name`, `phone`, `l
 --
 
 CREATE TABLE `carts` (
-  `id` bigint(20) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `session_id` varchar(128) DEFAULT NULL,
-  `status` enum('open','converted','abandoned') NOT NULL DEFAULT 'open',
-  `currency` char(3) NOT NULL DEFAULT 'RM',
-  `shipping_method_id` int(11) DEFAULT NULL,
-  `subtotal` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `discount_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `tax_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `shipping_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `grand_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `id` bigint NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('open','converted','abandoned') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'open',
+  `currency` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'RM',
+  `shipping_method_id` int DEFAULT NULL,
+  `subtotal` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `discount_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipping_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `grand_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -91,91 +95,13 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipping_method_id`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `grand_total`, `created_at`, `updated_at`) VALUES
-(19, 2, NULL, 'open', 'RM', 1, 156.90, 0.00, 0.00, 8.00, 164.90, '2025-11-12 14:30:00', '2025-11-12 15:00:00'),
-(20, 3, NULL, 'open', 'RM', 4, 245.50, 0.00, 0.00, 10.00, 255.50, '2025-11-13 09:15:00', '2025-11-13 10:00:00'),
-(21, NULL, 'guest_abc123xyz', 'open', 'RM', NULL, 89.50, 0.00, 0.00, 0.00, 89.50, '2025-11-13 16:20:00', '2025-11-13 17:30:00'),
-(22, 7, NULL, 'open', 'RM', 1, 78.40, 0.00, 0.00, 8.00, 86.40, '2025-11-14 08:15:00', '2025-11-14 09:00:00'),
-(23, 8, NULL, 'open', 'RM', 4, 134.00, 0.00, 0.00, 10.00, 144.00, '2025-11-14 10:20:00', '2025-11-14 11:00:00'),
-(24, 1, NULL, 'converted', 'RM', 1, 125.40, 0.00, 0.00, 8.00, 133.40, '2025-11-10 11:00:00', '2025-11-10 11:15:00'),
-(25, 4, NULL, 'converted', 'RM', 4, 340.00, 0.00, 0.00, 10.00, 350.00, '2025-11-08 13:30:00', '2025-11-08 13:45:00'),
-(26, 5, NULL, 'converted', 'RM', 7, 199.90, 0.00, 0.00, 15.00, 214.90, '2025-11-06 10:20:00', '2025-11-06 10:40:00'),
-(27, 2, NULL, 'converted', 'RM', 1, 89.90, 0.00, 0.00, 8.00, 97.90, '2025-11-05 13:00:00', '2025-11-05 13:15:00'),
-(28, 9, NULL, 'converted', 'RM', 9, 280.50, 0.00, 0.00, 12.00, 292.50, '2025-11-09 15:30:00', '2025-11-09 15:45:00'),
-(29, NULL, 'guest_abandoned1', 'abandoned', 'RM', NULL, 45.00, 0.00, 0.00, 0.00, 45.00, '2025-11-11 14:20:00', '2025-11-11 14:30:00'),
-(30, 3, NULL, 'abandoned', 'RM', NULL, 67.50, 0.00, 0.00, 0.00, 67.50, '2025-11-10 16:00:00', '2025-11-10 16:15:00'),
-(31, NULL, '1crr9mcci79c7hspima50s7g0k', 'open', 'RM', NULL, 5.15, 0.00, 0.00, 0.00, 5.15, '2025-11-14 12:25:04', '2025-11-14 12:25:17'),
-(32, NULL, 'i3kan0t4d4svi974vb0l4pdu58', 'open', 'RM', NULL, 5.15, 0.00, 0.00, 0.00, 5.15, '2025-11-14 12:53:15', '2025-11-14 12:53:33'),
-(33, 11, '5vs81t01ijtds88s03r6u7e8v0', 'converted', 'RM', NULL, 5.15, 0.00, 0.00, 5.99, 11.14, '2025-11-14 12:55:08', '2025-11-14 14:30:25'),
-(34, NULL, '49kjvumtr8a878glcqe2jghdfm', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 12:55:36', '2025-11-14 12:55:36'),
-(35, NULL, '543f594323b503bb85c9b28ea056d0f2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-14 14:06:33', '2025-11-14 14:06:33'),
-(36, NULL, 'm6i3tgugu4kusjosa1v5e2j5pf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:14:46', '2025-11-14 14:14:46'),
-(37, NULL, '5sh8fnfeusu4p34bhp4do4tpn7', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:30:00', '2025-11-14 14:30:00'),
-(38, NULL, 'hogs26l7fpi0gdh6m2p3pgr7ia', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:30:46', '2025-11-14 14:30:46'),
-(39, NULL, 'u5o4iphav2umla91ruksut0g2j', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:45:48', '2025-11-14 14:45:48'),
-(40, 11, 'eqe50h29cks2idf0bfqo5pdp13', 'converted', 'RM', NULL, 39.81, 0.00, 0.00, 5.99, 45.80, '2025-11-14 14:46:16', '2025-11-14 14:53:48'),
-(41, 11, 'eqe50h29cks2idf0bfqo5pdp13', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 14:54:20', '2025-11-14 14:54:20'),
-(42, NULL, '5o6hnq636j5c72gsbgvfnf6da0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:21:36', '2025-11-14 15:21:36'),
-(43, NULL, '8ibmpgd48n3jhnf98ec8p86cho', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 15:46:34', '2025-11-14 15:46:34'),
-(44, NULL, 'j5buc7ea1k1stb2v668r9c2ivb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:02:00', '2025-11-14 16:02:00'),
-(45, NULL, '5k40iqev7jbla05i5pm3hcc9e2', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-14 16:05:43', '2025-11-14 16:05:43'),
-(46, NULL, 'nr9a8ab4egg3884pofe7n1bjb9', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:21', '2025-11-17 09:35:21'),
-(47, NULL, 'a176shrfs2fkjr4j3m25j1iine', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:35:33', '2025-11-17 09:35:33'),
-(48, NULL, 'tbr05d1enn91urfeq34ju589mu', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-17 09:38:02', '2025-11-17 09:38:02'),
-(49, 12, 'avmbm8tuu0kfm13ncj3d7uf645', 'converted', 'RM', NULL, 55.15, 0.00, 0.00, 5.99, 61.14, '2025-11-17 09:38:40', '2025-11-19 09:35:29'),
-(50, NULL, '8tpae2sdbavo0u78s43uo27qnf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 14:34:28', '2025-11-18 14:34:28'),
-(51, NULL, 'slp6tad2uhk3mn2ng68gg0ccb9', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 14:44:08', '2025-11-18 14:44:08'),
-(52, NULL, '5kqba62mbhtgtsadpjgg84iatj', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:11:19', '2025-11-18 15:11:19'),
-(53, NULL, '1o3g0u8qvpl4f2i9aaa2halb8l', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:42:20', '2025-11-18 15:42:20'),
-(54, NULL, 'ges3fvplehvt1q9sfojsikojp4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:42:51', '2025-11-18 15:42:51'),
-(55, NULL, '8qmlhhntm2s82jo2bejqnga6mv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 15:48:40', '2025-11-18 15:48:40'),
-(56, NULL, '0iide7ahhmnsv3j31v26vb8798', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:25:15', '2025-11-18 16:25:15'),
-(57, NULL, 'hv3dmcgjrnqjsbpuconq33pl2i', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:29:24', '2025-11-18 16:29:24'),
-(58, NULL, 'flg2mcn71oro6isslgkfvph47b', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:58:12', '2025-11-18 16:58:12'),
-(59, NULL, '1ka8pifjirg4rd91n1tfdr7pqj', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-18 16:58:35', '2025-11-18 16:58:35'),
-(60, NULL, 'k6iaeiitop34omkpfquiln0qpu', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 09:24:33', '2025-11-19 09:24:33'),
-(61, 12, 's7kpk0ejer3ssbgj7ah25c0an5', 'converted', 'RM', NULL, 5.15, 0.00, 0.00, 5.99, 11.14, '2025-11-19 09:35:51', '2025-11-20 09:22:03'),
-(62, NULL, 'jqrrit93nsd11nlb9qssljq4bt', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 10:00:43', '2025-11-19 10:00:43'),
-(63, NULL, '844gj9uv882vml8lf8dlka2tgs', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 10:06:49', '2025-11-19 10:06:49'),
-(64, NULL, '5kceeem1u6011ge5lpd3o2cjrd', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 14:41:33', '2025-11-19 14:41:33'),
-(65, NULL, '0t844brc6fpt6dr18igeulifs4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-19 14:53:02', '2025-11-19 14:53:02'),
-(66, NULL, 'ffmom8ltu5o8424go2c0pepls4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 09:21:04', '2025-11-20 09:21:04'),
-(67, 12, 'k7jrr1r7af7m5tn6r288ohrgse', 'converted', 'RM', NULL, 86.00, 0.00, 0.00, 5.99, 91.99, '2025-11-20 09:29:55', '2025-11-20 13:41:33'),
-(68, NULL, 'krlju2oe2abhrjvg5uf3q37o3h', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 10:18:09', '2025-11-20 10:18:09'),
-(69, NULL, '5cah4ab2v92k995fqf1rkess5n', 'open', 'RM', NULL, 40.00, 0.00, 0.00, 5.99, 45.99, '2025-11-20 10:18:31', '2025-11-20 10:18:31'),
-(70, NULL, 'qi5h4bnf7ji889qs0a5gfp60nb', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 10:56:46', '2025-11-20 10:56:46'),
-(71, NULL, '4n583giouvo0aum10prq6b5jea', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 11:00:49', '2025-11-20 11:00:49'),
-(72, 12, 'lju0qlaschc5joc9drnfu6utev', 'converted', 'RM', NULL, 4.90, 0.00, 0.00, 5.99, 10.89, '2025-11-20 13:41:39', '2025-11-20 13:46:44'),
-(73, 12, 'lju0qlaschc5joc9drnfu6utev', 'converted', 'RM', NULL, 43.82, 0.00, 0.00, 5.99, 49.81, '2025-11-20 14:12:40', '2025-11-21 09:51:48'),
-(74, NULL, '2ek6k9srvs5u4cpjdbd3aq3lgr', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:18:52', '2025-11-20 15:18:52'),
-(75, NULL, 'pm5holnb8boggcqvvkrptl6dg3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:20:02', '2025-11-20 15:20:02'),
-(76, NULL, '5qo9v5vtog2jgtcchu71doc1im', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:06', '2025-11-20 15:21:06'),
-(77, NULL, '5shn0e2ocfpodelfaccbe7t4ln', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:08', '2025-11-20 15:21:08'),
-(78, NULL, 'uns6evuaonar2bohi7k9k7c5bv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:21:30', '2025-11-20 15:21:30'),
-(79, NULL, 'canq4q5hos3i0qou65sp5552ln', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:22:48', '2025-11-20 15:22:48'),
-(80, NULL, '93ktnfb6g29qv2sa4kd31nkfp4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:22:51', '2025-11-20 15:22:51'),
-(81, NULL, 'c6597to0t7jc9726ao3gp8ivq0', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:04', '2025-11-20 15:24:04'),
-(82, NULL, '7928lnh5acp0tlt8vq7fns038s', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:06', '2025-11-20 15:24:06'),
-(83, NULL, 'lfc246g5ml51qkof61aup1cdm4', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:08', '2025-11-20 15:24:08'),
-(84, NULL, '2h9d0k3ev2904oof85r3abrh50', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:24:11', '2025-11-20 15:24:11'),
-(85, NULL, '6m2pvk4daaosup8v9selqjv6uo', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:30', '2025-11-20 15:29:30'),
-(86, NULL, 'qjr06qplvhqgs6367rgtoj9lcv', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:52', '2025-11-20 15:29:52'),
-(87, NULL, 'pm2vu3gnq06kls194isv1721qk', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:29:57', '2025-11-20 15:29:57'),
-(88, NULL, '2sqsnv0avl02q9et7jg0tbj618', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:41', '2025-11-20 15:33:41'),
-(89, NULL, 'pvooc1mbes5game80fvt1knl5k', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:43', '2025-11-20 15:33:43'),
-(90, NULL, 'h8rr5oqj8mphe931b7rdspa514', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:33:45', '2025-11-20 15:33:45'),
-(91, NULL, 'mg40csbo6721ach8jrt92ckrir', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:50:01', '2025-11-20 15:50:01'),
-(92, NULL, 'sp6alke9eskhulr8jq32o7avgf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-20 15:52:15', '2025-11-20 15:52:15'),
-(93, NULL, '3o7l3lu4p8vg7fcijme4bg5lba', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 09:50:58', '2025-11-21 09:50:58'),
-(94, 12, '9396qk35pibuql2uompnbarn8r', 'open', 'RM', NULL, 4.90, 0.00, 0.00, 5.99, 10.89, '2025-11-21 09:53:52', '2025-11-21 11:25:09'),
-(95, NULL, 'npvtucqh7q638r7lj2sbeu65kq', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 10:57:56', '2025-11-21 10:57:56'),
-(96, NULL, 'o6vsn8art8e8mdl8t7mt6rmjlr', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 10:57:56', '2025-11-21 10:57:56'),
-(97, NULL, '79qpofis8fc16b24l6afc6q2j3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 10:59:26', '2025-11-21 10:59:26'),
-(98, NULL, 'ivk7pb5m5vnfrgcejagl409h7v', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 11:11:16', '2025-11-21 11:11:16'),
-(99, NULL, '531pt6nnitk67035dc1pllin6m', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:11:16', '2025-11-21 11:11:16'),
-(100, NULL, '2il4rd4mmjlap5ueg15qtvdaib', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:24:07', '2025-11-21 11:24:07'),
-(101, NULL, 'cd27rdgtt3vndurrc9ebf67rsf', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:27:50', '2025-11-21 11:27:50'),
-(102, NULL, '3f5p6mvvh9ri4b0n8jtmscqr57', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 5.99, 5.99, '2025-11-21 11:27:50', '2025-11-21 11:27:50'),
-(103, NULL, 'on2eghilsn0cirtlfb1m1lcbkk', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-21 11:31:08', '2025-11-21 11:31:08');
+(228, 12, '9624818310f78293339b33fe29d10ec3', 'converted', 'RM', NULL, 2.00, 0.00, 0.00, 0.00, 2.00, '2025-11-25 04:14:55', '2025-11-25 04:51:26'),
+(229, 12, '9624818310f78293339b33fe29d10ec3', 'converted', 'RM', NULL, 2.00, 0.00, 0.00, 0.00, 2.00, '2025-11-25 04:52:02', '2025-11-25 04:59:24'),
+(230, 12, '9624818310f78293339b33fe29d10ec3', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:00:46', '2025-11-25 05:00:46'),
+(231, NULL, '70501cd11a771229833e4811e9d12268', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:01:00', '2025-11-25 05:01:00'),
+(232, NULL, '791bc7afc0d2b0d71be2244206757441', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:01:00', '2025-11-25 05:01:00'),
+(233, NULL, '6faeaccee00a0b5ed347f52b2bc04941', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:01:02', '2025-11-25 05:01:02'),
+(234, NULL, '4045026cb7f1d7b3995504cf98f8d8f8', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:11:34', '2025-11-25 05:11:34');
 
 -- --------------------------------------------------------
 
@@ -184,20 +110,20 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 --
 
 CREATE TABLE `cart_items` (
-  `id` bigint(20) NOT NULL,
-  `cart_id` bigint(20) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `variant_id` int(11) DEFAULT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `sku` varchar(120) DEFAULT NULL,
-  `variant_sku` varchar(120) DEFAULT NULL,
-  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`options_snapshot`)),
-  `quantity` int(11) NOT NULL,
+  `id` bigint NOT NULL,
+  `cart_id` bigint NOT NULL,
+  `product_id` int NOT NULL,
+  `variant_id` int DEFAULT NULL,
+  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `variant_sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `quantity` int NOT NULL,
   `unit_price` decimal(10,2) NOT NULL,
   `line_total` decimal(10,2) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `added_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `added_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `cart_items`
@@ -229,7 +155,10 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_
 (122, 31, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:25:17'),
 (123, 32, 1, NULL, 'Evaporated Milk', 'EVAP-001', NULL, '{\"weight\":\"3-lb\",\"fat\":\"3.5%\"}', 1, 5.15, 5.15, 'images/Evaporated Milk.png', '2025-11-14 12:53:33'),
 (131, 69, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\"}', 1, 40.00, 40.00, 'images/Farm sour Cream.png', '2025-11-20 10:18:31'),
-(136, 94, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png', '2025-11-21 09:55:35');
+(139, 181, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\"}', 13, 4.90, 63.70, 'images/Evaporated Milk.png', '2025-11-24 01:41:10'),
+(140, 41, 25, NULL, 'demo', 'demo', NULL, '[]', 1, 1.00, 1.00, NULL, '2025-11-24 01:52:28'),
+(145, 94, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL, '2025-11-24 07:41:09'),
+(146, 197, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL, '2025-11-24 07:43:12');
 
 -- --------------------------------------------------------
 
@@ -238,15 +167,15 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_
 --
 
 CREATE TABLE `comments` (
-  `id` bigint(20) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `target_type` enum('post','product') NOT NULL,
-  `target_id` int(11) NOT NULL,
-  `parent_id` bigint(20) DEFAULT NULL,
-  `rating` tinyint(4) DEFAULT NULL,
-  `content` text NOT NULL,
-  `status` enum('pending','approved','spam','deleted') DEFAULT 'pending',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` bigint NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `target_type` enum('post','product') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target_id` int NOT NULL,
+  `parent_id` bigint DEFAULT NULL,
+  `rating` tinyint DEFAULT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('pending','approved','spam','deleted') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -278,17 +207,17 @@ INSERT INTO `comments` (`id`, `user_id`, `target_type`, `target_id`, `parent_id`
 --
 
 CREATE TABLE `communications` (
-  `id` bigint(20) NOT NULL,
-  `direction` enum('inbound','outbound') NOT NULL,
-  `channel` enum('contact_form','email') NOT NULL,
-  `from_email` varchar(255) DEFAULT NULL,
-  `to_email` varchar(255) DEFAULT NULL,
-  `subject` varchar(255) DEFAULT NULL,
-  `body` text DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `related_type` varchar(50) DEFAULT NULL,
-  `related_id` bigint(20) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` bigint NOT NULL,
+  `direction` enum('inbound','outbound') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `channel` enum('contact_form','email') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `to_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `related_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `related_id` bigint DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -316,13 +245,13 @@ INSERT INTO `communications` (`id`, `direction`, `channel`, `from_email`, `to_em
 --
 
 CREATE TABLE `moderation_logs` (
-  `id` bigint(20) NOT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `comment_id` bigint(20) DEFAULT NULL,
-  `action` varchar(50) NOT NULL,
-  `reason` text DEFAULT NULL,
-  `meta` longtext DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` bigint NOT NULL,
+  `admin_id` int DEFAULT NULL,
+  `comment_id` bigint DEFAULT NULL,
+  `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `meta` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -332,81 +261,44 @@ CREATE TABLE `moderation_logs` (
 --
 
 CREATE TABLE `orders` (
-  `id` bigint(20) NOT NULL,
-  `stripe_payment_intent_id` varchar(255) DEFAULT NULL,
-  `order_number` varchar(30) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `status` enum('awaiting_confirmation','pending','paid','packed','shipped','delivered','canceled','refunded') NOT NULL DEFAULT 'awaiting_confirmation',
-  `shipping_status` enum('pending','packed','shipped','delivered','canceled') NOT NULL DEFAULT 'pending',
-  `tracking_number` varchar(64) DEFAULT NULL,
+  `id` int NOT NULL,
+  `stripe_payment_intent_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_number` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `status` enum('awaiting_confirmation','pending','paid','packed','shipped','delivered','canceled','refunded') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'awaiting_confirmation',
+  `shipping_status` enum('pending','packed','shipped','delivered','canceled') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `tracking_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipped_at` datetime DEFAULT NULL,
-  `currency` char(3) NOT NULL DEFAULT 'RM',
-  `subtotal` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `discount_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `tax_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `shipping_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `shipping_method_id` int(11) DEFAULT NULL,
-  `grand_total` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `billing_first_name` varchar(100) DEFAULT NULL,
-  `billing_last_name` varchar(100) DEFAULT NULL,
-  `billing_email` varchar(150) DEFAULT NULL,
-  `billing_phone` varchar(30) DEFAULT NULL,
-  `billing_address_line1` varchar(255) DEFAULT NULL,
-  `billing_address_line2` varchar(255) DEFAULT NULL,
-  `billing_city` varchar(100) DEFAULT NULL,
-  `billing_state` varchar(100) DEFAULT NULL,
-  `billing_postal_code` varchar(20) DEFAULT NULL,
-  `billing_country` varchar(100) DEFAULT NULL,
-  `shipping_first_name` varchar(100) DEFAULT NULL,
-  `shipping_last_name` varchar(100) DEFAULT NULL,
-  `shipping_email` varchar(150) DEFAULT NULL,
-  `shipping_phone` varchar(30) DEFAULT NULL,
-  `shipping_address_line1` varchar(255) DEFAULT NULL,
-  `shipping_address_line2` varchar(255) DEFAULT NULL,
-  `shipping_city` varchar(100) DEFAULT NULL,
-  `shipping_state` varchar(100) DEFAULT NULL,
-  `shipping_postal_code` varchar(20) DEFAULT NULL,
-  `shipping_country` varchar(100) DEFAULT NULL,
-  `shipping_address_id` int(11) DEFAULT NULL,
-  `billing_address_id` int(11) DEFAULT NULL,
-  `fulfillment_status` enum('unfulfilled','partial','fulfilled') NOT NULL DEFAULT 'unfulfilled',
-  `payment_status` enum('unpaid','paid','refunded','failed') NOT NULL DEFAULT 'unpaid',
-  `payment_method` varchar(100) DEFAULT NULL,
-  `stripe_charge_id` varchar(255) DEFAULT NULL,
+  `currency` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'RM',
+  `subtotal` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `discount_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipping_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipping_method_id` int DEFAULT NULL,
+  `grand_total` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipping_address_id` int DEFAULT NULL,
+  `billing_address_id` int DEFAULT NULL,
+  `fulfillment_status` enum('unfulfilled','partial','fulfilled') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unfulfilled',
+  `payment_status` enum('unpaid','paid','refunded','failed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'unpaid',
+  `payment_method` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stripe_charge_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paid_at` datetime DEFAULT NULL,
-  `payment_metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payment_metadata`)),
-  `notes` text DEFAULT NULL,
+  `payment_metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `placed_at` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `admin_confirmed_at` datetime DEFAULT NULL,
-  `admin_confirmed_by` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `admin_confirmed_by` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id`, `status`, `shipping_status`, `tracking_number`, `shipped_at`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `shipping_method_id`, `grand_total`, `billing_first_name`, `billing_last_name`, `billing_email`, `billing_phone`, `billing_address_line1`, `billing_address_line2`, `billing_city`, `billing_state`, `billing_postal_code`, `billing_country`, `shipping_first_name`, `shipping_last_name`, `shipping_email`, `shipping_phone`, `shipping_address_line1`, `shipping_address_line2`, `shipping_city`, `shipping_state`, `shipping_postal_code`, `shipping_country`, `shipping_address_id`, `billing_address_id`, `fulfillment_status`, `payment_status`, `payment_method`, `stripe_charge_id`, `paid_at`, `payment_metadata`, `notes`, `placed_at`, `created_at`, `updated_at`, `admin_confirmed_at`, `admin_confirmed_by`) VALUES
-(1, NULL, 'ORD-20251101-A7B2C', 2, 'delivered', 'delivered', 'TRK-MY-1001234567', '2025-11-02 09:00:00', 'RM', 156.90, 0.00, 0.00, 8.00, 1, 164.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 3, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, 'Please deliver before 5 PM', '2025-11-01 14:20:00', '2025-11-01 14:20:00', '2025-11-05 16:30:00', NULL, NULL),
-(2, NULL, 'ORD-20251103-B8C3D', 3, 'shipped', 'shipped', 'TRK-MY-2001234568', '2025-11-04 10:30:00', 'RM', 245.50, 0.00, 0.00, 10.00, 4, 255.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 5, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-03 16:45:00', '2025-11-03 16:45:00', '2025-11-04 10:30:00', NULL, NULL),
-(3, NULL, 'ORD-20251106-C9D4E', 4, 'packed', 'packed', NULL, NULL, 'RM', 340.00, 0.00, 0.00, 10.00, 4, 350.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'partial', 'paid', NULL, NULL, NULL, NULL, 'Gift wrapping requested', '2025-11-06 11:30:00', '2025-11-06 11:30:00', '2025-11-07 09:00:00', NULL, NULL),
-(4, NULL, 'ORD-20251108-D0E5F', 5, 'paid', 'pending', NULL, NULL, 'RM', 199.90, 0.00, 0.00, 15.00, 7, 214.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, 9, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-08 15:20:00', '2025-11-08 15:20:00', '2025-11-08 15:20:00', NULL, NULL),
-(5, NULL, 'ORD-20251110-E1F6G', 1, 'paid', 'pending', NULL, NULL, 'RM', 125.40, 0.00, 0.00, 8.00, 1, 133.40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-10 09:15:00', '2025-11-10 09:15:00', '2025-11-14 12:35:28', NULL, NULL),
-(6, NULL, 'ORD-20251105-F2G7H', 2, 'canceled', 'canceled', NULL, NULL, 'RM', 89.90, 0.00, 0.00, 8.00, 1, 97.90, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, 4, 'unfulfilled', 'refunded', NULL, NULL, NULL, NULL, 'Customer requested cancellation', '2025-11-05 13:00:00', '2025-11-05 13:00:00', '2025-11-06 10:00:00', NULL, NULL),
-(7, NULL, 'ORD-20251112-G3H8I', 4, 'paid', 'pending', NULL, NULL, 'RM', 280.50, 0.00, 0.00, 12.00, 9, 292.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 7, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-12 10:45:00', '2025-11-12 10:45:00', '2025-11-12 10:45:00', NULL, NULL),
-(8, NULL, 'ORD-20251104-H4I9J', 1, 'delivered', 'delivered', 'TRK-MY-3001234569', '2025-11-05 08:30:00', 'RM', 450.00, 0.00, 0.00, 0.00, 3, 450.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, 'Free shipping - order over RM100', '2025-11-04 12:30:00', '2025-11-04 12:30:00', '2025-11-08 14:00:00', NULL, NULL),
-(9, NULL, 'ORD-20251107-I5J0K', 7, 'shipped', 'shipped', 'TRK-MY-4001234570', '2025-11-08 11:00:00', 'RM', 220.00, 0.00, 0.00, 10.00, 4, 230.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 10, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-07 14:30:00', '2025-11-07 14:30:00', '2025-11-08 11:00:00', NULL, NULL),
-(10, NULL, 'ORD-20251109-J6K1L', 8, 'paid', 'pending', NULL, NULL, 'RM', 167.50, 0.00, 0.00, 8.00, 1, 175.50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 12, 12, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, 'Contact before delivery', '2025-11-09 10:15:00', '2025-11-09 10:15:00', '2025-11-09 10:15:00', NULL, NULL),
-(11, NULL, 'ORD-20251111-K7L2M', 9, 'delivered', 'delivered', 'TRK-MY-5001234571', '2025-11-12 09:30:00', 'RM', 310.00, 0.00, 0.00, 15.00, 7, 325.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 13, 14, 'fulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-11 16:00:00', '2025-11-11 16:00:00', '2025-11-13 14:00:00', NULL, NULL),
-(12, NULL, 'ORD-20251113-L8M3N', 10, 'paid', 'pending', NULL, NULL, 'RM', 189.00, 0.00, 0.00, 10.00, 4, 199.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 15, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, NULL, '2025-11-13 13:45:00', '2025-11-13 13:45:00', '2025-11-13 13:45:00', NULL, NULL),
-(13, NULL, 'ORD-20251114-727241A6', 11, 'packed', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', 'Test', 'User', 'test@test.com', '1234567890', '123 Test St', '', 'Test City', 'Test State', '12345', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, NULL, '2025-11-14 14:30:25', '2025-11-14 14:30:25', '2025-11-21 11:14:12', NULL, NULL),
-(14, NULL, 'ORD-20251114-C737D1B1', 11, 'canceled', 'pending', NULL, NULL, 'RM', 39.81, 0.00, 0.00, 5.99, NULL, 45.80, 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wes@gmail.com', '01128098103', 'cova', 'cov', 'karachi', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-14 14:53:48', '2025-11-14 14:53:48', '2025-11-14 15:08:10', NULL, NULL),
-(15, 'pi_3SVjakL3fl5j5DYE04OAhpHh', 'ORD-20251119-99C935B8', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 55.15, 0.00, 0.00, 5.99, NULL, 61.14, 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', 'wasi', 'ansari', 'wasi@gmsil.com', '01128098103', 'cova', 'cova', 'yes', 'Selangor', '478', 'MY', NULL, NULL, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, '', '2025-11-19 09:35:29', '2025-11-19 09:35:29', '2025-11-21 09:57:07', NULL, NULL),
-(16, NULL, 'ORD-20251120-CFF5AA93', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 5.15, 0.00, 0.00, 5.99, NULL, 11.14, 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wes', 'ans', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 09:22:03', '2025-11-20 09:22:03', NULL, NULL, NULL),
-(17, NULL, 'ORD-20251120-185C0973', 12, '', 'pending', NULL, NULL, 'RM', 86.00, 0.00, 0.00, 5.99, NULL, 91.99, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cova', 'cova', 'pj', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:41:33', '2025-11-20 13:41:33', NULL, NULL, NULL),
-(19, NULL, 'ORD-20251120-3390D197', 12, '', 'pending', NULL, NULL, 'RM', 4.90, 0.00, 0.00, 5.99, NULL, 10.89, 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', 'wasi', 'ansari', 'wasi@gmail.com', '01128098103', 'cov', 'COV', 'PJ', 'Selangor', '47810', 'MY', NULL, NULL, 'unfulfilled', 'unpaid', NULL, NULL, NULL, NULL, '', '2025-11-20 13:46:44', '2025-11-20 13:46:44', NULL, NULL, NULL),
-(20, 'pi_3SVjW1L3fl5j5DYE02tNrseX', 'ORD-20251121-8A90FF27', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 43.82, 0.00, 0.00, 5.99, NULL, 49.81, 'wes', 'wes', 'was@gmail.com', '0123456897', 'fgh', 'fgh', 'pj', 'Selangor', '478110', 'MY', 'wes', 'wes', 'was@gmail.com', '0123456897', 'fgh', 'fgh', 'pj', 'Selangor', '478110', 'MY', NULL, NULL, 'unfulfilled', 'paid', NULL, NULL, NULL, NULL, '', '2025-11-21 09:51:48', '2025-11-21 09:51:48', '2025-11-21 09:52:15', NULL, NULL);
+INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id`, `status`, `shipping_status`, `tracking_number`, `shipped_at`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `shipping_method_id`, `grand_total`, `shipping_address_id`, `billing_address_id`, `fulfillment_status`, `payment_status`, `payment_method`, `stripe_charge_id`, `paid_at`, `payment_metadata`, `notes`, `placed_at`, `created_at`, `updated_at`, `admin_confirmed_at`, `admin_confirmed_by`) VALUES
+(13, 'pi_3SXEEALJSTUMa7PH0MbDoz35', 'ORD-20251125-6AFE2028', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 2.00, 0.00, 0.00, 0.00, NULL, 2.00, 41, 40, 'unfulfilled', 'paid', 'stripe', NULL, NULL, NULL, '', '2025-11-25 04:51:26', '2025-11-25 04:51:26', '2025-11-25 04:51:54', NULL, NULL),
+(14, 'pi_3SXELoLJSTUMa7PH1ztqqyZS', 'ORD-20251125-79420C69', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 2.00, 0.00, 0.00, 0.00, NULL, 2.00, 43, 42, 'unfulfilled', 'paid', 'stripe', NULL, NULL, NULL, '', '2025-11-25 04:59:24', '2025-11-25 04:59:24', '2025-11-25 05:00:23', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -415,19 +307,19 @@ INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id
 --
 
 CREATE TABLE `order_items` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `variant_id` int(11) DEFAULT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `sku` varchar(120) DEFAULT NULL,
-  `variant_sku` varchar(120) DEFAULT NULL,
-  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`options_snapshot`)),
-  `quantity` int(11) NOT NULL,
+  `id` bigint NOT NULL,
+  `order_id` bigint NOT NULL,
+  `product_id` int DEFAULT NULL,
+  `variant_id` int DEFAULT NULL,
+  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `variant_sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `quantity` int NOT NULL,
   `unit_price` decimal(10,2) NOT NULL,
   `line_total` decimal(10,2) NOT NULL,
-  `image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `order_items`
@@ -484,7 +376,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 (48, 17, 2, 6, 'Farm Sour Cream', 'SCREAM-001', 'SCREAM-001-3KG', '{\"weight\":\"3kg\",\"fat\":\"2%\"}', 1, 36.00, 36.00, 'images/Farm sour Cream.png'),
 (49, 19, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"full\"}', 1, 4.90, 4.90, 'images/Evaporated Milk.png'),
 (50, 20, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\",\"fat\":\"skim\"}', 2, 3.92, 8.82, 'images/Evaporated Milk.png'),
-(51, 20, 4, 10, 'Parmesan Cheese', 'PARM-001', 'PARM-001-250G', '{\"weight\":\"250g\"}', 1, 35.00, 35.00, 'images/parmesan cheese.png');
+(51, 20, 4, 10, 'Parmesan Cheese', 'PARM-001', 'PARM-001-250G', '{\"weight\":\"250g\"}', 1, 35.00, 35.00, 'images/parmesan cheese.png'),
+(58, 13, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL),
+(59, 14, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -493,15 +387,15 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 --
 
 CREATE TABLE `payments` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) NOT NULL,
-  `method` enum('manual','paypal','stripe','cod') NOT NULL,
+  `id` bigint NOT NULL,
+  `order_id` bigint NOT NULL,
+  `method` enum('manual','paypal','stripe','cod') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `currency` char(3) NOT NULL DEFAULT 'USD',
-  `status` enum('initiated','authorized','captured','paid','failed','refunded') NOT NULL DEFAULT 'initiated',
-  `external_id` varchar(255) DEFAULT NULL,
-  `transaction_ref` varchar(150) DEFAULT NULL,
-  `processed_at` datetime NOT NULL DEFAULT current_timestamp()
+  `currency` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'USD',
+  `status` enum('initiated','authorized','captured','paid','failed','refunded') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'initiated',
+  `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transaction_ref` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `processed_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -509,10 +403,8 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `status`, `external_id`, `transaction_ref`, `processed_at`) VALUES
-(17, 17, 'stripe', 91.99, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:41:33'),
-(19, 19, 'stripe', 10.89, 'RM', 'initiated', NULL, NULL, '2025-11-20 13:46:44'),
-(0, 20, 'stripe', 49.81, 'RM', 'paid', 'cs_test_a1DAvZJNZjFMqdOHs4Oh4i4rXwbzhQV3SxkChJNBljKruEgviggw0UBbsF', 'pi_3SVjakL3fl5j5DYE04OAhpHh', '2025-11-21 09:57:07'),
-(0, 15, 'stripe', 61.14, 'RM', 'paid', 'cs_test_a1YuErVbKP04Qxq3DT1EPQCzqMj8qNyxFMUC1m6HWqVtxZKwn2aBX7xqcd', 'pi_3SVjakL3fl5j5DYE04OAhpHh', '2025-11-21 09:57:07');
+(1, 13, 'stripe', 2.00, 'RM', 'paid', 'cs_test_a173zmS8V8vt9jH0QcbN2yo1X9yu5JgdhPIxK0aqJVx3jR8gMt8d67jmsp', 'pi_3SXEEALJSTUMa7PH0MbDoz35', '2025-11-25 04:51:54'),
+(2, 14, 'stripe', 2.00, 'RM', 'paid', 'cs_live_a1yNBy4XRH9pxBDC4TzCHM4gglGG2Coihdy4TMJ5lrGK9kfrEHHYq7lb2v', 'pi_3SXELoLJSTUMa7PH1ztqqyZS', '2025-11-25 05:00:23');
 
 -- --------------------------------------------------------
 
@@ -521,20 +413,20 @@ INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `statu
 --
 
 CREATE TABLE `posts` (
-  `id` int(11) NOT NULL,
-  `type` enum('blog','recipe') NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `status` enum('draft','published') NOT NULL DEFAULT 'draft',
-  `featured_image` varchar(255) DEFAULT NULL,
-  `slug` varchar(255) NOT NULL,
-  `excerpt` varchar(500) DEFAULT NULL,
-  `content` text DEFAULT NULL,
-  `author_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL,
+  `type` enum('blog','recipe') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('draft','published') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'draft',
+  `featured_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `excerpt` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `author_id` int DEFAULT NULL,
   `published_at` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  `category_slugs` varchar(1000) DEFAULT NULL,
-  `tag_slugs` varchar(1000) DEFAULT NULL
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `category_slugs` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tag_slugs` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -543,7 +435,7 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, `excerpt`, `content`, `author_id`, `published_at`, `created_at`, `updated_at`, `category_slugs`, `tag_slugs`) VALUES
 (1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'published', 'images/blog1.jpg', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'dairy-herd-management', 'dairy,natural'),
-(2, 'blog', 'Milk and Cheese Against Allergies', 'published', 'images/blog2.jpg', 'milk-cheese-against-allergies', 'Evidence on dairy\'s role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'farm-life', 'cheese,milk'),
+(2, 'blog', 'Milk and Cheese Against Allergies', 'published', 'images/blog2.jpg', 'milk-cheese-against-allergies', 'Evidence on dairys role in allergy mitigation.', 'Full content for Milk and Cheese Against Allergies...', 1, '2025-11-01 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'farm-life', 'cheese,milk'),
 (3, 'blog', 'The Butter Business Growth', 'published', 'images/blog3.jpg', 'the-butter-business-growth', 'Why butter demand is rising globally.', 'Full content for The Butter Business Growth...', 1, '2025-10-24 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'industry-input', 'dairy,organic'),
 (4, 'blog', 'Sustainable Practices in Dairy Farming', 'published', 'images/blog4.jpg', 'sustainable-dairy-practices', 'Measuring and reducing farm footprint.', 'Full content for Sustainable Practices in Dairy Farming...', 1, '2025-10-09 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'dairy-herd-management', 'agriculture,natural'),
 (5, 'blog', 'Global Trends in World Dairy Markets', 'published', 'images/blog5.jpg', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'world-dairy-markets', 'agriculture,dairy'),
@@ -556,10 +448,10 @@ INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, 
 --
 
 CREATE TABLE `post_categories` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(150) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `slug` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -569,7 +461,7 @@ CREATE TABLE `post_categories` (
 INSERT INTO `post_categories` (`id`, `slug`, `name`, `created_at`) VALUES
 (1, 'dairy-herd-management', 'Dairy Herd Management', '2025-11-13 11:59:30'),
 (2, 'farm-life', 'Farm Life & Habitants', '2025-11-13 11:59:30'),
-(3, 'industry-input', 'The Industry\'s Input', '2025-11-13 11:59:30'),
+(3, 'industry-input', 'The Industrys Input', '2025-11-13 11:59:30'),
 (4, 'unhealthy-myths', 'Unhealthy Myths', '2025-11-13 11:59:30'),
 (5, 'world-dairy-markets', 'World Dairy Markets', '2025-11-13 11:59:30');
 
@@ -580,10 +472,10 @@ INSERT INTO `post_categories` (`id`, `slug`, `name`, `created_at`) VALUES
 --
 
 CREATE TABLE `post_tags` (
-  `id` int(11) NOT NULL,
-  `slug` varchar(150) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `slug` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -605,8 +497,8 @@ INSERT INTO `post_tags` (`id`, `slug`, `name`, `created_at`) VALUES
 --
 
 CREATE TABLE `post_to_category` (
-  `post_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `post_id` int NOT NULL,
+  `category_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -615,11 +507,11 @@ CREATE TABLE `post_to_category` (
 
 INSERT INTO `post_to_category` (`post_id`, `category_id`) VALUES
 (1, 1),
+(4, 1),
 (2, 2),
 (3, 3),
-(4, 1),
-(5, 5),
-(6, 4);
+(6, 4),
+(5, 5);
 
 -- --------------------------------------------------------
 
@@ -628,8 +520,8 @@ INSERT INTO `post_to_category` (`post_id`, `category_id`) VALUES
 --
 
 CREATE TABLE `post_to_tag` (
-  `post_id` int(11) NOT NULL,
-  `tag_id` int(11) NOT NULL
+  `post_id` int NOT NULL,
+  `tag_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -637,18 +529,18 @@ CREATE TABLE `post_to_tag` (
 --
 
 INSERT INTO `post_to_tag` (`post_id`, `tag_id`) VALUES
-(1, 3),
-(1, 5),
-(2, 2),
-(2, 4),
-(3, 3),
-(3, 6),
 (4, 1),
-(4, 5),
 (5, 1),
+(2, 2),
+(1, 3),
+(3, 3),
 (5, 3),
+(2, 4),
 (6, 4),
-(6, 5);
+(1, 5),
+(4, 5),
+(6, 5),
+(3, 6);
 
 -- --------------------------------------------------------
 
@@ -657,32 +549,32 @@ INSERT INTO `post_to_tag` (`post_id`, `tag_id`) VALUES
 --
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
-  `external_id` int(11) DEFAULT NULL,
-  `sku` varchar(100) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `slug` varchar(255) DEFAULT NULL,
-  `category` varchar(100) DEFAULT NULL,
-  `short_description` varchar(500) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `id` int NOT NULL,
+  `external_id` int DEFAULT NULL,
+  `sku` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `short_description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `base_price` decimal(10,2) NOT NULL,
   `max_price` decimal(10,2) DEFAULT NULL,
   `price` decimal(10,2) GENERATED ALWAYS AS (`base_price`) STORED,
-  `stock_qty` int(11) NOT NULL DEFAULT 0,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `stock_qty` int NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `lower_price` decimal(10,2) GENERATED ALWAYS AS (`base_price`) STORED,
   `upper_price` decimal(10,2) GENERATED ALWAYS AS (coalesce(`max_price`,`base_price`)) STORED,
-  `currency` char(3) NOT NULL DEFAULT 'RM',
-  `image` varchar(255) DEFAULT NULL,
-  `gallery` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`gallery`)),
-  `attributes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`attributes`)),
-  `status` enum('draft','active','archived') NOT NULL DEFAULT 'active',
-  `has_variants` tinyint(1) NOT NULL DEFAULT 0,
-  `allow_backorder` tinyint(1) NOT NULL DEFAULT 0,
-  `weight_grams` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `currency` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'RM',
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gallery` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `attributes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `status` enum('draft','active','archived') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
+  `has_variants` tinyint(1) NOT NULL DEFAULT '0',
+  `allow_backorder` tinyint(1) NOT NULL DEFAULT '0',
+  `weight_grams` int DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `products`
@@ -712,7 +604,9 @@ INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, 
 (21, 540, 'SAUSAGE-001', 'Sausage', 'sausage', 'meat', 'Juicy sausages', 'Juicy and flavorful sausages.', 15.00, 160.00, 95, 1, 'RM', 'images/sausage.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
 (22, NULL, 'LEATHER-001', 'Leather', 'leather', 'byproducts', 'Durable leather', 'High-quality, durable leather.', 50.00, 500.00, 30, 1, 'RM', 'images/leather.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL),
 (23, NULL, 'WOOL-001', 'Wool', 'wool', 'byproducts', 'Soft wool', 'Soft, warm, and durable wool.', 40.00, 400.00, 60, 1, 'RM', 'images/wool.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL),
-(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 45, 1, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL);
+(24, NULL, 'FEATHERS-001', 'Feathers', 'feathers', 'byproducts', 'Natural feathers', 'Soft, lightweight, and natural feathers.', 30.00, 280.00, 45, 1, 'RM', 'images/feathers.png', NULL, NULL, 'active', 0, 0, NULL, '2025-11-13 11:02:14', NULL),
+(25, NULL, 'demo', 'demo', 'd', 'demo', 'demo', 'demo', 1.00, 1.00, 10, 1, 'RM', NULL, NULL, NULL, 'active', 0, 0, 100, '2025-11-24 01:51:12', NULL),
+(26, NULL, 'demo2', 'demo2', 'd-1', 'demo', NULL, NULL, 2.00, 2.00, 10, 1, 'RM', NULL, NULL, NULL, 'active', 0, 0, 100, '2025-11-24 03:06:22', NULL);
 
 --
 -- Triggers `products`
@@ -741,16 +635,16 @@ DELIMITER ;
 --
 
 CREATE TABLE `product_option_definitions` (
-  `id` int(11) NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `category` varchar(100) DEFAULT NULL,
-  `category_scope` varchar(100) GENERATED ALWAYS AS (case when `product_id` is null then lcase(trim(`category`)) else NULL end) VIRTUAL,
-  `option_order` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`option_order`)),
-  `option_labels` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`option_labels`)),
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` int NOT NULL,
+  `product_id` int DEFAULT NULL,
+  `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category_scope` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci GENERATED ALWAYS AS ((case when (`product_id` is null) then lower(trim(`category`)) else NULL end)) VIRTUAL,
+  `option_order` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `option_labels` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `product_option_definitions`
@@ -770,19 +664,19 @@ INSERT INTO `product_option_definitions` (`id`, `product_id`, `category`, `optio
 --
 
 CREATE TABLE `product_variants` (
-  `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `sku` varchar(120) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `options` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`options`)),
+  `id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `options` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `price_override` decimal(10,2) DEFAULT NULL,
-  `stock_qty` int(11) NOT NULL DEFAULT 0,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `image` varchar(255) DEFAULT NULL,
-  `weight_grams` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `stock_qty` int NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weight_grams` int DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `product_variants`
@@ -883,14 +777,14 @@ INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `p
 --
 
 CREATE TABLE `shipments` (
-  `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) NOT NULL,
-  `carrier` varchar(64) NOT NULL,
-  `service` varchar(64) DEFAULT NULL,
-  `tracking_number` varchar(64) NOT NULL,
-  `label_url` varchar(255) DEFAULT NULL,
-  `status` enum('created','packed','shipped','delivered','canceled') NOT NULL DEFAULT 'created',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` bigint NOT NULL,
+  `order_id` bigint NOT NULL,
+  `carrier` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `service` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tracking_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('created','packed','shipped','delivered','canceled') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -913,17 +807,17 @@ INSERT INTO `shipments` (`id`, `order_id`, `carrier`, `service`, `tracking_numbe
 --
 
 CREATE TABLE `shipping_methods` (
-  `id` int(11) NOT NULL,
-  `zone_id` int(11) NOT NULL,
-  `type` enum('flat','weight','price','free') NOT NULL DEFAULT 'flat',
-  `name` varchar(150) NOT NULL,
+  `id` int NOT NULL,
+  `zone_id` int NOT NULL,
+  `type` enum('flat','weight','price','free') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'flat',
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_weight` decimal(10,2) DEFAULT NULL,
   `max_weight` decimal(10,2) DEFAULT NULL,
   `min_price` decimal(10,2) DEFAULT NULL,
   `max_price` decimal(10,2) DEFAULT NULL,
-  `rate` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `rate` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -951,13 +845,13 @@ INSERT INTO `shipping_methods` (`id`, `zone_id`, `type`, `name`, `min_weight`, `
 --
 
 CREATE TABLE `shipping_zones` (
-  `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `country` varchar(2) NOT NULL,
-  `region` varchar(100) DEFAULT NULL,
-  `postcode_pattern` varchar(100) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `region` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `postcode_pattern` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -978,9 +872,34 @@ INSERT INTO `shipping_zones` (`id`, `name`, `country`, `region`, `postcode_patte
 --
 
 CREATE TABLE `stripe_events` (
-  `event_id` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `event_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stripe_session_short`
+--
+
+CREATE TABLE `stripe_session_short` (
+  `id` int NOT NULL,
+  `short_token` varchar(32) NOT NULL,
+  `stripe_session_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `stripe_session_short`
+--
+
+INSERT INTO `stripe_session_short` (`id`, `short_token`, `stripe_session_id`, `created_at`) VALUES
+(1, '8802f6a1', 'cs_live_a1ktxIPUo0C8NCkkx4IE8WaJlQjs08fCYe8gvcy0p2dbJoMPz50kcSMxmZ', '2025-11-24 06:13:43'),
+(2, '69795c1c', 'cs_live_a12kRtAKfqZWGilQi1Y7eDKmihZa9T7UNpNscaxGumRuJRm0NbH9iSAxGQ', '2025-11-24 06:36:14'),
+(3, '81efe3c4', 'cs_live_a1fPlzEcymQt0slX4rcvBjb3gskKEpJo9eBnEhZMh3qITNEEcavBlU902f', '2025-11-24 06:36:54'),
+(4, '0843d707', 'cs_live_a1GbDpXMcBOVIx5chTnDGqkQ2Wvfo3xZiZfm7g22W757FNBPRgRmBKjIEW', '2025-11-24 07:02:18'),
+(5, '79867ee2', 'cs_test_a173zmS8V8vt9jH0QcbN2yo1X9yu5JgdhPIxK0aqJVx3jR8gMt8d67jmsp', '2025-11-25 04:51:26'),
+(6, '96eb61bf', 'cs_live_a1yNBy4XRH9pxBDC4TzCHM4gglGG2Coihdy4TMJ5lrGK9kfrEHHYq7lb2v', '2025-11-25 04:59:25');
 
 -- --------------------------------------------------------
 
@@ -989,18 +908,18 @@ CREATE TABLE `stripe_events` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `first_name` varchar(100) DEFAULT NULL,
-  `last_name` varchar(100) DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
-  `role` enum('customer','admin','staff') DEFAULT 'customer',
-  `reset_token` varchar(128) DEFAULT NULL,
+  `id` int NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` enum('customer','admin','staff') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'customer',
+  `reset_token` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reset_expires_at` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  `is_admin` tinyint(1) NOT NULL DEFAULT 0
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1028,11 +947,11 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, 
 --
 
 CREATE TABLE `wishlist` (
-  `id` bigint(20) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `variant_id` int(11) DEFAULT NULL,
-  `added_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` bigint NOT NULL,
+  `user_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `variant_id` int DEFAULT NULL,
+  `added_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1143,6 +1062,12 @@ ALTER TABLE `order_items`
   ADD KEY `variant_id` (`variant_id`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -1239,6 +1164,13 @@ ALTER TABLE `stripe_events`
   ADD PRIMARY KEY (`event_id`);
 
 --
+-- Indexes for table `stripe_session_short`
+--
+ALTER TABLE `stripe_session_short`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `short_token` (`short_token`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1263,146 +1195,89 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `communications`
 --
 ALTER TABLE `communications`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `moderation_logs`
 --
 ALTER TABLE `moderation_logs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `post_categories`
 --
 ALTER TABLE `post_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `post_tags`
 --
 ALTER TABLE `post_tags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `product_option_definitions`
+-- AUTO_INCREMENT for table `stripe_session_short`
 --
-ALTER TABLE `product_option_definitions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `product_variants`
---
-ALTER TABLE `product_variants`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
-
---
--- AUTO_INCREMENT for table `shipments`
---
-ALTER TABLE `shipments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `shipping_methods`
---
-ALTER TABLE `shipping_methods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `shipping_zones`
---
-ALTER TABLE `shipping_zones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `wishlist`
---
-ALTER TABLE `wishlist`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+ALTER TABLE `stripe_session_short`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `addresses`
---
-ALTER TABLE `addresses`
-  ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `carts`
---
-ALTER TABLE `carts`
-  ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `cart_items`
---
-ALTER TABLE `cart_items`
-  ADD CONSTRAINT `cart_items_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `cart_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `cart_items_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `comments`
---
-ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `orders`
@@ -1411,66 +1286,6 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`shipping_address_id`) REFERENCES `addresses` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`billing_address_id`) REFERENCES `addresses` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `posts`
---
-ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `post_to_category`
---
-ALTER TABLE `post_to_category`
-  ADD CONSTRAINT `ptc_category_fk` FOREIGN KEY (`category_id`) REFERENCES `post_categories` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ptc_post_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `post_to_tag`
---
-ALTER TABLE `post_to_tag`
-  ADD CONSTRAINT `ptt_post_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ptt_tag_fk` FOREIGN KEY (`tag_id`) REFERENCES `post_tags` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `product_option_definitions`
---
-ALTER TABLE `product_option_definitions`
-  ADD CONSTRAINT `product_option_definitions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `product_variants`
---
-ALTER TABLE `product_variants`
-  ADD CONSTRAINT `product_variants_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `shipments`
---
-ALTER TABLE `shipments`
-  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `shipping_methods`
---
-ALTER TABLE `shipping_methods`
-  ADD CONSTRAINT `shipping_methods_zone_fk` FOREIGN KEY (`zone_id`) REFERENCES `shipping_zones` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `wishlist`
---
-ALTER TABLE `wishlist`
-  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `wishlist_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

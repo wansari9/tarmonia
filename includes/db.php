@@ -14,22 +14,19 @@ function db_json_error(int $code, string $message): void {
     exit;
 }
 
+// CSRF removed per developer request: provide minimal stubs so existing
+// code that references these functions doesn't fatal but CSRF checks are disabled.
 function ensure_csrf_token(): string {
-    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['csrf_token'];
+    return '';
 }
 
 function verify_csrf_token(?string $token): bool {
-    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-        return false;
-    }
-    if ($token === null || $token === '') {
-        return false;
-    }
-    return hash_equals($_SESSION['csrf_token'], $token);
+    return true;
 }
+
+// Backwards-compatible admin helpers (no-op)
+function csrf_token(): string { return ''; }
+function csrf_verify(?string $token): bool { return true; }
 
 $DB_HOST = getenv('DB_HOST') ?: '127.0.0.1';
 $DB_NAME = getenv('DB_NAME') ?: 'tarmonia';

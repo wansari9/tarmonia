@@ -64,22 +64,25 @@
       max-width: 1800px;
       margin: 0 auto;
     }
-    .products {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px 36px;
-      justify-content: center;
-      list-style: none;
-    }
-    .products .product {
-      max-width: 320px;
-      min-width: 260px;
-      min-height: 440px;
-      margin: 0 auto;
+        .products {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px 36px;
+            /* Ensure the grid starts at the first column and items align to the start of their cells */
+            justify-content: start;
+            justify-items: start;
+            grid-auto-flow: row;
+            list-style: none;
+        }
+        .products .product {
+            max-width: 320px;
+            min-width: 260px;
+            min-height: 440px;
+            margin: 0;
       font-size: 1.12em;
       padding: 38px 24px 46px 24px;
       background: #fffbe6;
@@ -235,6 +238,109 @@
     .shop-filters input[type="number"] {
       min-width: 120px;
     }
+        /* Center the shop filters and product grid inside the main content area */
+        .content .list_products {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 24px;
+            width: 100%;
+            /* Stick to top of the viewport when scrolling */
+            position: sticky;
+            top: 0;
+            /* make stacking explicit so the sticky area sits above other content */
+            z-index: 1000;
+            /* Keep a light backdrop so it remains readable when overlapping content */
+            background: rgba(255, 251, 230, 0.95);
+            /* small padding to separate from top */
+            padding-top: 8px;
+        }
+
+        /* Page-scoped override: remove left-sidebar offset only on the shop page */
+        body.body_style_fullwide.sidebar_left .content {
+            padding-left: 0 !important;
+        }
+        /* Force .content to center on this page (undo theme's sidebar_left float) */
+        body.archive.shoppg .content {
+            float: none !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: auto !important;
+            max-width: 1100px !important;
+            box-sizing: border-box !important;
+        }
+        /* Allow sticky children to use viewport scrolling by removing overflow on nearest ancestors
+           Only applied on the shop/archive page to avoid global layout changes. */
+        body.archive.shoppg .page_content_wrap,
+        body.archive.shoppg .content_wrap,
+        body.archive.shoppg .page_wrap,
+        body.archive.shoppg .body_wrap {
+            overflow: visible !important;
+        }
+
+        /* Debug outlines removed */
+
+        /* Ensure the products grid keeps its max-width and centers properly inside the flex container */
+        .content .list_products .products {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        /* Reset the UL defaults and make grid items occupy their natural cells */
+        ul.products {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            list-style: none !important;
+            box-sizing: border-box;
+        }
+
+        /* Ensure each product list item aligns to the start of its grid cell
+           and defensively force the first item into the first column. */
+        .products > li {
+            width: auto;
+            margin: 0;
+            justify-self: start;
+            grid-column: auto;
+        }
+
+        .products > li:first-child {
+            grid-column: 1;
+        }
+        /* Remove decorative pseudo-elements that may render an arrow above the products list */
+        .content .list_products::before,
+        .content .list_products::after,
+        .content .list_products .products::before,
+        .content .list_products .products::after,
+        .woocommerce ul.products::before,
+        .woocommerce ul.products::after,
+        .content .list_products .products > li::before,
+        .content .list_products .products > li::after {
+            display: none !important;
+            content: none !important;
+        }
+        /* Reduce left-side margins/padding for header logo, top contact, and sidebar
+           Use specific selectors and !important to override theme CSS loaded later. */
+        .top_panel_top .content_wrap,
+        .top_panel_middle .content_wrap {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+
+        .column-4_5.contact_logo {
+            margin-left: 0 !important;
+            padding-left: 6px !important;
+        }
+
+        .top_panel_top_contact_area {
+            margin-left: 6px !important;
+            padding-left: 6px !important;
+        }
+
+        .sidebar.widget_area {
+            margin-left: 8px !important;
+            padding-left: 8px !important;
+        }
     </style>
 
 </head>
@@ -418,10 +524,7 @@
                         </div>
                         <p class="woocommerce-result-count">
                             Showing all 9 results</p>
-                        <form class="woocommerce-ordering" method="get" onsubmit="return false;">
-                            <!-- Sort dropdown moved to filters row above -->
-                            <input type="hidden" name="q" value="shop.html" />
-                        </form>
+                        
                     
                         <ul class="products">
                             <!-- Product list populated dynamically by `js/shop-dynamic.js` using `includes/products_list.php` -->
@@ -646,6 +749,33 @@
                     el.closest('.product') && el.closest('.product').setAttribute('data-highestPrice', best); // could expand if variants
                 }
             });
+        }
+    });
+    // Debugging helper: log computed styles for .list_products ancestors
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            var el = document.querySelector('.content .list_products');
+            if (!el) {
+                console.info('DEBUG: .list_products not found on page');
+                return;
+            }
+            console.group('DEBUG: .list_products ancestor computed styles');
+            var node = el;
+            while (node && node.nodeType === 1) {
+                var cs = window.getComputedStyle(node);
+                console.log(node.tagName.toLowerCase() + (node.className ? ('.' + node.className.replace(/\s+/g, '.')) : ''), {
+                    overflow: cs.overflow + ' / ' + cs.overflowX + ',' + cs.overflowY,
+                    position: cs.position,
+                    transform: cs.transform === 'none' ? '(none)' : cs.transform,
+                    willChange: cs.willChange,
+                    zIndex: cs.zIndex
+                });
+                if (node.tagName.toLowerCase() === 'body') break;
+                node = node.parentElement;
+            }
+            console.groupEnd();
+        } catch (err) {
+            console.error('DEBUG: error while computing ancestor styles', err);
         }
     });
     document.addEventListener('DOMContentLoaded', function () {

@@ -48,11 +48,23 @@ try {
 
     $amountMinor = stripe_amount_to_minor((float)$order['grand_total'], $iso);
 
-    $stripe = get_stripe_client();
+    try {
+        $stripe = get_stripe_client();
+    } catch (Throwable $e) {
+        $debug = (getenv('APP_DEBUG') === 'true');
+        $msg = $debug ? $e->getMessage() : 'Unable to initialize Stripe client';
+        api_json_error(500, 'stripe_client_init_failed', $msg);
+    }
 
     $appUrl = getenv('APP_URL') ?: ((isset($_SERVER['HTTP_HOST']) ? 'http://' . $_SERVER['HTTP_HOST'] : 'http://localhost'));
-    $successUrl = rtrim($appUrl, '/') . '/order-success.html?session_id={CHECKOUT_SESSION_ID}';
-    $cancelUrl = rtrim($appUrl, '/') . '/payment-failed.html?session_id={CHECKOUT_SESSION_ID}';
+    // Generate a short random return token and include it in metadata and the success URL.
+    $returnToken = bin2hex(random_bytes(16));
+    // Short token to avoid exposing long Stripe session IDs in the redirect URL
+    $shortToken = bin2hex(random_bytes(4));
+    $successUrl = rtrim($appUrl, '/') . '/order-success.php?tk=' . $shortToken . '&rt=' . $returnToken;
+    // Include short token in cancel URL so payment-failed can resolve the full
+    // Stripe session id server-side without exposing long IDs in querystrings.
+    $cancelUrl = rtrim($appUrl, '/') . '/payment-failed.php?tk=' . $shortToken . '&sid={CHECKOUT_SESSION_ID}';
 
     $sessionParams = [
         'payment_method_types' => ['card', 'fpx'],
@@ -69,7 +81,8 @@ try {
         'cancel_url' => $cancelUrl,
         'metadata' => [
             'order_id' => (string)$order['id'],
-            'user_id' => (string)$userId
+            'user_id' => (string)$userId,
+            'return_token' => $returnToken
         ]
     ];
 
@@ -78,6 +91,16 @@ try {
     } catch (Throwable $e) {
         error_log('create_checkout_for_order error: ' . $e->getMessage());
         api_json_error(500, 'checkout_session_failed', 'Unable to create Stripe Checkout session');
+    }
+
+    // Persist short token mapping
+    try {
+        if (!empty($shortToken) && !empty($session->id) && isset($pdo) && $pdo instanceof PDO) {
+            $ins = $pdo->prepare('INSERT INTO stripe_session_short (short_token, stripe_session_id) VALUES (:short, :sid)');
+            $ins->execute([':short' => $shortToken, ':sid' => $session->id]);
+        }
+    } catch (Throwable $e) {
+        error_log('Failed to persist stripe_session_short mapping: ' . $e->getMessage());
     }
 
     // Create or update payments row for this order and attach external id

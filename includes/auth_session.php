@@ -21,6 +21,6 @@ if ($isAuth) {
 echo json_encode([
     'authenticated' => $isAuth,
     'user' => $user,
-    'csrf_token' => ensure_csrf_token()
+    // CSRF removed: no token provided
 ]);
 exit;

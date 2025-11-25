@@ -29,31 +29,16 @@
           '<div class="cart-header">' +
             '<div class="cart-title">Shopping Cart</div>' +
             '<div class="cart-count-badge">' + itemsCount + '</div>' +
-          '</div>';
-      if (itemsCount === 0) {
-        // Show the empty cart message centered in the items area
-        scaffold += '<div class="cart-items-wrapper">'
-          + '<div class="mini-cart-empty-message">Your basket is empty for now. Add some farm-fresh goodies!</div>'
-          + '</div>';
-        scaffold += '<div class="cart-footer">'
-          + '<div class="cart-buttons">'
-          + '<a href="shop.html" class="button mini-cart-continue">Continue Shopping</a>'
-          + '</div>'
-          + '</div>';
-        scaffold += '</div>';
-        w.innerHTML = scaffold;
-        return;
-      }
-      scaffold += '<div class="cart-items-wrapper">' + itemsHtml + '</div>';
-      // Normal cart footer for non-empty cart
-      scaffold += '<div class="cart-footer">'
-        + '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>'
-        + '<div class="cart-buttons">'
-        + '<button class="view-cart-btn" type="button">VIEW CART</button>'
-        + '<button class="checkout-btn" type="button">CHECKOUT</button>'
-        + '</div>'
-        + '</div>';
-      scaffold += '</div>';
+          '</div>' +
+          '<div class="cart-items-wrapper">' + itemsHtml + '</div>' +
+          '<div class="cart-footer">' +
+            '<div class="cart-total-row"><span>TOTAL:</span><span class="cart-total">' + formatRM(total) + '</span></div>' +
+            '<div class="cart-buttons">' +
+              '<button class="view-cart-btn" type="button">VIEW CART</button>' +
+              '<button class="checkout-button" type="button">CHECKOUT</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
       w.innerHTML = scaffold;
       // After injecting, bind interactions
       initializeMiniCartInteractions(w);
