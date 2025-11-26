@@ -77,6 +77,7 @@
         if(targetContent) targetContent.classList.add('active');
 
         if(tabName === 'orders') loadOrders();
+        if(tabName === 'addresses') loadAddresses();
       });
     });
   }
@@ -539,4 +540,141 @@
     loadOrders();
   }
 
+  // Expose a few utilities/globals so the addresses IIFE and other modules can access them
+  if (typeof window.API_BASE === 'undefined') window.API_BASE = API_BASE;
+  if (typeof window.apiGet === 'undefined') window.apiGet = apiGet;
+  if (typeof window.apiPost === 'undefined') window.apiPost = apiPost;
+  if (typeof window.showAlert === 'undefined') window.showAlert = showAlert;
+  if (typeof window.escapeHtml === 'undefined') window.escapeHtml = escapeHtml;
+
+})();
+
+// Addresses loading & global address actions
+(function(){
+  'use strict';
+
+  async function loadAddresses(){
+    const addressesList = document.querySelector('[data-addresses-list]');
+    if(!addressesList) return;
+
+    addressesList.innerHTML = '<div class="loading-state">Loading addresses...</div>';
+
+    try {
+      const data = await window.apiGet(window.API_BASE + 'addresses.php');
+
+      if(!data.addresses || data.addresses.length === 0) {
+        addressesList.innerHTML = '<div class="empty-state">No saved addresses</div>';
+        return;
+      }
+
+      addressesList.innerHTML = data.addresses.map(addr => `
+        <div class="address-card ${addr.is_default ? 'default' : ''}">
+          ${addr.is_default ? '<div class="address-badge">Default</div>' : ''}
+          <div class="address-content">
+            <div class="address-name">${window.escapeHtml(((addr.first_name || '') + ' ' + (addr.last_name || '')).trim())}</div>
+            <div class="address-line">${window.escapeHtml(addr.address_line1 || '')}</div>
+            ${addr.address_line2 ? `<div class="address-line">${window.escapeHtml(addr.address_line2)}</div>` : ''}
+            <div class="address-line">${window.escapeHtml(addr.city || '')}, ${window.escapeHtml(addr.state || '')} ${window.escapeHtml(addr.postal_code || '')}</div>
+            <div class="address-line">${window.escapeHtml(addr.country || '')}</div>
+            ${addr.phone ? `<div class="address-line">Phone: ${window.escapeHtml(addr.phone)}</div>` : ''}
+          </div>
+          <div class="address-actions">
+            <button class="btn-address-action" data-addr-id="${addr.id}" data-action="view">View</button>
+          </div>
+        </div>
+      `).join('');
+
+      // attach view buttons
+      addressesList.querySelectorAll('.btn-address-action').forEach(btn => {
+        const id = btn.dataset.addrId;
+        btn.addEventListener('click', () => showAddressModal(id, 'view'));
+      });
+    } catch (e) {
+      addressesList.innerHTML = '<div class="empty-state">Failed to load addresses</div>';
+      console.error(e);
+    }
+  }
+
+  // Show address modal (create or edit)
+  function showAddressModal(id){
+    // If modal exists, remove it so we recreate fresh
+    const existing = document.getElementById('address-modal');
+    if(existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'address-modal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header"><h2 class="modal-title">${id ? 'Edit Address' : 'Add Address'}</h2></div>
+        <div class="modal-body">
+          <div class="form-row"><label>Label</label><input name="label" type="text" /></div>
+          <div class="form-row"><label>Recipient name</label><input name="recipient_name" type="text" /></div>
+          <div class="form-row"><label>Phone</label><input name="phone" type="text" /></div>
+          <div class="form-row"><label>Address line 1</label><input name="address_line1" type="text" /></div>
+          <div class="form-row"><label>Address line 2</label><input name="address_line2" type="text" /></div>
+          <div class="form-row"><label>City</label><input name="city" type="text" /></div>
+          <div class="form-row"><label>State</label><input name="state" type="text" /></div>
+          <div class="form-row"><label>Postal code</label><input name="postal_code" type="text" /></div>
+          <div class="form-row"><label>Country</label><input name="country" type="text" /></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-cancel">Cancel</button>
+          <button class="btn btn-primary btn-save">Save</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Populate if editing
+    if (id) {
+      // find address data from currently rendered list if present
+      (async () => {
+        try {
+          const data = await window.apiGet(window.API_BASE + 'addresses.php');
+          const addr = (data.addresses || []).find(a => String(a.id) === String(id));
+          if (addr) {
+            modal.querySelector('input[name="label"]').value = addr.label || '';
+            modal.querySelector('input[name="recipient_name"]').value = (addr.recipient_name || ((addr.first_name || '') + ' ' + (addr.last_name || '')).trim()) || '';
+            modal.querySelector('input[name="phone"]').value = addr.phone || '';
+            modal.querySelector('input[name="address_line1"]').value = addr.address_line1 || '';
+            modal.querySelector('input[name="address_line2"]').value = addr.address_line2 || '';
+            modal.querySelector('input[name="city"]').value = addr.city || '';
+            modal.querySelector('input[name="state"]').value = addr.state || '';
+            modal.querySelector('input[name="postal_code"]').value = addr.postal_code || '';
+            modal.querySelector('input[name="country"]').value = addr.country || '';
+          }
+        } catch (e) {
+          console.error('Failed to load address for edit', e);
+        }
+      })();
+    }
+
+    const saveBtn = modal.querySelector('.btn-save');
+    const cancelBtn = modal.querySelector('.btn-cancel');
+
+    cancelBtn.addEventListener('click', () => modal.remove());
+
+    // Make the modal view-only: hide the Save button and make inputs readonly
+    saveBtn.style.display = 'none';
+    modal.querySelectorAll('input').forEach(i => i.setAttribute('readonly', 'readonly'));
+
+    // close modal when clicking outside content
+    modal.addEventListener('click', (ev) => {
+      if (ev.target === modal) modal.remove();
+    });
+  }
+
+
+
+  // Expose a view helper and load function. Address actions (edit/delete/set default)
+  // are intentionally not implemented here because the corresponding server
+  // endpoints were removed. Keep the modal read-only and provide a viewer.
+  window.viewAddress = function(id){ showAddressModal(id); };
+  window.loadAddresses = loadAddresses;
+
+  // Do not auto-wire an "Add address" action here — the page already provides
+  // its own Add button which is kept as the single entry point for creating
+  // addresses (server-side support required).
 })();

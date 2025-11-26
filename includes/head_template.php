@@ -69,8 +69,8 @@ function head_template_render(array $meta = []): void
     // against the site's root or subdirectory correctly.
     echo "    <base href=\"" . htmlspecialchars($baseHref, ENT_QUOTES, 'UTF-8') . "\">\n";
 
-    // Preload main stylesheet to reduce render blocking (onload swap)
-    echo "    <link rel=\"preload\" href=\"css/style.css\" as=\"style\" onload=\"this.rel='stylesheet'\">\n";
+    // stylesheet main stylesheet to reduce render blocking (onload swap)
+    echo "    <link rel=\"stylesheet\" href=\"css/style.css\" as=\"style\" onload=\"this.rel='stylesheet'\">\n";
     echo "    <noscript><link rel=\"stylesheet\" href=\"css/style.css\"></noscript>\n";
 }
 

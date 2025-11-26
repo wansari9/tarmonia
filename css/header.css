@@ -1,0 +1,398 @@
+/* Standalone header CSS for Tarmonia top panel
+   File: css/header.css
+*/
+@import url('https://fonts.googleapis.com/css?family=Average|Open+Sans:300,400,600,700|Oswald:300,400,600&display=swap');
+
+:root{
+  --brand:#a67c00;
+  --accent:#72b16a;
+  --muted:#6b6b6b;
+}
+
+/* Top panel wrapper */
+.top_panel_wrap{background:#fff;color:#222;border-bottom:1px solid #eee;font-family:'Open Sans',sans-serif}
+.top_panel_inner{max-width:1180px;margin:0 auto;padding:0 18px}
+
+/* Top small bar */
+.top_panel_top{font-size:14px;padding:8px 0;color:var(--muted)}
+.top_panel_top .content_wrap{display:flex;align-items:center;justify-content:space-between}
+.top_panel_top_contact_area{font-weight:600}
+.top_panel_top_open_hours{margin-left:16px}
+.top_panel_top_user_area{display:flex;align-items:center;gap:12px}
+.top_panel_top_socials .sc_socials_item{display:inline-block;margin-left:6px}
+
+/* Middle area with logo and actions */
+.top_panel_middle{padding:14px 0}
+.top_panel_middle .columns_wrap{display:flex;align-items:center;justify-content:space-between}
+.contact_logo .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo_main{display:inline-block;height:74px;width:74px;object-fit:contain}
+.logo-text-box{font-family:'Average',serif;color:var(--brand);font-size:1.55rem;font-weight:700}
+
+.contact_field{display:flex;align-items:center;justify-content:flex-end}
+.header_actions{display:flex;align-items:center;gap:18px}
+.top_panel_cart_button_simple{display:inline-flex;align-items:center;justify-content:center;padding:6px 8px;background:transparent;border:none;color:#333;text-decoration:none}
+.top_panel_login_button_simple{color:#333;text-decoration:none;font-weight:600}
+.user_icon_button{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;text-decoration:none}
+.user_initial{font-weight:700}
+
+/* Bottom nav */
+.top_panel_bottom{padding:12px 0;border-top:1px solid #f4f4f4}
+.menu_main_nav_area{display:block}
+.menu_main_nav{display:flex;gap:18px;list-style:none;padding:0;margin:0;align-items:center}
+.menu_main_nav li a{color:#333;text-decoration:none;padding:8px 10px;display:inline-block}
+.menu_main_nav li.current-menu-ancestor a{font-weight:700}
+
+/* Mobile header fallback (small) */
+@media (max-width:800px){
+  .top_panel_inner{padding:0 12px}
+  .menu_main_nav{flex-wrap:wrap}
+  .logo-text-box{font-size:1.2rem}
+}
+
+/* small utility */
+.content_wrap{width:100%;}
+
+/* Layout helpers copied from theme's style.css to preserve header spacing */
+.content_wrap {
+  max-width:1170px;
+  width:100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left:15px;
+  padding-right:15px;
+  box-sizing: border-box;
+}
+/* Use a predictable flex-based grid in the header to keep centering and remove negative offsets */
+.row, .columns_wrap {
+  margin-left: 0;
+  margin-right: 0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.row > [class*="column-"], .columns_wrap > [class*="column-"] {
+  display:block;
+  vertical-align:top;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+.column-1_5, .column-2_10 { flex: 0 0 20%; max-width:20%; }
+.column-4_5, .column-8_10 { flex: 1 1 80%; max-width:80%; }
+
+
+/* --- Exact Top Panel CSS copied from css/theme.css (7.1 Top panel) --- */
+.scheme_original .top_panel_wrap_inner {
+  background-color: #ffffff;
+}
+.scheme_original .top_panel_fixed .top_panel_position_over.top_panel_wrap_inner {
+  background-color: #fff3d3 !important;
+}
+.scheme_original .top_panel_middle .sidebar_cart:after,
+.scheme_original .top_panel_middle .sidebar_cart {
+  border-color: #d3d3d3;
+}
+.scheme_original .top_panel_middle .sidebar_cart:after,
+.scheme_original .top_panel_middle .sidebar_cart {
+  background-color: #ffffff;
+}
+.scheme_original .top_panel_wrap .icons::before,
+.scheme_original .top_panel_wrap .icons::before {
+  color: #fec321;
+}
+.scheme_original .top_panel_top {
+  color: #838383;
+}
+.scheme_original .top_panel_top {
+  background-color: #231f20;
+}
+.scheme_original .top_panel_top a,
+.scheme_original .top_panel_top .sc_socials.sc_socials_type_icons a {
+  color: #727272;
+}
+.scheme_original .top_panel_top .sc_socials.sc_socials_type_icons a:hover,
+.scheme_original .top_panel_top a:hover {
+  color: #fec321;
+}
+/* User menu */
+.scheme_original .menu_user_nav > li > a {
+  color: #727272;
+}
+.scheme_original .menu_user_nav > li > a:hover {
+  color: #d7a92b;
+}
+.scheme_original .menu_user_nav > li ul:not(.cart_list) {
+  border-color: #d3d3d3;
+}
+.scheme_original .menu_user_nav > li ul:not(.cart_list) {
+  background-color: #ffffff;
+}
+.scheme_original .top_panel_inner_style_1 .menu_user_nav > li > ul:after,
+.scheme_original .top_panel_inner_style_2 .menu_user_nav > li > ul:after {
+  border-color: #d3d3d3;
+}
+.scheme_original .top_panel_inner_style_1 .menu_user_nav > li > ul:after,
+.scheme_original .top_panel_inner_style_2 .menu_user_nav > li > ul:after {
+  background-color: #ffffff;
+}
+.scheme_original .menu_user_nav > li ul li a {
+  color: #838383;
+}
+.scheme_original .menu_user_nav > li ul li a:hover,
+.scheme_original .menu_user_nav > li ul li.current-menu-item > a,
+.scheme_original .menu_user_nav > li ul li.current-menu-ancestor > a {
+  color: #181516;
+}
+.scheme_original .menu_user_nav > li ul li a:hover,
+.scheme_original .menu_user_nav > li ul li.current-menu-item > a,
+.scheme_original .menu_user_nav > li ul li.current-menu-ancestor > a {
+  background-color: #f6f6f6;
+}
+.scheme_original .menu_user_nav > li.menu_user_controls .user_avatar {
+  border-color: #d3d3d3;
+}
+/* Bookmarks */
+.scheme_original .menu_user_nav > li.menu_user_bookmarks .bookmarks_add {
+  border-bottom-color: #e8dab5;
+}
+/*---LESS_SEPARATOR---*/
+/* Top panel - middle area */
+.scheme_original .top_panel_position_over.top_panel_middle {
+  background-color: rgba(255, 243, 211, 0.75);
+}
+
+.logo .logo_text {
+  font-size: 1.6em;
+  line-height: 0.75em;
+  font-weight: 400;
+}
+.scheme_original .logo .logo_text {
+  color: #231f20;
+}
+.scheme_original .logo .logo_slogan {
+  color: #727272;
+}
+.top_panel_middle .menu_main_wrap {
+  margin-top: 1.125em;
+}
+.top_panel_style_5 .top_panel_middle .logo {
+  margin-bottom: 0.5em;
+}
+/* Top panel (bottom area) */
+.scheme_original .top_panel_bottom {
+  background-color: #fec321;
+}
+/* Top panel image in the header 7  */
+.scheme_original .top_panel_image_hover {
+  background-color: rgba(215, 169, 43, 0.8);
+}
+.scheme_original .top_panel_image_header,
+.scheme_original .top_panel_image_title,
+.scheme_original .top_panel_over:not(.top_panel_fixed) .top_panel_style_7 .logo_text,
+.scheme_original .top_panel_over:not(.top_panel_fixed) .top_panel_style_7 .logo_slogan {
+  color: #ffffff;
+}
+.scheme_original .top_panel_image_header a,
+.scheme_original .top_panel_image_title > a,
+.scheme_original .top_panel_over:not(.top_panel_fixed) .top_panel_style_7 .menu_main_nav > li > a {
+  color: #ffffff;
+}
+.scheme_original .post_featured .post_header a:hover,
+.scheme_original .top_panel_over:not(.top_panel_fixed) .top_panel_style_7 .menu_main_nav > li > a:hover {
+  color: #ffffff;
+}
+/* Main menu */
+.menu_main_nav > li > a {
+  padding: 1.45em 1.73em 1.35em;
+  font-family: "Oswald", sans-serif;
+  font-size: 1em;
+  line-height: 1.2857em;
+  font-weight: 400;
+}
+.scheme_original .menu_main_nav > li > a {
+  color: #181516;
+}
+.scheme_original .menu_main_nav > li > ul:before,
+.scheme_original .menu_main_nav > li ul {
+  color: #231f20;
+}
+.scheme_original .menu_main_nav > li > ul:before,
+.scheme_original .menu_main_nav > li ul {
+  background-color: white;
+}
+.scheme_original .menu_main_nav > a:hover,
+.scheme_original .menu_main_nav > li > a:hover,
+.scheme_original .menu_main_nav > li.sfHover > a,
+.scheme_original .menu_main_nav > li.current-menu-item > a,
+.scheme_original .menu_main_nav > li.current-menu-parent > a,
+.scheme_original .menu_main_nav > li.current-menu-ancestor > a {
+  color: #fecf4d;
+}
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > a:hover,
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > li > a:hover,
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > li.sfHover > a,
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > li.current-menu-item > a,
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > li.current-menu-parent > a,
+.scheme_original .top_panel_inner_style_1 .menu_main_nav > li.current-menu-ancestor > a {
+  color: #ffffff;
+}
+.menu_main_nav > li > ul {
+  font-family: "Oswald", sans-serif;
+  font-size: 0.8em;
+  line-height: 1.2857em;
+  font-weight: 400;
+}
+.menu_main_nav > li > ul {
+  top: 5.82em;
+}
+.menu_main_nav > li ul li a {
+  padding: inherit 1.5em inherit;
+}
+.scheme_original .menu_main_nav > li ul li a {
+  color: #181516;
+}
+.scheme_original .menu_main_nav > li ul li a:hover,
+.scheme_original .menu_main_nav > li ul li.current-menu-item > a,
+.scheme_original .menu_main_nav > li ul li.current-menu-ancestor > a {
+  color: #fec321;
+}
+/* ---------------------- MENU HOVERS ----------------------- */
+/* slide_box */
+.scheme_original .menu_hover_slide_box .menu_main_nav > li#blob {
+  background-color: #f6f6f6;
+}
+.scheme_original .top_panel_inner_style_1 .menu_hover_slide_box .menu_main_nav > li#blob,
+.scheme_original .top_panel_inner_style_2 .menu_hover_slide_box .menu_main_nav > li#blob {
+  background-color: #d7a92b;
+}
+/* slide_line */
+.scheme_original .menu_hover_slide_line .menu_main_nav > li#blob {
+  background-color: #fecf4d;
+}
+.scheme_original .top_panel_inner_style_1 .menu_hover_slide_line .menu_main_nav > li#blob,
+.scheme_original .top_panel_inner_style_2 .menu_hover_slide_line .menu_main_nav > li#blob {
+  background-color: #ffffff;
+}
+
+/* --- End copied block --- */
+
+/* Additional header-specific rules copied from theme/checkout to match exactly */
+/* Constrain logo size and ensure header line-height matches theme */
+.top_panel_middle .logo img, .logo img { max-height: 64px; width: auto; display: block; }
+.header_actions a, .top_panel_top_contact_area, .top_panel_top_open_hours { line-height: 1; }
+
+/* Header mobile styles (copied from theme.css) */
+.scheme_original .header_mobile .menu_button,
+.scheme_original .header_mobile .menu_main_cart .top_panel_cart_button .contact_icon {
+  color: #231f20;
+}
+.scheme_original .header_mobile .side_wrap {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .panel_top,
+.scheme_original .header_mobile .side_wrap {
+  background-color: #fec321;
+}
+.scheme_original .header_mobile .panel_middle {
+  background-color: #fec321;
+}
+.scheme_original .header_mobile .panel_bottom {
+  background-color: #d7a92b;
+}
+.scheme_original .header_mobile .menu_button:hover,
+.scheme_original .header_mobile .menu_main_cart .top_panel_cart_button .contact_icon:hover,
+.scheme_original .header_mobile .menu_main_cart.top_panel_icon:hover .top_panel_cart_button .contact_icon,
+.scheme_original .header_mobile .side_wrap .close:hover {
+  color: #fec321;
+}
+.scheme_original .header_mobile .menu_main_nav > li a,
+.scheme_original .header_mobile .menu_main_nav > li > a:hover {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .menu_main_nav > a:hover,
+.scheme_original .header_mobile .menu_main_nav > li.sfHover > a,
+.scheme_original .header_mobile .menu_main_nav > li.current-menu-item > a,
+.scheme_original .header_mobile .menu_main_nav > li.current-menu-parent > a,
+.scheme_original .header_mobile .menu_main_nav > li.current-menu-ancestor > a,
+.scheme_original .header_mobile .menu_main_nav > li > a:hover,
+.scheme_original .header_mobile .menu_main_nav > li ul li a:hover,
+.scheme_original .header_mobile .menu_main_nav > li ul li.current-menu-item > a,
+.scheme_original .header_mobile .menu_main_nav > li ul li.current-menu-ancestor > a,
+.scheme_original .header_mobile .login a:hover {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .popup_wrap .popup_close:hover {
+  color: #231f20;
+}
+.scheme_original .header_mobile .search_wrap,
+.scheme_original .header_mobile .login {
+  border-color: #fec321;
+}
+.scheme_original .header_mobile .login .popup_link,
+.scheme_original .header_mobile .sc_socials.sc_socials_type_icons a {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .search_wrap .search_field,
+.scheme_original .header_mobile .search_wrap .search_field:focus {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .widget_shopping_cart ul.cart_list > li > a:hover {
+  color: #ffffff;
+}
+.scheme_original .header_mobile .popup_wrap .sc_socials.sc_socials_type_icons a {
+  color: #a0a0a0;
+}
+
+/* Fontello icon font - embedded here so header only needs header.css
+   Paths adjusted for this file (fonts located at css/fontello/font/) */
+@font-face {
+  font-family: 'fontello';
+  src: url('fontello/font/fontello.eot?9522585');
+  src: url('fontello/font/fontello.eot?9522585#iefix') format('embedded-opentype'),
+       url('fontello/font/fontello.woff2?9522585') format('woff2'),
+       url('fontello/font/fontello.woff?9522585') format('woff'),
+       url('fontello/font/fontello.ttf?9522585') format('truetype'),
+       url('fontello/font/fontello.svg?9522585#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Icon helper rules (from fontello css) */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  margin-left: .2em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Common icon mappings (partial - enough for header icons) */
+.icon-mail:before { content: '\e819'; }
+.icon-phone:before { content: '\e81a'; }
+.icon-search:before { content: '\e807'; }
+.icon-login:before { content: '\e80a'; }
+.icon-logout:before { content: '\e80b'; }
+.icon-user:before { content: '\e8c3'; }
+.icon-basket:before { content: '\e8cc'; }
+.icon-cart:before { content: '\e8cc'; }
+.icon-menu:before { content: '\e8ba'; }
+.icon-home:before { content: '\e8be'; }
+
+
