@@ -8,14 +8,13 @@
     <meta name="format-detection" content="telephone=no">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext' type='text/css' media='all' />
     <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/woocommerce-layout.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/woocommerce-smallscreen.css' type='text/css' media='only screen and (max-width: 768px)' />
     <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <!-- Consolidated WooCommerce compatibility CSS (local) -->
+    <link rel='stylesheet' href='css/woo-compat.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
@@ -70,10 +69,10 @@
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
                             <div class="column-4_5 contact_logo">
-                                    <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:8px;">
-                                        <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;">
-                                        <span class="logo-text-box" style="font-family:'Average',serif;font-size:2.1rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;">TARMONIA</span>
-                                    </a>
+                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:8px;">
+                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;">
+                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:2.1rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;">TARMONIA</span>
+                                </a>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
@@ -105,12 +104,12 @@
                     <div class="content_wrap clearfix">
                         <nav class="menu_main_nav_area menu_hover_fade">
                             <ul id="menu_main" class="menu_main_nav">
-                                <li class="menu-item menu-item-has-children"><a href="index.html"><span>Home</span></a></li>
-                                <li class="menu-item current-menu-ancestor current-menu-parent menu-item-has-children"><a href="about-2.html"><span>About us</span></a></li>
-                                <!-- <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li> -->
+                                <li class="menu-item"><a href="index.html"><span>Home</span></a></li>
+                                <li class="menu-item"><a href="about-2.html"><span>About us</span></a></li>
+                                <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li>
                                 <li class="menu-item menu-item-has-children"><a href="classic.html"><span>News</span></a></li>
                                 <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
-                                <!-- <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li> -->
+                                <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li>
                                 <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
                             </ul>
                         </nav>
@@ -138,7 +137,7 @@
                             <li class="menu-item"><a href="classic.html"><span>Blog</span></a></li>
                             <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
                             <li class="menu-item"><a href="recipes.html"><span>Recipes</span></a></li>
-                            <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                            <li class="menu-item current-menu-item"><a href="FAQ.html"><span>FAQ</span></a></li>
                         </ul>
                     </nav>
                 </div>

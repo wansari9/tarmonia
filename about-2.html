@@ -17,7 +17,8 @@
     <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <!-- Consolidated WooCommerce compatibility CSS (local) -->
+    <link rel='stylesheet' href='css/woo-compat.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/comp/comp.min.css' type='text/css' media='all' />
@@ -110,12 +111,12 @@
                 <div class="top_panel_middle">
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
-                            <div class="column-4_5 contact_logo">
-                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
-                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
-                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
-                                </a>
-                            </div>
+                                <div class="column-4_5 contact_logo">
+                                    <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                        <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                        <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                    </a>
+                                </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
                                     <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
@@ -131,7 +132,23 @@
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
                                                 <div class="widget_shopping_cart_content">
-                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                    <div class="cart-header">
+                                                        <h3>Shopping Cart</h3>
+                                                        <span class="cart-count">0</span>
+                                                    </div>
+                                                    <div class="cart-body">
+                                                        <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                    </div>
+                                                    <div class="cart-footer">
+                                                        <div class="cart-total">
+                                                            <span class="total-label">Total:</span>
+                                                            <span class="total-amount">$0.00</span>
+                                                        </div>
+                                                        <div class="cart-buttons">
+                                                            <a href="cart.html" class="view-cart-button">View Cart</a>
+                                                            <a href="checkout.html" class="checkout-button">Checkout</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +164,7 @@
                         <nav class="menu_main_nav_area menu_hover_fade">
                             <ul id="menu_main" class="menu_main_nav">
                                 <li class="menu-item menu-item-has-children"><a href="index.html"><span>Home</span></a></li>
-                                <li class="menu-item current-menu-ancestor current-menu-parent menu-item-has-children"><a href="about-2.html"><span>About us</span></a></li>
+                                <li class="menu-item current-menu-item menu-item-has-children"><a href="about-2.html"><span>About us</span></a></li>
                                 <!-- <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li> -->
                                 <li class="menu-item menu-item-has-children"><a href="classic.html"><span>News</span></a></li>
                                 <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
@@ -163,12 +180,12 @@
             <div class="content_wrap">
                 <div class="menu_button icon-menu"></div>
                 <div class="logo" style="display:flex;align-items:center;gap:15px;">
-                    <a href="index.html" class="logo-link">
+                    <a href="index.html" style="flex-shrink:0;">
                         <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
-                        <div class="logo-text-box">
-                            <span>TARMONIA</span>
-                        </div>
                     </a>
+                    <div class="logo-text-box">
+                        <span>TARMONIA</span>
+                    </div>
                 </div>
             </div>
             <div class="side_wrap">
