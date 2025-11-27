@@ -987,7 +987,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             window.CartAPI.mini().then(function(miniRes){
                                 var items = (miniRes && miniRes.cart && miniRes.cart.counts && miniRes.cart.counts.items) || 0;
                                 var total = (miniRes && miniRes.cart && miniRes.cart.totals && miniRes.cart.totals.grand_total) || 0;
-                                document.querySelectorAll('.top_panel_cart_button').forEach(function(btn){
+                                document.querySelectorAll('.top_panel_cart_button, .top_panel_cart_button_simple').forEach(function(btn){
                                     btn.setAttribute('data-items', items);
                                     btn.setAttribute('data-summa', 'RM' + Number(total).toFixed(2));
                                     var totals = btn.querySelector('.contact_cart_totals');

@@ -1,53 +1,3 @@
-<?php declare(strict_types=1);
-// single-product.php - dynamic related products by category
-require_once __DIR__ . '/includes/db.php';
-
-function fmt_price($amount, $currency = 'RM'){
-    if ($amount === null || $amount === '') return '';
-    return htmlspecialchars($currency . number_format((float)$amount, 2), ENT_QUOTES, 'UTF-8');
-}
-
-$requested = $_GET['product_id'] ?? null;
-$currentProduct = null;
-if ($requested !== null) {
-    $pid = is_numeric($requested) ? (int)$requested : null;
-    if ($pid) {
-        try {
-            $sql = "SELECT p.id, p.external_id, p.name, p.category, p.image, p.currency, p.description,
-                       COALESCE((SELECT MIN(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.lower_price) AS price_min,
-                       COALESCE((SELECT MAX(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.upper_price) AS price_max
-                    FROM products p
-                    WHERE (p.id = ? OR p.external_id = ?)
-                    LIMIT 1";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$pid, $pid]);
-            $currentProduct = $stmt->fetch();
-        } catch (Throwable $e) {
-            $currentProduct = null;
-        }
-    }
-}
-
-$relatedProducts = [];
-if (!empty($currentProduct) && !empty($currentProduct['category'])){
-    try {
-        $cat = $currentProduct['category'];
-        $curId = (int)$currentProduct['id'];
-        $sql = "SELECT p.id AS internal_id, COALESCE(p.external_id, p.id) AS public_id, p.name, p.slug, p.image, p.currency,
-                       COALESCE((SELECT MIN(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.lower_price) AS price_min,
-                       COALESCE((SELECT MAX(v.price_override) FROM product_variants v WHERE v.product_id = p.id AND v.is_active = 1), p.upper_price) AS price_max
-                FROM products p
-                WHERE p.status = 'active' AND p.category = :cat AND p.id != :cur
-                ORDER BY p.id ASC
-                LIMIT 4";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':cat' => $cat, ':cur' => $curId]);
-        $relatedProducts = $stmt->fetchAll();
-    } catch (Throwable $e) {
-        $relatedProducts = [];
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en-US" class="scheme_original">
 
@@ -232,46 +182,24 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                         <nav class="woocommerce-breadcrumb">
                             <a href="index.html">Home</a>&nbsp;/&nbsp;<a href="shop.html">Shop</a>&nbsp;/&nbsp;Product
                         </nav>
-                        <?php if (empty($currentProduct)): ?>
-                            <div class="product-error" style="text-align:center;padding:50px 20px;">
-                                <h2>Product Not Found</h2>
-                                <p>The product you're looking for doesn't exist or has been removed.</p>
-                                <p><a href="shop.html" class="button">Return to Shop</a></p>
-                            </div>
-                        <?php else: ?>
-                            <div class="product has-post-thumbnail first instock purchasable">
+                                                    <div class="product has-post-thumbnail first instock purchasable">
 
                                 <div class="images">
-                                    <?php if (!empty($currentProduct['image'])): ?>
-                                        <a href="<?= htmlspecialchars((string)($currentProduct['image'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="woocommerce-main-image zoom" title="<?= htmlspecialchars((string)($currentProduct['name'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" data-rel="prettyPhoto">
-                                            <img width="600" height="765" src="<?= htmlspecialchars((string)($currentProduct['image'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="attachment-shop_single size-shop_single" alt="<?= htmlspecialchars((string)($currentProduct['name'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" loading="eager" />
+                                                                            <a href="images/quail eggs.png" class="woocommerce-main-image zoom" title="Quail Eggs" data-rel="prettyPhoto">
+                                            <img width="600" height="765" src="images/quail eggs.png" class="attachment-shop_single size-shop_single" alt="Quail Eggs" loading="eager" />
                                         </a>
-                                    <?php else: ?>
-                                        <img src="images/placeholder.png" class="attachment-shop_single size-shop_single" alt="No image" loading="lazy" />
-                                    <?php endif; ?>
-                                </div>
+                                                                    </div>
                                 <div class="summary entry-summary">
-                                    <h1 class="product_title entry-title"><?= htmlspecialchars((string)($currentProduct['name'] ?? 'Product Not Found'), ENT_QUOTES, 'UTF-8') ?></h1>
-                                    <?php
-                                        $currency = $currentProduct['currency'] ?: 'RM';
-                                        $pmin = $currentProduct['price_min'] ?? null;
-                                        $pmax = $currentProduct['price_max'] ?? null;
-                                        if ($pmin !== null && $pmax !== null && (float)$pmin !== (float)$pmax) {
-                                            $priceHtml = fmt_price($pmin, $currency) . ' &ndash; ' . fmt_price($pmax, $currency);
-                                        } else {
-                                            $priceHtml = fmt_price($pmin ?: $pmax, $currency);
-                                        }
-                                    ?>
-                                    <p class="price">
+                                    <h1 class="product_title entry-title">Quail Eggs</h1>
+                                                                        <p class="price">
                                         <span class="woocommerce-Price-amount amount">
-                                            <?= $priceHtml ?>
-                                        </span>
+                                            RM3.00 &ndash; RM19.50                                        </span>
                                     </p>
                                     <div class="woocommerce-product-details__short-description">
-                                        <p><?= nl2br(htmlspecialchars((string)($currentProduct['description'] ?? ''), ENT_QUOTES, 'UTF-8')) ?></p>
+                                        <p>Small, nutrient-rich quail eggs with a delicate flavor.</p>
                                     </div>
 
-                                    <form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="<?= htmlspecialchars((string)($currentProduct['external_id'] ?? $currentProduct['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" data-product_variations="">
+                                    <form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="480" data-product_variations="">
 
                                         <table class="variations" cellspacing="0">
                                             <tbody>
@@ -303,7 +231,7 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                                                         <label for="pa_price">Price</label>
                                                     </td>
                                                     <td class="value">
-                                                        <span id="pa_price" class="product-price-display"><?= $priceHtml ?: (htmlspecialchars($currency . '0.00', ENT_QUOTES, 'UTF-8')) ?></span>
+                                                        <span id="pa_price" class="product-price-display">RM3.00 &ndash; RM19.50</span>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -315,8 +243,8 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                                                     <input type="number" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" />
                                                 </div>
                                                 <button type="submit" class="single_add_to_cart_button button alt add-to-cart-button">Add to cart</button>
-                                                <input type="hidden" name="add-to-cart" value="<?= htmlspecialchars((string)($currentProduct['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-                                                <input type="hidden" name="product_id" value="<?= htmlspecialchars((string)($currentProduct['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                                                <input type="hidden" name="add-to-cart" value="15" />
+                                                <input type="hidden" name="product_id" value="15" />
                                                 <input type="hidden" name="variation_id" class="variation_id" value="0" />
                                             </div>
                                         </div>
@@ -335,9 +263,9 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                                             <a href="#tab-reviews">Reviews (0)</a>
                                         </li>
                                     </ul>
-                                    <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" data-product-id="<?= htmlspecialchars((string)($currentProduct['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                                    <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" data-product-id="15">
                                         <h2>Description</h2>
-                                        <p id="product-description"><?= nl2br(htmlspecialchars((string)($currentProduct['description'] ?? ''), ENT_QUOTES, 'UTF-8')) ?></p>
+                                        <p id="product-description">Small, nutrient-rich quail eggs with a delicate flavor.</p>
                                     </div>
                                     <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--additional_information panel entry-content wc-tab" id="tab-additional_information" role="tabpanel" aria-labelledby="tab-title-additional_information">
                                         <h2>Additional information</h2>
@@ -395,7 +323,7 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                                                             </p>
                                                             <p class="form-submit">
                                                                 <input name="submit" type="submit" id="submit" class="submit" value="Submit" />
-                                                                <input type='hidden' name='comment_post_ID' value='<?= htmlspecialchars((string)($currentProduct['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>' id='comment_post_ID' />
+                                                                <input type='hidden' name='comment_post_ID' value='15' id='comment_post_ID' />
                                                                 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
                                                             </p>
                                                         </form>
@@ -409,52 +337,52 @@ if (!empty($currentProduct) && !empty($currentProduct['category'])){
                                 <section class="related products">
                                     <h2>Related products</h2>
                                     <ul class="products">
-<?php
-if (!empty($relatedProducts)):
-    foreach ($relatedProducts as $rp):
-        $publicId = htmlspecialchars((string)($rp['public_id'] ?? $rp['internal_id']), ENT_QUOTES, 'UTF-8');
-        $name = htmlspecialchars($rp['name'], ENT_QUOTES, 'UTF-8');
-        $img = htmlspecialchars($rp['image'] ?? 'images/placeholder.png', ENT_QUOTES, 'UTF-8');
-        $currency = $rp['currency'] ?: 'RM';
-        $pmin = $rp['price_min'];
-        $pmax = $rp['price_max'];
-        if ($pmin !== null && $pmax !== null && (float)$pmin !== (float)$pmax) {
-            $priceHtml = fmt_price($pmin, $currency) . ' &ndash; ' . fmt_price($pmax, $currency);
-        } else {
-            $priceHtml = fmt_price($pmin ?: $pmax, $currency);
-        }
-?>
                                         <li class="product has-post-thumbnail column-1_4 instock purchasable">
                                             <div class="post_item_wrap">
                                                 <div class="post_featured">
                                                     <div class="post_thumb">
-                                                        <a class="hover_icon hover_icon_link" href="single-product.php?product_id=<?php echo $publicId; ?>">
-                                                            <img src="<?php echo $img; ?>" class="attachment-shop_catalog size-shop_catalog" alt="<?php echo $name; ?>" loading="lazy" />
+                                                        <a class="hover_icon hover_icon_link" href="single-product.php?product_id=460">
+                                                            <img src="images/chicken eggs.png" class="attachment-shop_catalog size-shop_catalog" alt="Chicken Eggs" loading="lazy" />
                                                         </a>
                                                     </div>
                                                 </div>
                                                 <div class="post_content">
                                                     <h2 class="woocommerce-loop-product__title">
-                                                        <a href="single-product.php?product_id=<?php echo $publicId; ?>"><?php echo $name; ?></a>
+                                                        <a href="single-product.php?product_id=460">Chicken Eggs</a>
                                                     </h2>
                                                     <span class="price">
                                                         <span class="woocommerce-Price-amount amount">
-                                                            <?php echo $priceHtml; ?>
-                                                        </span>
+                                                            RM4.20 &ndash; RM25.50                                                        </span>
                                                     </span>
-                                                    <a rel="nofollow" href="single-product.php?product_id=<?php echo $publicId; ?>" data-quantity="1" data-product_id="<?php echo $publicId; ?>" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                    <a rel="nofollow" href="single-product.php?product_id=460" data-quantity="1" data-product_id="460" data-product_sku="" class="button add_to_cart_button">Select options</a>
                                                 </div>
                                             </div>
                                         </li>
-<?php
-    endforeach;
-endif;
-?>
+                                        <li class="product has-post-thumbnail column-1_4 instock purchasable">
+                                            <div class="post_item_wrap">
+                                                <div class="post_featured">
+                                                    <div class="post_thumb">
+                                                        <a class="hover_icon hover_icon_link" href="single-product.php?product_id=470">
+                                                            <img src="images/duck eggs.png" class="attachment-shop_catalog size-shop_catalog" alt="Duck Eggs" loading="lazy" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="post_content">
+                                                    <h2 class="woocommerce-loop-product__title">
+                                                        <a href="single-product.php?product_id=470">Duck Eggs</a>
+                                                    </h2>
+                                                    <span class="price">
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            RM6.30 &ndash; RM36.00                                                        </span>
+                                                    </span>
+                                                    <a rel="nofollow" href="single-product.php?product_id=470" data-quantity="1" data-product_id="470" data-product_sku="" class="button add_to_cart_button">Select options</a>
+                                                </div>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </section>
                             </div>
-                        <?php endif; ?>
-                        </div>
+                                                </div>
                     </article>
                 </div>
             </div>
@@ -573,7 +501,7 @@ endif;
 document.addEventListener('DOMContentLoaded', function() {
     try {
         console.log('DOM loaded - testing JavaScript');
-        console.log('Current product ID:', <?= json_encode($currentProduct['id'] ?? null) ?>);
+        console.log('Current product ID:', 15);
     } catch (e) { console.log('Debug script error', e); }
 });
 </script>

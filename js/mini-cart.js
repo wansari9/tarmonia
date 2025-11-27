@@ -49,7 +49,7 @@
           window.location.href = 'cart.html';
         });
       }
-      var checkoutBtn = w.querySelector('.checkout-btn');
+      var checkoutBtn = w.querySelector('.checkout-button');
       if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function(){
           // Check if user is logged in before proceeding to checkout

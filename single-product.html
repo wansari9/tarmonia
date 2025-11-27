@@ -9,20 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&subset=latin-ext&display=swap' type='text/css' media='all' />
-    <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="css/style.css" as="style" onload="this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/ui/default-skin.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/prettyPhoto/ver/prettyPhoto.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/woocommerce-layout.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/woocommerce-smallscreen.css' type='text/css' media='only screen and (max-width: 768px)' />
-    <link rel='stylesheet' href='js/vendor/woo/woocommerce.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <!-- Consolidated WooCommerce compatibility CSS (local) -->
+    <link rel='stylesheet' href='css/woo-compat.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel="stylesheet" href='css/custom-styles.css' type='text/css' media='all'/>
@@ -101,12 +98,12 @@
                 <div class="top_panel_middle">
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
-                            <div class="column-4_5 contact_logo">
-                                <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
-                                    <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
-                                    <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
-                                </a>
-                            </div>
+                                <div class="column-4_5 contact_logo">
+                                    <a href="index.html" class="logo logo-link" style="display:inline-flex;align-items:center;text-decoration:none;gap:0px;">
+                                        <img src="images/big-logo.png" class="logo_main" alt="Tarmonia Logo" width="74" height="74" style="vertical-align:middle;position:relative;left:-10px;">
+                                        <span class="logo-text-box" style="font-family:'Average',serif;font-size:1.7rem;color:#a67c00;vertical-align:middle;line-height:1;display:inline-block;position:relative;top:1px;left:-50px;">TARMONIA</span>
+                                    </a>
+                                </div>
                             <div class="column-1_5 contact_field contact_cart">
                                 <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
                                     <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
@@ -114,7 +111,7 @@
                                     </a>
                                     <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
                                     <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
-                                        <span class="user_initial">U</span>
+                                        <span class="user_initial" style="font-weight:600;">U</span>
                                     </a>
                                 </div>
                                 <ul class="widget_area sidebar_cart sidebar">
@@ -122,7 +119,23 @@
                                         <div class="widget woocommerce widget_shopping_cart">
                                             <div class="hide_cart_widget_if_empty">
                                                 <div class="widget_shopping_cart_content">
-                                                    <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                    <div class="cart-header">
+                                                        <h3>Shopping Cart</h3>
+                                                        <span class="cart-count">0</span>
+                                                    </div>
+                                                    <div class="cart-body">
+                                                        <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                                                    </div>
+                                                    <div class="cart-footer">
+                                                        <div class="cart-total">
+                                                            <span class="total-label">Total:</span>
+                                                            <span class="total-amount">$0.00</span>
+                                                        </div>
+                                                        <div class="cart-buttons">
+                                                            <a href="cart.html" class="view-cart-button">View Cart</a>
+                                                            <a href="checkout.html" class="checkout-button">Checkout</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -518,18 +531,14 @@
 <script type='text/javascript' src='js/vendor/jquery/jquery.js' defer></script>
 <script type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js' defer></script>
 <script type='text/javascript' src='js/custom/custom.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/add-to-cart.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce-add-to-cart.js' defer></script>
 <script type='text/javascript' src='js/vendor/modernizr.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/prettyPhoto/ver/jquery.prettyPhoto.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/prettyPhoto/jquery.prettyPhoto.init.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/ui/jquery.zoom.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/comp/jquery.flexslider-min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/single-product.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/ui/jquery.blockUI.min.js' defer></script>
 <script type='text/javascript' src='js/vendor/jquery/js.cookie.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/woocommerce.min.js' defer></script>
-<script type='text/javascript' src='js/vendor/woo/cart-fragments.min.js' defer></script>
+
 <script type='text/javascript' src='js/vendor/superfish.js' defer></script>
 <script type='text/javascript' src='js/custom/core.reviews.js' defer></script>
 <script type='text/javascript' src='js/custom/core.utils.js' defer></script>
