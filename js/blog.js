@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		s: '',
 		category: '',
 		tag: '',
-		month: ''
+		month: '',
+		day: ''
 	};
 
 	const cache = {
@@ -24,7 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		recent: null
 	};
 
+	// Client-side UI state for modern news layout
+	const clientState = {
+		pill: 'all',
+		category: ''
+	};
+
+	let cachedPostsPage = []; // posts returned from latest API page (client-side filtering will use this)
+
 	let calendarState = null;
+	let selectedCalendarDay = null; // { year, month, day }
 	let postsController = null;
 	const dateFormatter = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -41,7 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		loadArchives();
 		loadRecentPosts();
 		loadCalendar();
+		setupFilters(); // render pills and dropdown wiring
 		loadPosts();
+		// If the URL contains a specific day, perform the date search after initial posts load
+		if (state.month && state.day) {
+			const ms = parseMonthSlug(state.month);
+			if (ms) {
+				// run search asynchronously (don't block init)
+				setTimeout(() => {
+					searchPostsByDate(ms.year, ms.month, parseInt(state.day, 10));
+				}, 200);
+			}
+		}
 	}
 
 	function parseStateFromLocation() {
@@ -53,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		state.tag = (params.get('tag') || '').trim();
 		const monthCandidate = (params.get('month') || '').trim();
 		state.month = /^\d{4}-\d{2}$/.test(monthCandidate) ? monthCandidate : '';
+		const dayCandidate = (params.get('day') || '').trim();
+		state.day = /^\d{1,2}$/.test(dayCandidate) ? dayCandidate : '';
 	}
 
 	function parsePositiveInt(value) {
@@ -154,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function showInitialPlaceholders() {
-		setHtml('#blog-list', '<p class="loading">Loading posts…</p>');
+		setHtml('#tarmonia-post-grid', '<p class="loading">Loading posts…</p>');
 		setListPlaceholder('.widget_categories ul');
 		setListPlaceholder('.widget_archive ul');
 		setListPlaceholder('.widget_recent_entries ul');
@@ -222,6 +245,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		next.category = (next.category || '').trim();
 		next.tag = (next.tag || '').trim();
 		next.month = /^\d{4}-\d{2}$/.test(next.month || '') ? next.month : '';
+		// day is optional: 1-31
+		if (next.day !== undefined && next.day !== null && String(next.day).trim() !== '') {
+			const d = parseInt(String(next.day), 10);
+			next.day = Number.isInteger(d) && d >= 1 && d <= 31 ? String(d) : '';
+		} else {
+			next.day = '';
+		}
 		return next;
 	}
 
@@ -246,6 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (st.month) {
 			params.set('month', st.month);
 		}
+		if (st.day) {
+			params.set('day', String(st.day));
+		}
 		return params.toString();
 	}
 
@@ -261,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	async function loadPosts(scrollToTop = false) {
-		const container = document.getElementById('blog-list');
+		const container = document.getElementById('tarmonia-post-grid');
 		if (!container) {
 			return;
 		}
@@ -288,13 +321,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			const data = payload.data && typeof payload.data === 'object' ? payload.data : {};
 			const items = Array.isArray(data.items) ? data.items : [];
 
-			const totalPages = meta.total_pages ? parseInt(meta.total_pages, 10) : 0;
-			if (totalPages > 0 && state.page > totalPages) {
-				applyState({ page: totalPages }, { replaceHistory: true, scrollToTop: true });
-				return;
-			}
+			// store the received page of posts — filtering happens client-side
+			cachedPostsPage = items;
 
-			renderPosts(items);
+			// Apply client-side filters and render
+			applyClientFilterAndRender(scrollToTop);
+
+			// pagination still driven by server meta
 			renderPagination(meta);
 
 			if (items.length === 0) {
@@ -308,7 +341,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (error.name === 'AbortError') {
 				return;
 			}
-			container.innerHTML = `<p class="error">${escapeHtml(error.message || 'Failed to load posts.')}</p>`;
+			const containerElm = document.getElementById('tarmonia-post-grid');
+			if (containerElm) {
+				containerElm.innerHTML = `<p class="error">${escapeHtml(error.message || 'Failed to load posts.')}</p>`;
+			}
 			renderPagination(null);
 		}
 	}
@@ -372,45 +408,36 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function renderPosts(items) {
-		const container = document.getElementById('blog-list');
-		if (!container) {
-			return;
-		}
+		const container = document.getElementById('tarmonia-post-grid');
+		if (!container) return;
 		if (!Array.isArray(items) || items.length === 0) {
 			container.innerHTML = '<p class="empty">No posts found.</p>';
 			return;
 		}
 
+		const fallback = 'images/7360.avif';
 		const html = items.map((post) => {
 			const postUrl = `single-post.html?slug=${encodeURIComponent(post.slug)}`;
+			const img = post.featured_image ? escapeHtml(post.featured_image) : fallback;
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
-			const categoryLinks = (post.categories || []).map((cat) => {
-				const href = buildHref({ category: cat.slug, page: 1 });
-				return `<a href="${href}" data-filter="category" data-value="${escapeHtml(cat.slug)}">${escapeHtml(cat.name)}</a>`;
-			}).join(', ');
-			const tagLinks = (post.tags || []).map((tag) => {
-				const href = buildHref({ tag: tag.slug, page: 1 });
-				return `<a href="${href}" data-filter="tag" data-value="${escapeHtml(tag.slug)}">${escapeHtml(tag.name)}</a>`;
-			}).join(', ');
-			const featuredImage = post.featured_image ? `<div class="post_featured"><div class="post_thumb"><a class="hover_icon hover_icon_link" href="${postUrl}"><img alt="" src="${escapeHtml(post.featured_image)}"></a></div></div>` : '';
-			const categoriesHtml = categoryLinks ? `<span class="post_info_item post_info_cats">${categoryLinks}</span>` : '';
-			const tagsHtml = tagLinks ? `<span class="post_info_item post_info_tags">${tagLinks}</span>` : '';
+			const primaryCategory = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
+			const primaryCategorySlug = (post.categories && post.categories[0] && post.categories[0].slug) ? escapeHtml(post.categories[0].slug) : (post.category_slugs || '');
 
-			return `<article class="post_item post_item_excerpt post_featured_default post_format_standard">
-				<h2 class="post_title"><a href="${postUrl}">${escapeHtml(post.title || '')}</a></h2>
-				${featuredImage}
-				<div class="post_content clearfix">
-					<div class="post_info">
-						${dateLabel ? `<span class="post_info_item post_info_posted"><span class="post_info_date">${escapeHtml(dateLabel)}</span></span>` : ''}
-						${categoriesHtml}
-						${tagsHtml}
-					</div>
-					<div class="post_descr">
-						<p>${escapeHtml(post.excerpt || '')}</p>
-						<a href="${postUrl}" class="sc_button sc_button_square sc_button_style_filled sc_button_size_large">Read more</a>
-					</div>
-				</div>
-			</article>`;
+			return `
+		  <article class="tn-card" data-cats="${escapeHtml(primaryCategorySlug || '')}">
+			<a class="tn-card-link" href="${postUrl}" title="${escapeHtml(post.title || '')}">
+			  <div class="tn-card-media">
+				<img src="${img}" alt="${escapeHtml(post.title || '')}">
+			  </div>
+			  <div class="tn-card-body">
+				${primaryCategory ? `<span class="tn-card-badge" data-slug="${escapeHtml(primaryCategorySlug)}">${primaryCategory}</span>` : ''}
+				<div class="tn-card-meta">${dateLabel}</div>
+				<h3 class="tn-card-title">${escapeHtml(post.title || '')}</h3>
+				<p class="tn-card-excerpt">${escapeHtml(post.excerpt || '')}</p>
+			  </div>
+			</a>
+		  </article>
+		`;
 		}).join('');
 
 		container.innerHTML = html;
@@ -519,6 +546,541 @@ document.addEventListener('DOMContentLoaded', () => {
 			const href = buildHref({ category: item.slug, page: 1 });
 			return `<li class="cat-item${isActive ? ' current-cat' : ''}"><a href="${href}" data-filter="category" data-value="${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a>${item.count ? ` <span class="count">(${item.count})</span>` : ''}</li>`;
 		}).join('');
+
+		// Also refresh the modern dropdown (if present)
+		try {
+			renderCategoriesDropdown();
+		} catch (e) {
+			// ignore if dropdown not present
+		}
+	}
+
+
+	// --- Helpers: filters setup and client-side filtering ---
+	function setupFilters() {
+		renderPills();
+		renderCategoriesDropdown(); // will be populated when categories are loaded
+		// wire dropdown toggle
+		const dd = document.getElementById('tarmonia-categories-dropdown');
+		if (!dd) return;
+		const toggle = dd.querySelector('.tn-dropdown-toggle');
+		const menu = dd.querySelector('.tn-dropdown-menu');
+		toggle.addEventListener('click', (e) => {
+			const expanded = toggle.getAttribute('aria-expanded') === 'true';
+			toggle.setAttribute('aria-expanded', String(!expanded));
+			menu.setAttribute('aria-hidden', String(expanded));
+		});
+
+		// click-away to close dropdown
+		document.addEventListener('click', (ev) => {
+			if (!dd.contains(ev.target)) {
+				const toggle = dd.querySelector('.tn-dropdown-toggle');
+				const menu = dd.querySelector('.tn-dropdown-menu');
+				if (toggle) toggle.setAttribute('aria-expanded', 'false');
+				if (menu) menu.setAttribute('aria-hidden', 'true');
+			}
+		});
+	}
+
+	function renderPills() {
+		const container = document.getElementById('tarmonia-pills');
+		if (!container) return;
+		const pills = [
+			{ label: 'All', slug: 'all' },
+			{ label: 'Archives', slug: 'newsletter' },
+			{ label: 'Tags', slug: 'tips' },
+			{ label: 'Calendar', slug: 'insight' },
+			{ label: 'Success Stories', slug: 'stories' }
+		];
+		container.innerHTML = pills.map(p => `<button class="tn-pill" data-slug="${p.slug}">${escapeHtml(p.label)}</button>`).join('');
+		// wire events
+		container.querySelectorAll('.tn-pill').forEach(btn => {
+			btn.addEventListener('click', async () => {
+				const slug = btn.dataset.slug || 'all';
+				// Special behavior: Calendar pill should open popup instead of filtering
+				if (slug === 'insight') {
+					openCalendarPopup();
+					return;
+				}
+
+				// If user clicked 'All', clear any month/day date filters and request the server's first page
+				if (slug === 'all') {
+					clientState.pill = 'all';
+					container.querySelectorAll('.tn-pill').forEach(b => b.classList.remove('active'));
+					btn.classList.add('active');
+					// Clear month/day in the URL/state and reload posts from server (page 1) so recent posts appear
+					applyState({ page: 1, month: '', day: '' }, { scrollToTop: true });
+					return;
+				}
+
+				clientState.pill = slug;
+				container.querySelectorAll('.tn-pill').forEach(b => b.classList.remove('active'));
+				btn.classList.add('active');
+				applyClientFilterAndRender(true);
+			});
+		});
+		const activeBtn = container.querySelector(`.tn-pill[data-slug="${clientState.pill}"]`);
+		if (activeBtn) activeBtn.classList.add('active');
+	}
+
+	// --- Calendar popup support ---
+	function openCalendarPopup(year, month) {
+		const modal = document.getElementById('tarmonia-calendar-popup');
+		if (!modal) return;
+		modal.setAttribute('aria-hidden', 'false');
+		modal.classList.add('open');
+		// reset any previously selected day
+		selectedCalendarDay = null;
+		const sel = modal.querySelector('.tarmonia-calendar-selected');
+		if (sel) sel.textContent = 'No day selected';
+		const searchBtnReset = modal.querySelector('.tarmonia-calendar-search');
+		if (searchBtnReset) searchBtnReset.disabled = true;
+		// determine initial target
+		const now = new Date();
+		const y = Number.isInteger(year) ? year : now.getFullYear();
+		const m = Number.isInteger(month) ? month : now.getMonth() + 1;
+		// fetch calendar data and render into popup
+		fetchCalendarData(y, m).then(data => {
+			if (data) renderCalendarPopup(data);
+		}).catch(() => {
+			const table = document.getElementById('tarmonia-popup-calendar');
+			if (table) table.innerHTML = '<tbody><tr><td class="pad" colspan="7">Failed to load calendar.</td></tr></tbody>';
+		});
+	}
+
+	function closeCalendarPopup() {
+		const modal = document.getElementById('tarmonia-calendar-popup');
+		if (!modal) return;
+		modal.setAttribute('aria-hidden', 'true');
+		modal.classList.remove('open');
+	}
+
+	async function fetchCalendarData(year, month) {
+		const params = new URLSearchParams();
+		params.set('year', String(year));
+		params.set('month', String(month));
+		const payload = await fetchJson(`${API.calendar}?${params.toString()}`);
+		return payload.data || null;
+	}
+
+	function renderCalendarPopup(data) {
+		const table = document.getElementById('tarmonia-popup-calendar');
+		if (!table) return;
+		const year = data.year;
+		const month = data.month;
+		const days = data.days || {};
+		const firstDay = new Date(year, month - 1, 1);
+		const lastDay = new Date(year, month, 0).getDate();
+		const firstWeekday = (firstDay.getDay() + 6) % 7;
+		const today = new Date();
+
+		const header = `<thead>
+			<tr>
+				<th class="month_prev"><button class="tn-cal-nav" data-month="prev">◀</button></th>
+				<th class="month_cur" colspan="5">${escapeHtml(firstDay.toLocaleString(undefined, { month: 'long' }))} <span>${year}</span></th>
+				<th class="month_next"><button class="tn-cal-nav" data-month="next">▶</button></th>
+			</tr>
+			<tr>
+				<th class="weekday" scope="col" title="Monday">M</th>
+				<th class="weekday" scope="col" title="Tuesday">T</th>
+				<th class="weekday" scope="col" title="Wednesday">W</th>
+				<th class="weekday" scope="col" title="Thursday">T</th>
+				<th class="weekday" scope="col" title="Friday">F</th>
+				<th class="weekday" scope="col" title="Saturday">S</th>
+				<th class="weekday" scope="col" title="Sunday">S</th>
+			</tr>
+		</thead>`;
+
+		let body = '<tbody><tr>';
+		let weekday = 0;
+		for (; weekday < firstWeekday; weekday += 1) {
+			body += '<td class="pad"><span class="day_wrap">&nbsp;</span></td>';
+		}
+		for (let day = 1; day <= lastDay; day += 1) {
+			if (weekday === 7) { body += '</tr><tr>'; weekday = 0; }
+			const key = String(day);
+			const count = days[key] || 0;
+			const monthSlug = `${year}-${String(month).padStart(2, '0')}`;
+			const isToday = today.getFullYear() === year && today.getMonth() + 1 === month && today.getDate() === day;
+			const hasPosts = count > 0;
+			const classes = ['day'];
+			if (isToday) classes.push('today');
+			if (hasPosts) classes.push('has-post');
+				const ariaLabel = `${count} posts on ${firstDay.toLocaleString(undefined, { month: 'long' })} ${day}`;
+				const content = hasPosts
+					? `<button class="tn-cal-day-btn" data-day="${day}" data-month="${month}" data-year="${year}" data-has-post="1" aria-label="${escapeHtml(ariaLabel)}"><span class="day_wrap">${day}</span></button>`
+					: `<button class="tn-cal-day-btn" data-day="${day}" data-month="${month}" data-year="${year}" aria-label="${escapeHtml(String(day))}"><span class="day_wrap">${day}</span></button>`;
+			body += `<td class="${classes.join(' ')}">${content}</td>`;
+			weekday += 1;
+		}
+		while (weekday > 0 && weekday < 7) { body += '<td class="pad"><span class="day_wrap">&nbsp;</span></td>'; weekday += 1; }
+		body += '</tr></tbody>';
+
+		table.innerHTML = header + body;
+
+		// If the calendar table's first THEAD row contains the literal "November 2025",
+		// remove only that first row (user requested removing that specific row only).
+		try {
+			const thead = table.querySelector('thead');
+			if (thead) {
+				const firstTr = thead.querySelector('tr');
+				if (firstTr && typeof firstTr.textContent === 'string' && firstTr.textContent.includes('November 2025')) {
+					firstTr.remove();
+				}
+			}
+		} catch (e) {
+			// no-op: keep behavior safe if DOM operations fail
+		}
+
+		// update header title
+		const modalTitle = document.querySelector('.tarmonia-calendar-title');
+		if (modalTitle) modalTitle.textContent = `${firstDay.toLocaleString(undefined, { month: 'long' })} ${year}`;
+
+		// Add a centered header group (title + Edit) and a centered mini picker under it
+		try {
+			const header = table.closest('.tarmonia-calendar-panel').querySelector('.tarmonia-calendar-header');
+			if (header) {
+				// ensure header is positioned relative for absolute children
+				header.style.position = header.style.position || 'relative';
+				// create centered container if missing
+				let center = header.querySelector('.tn-header-center');
+				if (!center) {
+					center = document.createElement('div');
+					center.className = 'tn-header-center';
+					header.appendChild(center);
+				}
+
+				// move title into center container
+				let titleEl = center.querySelector('.tarmonia-calendar-title');
+				if (!titleEl) {
+					titleEl = header.querySelector('.tarmonia-calendar-title');
+					if (titleEl) {
+						center.appendChild(titleEl);
+					} else {
+						const newTitle = document.createElement('div');
+						newTitle.className = 'tarmonia-calendar-title';
+						center.appendChild(newTitle);
+						titleEl = newTitle;
+					}
+				}
+
+				// add Edit button next to title
+				let editBtn = center.querySelector('.tn-edit-pattern');
+				if (!editBtn) {
+					editBtn = document.createElement('button');
+					editBtn.type = 'button';
+					editBtn.className = 'tn-edit-pattern';
+					// inline pencil SVG icon
+					editBtn.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.41l-2.34-2.34a1.003 1.003 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
+					editBtn.setAttribute('aria-label', 'Edit');
+					center.appendChild(editBtn);
+				}
+
+				// create or reuse mini picker and center it under the center container
+				let mini = header.querySelector('.tn-mini-date');
+				if (!mini) {
+					mini = document.createElement('div');
+					mini.className = 'tn-mini-date';
+					mini.setAttribute('aria-hidden', 'true');
+					mini.innerHTML = `
+						<div class="tn-mini-date-selects">
+							<select class="tn-mini-select tn-mini-day" aria-label="Day"></select>
+							<select class="tn-mini-select tn-mini-month" aria-label="Month"></select>
+							<select class="tn-mini-select tn-mini-year" aria-label="Year"></select>
+						</div>
+						<div class="tn-mini-date-actions">
+							<button class="tn-mini-date-go">Go</button>
+							<button class="tn-mini-date-close">Close</button>
+						</div>
+					`;
+					header.appendChild(mini);
+				}
+
+				// populate selects
+				const daySelect = mini.querySelector('.tn-mini-day');
+				const monthSelect = mini.querySelector('.tn-mini-month');
+				const yearSelect = mini.querySelector('.tn-mini-year');
+				const nowYear = (new Date()).getFullYear();
+				if (daySelect && daySelect.children.length === 0) {
+					daySelect.innerHTML = Array.from({ length: 31 }, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('');
+				}
+				if (monthSelect && monthSelect.children.length === 0) {
+					const monthNames = [ 'January','February','March','April','May','June','July','August','September','October','November','December' ];
+					monthSelect.innerHTML = monthNames.map((mName, idx) => `<option value="${idx+1}">${mName}</option>`).join('');
+				}
+				if (yearSelect && yearSelect.children.length === 0) {
+					const start = nowYear;
+					const end = 1900;
+					const years = [];
+					for (let y = start; y >= end; y--) years.push(`<option value="${y}">${y}</option>`);
+					yearSelect.innerHTML = years.join('');
+				}
+
+				// set defaults
+				if (monthSelect) monthSelect.value = String(month);
+				if (yearSelect) yearSelect.value = String(year);
+				if (daySelect) daySelect.value = '1';
+
+				// center mini under the center container
+				mini.style.left = '50%';
+				mini.style.right = 'auto';
+				mini.style.transform = 'translateX(-50%)';
+
+				// wire editBtn and title click to toggle mini
+				const toggleMini = () => {
+					const visible = mini.getAttribute('aria-hidden') === 'false';
+					mini.setAttribute('aria-hidden', String(!visible));
+					mini.style.display = visible ? 'none' : 'flex';
+				};
+				editBtn.addEventListener('click', (ev) => { ev.preventDefault(); toggleMini(); });
+				if (titleEl) {
+					titleEl.style.cursor = 'pointer';
+					titleEl.setAttribute('title', 'Click to quickly pick a date');
+					titleEl.addEventListener('click', (ev) => { ev.stopPropagation(); toggleMini(); });
+				}
+
+				// wire Go/Close inside mini (reuse existing logic)
+				const goBtn = mini.querySelector('.tn-mini-date-go');
+				const closeBtn = mini.querySelector('.tn-mini-date-close');
+				if (goBtn) {
+					goBtn.addEventListener('click', async (ev) => {
+						ev.preventDefault();
+						const dS = mini.querySelector('.tn-mini-day') ? mini.querySelector('.tn-mini-day').value : '';
+						const mS = mini.querySelector('.tn-mini-month') ? mini.querySelector('.tn-mini-month').value : '';
+						const yS = mini.querySelector('.tn-mini-year') ? mini.querySelector('.tn-mini-year').value : '';
+						const y = parseInt(yS, 10);
+						const m = parseInt(mS, 10);
+						let d = parseInt(dS, 10);
+						if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return;
+						const lastDay = new Date(y, m, 0).getDate();
+						if (d > lastDay) d = lastDay;
+						const monthSlug = `${y}-${String(m).padStart(2,'0')}`;
+						applyState({ month: monthSlug, day: String(d), page: 1 }, { skipPosts: true, scrollToTop: true });
+						await searchPostsByDate(y, m, d);
+						mini.setAttribute('aria-hidden', 'true');
+						mini.style.display = 'none';
+						closeCalendarPopup();
+					});
+				}
+				if (closeBtn) {
+					closeBtn.addEventListener('click', (ev) => { ev.preventDefault(); mini.setAttribute('aria-hidden', 'true'); mini.style.display = 'none'; });
+				}
+			}
+		} catch (err) {
+			// ignore any errors to keep calendar robust
+		}
+
+		// If the popup calendar's first THEAD row contains "November 2025",
+		// remove just that first row per user request.
+		try {
+			const theadPopup = table.querySelector('thead');
+			if (theadPopup) {
+				const firstTrPopup = theadPopup.querySelector('tr');
+				if (firstTrPopup && typeof firstTrPopup.textContent === 'string' && firstTrPopup.textContent.includes('November 2025')) {
+					firstTrPopup.remove();
+				}
+			}
+		} catch (err) {
+			// ignore
+		}
+
+		// wire month nav inside popup
+		table.parentElement.querySelectorAll('.tn-cal-nav').forEach(btn => {
+			btn.addEventListener('click', async (e) => {
+				const dir = btn.dataset.month === 'prev' ? -1 : 1;
+				const nextDate = new Date(year, month - 1 + dir, 1);
+				const y = nextDate.getFullYear();
+				const m = nextDate.getMonth() + 1;
+				const d = await fetchCalendarData(y, m);
+				if (d) renderCalendarPopup(d);
+			});
+		});
+
+		// wire day selection inside popup
+		table.querySelectorAll('.tn-cal-day-btn').forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				const y = parseInt(btn.dataset.year, 10);
+				const m = parseInt(btn.dataset.month, 10);
+				const d = parseInt(btn.dataset.day, 10);
+				selectedCalendarDay = { year: y, month: m, day: d };
+				// clear previous selection
+				table.querySelectorAll('.tn-cal-day-btn.selected').forEach(x => x.classList.remove('selected'));
+				btn.classList.add('selected');
+				// update footer UI
+				const sel = document.querySelector('.tarmonia-calendar-selected');
+				if (sel) sel.textContent = `${btn.textContent.trim()} ${firstDay.toLocaleString(undefined, { month: 'long' })} ${year}`;
+				const searchBtn = document.querySelector('.tarmonia-calendar-search');
+				if (searchBtn) searchBtn.disabled = false;
+			});
+		});
+
+		// wire search / clear buttons
+		const popup = table.closest('.tarmonia-calendar-panel');
+		if (popup) {
+			const searchBtn = popup.querySelector('.tarmonia-calendar-search');
+			const clearBtn = popup.querySelector('.tarmonia-calendar-clear');
+			if (clearBtn) {
+				clearBtn.addEventListener('click', (e) => {
+					e.preventDefault();
+					selectedCalendarDay = null;
+					table.querySelectorAll('.tn-cal-day-btn.selected').forEach(x => x.classList.remove('selected'));
+					const sel = document.querySelector('.tarmonia-calendar-selected');
+					if (sel) sel.textContent = 'No day selected';
+					if (searchBtn) searchBtn.disabled = true;
+					// also close the calendar modal when clearing
+					closeCalendarPopup();
+				});
+			}
+			if (searchBtn) {
+				searchBtn.addEventListener('click', async (e) => {
+					e.preventDefault();
+					if (!selectedCalendarDay) return;
+					const { year: y, month: m, day: d } = selectedCalendarDay;
+					// update URL state with month and day but skip default posts load
+					const monthSlug = `${y}-${String(m).padStart(2, '0')}`;
+					applyState({ month: monthSlug, day: String(d), page: 1 }, { skipPosts: true, scrollToTop: true });
+					// perform client-side search for posts on that exact day
+					await searchPostsByDate(y, m, d);
+					closeCalendarPopup();
+				});
+			}
+		}
+	}
+
+
+	async function searchPostsByDate(year, month, day) {
+		// Fetch all posts for the month (use per_page=24) then filter by day
+		const monthSlug = `${year}-${String(month).padStart(2, '0')}`;
+		const perPage = 24;
+		let collected = [];
+		let controllerLocal = new AbortController();
+		try {
+			// first page
+			const params1 = new URLSearchParams();
+			params1.set('page', '1');
+			params1.set('per_page', String(perPage));
+			params1.set('month', monthSlug);
+			const firstPayload = await fetchJson(`${API.list}?${params1.toString()}`, controllerLocal.signal);
+			const meta = firstPayload.meta || {};
+			const items = Array.isArray(firstPayload.data && firstPayload.data.items ? firstPayload.data.items : []) ? firstPayload.data.items : (Array.isArray(firstPayload.data) ? firstPayload.data : []);
+			collected = collected.concat(items);
+			const totalPages = (meta.total_pages && Number.isInteger(Number(meta.total_pages))) ? Number(meta.total_pages) : 1;
+			// fetch remaining pages if any
+			for (let p = 2; p <= totalPages; p += 1) {
+				const params = new URLSearchParams();
+				params.set('page', String(p));
+				params.set('per_page', String(perPage));
+				params.set('month', monthSlug);
+				const payload = await fetchJson(`${API.list}?${params.toString()}`, controllerLocal.signal);
+				const more = payload.data && Array.isArray(payload.data.items) ? payload.data.items : (Array.isArray(payload.data) ? payload.data : []);
+				collected = collected.concat(more);
+			}
+			// filter by exact day
+			const filtered = collected.filter(post => {
+				if (!post.published_at) return false;
+				const dt = new Date(post.published_at.replace(' ', 'T'));
+				return dt.getFullYear() === year && (dt.getMonth() + 1) === month && dt.getDate() === day;
+			});
+			// render results
+			cachedPostsPage = filtered;
+			renderPosts(filtered);
+			// clear pagination because we've created a specific filtered result
+			setHtml('#pagination', '');
+			if (filtered.length === 0) {
+				setHtml('#tarmonia-post-grid', `<p class="empty">No posts found for ${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}.</p>`);
+			}
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		} catch (err) {
+			if (err && err.name === 'AbortError') return;
+			setHtml('#tarmonia-post-grid', `<p class="error">Failed to search posts: ${escapeHtml(err.message || String(err))}</p>`);
+		}
+	}
+
+	// wire modal close/open behaviors
+	document.addEventListener('click', (e) => {
+		const modal = document.getElementById('tarmonia-calendar-popup');
+		if (!modal) return;
+		const backdrop = modal.querySelector('.tarmonia-calendar-backdrop');
+		if (backdrop && backdrop.contains(e.target) && e.target.dataset.close === 'true') {
+			closeCalendarPopup();
+		}
+	});
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') closeCalendarPopup();
+	});
+
+	function renderCategoriesDropdown() {
+		const dd = document.getElementById('tarmonia-categories-dropdown');
+		if (!dd) return;
+		const list = dd.querySelector('.tn-dropdown-list');
+		if (!list) return;
+		if (!Array.isArray(cache.categories) || cache.categories.length === 0) {
+			list.innerHTML = '';
+			return;
+		}
+		list.innerHTML = cache.categories.map(cat => {
+			return `<button class="tn-dropdown-item" data-value="${escapeHtml(cat.slug)}">${escapeHtml(cat.name)}${cat.count ? ` <span class="count">(${cat.count})</span>` : ''}</button>`;
+		}).join('');
+
+		list.querySelectorAll('.tn-dropdown-item').forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				clientState.category = btn.dataset.value || '';
+				const toggle = dd.querySelector('.tn-dropdown-toggle');
+				if (toggle) {
+					const label = btn.textContent || 'Categories';
+					toggle.childNodes[0].nodeValue = '';
+					toggle.innerHTML = `${escapeHtml(label)} <span class="tn-dropdown-caret">▾</span>`;
+				}
+				const menu = dd.querySelector('.tn-dropdown-menu');
+				if (menu) menu.setAttribute('aria-hidden', 'true');
+				const ddToggle = dd.querySelector('.tn-dropdown-toggle');
+				if (ddToggle) ddToggle.setAttribute('aria-expanded', 'false');
+
+				applyClientFilterAndRender(true);
+			});
+		});
+	}
+
+	function applyClientFilterAndRender(scrollToTop = false) {
+		const filtered = cachedPostsPage.filter(post => filterPostByClientFilters(post));
+		renderPosts(filtered);
+		if (filtered.length === 0) {
+			const container = document.getElementById('tarmonia-post-grid');
+			if (container) container.innerHTML = '<p class="empty">No posts match the selected filters.</p>';
+		}
+		if (scrollToTop) {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	}
+
+	function filterPostByClientFilters(post) {
+		const slugs = getPostCategorySlugs(post);
+		if (clientState.pill && clientState.pill !== 'all') {
+			const pillSlug = clientState.pill.toLowerCase();
+			if (!slugs.includes(pillSlug)) {
+				return false;
+			}
+		}
+		if (clientState.category && clientState.category !== '') {
+			if (!slugs.includes(clientState.category)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function getPostCategorySlugs(post) {
+		const set = new Set();
+		if (Array.isArray(post.categories)) {
+			post.categories.forEach(c => {
+				if (c && c.slug) set.add(c.slug);
+			});
+		}
+		if (post.category_slugs && typeof post.category_slugs === 'string') {
+			post.category_slugs.split(',').map(s => s.trim()).forEach(s => { if (s) set.add(s); });
+		}
+		return Array.from(set);
 	}
 
 	function renderTags(items) {

@@ -179,51 +179,73 @@
         </div>
         <div class="page_content_wrap page_paddings_yes">
             <div class="content_wrap">
-                <div class="content">
-                    <div id="blog-list"></div>
-                    <nav id="pagination" class="pagination_wrap pagination_pages"></nav>
-                </div>
-                <div class="sidebar widget_area scheme_original" role="complementary">
-                    <div class="sidebar_inner widget_area_inner">
-                        <aside class="widget widget_categories">
-                            <h4 class="widget_title">Categories</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_search">
-                            <h4 class="widget_title">Search</h4>
-                            <form role="search" method="get" class="search_form" action="classic.html">
-                                <input type="text" class="search_field" placeholder="Keyword" value="" name="s" title="Search for:" />
-                                <button type="submit" class="search_button icon-search"></button>
-                            </form>
-                        </aside>
-                        <aside class="widget widget_archive">
-                            <h4 class="widget_title">Archives</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_calendar">
-                            <h4 class="widget_title">Calendar</h4>
-                            <div id="calendar_wrap" class="calendar_wrap">
-                                <table class="wp-calendar"></table>
+                <div class="content tarmonia-news" aria-live="polite">
+
+                    <!-- HERO -->
+                    <section class="tn-hero">
+                        <div class="tn-hero-inner">
+                            <h1 class="tn-hero-title">Our Blog &amp; Insight</h1>
+                            <p class="tn-hero-subtitle">Announcements, events, and fresh ideas — exploring trends and helpful tips.</p>
+                        </div>
+                    </section>
+
+                    <!-- FILTERS ROW -->
+                    <section class="tn-filters-row">
+                        <div class="tn-filters-left" id="tarmonia-pills" role="tablist" aria-label="Post type filters">
+                            <!-- pills injected by JS -->
+                        </div>
+
+                        <div class="tn-filters-right">
+                            <div class="tn-categories-dropdown" id="tarmonia-categories-dropdown">
+                                <button class="tn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                    Categories
+                                    <span class="tn-dropdown-caret">▾</span>
+                                </button>
+                                <div class="tn-dropdown-menu" role="menu" aria-hidden="true">
+                                    <button class="tn-dropdown-item" data-value="">All categories</button>
+                                    <div class="tn-dropdown-list">
+                                        <!-- categories injected by JS -->
+                                    </div>
+                                </div>
                             </div>
-                        </aside>
-                        <aside class="widget widget_recent_entries">
-                            <h4 class="widget_title">Recent Posts</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_tag_cloud">
-                            <h4 class="widget_title">Tags</h4>
-                            <div class="tagcloud"></div>
-                        </aside>
-                        <aside class="widget widget_meta">
-                            <h4 class="widget_title">Meta</h4>
-                            <ul>
-                                <li><a href="#">Log in</a></li>
-                                <li><a href="#">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-                                <li><a href="#">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-                            </ul>
-                        </aside>
+                        </div>
+                    </section>
+
+                    <!-- GRID -->
+                    <section class="tn-posts-grid-wrap">
+                        <div id="tarmonia-post-grid" class="tn-posts-grid" aria-live="polite">
+                            <!-- posts injected by JS -->
+                        </div>
+
+                        <nav id="pagination" class="pagination_wrap pagination_pages tn-pagination" aria-label="Pagination"></nav>
+                    </section>
+
+                    <!-- Calendar popup modal -->
+                    <div id="tarmonia-calendar-popup" class="tarmonia-calendar-popup" aria-hidden="true">
+                        <div class="tarmonia-calendar-backdrop" data-close="true"></div>
+                        <div class="tarmonia-calendar-panel" role="dialog" aria-modal="true" aria-label="Calendar">
+                            <div class="tarmonia-calendar-header">
+                                <button class="tarmonia-calendar-nav" data-nav="prev" aria-label="Previous month">◀</button>
+                                <div class="tarmonia-calendar-title"></div>
+                                <button class="tarmonia-calendar-nav" data-nav="next" aria-label="Next month">▶</button>
+                            </div>
+                            <div class="tarmonia-calendar-body">
+                                <table id="tarmonia-popup-calendar" class="wp-calendar"></table>
+                            </div>
+                            <div class="tarmonia-calendar-footer">
+                                <div class="tarmonia-calendar-selected" aria-live="polite">No day selected</div>
+                                <div class="tarmonia-calendar-actions">
+                                    <button class="tarmonia-calendar-clear" aria-label="Close calendar">Close</button>
+                                    <button class="tarmonia-calendar-search" disabled>Search</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
+
+                <!-- Sidebar intentionally omitted from this updated layout -->
+
             </div>
         </div>
         <footer class="call_wrap">
