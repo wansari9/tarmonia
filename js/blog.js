@@ -151,6 +151,47 @@ document.addEventListener('DOMContentLoaded', () => {
 				loadCalendar(monthDate.year, monthDate.month);
 			}
 		});
+
+		// Document-level click to close any open dropdowns when clicking outside
+		document.addEventListener('click', (e) => {
+			const isInside = e.target.closest('.tarmonia-news .dropdown');
+			if (!isInside) {
+				document.querySelectorAll('.tarmonia-news .dropdown.open').forEach(d => d.classList.remove('open'));
+			}
+		});
+
+		// Pills / dropdown toggles
+		const newsRoot = document.querySelector('.tarmonia-news');
+		if (newsRoot) {
+			newsRoot.addEventListener('click', (ev) => {
+				const btn = ev.target.closest('[data-filter-action]');
+				if (!btn) return;
+				ev.preventDefault();
+				const action = btn.dataset.filterAction;
+				if (action === 'all') {
+					applyState({ category: '', tag: '', month: '', page: 1 }, { scrollToTop: true });
+					return;
+				}
+				// open dropdown toggles
+				const parent = btn.closest('.dropdown');
+				if (parent) {
+					parent.classList.toggle('open');
+					const menu = parent.querySelector('.menu');
+					if (menu) menu.setAttribute('aria-hidden', parent.classList.contains('open') ? 'false' : 'true');
+				}
+			});
+
+			// categories button separate access
+			const catBtn = newsRoot.querySelector('.categories-btn');
+			catBtn?.addEventListener('click', (ev) => {
+				ev.preventDefault();
+				const parent = catBtn.closest('.dropdown');
+				parent?.classList.toggle('open');
+				parent?.querySelector('.menu')?.setAttribute('aria-hidden', parent.classList.contains('open') ? 'false' : 'true');
+			});
+
+			// calendar removed — no modal handlers
+		}
 	}
 
 	function showInitialPlaceholders() {
@@ -369,6 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		renderCategories(cache.categories);
 		renderTags(cache.tags);
 		renderArchives(cache.archives);
+		renderFilterMenus();
 	}
 
 	function renderPosts(items) {
@@ -381,39 +423,26 @@ document.addEventListener('DOMContentLoaded', () => {
 			return;
 		}
 
-		const html = items.map((post) => {
+	    const html = items.map((post) => {
 			const postUrl = `single-post.html?slug=${encodeURIComponent(post.slug)}`;
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
-			const categoryLinks = (post.categories || []).map((cat) => {
-				const href = buildHref({ category: cat.slug, page: 1 });
-				return `<a href="${href}" data-filter="category" data-value="${escapeHtml(cat.slug)}">${escapeHtml(cat.name)}</a>`;
-			}).join(', ');
-			const tagLinks = (post.tags || []).map((tag) => {
-				const href = buildHref({ tag: tag.slug, page: 1 });
-				return `<a href="${href}" data-filter="tag" data-value="${escapeHtml(tag.slug)}">${escapeHtml(tag.name)}</a>`;
-			}).join(', ');
-			const featuredImage = post.featured_image ? `<div class="post_featured"><div class="post_thumb"><a class="hover_icon hover_icon_link" href="${postUrl}"><img alt="" src="${escapeHtml(post.featured_image)}"></a></div></div>` : '';
-			const categoriesHtml = categoryLinks ? `<span class="post_info_item post_info_cats">${categoryLinks}</span>` : '';
-			const tagsHtml = tagLinks ? `<span class="post_info_item post_info_tags">${tagLinks}</span>` : '';
-
-			return `<article class="post_item post_item_excerpt post_featured_default post_format_standard">
-				<h2 class="post_title"><a href="${postUrl}">${escapeHtml(post.title || '')}</a></h2>
-				${featuredImage}
-				<div class="post_content clearfix">
-					<div class="post_info">
-						${dateLabel ? `<span class="post_info_item post_info_posted"><span class="post_info_date">${escapeHtml(dateLabel)}</span></span>` : ''}
-						${categoriesHtml}
-						${tagsHtml}
-					</div>
-					<div class="post_descr">
-						<p>${escapeHtml(post.excerpt || '')}</p>
-						<a href="${postUrl}" class="sc_button sc_button_square sc_button_style_filled sc_button_size_large">Read more</a>
-					</div>
-				</div>
-			</article>`;
+				// Build card markup
+				const featuredImage = post.featured_image ? `<img src="${escapeHtml(post.featured_image)}" alt="${escapeHtml(post.title || '')}">` : `<div style="background:#f3f4f6;height:180px"></div>`;
+				const catName = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
+				const dateIso = post.published_at ? new Date(post.published_at.replace(' ', 'T')).toISOString().slice(0,10) : '';
+				return `
+					<a class="card" href="${postUrl}" data-date="${dateIso}">
+						<div class="card-media">${featuredImage}</div>
+						<div class="card-body">
+							${catName ? `<span class="cat-badge">${catName}</span>` : ''}
+							<span class="meta">${dateLabel}</span>
+							<h3>${escapeHtml(post.title || '')}</h3>
+							<p class="excerpt">${escapeHtml(post.excerpt || '')}</p>
+						</div>
+					</a>`;
 		}).join('');
 
-		container.innerHTML = html;
+			container.innerHTML = html || '<p class="empty">No posts found.</p>';
 	}
 
 	function renderPagination(meta) {
@@ -519,6 +548,22 @@ document.addEventListener('DOMContentLoaded', () => {
 			const href = buildHref({ category: item.slug, page: 1 });
 			return `<li class="cat-item${isActive ? ' current-cat' : ''}"><a href="${href}" data-filter="category" data-value="${escapeHtml(item.slug)}">${escapeHtml(item.name)}</a>${item.count ? ` <span class="count">(${item.count})</span>` : ''}</li>`;
 		}).join('');
+
+		// also populate categories dropdown menu in the news header
+		const catMenu = document.querySelector('.tarmonia-news .menu[data-menu-for="categories"]');
+		if (catMenu) {
+			let html = `<button type="button" data-cat="" class="menu-option">All Categories</button>`;
+			html += items.map(it => `<button type="button" data-cat="${escapeHtml(it.slug)}" class="menu-option">${escapeHtml(it.name)}${it.count ? ` (${it.count})` : ''}</button>`).join('');
+			catMenu.innerHTML = html;
+			catMenu.querySelectorAll('.menu-option').forEach(btn => {
+				btn.addEventListener('click', (ev) => {
+					ev.preventDefault();
+					const slug = btn.dataset.cat || '';
+					applyState({ category: slug, page: 1 }, { scrollToTop: true });
+					btn.closest('.dropdown')?.classList.remove('open');
+				});
+			});
+		}
 	}
 
 	function renderTags(items) {
@@ -543,6 +588,20 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			container.appendChild(link);
 		});
+
+		// populate tags dropdown in header
+		const tagMenu = document.querySelector('.tarmonia-news .menu[data-menu-for="tags"]');
+		if (tagMenu) {
+			let html = items.map(it => `<button type="button" data-tag="${escapeHtml(it.slug)}" class="menu-option">${escapeHtml(it.name)}${it.count ? ` (${it.count})` : ''}</button>`).join('');
+			tagMenu.innerHTML = html;
+			tagMenu.querySelectorAll('.menu-option').forEach(btn => {
+				btn.addEventListener('click', (ev) => {
+					ev.preventDefault();
+					applyState({ tag: btn.dataset.tag || '', page: 1 }, { scrollToTop: true });
+					btn.closest('.dropdown')?.classList.remove('open');
+				});
+			});
+		}
 	}
 
 	function renderArchives(items) {
@@ -558,7 +617,27 @@ document.addEventListener('DOMContentLoaded', () => {
 			const isActive = state.month === item.slug;
 			return `<li${isActive ? ' class="current"' : ''}><a href="${href}" data-filter="month" data-value="${escapeHtml(item.slug)}">${escapeHtml(item.label)}</a>${item.count ? ` <span class="count">(${item.count})</span>` : ''}</li>`;
 		}).join('');
+
+		// populate archives dropdown
+		const archMenu = document.querySelector('.tarmonia-news .menu[data-menu-for="archives"]');
+		if (archMenu) {
+			let html = items.map(it => `<button type="button" data-month="${escapeHtml(it.slug)}" class="menu-option">${escapeHtml(it.label)}${it.count ? ` (${it.count})` : ''}</button>`).join('');
+			archMenu.innerHTML = html;
+			archMenu.querySelectorAll('.menu-option').forEach(btn => {
+				btn.addEventListener('click', (ev) => {
+					ev.preventDefault();
+					applyState({ month: btn.dataset.month || '', page: 1 }, { scrollToTop: true });
+					btn.closest('.dropdown')?.classList.remove('open');
+				});
+			});
+		}
 	}
+
+	// populate menus helper (called after categories/tags/archives loaded)
+	function renderFilterMenus() {
+		// nothing needed here for now since individual renderers populate menus
+	}
+
 
 	function renderRecentPosts(items) {
 		const list = document.querySelector('.widget_recent_entries ul');

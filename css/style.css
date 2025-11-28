@@ -8361,3 +8361,146 @@ body .blog-yumprint-recipe .blog-yumprint-header .blog-yumprint-save a {
 .menu_main_nav > li ul li + li {
     border-top: 1px solid rgba(0,0,0,0.05);
 }
+
+/* ===== Tarmonia News (Magazine-style) ===== */
+.tarmonia-news {
+	background: #fff;
+	padding: 48px 16px 80px;
+	color: #111827;
+	font-family: "Open Sans", Arial, sans-serif;
+}
+.tarmonia-news .news-header {
+	max-width: 1200px;
+	margin: 0 auto 28px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 18px;
+}
+.tarmonia-news .news-title {
+	font-family: "Libre Baskerville", "Droid Serif", serif;
+	font-size: 48px;
+	letter-spacing: 2px;
+	color: #111827;
+	margin: 0;
+	text-align: center;
+}
+.tarmonia-news .news-controls {
+	width: 100%;
+	max-width: 1200px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+}
+.tarmonia-news .news-left { display: flex; align-items: center; }
+.tarmonia-news .sort-label {
+	font-size: 14px;
+	color: #5A8F3D;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.tarmonia-news .sort-label select {
+	border: 1px solid #e6d6b0;
+	background: #fff;
+	padding: 6px 10px;
+	border-radius: 2px;
+	color: #111827;
+}
+.tarmonia-news .news-right { display:flex; align-items:center; }
+
+.tarmonia-news .categories-dropdown { position: relative; }
+.tarmonia-news .cat-toggle {
+	background: #fff;
+	border: 1px solid #e6d6b0;
+	padding: 8px 12px;
+	border-radius: 2px;
+	cursor: pointer;
+	color: #111827;
+	font-weight: 600;
+}
+.tarmonia-news .cat-toggle .chev { margin-left:8px; color:#73A942; }
+.tarmonia-news .cat-menu {
+	position: absolute;
+	right: 0;
+	top: calc(100% + 8px);
+	background: #fff;
+	border: 1px solid #e6d6b0;
+	box-shadow: 0 8px 24px rgba(17,24,39,0.08);
+	min-width: 180px;
+	z-index: 40;
+	display: none;
+	padding: 8px 8px;
+	border-radius: 4px;
+}
+.tarmonia-news .categories-dropdown.open .cat-menu { display: block; }
+.tarmonia-news .cat-item {
+	display: block;
+	width: 100%;
+	text-align: left;
+	background: transparent;
+	border: 0;
+	padding: 8px 10px;
+	font-size: 14px;
+	color: #111827;
+	cursor: pointer;
+}
+.tarmonia-news .cat-item:hover { background: #F5E6C4; color: #111827; }
+
+.tarmonia-news .news-grid { max-width: 1200px; margin: 28px auto 0; }
+.tarmonia-news #blog-list {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 30px 28px;
+}
+
+.news-card {
+	background: transparent;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+.news-card .card-media { position: relative; overflow: hidden; border-radius: 2px; }
+.news-card .card-media img { width:100%; height:260px; object-fit:cover; display:block; }
+.news-card .card-media .card-cat {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 12px 18px;
+	background: rgba(13,18,23,0.9);
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	font-size: 13px;
+}
+.news-card .card-body { padding: 0 6px 6px; }
+.news-card .card-title { font-family: "Libre Baskerville", serif; font-size: 22px; margin: 0 0 8px; color: #111827; }
+.news-card .card-title a { color: inherit; text-decoration: none; }
+.news-card .card-meta { font-size: 12px; color: #5A8F3D; font-weight:700; display:flex; gap:8px; align-items:center; }
+.news-card .card-meta .date { color: #6b7280; font-weight:600; }
+.news-card .card-excerpt { color: #374151; margin: 10px 0 0; font-size:14px; line-height:1.4rem; }
+.news-card .card-cta .read-more { display:inline-block; margin-top:12px; color:#fff; background:#73A942; padding:8px 12px; border-radius:3px; text-decoration:none; font-weight:700; }
+
+/* Adjust grid columns at breakpoints: mobile 1, tablet 2, desktop 3 */
+@media (min-width: 600px) {
+	.tarmonia-news #blog-list { grid-template-columns: repeat(2, 1fr); }
+	.news-card .card-media img { height: 260px; }
+}
+@media (min-width: 992px) {
+	.tarmonia-news #blog-list { grid-template-columns: repeat(3, 1fr); }
+	.tarmonia-news .news-header { gap: 8px; }
+	.tarmonia-news .news-title { font-size: 56px; }
+	.news-card .card-media img { height: 300px; }
+}
+
+/* small polish */
+.tarmonia-news .empty, .tarmonia-news .loading { text-align:center; color:#6b7280; padding:40px 0; }
+.tarmonia-news .cat-toggle:focus, .tarmonia-news .cat-item:focus, .tarmonia-news .sort-label select:focus { outline: 3px solid rgba(254,195,33,0.18); }
+
+/* Ensure links in cards are visible */
+.tarmonia-news a { color: inherit; }
+
+/* End Tarmonia News */

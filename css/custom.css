@@ -4799,3 +4799,150 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 
 /* Make sure anchor in centered column doesn't inherit justify spacing */
 .footer_wrap .centered-contact .textwidget a { display: inline-block; }
+
+/* NEWS MODERN OVERRIDE */
+.tarmonia-news { font-family: 'Open Sans', Arial, sans-serif; color: #111827; }
+.tarmonia-news .news-hero { display:flex; gap:40px; align-items:center; background:#fff; padding:48px 32px; border-radius:12px; margin-bottom:24px; }
+.tarmonia-news .news-hero .hero-left { flex:1; }
+.tarmonia-news .news-hero h1 { font-size:40px; margin:0 0 12px; color:#111827; font-weight:700; }
+.tarmonia-news .news-hero p { margin:0; color:#4b5563; font-size:16px; max-width:680px; }
+.tarmonia-news .hero-illustration { width:220px; height:160px; background:#F5E6C4; border-radius:12px; display:flex; align-items:center; justify-content:center; }
+.tarmonia-news .filter-row { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:24px; }
+.tarmonia-news .pills { display:flex; gap:10px; flex-wrap:wrap; }
+.tarmonia-news .pill { background:#fff; border:1px solid #e7e7e7; padding:8px 14px; border-radius:999px; cursor:pointer; color:#111827; font-weight:600; box-shadow:0 6px 18px rgba(12,26,58,0.06); }
+.tarmonia-news .pill.active { background:#FEC321; color:#111827; border-color:transparent; }
+.tarmonia-news .categories-btn { background:#fff; border:1px solid #e7e7e7; padding:8px 12px; border-radius:999px; display:flex; gap:8px; align-items:center; cursor:pointer; }
+.tarmonia-news .dropdown { position:relative; }
+.tarmonia-news .dropdown .menu { position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #e7e7e7; border-radius:8px; box-shadow:0 8px 30px rgba(12,26,58,0.08); padding:10px; min-width:220px; display:none; z-index:50; }
+.tarmonia-news .dropdown.open .menu { display:block; }
+.tarmonia-news .menu button { display:block; width:100%; text-align:left; padding:8px 10px; border:none; background:transparent; cursor:pointer; color:#111827; border-radius:6px; }
+.tarmonia-news .menu button:hover { background:#f3f4f6; }
+.tarmonia-news .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.tarmonia-news .card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(17,24,39,0.06); transition:transform .18s ease, box-shadow .18s ease; text-decoration:none; color:inherit; display:flex; flex-direction:column; }
+.tarmonia-news .card:hover { transform:translateY(-6px); box-shadow:0 18px 50px rgba(17,24,39,0.12); }
+.tarmonia-news .card img { width:100%; height:180px; object-fit:cover; display:block; }
+.tarmonia-news .card .card-body { padding:18px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.tarmonia-news .card .meta { font-size:13px; color:#6b7280; }
+.tarmonia-news .card .cat-badge { display:inline-block; background:#fff6e6; color:#5A8F3D; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; border:1px solid rgba(90,143,61,0.08); }
+.tarmonia-news .card h3 { margin:6px 0 0; font-size:18px; color:#111827; }
+.tarmonia-news .card p.excerpt { margin:0; color:#4b5563; line-height:1.4; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.tarmonia-news .calendar-modal { /* removed - calendar feature disabled */ }
+
+/* Responsive */
+@media (max-width: 992px) { .tarmonia-news .cards { grid-template-columns:repeat(2,1fr); } .tarmonia-news .news-hero { flex-direction:column; align-items:flex-start; } }
+@media (max-width: 600px) { .tarmonia-news .cards { grid-template-columns:1fr; } .tarmonia-news .news-hero { padding:18px; } .tarmonia-news .hero-illustration { width:100%; height:140px; } }
+
+/* Utility: visually hide but keep for screen readers if needed */
+.sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Center the News content block on the page */
+.tarmonia-news {
+	max-width: 1200px; /* limit width and center */
+	margin: 36px auto; /* center horizontally with vertical breathing */
+	padding: 0 18px; /* small side padding */
+	box-sizing: border-box;
+}
+
+/* Center hero title and subtitle while keeping illustration on the right */
+.tarmonia-news .news-hero { justify-content: space-between; align-items: center; }
+.tarmonia-news .news-hero .hero-left { flex: 1 1 60%; }
+.tarmonia-news .news-hero .hero-right { flex: 0 0 220px; display:flex; align-items:center; justify-content:center; }
+.tarmonia-news .news-hero h1,
+.tarmonia-news .news-hero p { text-align: center; margin-left: auto; margin-right: auto; }
+
+/* Center filter row content */
+.tarmonia-news .filter-row { display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; }
+.tarmonia-news .filter-row .pills { justify-content:center; }
+.tarmonia-news .categories-dropdown { margin-left: 6px; }
+
+/* Center the cards grid in the page and keep card content left-aligned */
+.tarmonia-news .cards { margin: 0 auto; justify-items: center; }
+.tarmonia-news .card { width: 100%; max-width: 360px; }
+.tarmonia-news .card .card-body { text-align: left; }
+
+/* Adjust hero illustration on small screens */
+@media (max-width: 992px) {
+	.tarmonia-news { max-width: 920px; }
+	.tarmonia-news .news-hero { flex-direction: column; gap: 20px; align-items: center; }
+	.tarmonia-news .news-hero .hero-left { text-align: center; }
+	.tarmonia-news .news-hero .hero-right { width: 100%; }
+}
+
+@media (max-width: 600px) {
+	.tarmonia-news { margin: 20px auto; padding: 0 12px; }
+	.tarmonia-news .card { max-width: 100%; }
+	.tarmonia-news .news-hero h1 { font-size: 28px; }
+}
+
+/* Outer wrapper to center the whole News section vertically and horizontally
+   - keeps horizontal centering already in place
+   - provides a sensible min-height so the section sits in the middle on short pages
+*/
+.tarmonia-news-outer {
+	display: flex;
+	justify-content: center; /* horizontal centering */
+	align-items: center;    /* vertical centering when space allows */
+	width: 100%;
+	min-height: 48vh; /* sit near middle of viewport on short pages */
+	box-sizing: border-box;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+/* If the content is taller than the viewport, allow normal flow */
+@media (max-height: 700px) {
+	.tarmonia-news-outer { align-items: flex-start; min-height: auto; padding-top: 24px; padding-bottom: 24px; }
+}
+
+/* FORCE CENTER: robust overrides to ensure the News block sits in the middle of the page
+   These are intentionally scoped to the News wrapper so they don't affect other pages. */
+.content .tarmonia-news-outer {
+	width: 100% !important;
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+.tarmonia-news {
+	margin-left: auto !important;
+	margin-right: auto !important;
+	float: none !important;
+	left: auto !important;
+	right: auto !important;
+	max-width: 1200px; /* keep the same content width */
+}
+
+/* If any parent containers apply padding-left/right, ensure visual centering by using transform centering fallback */
+.tarmonia-news-centered-fallback {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+/* Strong page-scope overrides to correct centering inside the main page wrapper.
+   Scoped under `.page_content_wrap` to avoid affecting other page types. */
+.page_content_wrap .content_wrap {
+	display: block !important;
+}
+.page_content_wrap .content_wrap > .content {
+	float: none !important;      /* remove any left-floating column behavior */
+	margin-left: auto !important; 
+	margin-right: auto !important;
+	width: 100% !important;      /* allow inner max-width control to center */
+	max-width: 1280px !important; /* keep content constrained */
+	box-sizing: border-box !important;
+}
+
+/* Ensure our news outer sits centered even if other layout CSS tries to nudge it */
+.page_content_wrap .content_wrap > .content .tarmonia-news-outer {
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+/* Fallback: if some container adds padding, nudge the inner news block to true center */
+.page_content_wrap .content_wrap > .content .tarmonia-news {
+	transform: translateX(0) !important;
+}
+

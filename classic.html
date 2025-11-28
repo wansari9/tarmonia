@@ -180,48 +180,91 @@
         <div class="page_content_wrap page_paddings_yes">
             <div class="content_wrap">
                 <div class="content">
-                    <div id="blog-list"></div>
-                    <nav id="pagination" class="pagination_wrap pagination_pages"></nav>
-                </div>
-                <div class="sidebar widget_area scheme_original" role="complementary">
-                    <div class="sidebar_inner widget_area_inner">
-                        <aside class="widget widget_categories">
-                            <h4 class="widget_title">Categories</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_search">
-                            <h4 class="widget_title">Search</h4>
-                            <form role="search" method="get" class="search_form" action="classic.html">
-                                <input type="text" class="search_field" placeholder="Keyword" value="" name="s" title="Search for:" />
-                                <button type="submit" class="search_button icon-search"></button>
-                            </form>
-                        </aside>
-                        <aside class="widget widget_archive">
-                            <h4 class="widget_title">Archives</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_calendar">
-                            <h4 class="widget_title">Calendar</h4>
-                            <div id="calendar_wrap" class="calendar_wrap">
-                                <table class="wp-calendar"></table>
+                    <div class="tarmonia-news-outer">
+                        <main class="tarmonia-news">
+                        <div class="news-hero">
+                            <div class="hero-left">
+                                <h1>Our News & Insights</h1>
+                                <p>Announcements, events, and fresh ideas from the farm — stories about our people, practices, and products.</p>
                             </div>
-                        </aside>
-                        <aside class="widget widget_recent_entries">
-                            <h4 class="widget_title">Recent Posts</h4>
-                            <ul></ul>
-                        </aside>
-                        <aside class="widget widget_tag_cloud">
-                            <h4 class="widget_title">Tags</h4>
-                            <div class="tagcloud"></div>
-                        </aside>
-                        <aside class="widget widget_meta">
-                            <h4 class="widget_title">Meta</h4>
-                            <ul>
-                                <li><a href="#">Log in</a></li>
-                                <li><a href="#">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-                                <li><a href="#">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-                            </ul>
-                        </aside>
+                            <div class="hero-right">
+                                <div class="hero-illustration">
+                                    <img src="images/big-logo.png" alt="Tarmonia" style="max-width:100%;height:auto;opacity:.95;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-row">
+                            <div class="pills" role="tablist" aria-label="News filters">
+                                <button class="pill" data-filter-action="all" type="button">All</button>
+
+                                <div class="dropdown" id="archives-dropdown">
+                                    <button class="pill" data-filter-action="archives" type="button">Archives ▾</button>
+                                    <div class="menu" data-menu-for="archives" aria-hidden="true"></div>
+                                </div>
+
+                                <div class="dropdown" id="tags-dropdown">
+                                    <button class="pill" data-filter-action="tags" type="button">Tags ▾</button>
+                                    <div class="menu" data-menu-for="tags" aria-hidden="true"></div>
+                                </div>
+                            </div>
+
+                            <div class="dropdown categories-dropdown">
+                                <button class="categories-btn" aria-haspopup="true" aria-expanded="false" type="button">Categories ▾</button>
+                                <div class="menu" data-menu-for="categories" aria-hidden="true"></div>
+                            </div>
+                        </div>
+
+                        <div class="cards" id="blog-list" aria-live="polite"></div>
+
+                        <nav id="pagination" class="pagination_wrap pagination_pages"></nav>
+
+                        
+                        </main>
+                    </div>
+                </div>
+                <!-- Sidebar preserved as a hidden template for reuse. Hidden visually but kept in the file. -->
+                <div id="news-sidebar-template" style="display:none;" aria-hidden="true">
+                    <div class="sidebar widget_area scheme_original" role="complementary">
+                        <div class="sidebar_inner widget_area_inner">
+                            <aside class="widget widget_categories">
+                                <h4 class="widget_title">Categories</h4>
+                                <ul></ul>
+                            </aside>
+                            <aside class="widget widget_search">
+                                <h4 class="widget_title">Search</h4>
+                                <form role="search" method="get" class="search_form" action="classic.html">
+                                    <input type="text" class="search_field" placeholder="Keyword" value="" name="s" title="Search for:" />
+                                    <button type="submit" class="search_button icon-search"></button>
+                                </form>
+                            </aside>
+                            <aside class="widget widget_archive">
+                                <h4 class="widget_title">Archives</h4>
+                                <ul></ul>
+                            </aside>
+                            <aside class="widget widget_calendar">
+                                <h4 class="widget_title">Calendar</h4>
+                                <div id="calendar_wrap" class="calendar_wrap">
+                                    <table class="wp-calendar"></table>
+                                </div>
+                            </aside>
+                            <aside class="widget widget_recent_entries">
+                                <h4 class="widget_title">Recent Posts</h4>
+                                <ul></ul>
+                            </aside>
+                            <aside class="widget widget_tag_cloud">
+                                <h4 class="widget_title">Tags</h4>
+                                <div class="tagcloud"></div>
+                            </aside>
+                            <aside class="widget widget_meta">
+                                <h4 class="widget_title">Meta</h4>
+                                <ul>
+                                    <li><a href="#">Log in</a></li>
+                                    <li><a href="#">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+                                    <li><a href="#">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+                                </ul>
+                            </aside>
+                        </div>
                     </div>
                 </div>
             </div>

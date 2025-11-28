@@ -1,11 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.2
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Nov 25, 2025 at 05:24 AM
--- Server version: 8.0.38
--- PHP Version: 8.3.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -17,15 +9,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `tarmonia_db`
---
 
--- --------------------------------------------------------
-
---
--- Table structure for table `addresses`
---
 
 CREATE TABLE `addresses` (
   `id` int NOT NULL,
@@ -43,9 +27,7 @@ CREATE TABLE `addresses` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `addresses`
---
+
 
 INSERT INTO `addresses` (`id`, `user_id`, `label`, `recipient_name`, `phone`, `line1`, `line2`, `city`, `state`, `postal_code`, `country`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Home', 'Wasi Ansari', '+60 1128098103', 'No. 12, Jalan Bunga Raya', 'Taman Melawati', 'Kuala Lumpur', 'Kuala Lumpur', '53100', 'MY', '2025-11-05 10:00:00', NULL),
@@ -68,11 +50,8 @@ INSERT INTO `addresses` (`id`, `user_id`, `label`, `recipient_name`, `phone`, `l
 (42, 12, 'Billing', 'wasi wasi', '01128098103', 'cova', 'kota damansara', 'petaling jaya', 'Selangor', '47810', 'MY', '2025-11-25 04:59:24', NULL),
 (43, 12, 'Shipping', 'wasi wasi', '01128098103', 'cova', 'kota damansara', 'petaling jaya', 'Selangor', '47810', 'MY', '2025-11-25 04:59:24', NULL);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `carts`
---
+
 
 CREATE TABLE `carts` (
   `id` bigint NOT NULL,
@@ -90,9 +69,7 @@ CREATE TABLE `carts` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `carts`
---
+
 
 INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipping_method_id`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `grand_total`, `created_at`, `updated_at`) VALUES
 (228, 12, '9624818310f78293339b33fe29d10ec3', 'converted', 'RM', NULL, 2.00, 0.00, 0.00, 0.00, 2.00, '2025-11-25 04:14:55', '2025-11-25 04:51:26'),
@@ -103,31 +80,27 @@ INSERT INTO `carts` (`id`, `user_id`, `session_id`, `status`, `currency`, `shipp
 (233, NULL, '6faeaccee00a0b5ed347f52b2bc04941', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:01:02', '2025-11-25 05:01:02'),
 (234, NULL, '4045026cb7f1d7b3995504cf98f8d8f8', 'open', 'RM', NULL, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-25 05:11:34', '2025-11-25 05:11:34');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `cart_items`
---
+
+
 
 CREATE TABLE `cart_items` (
   `id` bigint NOT NULL,
   `cart_id` bigint NOT NULL,
   `product_id` int NOT NULL,
   `variant_id` int DEFAULT NULL,
-  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `variant_sku` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `product_name` varchar(255) CHARACTER SET utf8mb4  NOT NULL,
+  `sku` varchar(120) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `variant_sku` varchar(120) CHARACTER SET utf8mb4  DEFAULT NULL,
+  `options_snapshot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `quantity` int NOT NULL,
   `unit_price` decimal(10,2) NOT NULL,
   `line_total` decimal(10,2) NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4  DEFAULT NULL,
   `added_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `cart_items`
---
+
 
 INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_name`, `sku`, `variant_sku`, `options_snapshot`, `quantity`, `unit_price`, `line_total`, `image`, `added_at`) VALUES
 (100, 19, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\"}', 3, 4.90, 14.70, 'images/Evaporated Milk.png', '2025-11-12 14:30:00'),
@@ -160,11 +133,6 @@ INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `variant_id`, `product_
 (145, 94, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL, '2025-11-24 07:41:09'),
 (146, 197, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL, '2025-11-24 07:43:12');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `comments`
---
 
 CREATE TABLE `comments` (
   `id` bigint NOT NULL,
@@ -178,9 +146,7 @@ CREATE TABLE `comments` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `comments`
---
+
 
 INSERT INTO `comments` (`id`, `user_id`, `target_type`, `target_id`, `parent_id`, `rating`, `content`, `status`, `created_at`) VALUES
 (1, 2, 'product', 1, NULL, 5, 'Excellent evaporated milk! Perfect for my coffee.', 'approved', '2025-11-02 10:00:00'),
@@ -200,11 +166,9 @@ INSERT INTO `comments` (`id`, `user_id`, `target_type`, `target_id`, `parent_id`
 (15, 7, 'post', 3, NULL, NULL, 'Interesting read about the butter business!', 'approved', '2025-11-09 16:45:00'),
 (16, 8, 'post', 5, NULL, NULL, 'The global trends analysis is very comprehensive.', 'approved', '2025-11-11 13:30:00');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `communications`
---
+
+
 
 CREATE TABLE `communications` (
   `id` bigint NOT NULL,
@@ -220,9 +184,7 @@ CREATE TABLE `communications` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `communications`
---
+
 
 INSERT INTO `communications` (`id`, `direction`, `channel`, `from_email`, `to_email`, `subject`, `body`, `status`, `related_type`, `related_id`, `created_at`) VALUES
 (1, 'outbound', 'email', 'orders@tarmonia.com', 'john.doe@example.com', 'Order Confirmation - ORD-20251101-A7B2C', 'Thank you for your order! Your order #ORD-20251101-A7B2C has been confirmed.', 'sent', 'order', 1, '2025-11-01 14:22:00'),
@@ -238,11 +200,9 @@ INSERT INTO `communications` (`id`, `direction`, `channel`, `from_email`, `to_em
 (11, 'outbound', 'email', 'orders@tarmonia.com', 'emily.chen@example.com', 'Order Confirmation - ORD-20251113-L8M3N', 'Thank you for your order! Your order #ORD-20251113-L8M3N has been confirmed.', 'sent', 'order', 12, '2025-11-13 13:50:00'),
 (12, 'inbound', 'contact_form', 'feedback@example.com', 'support@tarmonia.com', 'Product quality feedback', 'Your products are excellent! Keep up the great work.', 'read', NULL, NULL, '2025-11-12 16:30:00');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `moderation_logs`
---
+
+
 
 CREATE TABLE `moderation_logs` (
   `id` bigint NOT NULL,
@@ -254,11 +214,9 @@ CREATE TABLE `moderation_logs` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `orders`
---
+
+
 
 CREATE TABLE `orders` (
   `id` int NOT NULL,
@@ -290,21 +248,15 @@ CREATE TABLE `orders` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `admin_confirmed_at` datetime DEFAULT NULL,
   `admin_confirmed_by` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `orders`
---
+
 
 INSERT INTO `orders` (`id`, `stripe_payment_intent_id`, `order_number`, `user_id`, `status`, `shipping_status`, `tracking_number`, `shipped_at`, `currency`, `subtotal`, `discount_total`, `tax_total`, `shipping_total`, `shipping_method_id`, `grand_total`, `shipping_address_id`, `billing_address_id`, `fulfillment_status`, `payment_status`, `payment_method`, `stripe_charge_id`, `paid_at`, `payment_metadata`, `notes`, `placed_at`, `created_at`, `updated_at`, `admin_confirmed_at`, `admin_confirmed_by`) VALUES
 (13, 'pi_3SXEEALJSTUMa7PH0MbDoz35', 'ORD-20251125-6AFE2028', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 2.00, 0.00, 0.00, 0.00, NULL, 2.00, 41, 40, 'unfulfilled', 'paid', 'stripe', NULL, NULL, NULL, '', '2025-11-25 04:51:26', '2025-11-25 04:51:26', '2025-11-25 04:51:54', NULL, NULL),
 (14, 'pi_3SXELoLJSTUMa7PH1ztqqyZS', 'ORD-20251125-79420C69', 12, 'awaiting_confirmation', 'pending', NULL, NULL, 'RM', 2.00, 0.00, 0.00, 0.00, NULL, 2.00, 43, 42, 'unfulfilled', 'paid', 'stripe', NULL, NULL, NULL, '', '2025-11-25 04:59:24', '2025-11-25 04:59:24', '2025-11-25 05:00:23', NULL, NULL);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `order_items`
---
 
 CREATE TABLE `order_items` (
   `id` bigint NOT NULL,
@@ -319,11 +271,9 @@ CREATE TABLE `order_items` (
   `unit_price` decimal(10,2) NOT NULL,
   `line_total` decimal(10,2) NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `order_items`
---
+
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `sku`, `variant_sku`, `options_snapshot`, `quantity`, `unit_price`, `line_total`, `image`) VALUES
 (1, 1, 1, 1, 'Evaporated Milk', 'EVAP-001', 'EVAP-001-354ML', '{\"weight\":\"354ml\"}', 3, 4.90, 14.70, 'images/Evaporated Milk.png'),
@@ -380,11 +330,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `produc
 (58, 13, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL),
 (59, 14, 26, NULL, 'demo2', 'demo2', NULL, '[]', 1, 2.00, 2.00, NULL);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `payments`
---
+
+
 
 CREATE TABLE `payments` (
   `id` bigint NOT NULL,
@@ -398,19 +346,14 @@ CREATE TABLE `payments` (
   `processed_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `payments`
---
+
 
 INSERT INTO `payments` (`id`, `order_id`, `method`, `amount`, `currency`, `status`, `external_id`, `transaction_ref`, `processed_at`) VALUES
 (1, 13, 'stripe', 2.00, 'RM', 'paid', 'cs_test_a173zmS8V8vt9jH0QcbN2yo1X9yu5JgdhPIxK0aqJVx3jR8gMt8d67jmsp', 'pi_3SXEEALJSTUMa7PH0MbDoz35', '2025-11-25 04:51:54'),
 (2, 14, 'stripe', 2.00, 'RM', 'paid', 'cs_live_a1yNBy4XRH9pxBDC4TzCHM4gglGG2Coihdy4TMJ5lrGK9kfrEHHYq7lb2v', 'pi_3SXELoLJSTUMa7PH1ztqqyZS', '2025-11-25 05:00:23');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `posts`
---
+
 
 CREATE TABLE `posts` (
   `id` int NOT NULL,
@@ -429,9 +372,7 @@ CREATE TABLE `posts` (
   `tag_slugs` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `posts`
---
+
 
 INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, `excerpt`, `content`, `author_id`, `published_at`, `created_at`, `updated_at`, `category_slugs`, `tag_slugs`) VALUES
 (1, 'blog', 'Dairy Nutrition and Profitability Optimization', 'published', 'images/blog1.jpg', 'dairy-nutrition-profitability', 'How nutritional strategies can boost productivity and margins.', 'Full content for Dairy Nutrition and Profitability Optimization...', 1, '2025-11-08 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'dairy-herd-management', 'dairy,natural'),
@@ -441,11 +382,8 @@ INSERT INTO `posts` (`id`, `type`, `title`, `status`, `featured_image`, `slug`, 
 (5, 'blog', 'Global Trends in World Dairy Markets', 'published', 'images/blog5.jpg', 'global-trends-world-dairy', 'Price dynamics and trade flows to watch.', 'Full content for Global Trends in World Dairy Markets...', 1, '2025-09-09 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'world-dairy-markets', 'agriculture,dairy'),
 (6, 'blog', 'Debunking Common Unhealthy Myths', 'published', 'images/blog6.jpg', 'debunking-unhealthy-myths', 'Separating dairy myths from facts.', 'Full content for Debunking Common Unhealthy Myths...', 1, '2025-08-30 11:59:30', '2025-11-13 11:59:30', '2025-11-17 10:14:47', 'unhealthy-myths', 'milk,natural');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `post_categories`
---
+
 
 CREATE TABLE `post_categories` (
   `id` int NOT NULL,
@@ -454,9 +392,7 @@ CREATE TABLE `post_categories` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `post_categories`
---
+
 
 INSERT INTO `post_categories` (`id`, `slug`, `name`, `created_at`) VALUES
 (1, 'dairy-herd-management', 'Dairy Herd Management', '2025-11-13 11:59:30'),
@@ -465,11 +401,9 @@ INSERT INTO `post_categories` (`id`, `slug`, `name`, `created_at`) VALUES
 (4, 'unhealthy-myths', 'Unhealthy Myths', '2025-11-13 11:59:30'),
 (5, 'world-dairy-markets', 'World Dairy Markets', '2025-11-13 11:59:30');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `post_tags`
---
+
+
 
 CREATE TABLE `post_tags` (
   `id` int NOT NULL,
@@ -478,9 +412,7 @@ CREATE TABLE `post_tags` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `post_tags`
---
+
 
 INSERT INTO `post_tags` (`id`, `slug`, `name`, `created_at`) VALUES
 (1, 'agriculture', 'agriculture', '2025-11-13 11:59:30'),
@@ -490,20 +422,16 @@ INSERT INTO `post_tags` (`id`, `slug`, `name`, `created_at`) VALUES
 (5, 'natural', 'natural', '2025-11-13 11:59:30'),
 (6, 'organic', 'organic', '2025-11-13 11:59:30');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `post_to_category`
---
+
+
 
 CREATE TABLE `post_to_category` (
   `post_id` int NOT NULL,
   `category_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `post_to_category`
---
+
 
 INSERT INTO `post_to_category` (`post_id`, `category_id`) VALUES
 (1, 1),
@@ -513,20 +441,14 @@ INSERT INTO `post_to_category` (`post_id`, `category_id`) VALUES
 (6, 4),
 (5, 5);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `post_to_tag`
---
 
 CREATE TABLE `post_to_tag` (
   `post_id` int NOT NULL,
   `tag_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `post_to_tag`
---
+
 
 INSERT INTO `post_to_tag` (`post_id`, `tag_id`) VALUES
 (4, 1),
@@ -536,17 +458,12 @@ INSERT INTO `post_to_tag` (`post_id`, `tag_id`) VALUES
 (3, 3),
 (5, 3),
 (2, 4),
-(6, 4),
 (1, 5),
 (4, 5),
 (6, 5),
 (3, 6);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `products`
---
 
 CREATE TABLE `products` (
   `id` int NOT NULL,
@@ -574,11 +491,9 @@ CREATE TABLE `products` (
   `weight_grams` int DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `products`
---
+
 
 INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, `short_description`, `description`, `base_price`, `max_price`, `stock_qty`, `is_active`, `currency`, `image`, `gallery`, `attributes`, `status`, `has_variants`, `allow_backorder`, `weight_grams`, `created_at`, `updated_at`) VALUES
 (1, 458, 'EVAP-001', 'Evaporated Milk', 'evaporated-milk', 'dairy', 'High-quality evaporated milk', 'High-quality evaporated milk for your recipes.', 4.90, 8.99, 100, 1, 'RM', 'images/Evaporated Milk.png', NULL, NULL, 'active', 1, 0, NULL, '2025-11-13 11:02:14', '2025-11-13 11:02:14'),
@@ -608,9 +523,7 @@ INSERT INTO `products` (`id`, `external_id`, `sku`, `name`, `slug`, `category`, 
 (25, NULL, 'demo', 'demo', 'd', 'demo', 'demo', 'demo', 1.00, 1.00, 10, 1, 'RM', NULL, NULL, NULL, 'active', 0, 0, 100, '2025-11-24 01:51:12', NULL),
 (26, NULL, 'demo2', 'demo2', 'd-1', 'demo', NULL, NULL, 2.00, 2.00, 10, 1, 'RM', NULL, NULL, NULL, 'active', 0, 0, 100, '2025-11-24 03:06:22', NULL);
 
---
--- Triggers `products`
---
+
 DELIMITER $$
 CREATE TRIGGER `trg_products_category_bi` BEFORE INSERT ON `products` FOR EACH ROW BEGIN
   IF NEW.`category` IS NOT NULL THEN
@@ -628,11 +541,9 @@ END
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `product_option_definitions`
---
+
+
 
 CREATE TABLE `product_option_definitions` (
   `id` int NOT NULL,
@@ -644,11 +555,9 @@ CREATE TABLE `product_option_definitions` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `product_option_definitions`
---
+
 
 INSERT INTO `product_option_definitions` (`id`, `product_id`, `category`, `option_order`, `option_labels`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'dairy', '[\"weight\",\"fat\"]', '{\"weight\":\"Weight\",\"fat\":\"Fat\"}', 1, '2025-11-13 11:02:14', NULL),
@@ -657,11 +566,7 @@ INSERT INTO `product_option_definitions` (`id`, `product_id`, `category`, `optio
 (4, NULL, 'cheese', '[\"weight\"]', '{\"weight\":\"Weight\"}', 1, '2025-11-13 11:02:14', NULL),
 (5, NULL, 'byproducts', '[]', '{}', 1, '2025-11-13 11:02:14', NULL);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `product_variants`
---
 
 CREATE TABLE `product_variants` (
   `id` int NOT NULL,
@@ -676,11 +581,9 @@ CREATE TABLE `product_variants` (
   `weight_grams` int DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `product_variants`
---
+
 
 INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `price_override`, `stock_qty`, `is_active`, `image`, `weight_grams`, `created_at`, `updated_at`) VALUES
 (1, 1, 'EVAP-001-354ML', 'Evaporated Milk 354ml', '{\"weight\": \"354ml\"}', 4.90, 100, 1, NULL, NULL, '2025-11-13 11:02:14', NULL),
@@ -770,11 +673,7 @@ INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `options`, `p
 (85, 3, 'RICOTTA-SAL-001-3LB', 'Ricotta Salata Cheese 3 lb', '{\"weight\": \"3-lb\"}', NULL, 40, 1, NULL, 1361, '2025-11-18 06:00:00', NULL),
 (86, 3, 'RICOTTA-SAL-001-5LB', 'Ricotta Salata Cheese 5 lb', '{\"weight\": \"5-lb\"}', NULL, 20, 1, NULL, 2268, '2025-11-18 06:00:00', NULL);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `shipments`
---
 
 CREATE TABLE `shipments` (
   `id` bigint NOT NULL,
@@ -787,9 +686,7 @@ CREATE TABLE `shipments` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `shipments`
---
+
 
 INSERT INTO `shipments` (`id`, `order_id`, `carrier`, `service`, `tracking_number`, `label_url`, `status`, `created_at`) VALUES
 (1, 1, 'PosLaju', 'Standard', 'TRK-MY-1001234567', 'https://tracking.poslaju.com.my/label/TRK-MY-1001234567', 'delivered', '2025-11-02 09:00:00'),
@@ -800,11 +697,8 @@ INSERT INTO `shipments` (`id`, `order_id`, `carrier`, `service`, `tracking_numbe
 (6, 11, 'DHL', 'Express', 'DHL-MY-5001234571', 'https://tracking.dhl.com/DHL-MY-5001234571', 'delivered', '2025-11-12 09:30:00'),
 (7, 3, 'GDex', 'Standard', 'GDEX-MY-3001234570', 'https://tracking.gdexpress.com/label/GDEX-MY-3001234570', 'created', '2025-11-07 08:00:00');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `shipping_methods`
---
+
 
 CREATE TABLE `shipping_methods` (
   `id` int NOT NULL,
@@ -820,9 +714,7 @@ CREATE TABLE `shipping_methods` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `shipping_methods`
---
+
 
 INSERT INTO `shipping_methods` (`id`, `zone_id`, `type`, `name`, `min_weight`, `max_weight`, `min_price`, `max_price`, `rate`, `active`, `created_at`) VALUES
 (1, 1, 'flat', 'Standard Delivery (KL)', NULL, NULL, NULL, NULL, 8.00, 1, '2025-10-15 08:30:00'),
@@ -838,11 +730,7 @@ INSERT INTO `shipping_methods` (`id`, `zone_id`, `type`, `name`, `min_weight`, `
 (11, 5, 'flat', 'Standard Delivery', NULL, NULL, NULL, NULL, 18.00, 1, '2025-10-15 09:20:00'),
 (12, 5, 'flat', 'Express Delivery', NULL, NULL, NULL, NULL, 30.00, 1, '2025-10-15 09:25:00');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `shipping_zones`
---
 
 CREATE TABLE `shipping_zones` (
   `id` int NOT NULL,
@@ -854,9 +742,7 @@ CREATE TABLE `shipping_zones` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `shipping_zones`
---
+
 
 INSERT INTO `shipping_zones` (`id`, `name`, `country`, `region`, `postcode_pattern`, `active`, `created_at`) VALUES
 (1, 'Kuala Lumpur', 'MY', 'Kuala Lumpur', '5%', 1, '2025-10-15 08:00:00'),
@@ -865,33 +751,25 @@ INSERT INTO `shipping_zones` (`id`, `name`, `country`, `region`, `postcode_patte
 (4, 'Johor', 'MY', 'Johor', '8%', 1, '2025-10-15 08:15:00'),
 (5, 'Rest of Malaysia', 'MY', NULL, '%', 1, '2025-10-15 08:20:00');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `stripe_events`
---
 
 CREATE TABLE `stripe_events` (
   `event_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `stripe_session_short`
---
+
+
 
 CREATE TABLE `stripe_session_short` (
   `id` int NOT NULL,
   `short_token` varchar(32) NOT NULL,
   `stripe_session_id` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `stripe_session_short`
---
+
 
 INSERT INTO `stripe_session_short` (`id`, `short_token`, `stripe_session_id`, `created_at`) VALUES
 (1, '8802f6a1', 'cs_live_a1ktxIPUo0C8NCkkx4IE8WaJlQjs08fCYe8gvcy0p2dbJoMPz50kcSMxmZ', '2025-11-24 06:13:43'),
@@ -901,11 +779,7 @@ INSERT INTO `stripe_session_short` (`id`, `short_token`, `stripe_session_id`, `c
 (5, '79867ee2', 'cs_test_a173zmS8V8vt9jH0QcbN2yo1X9yu5JgdhPIxK0aqJVx3jR8gMt8d67jmsp', '2025-11-25 04:51:26'),
 (6, '96eb61bf', 'cs_live_a1yNBy4XRH9pxBDC4TzCHM4gglGG2Coihdy4TMJ5lrGK9kfrEHHYq7lb2v', '2025-11-25 04:59:25');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
@@ -922,9 +796,7 @@ CREATE TABLE `users` (
   `is_admin` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
+
 
 INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `phone`, `role`, `reset_token`, `reset_expires_at`, `created_at`, `updated_at`, `is_admin`) VALUES
 (2, 'john.doe@example.com', '$2y$10$uP7SbRmwNmOFA6Pwk863jOf8OxFPFdXOT.QWIPXs2BdsraEHD3OFW', 'John', 'Doe', '+60123456789', 'customer', NULL, NULL, '2025-11-01 10:00:00', NULL, 0),
@@ -940,11 +812,7 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, 
 (12, 'wansari000@gmail.com', '$2y$10$w1lP7Tca9X.8vTQhQp4rT.MJKUJgfilljazyVRI/A9h3abVi.ogy.', 'wasi', 'ansri', '123456789', 'customer', NULL, NULL, '2025-11-17 09:38:39', NULL, 0),
 (13, 'wasnari000@gmail.com', '$2y$10$av8OC9A/61NAtkfZ175nwOeStAJigV03yspquUGmuHwCOl2fMAq7e', 'wasi', 'ansari', '+60112233445', 'customer', NULL, NULL, '2025-11-20 15:21:05', NULL, 0);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `wishlist`
---
 
 CREATE TABLE `wishlist` (
   `id` bigint NOT NULL,
@@ -954,9 +822,7 @@ CREATE TABLE `wishlist` (
   `added_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `wishlist`
---
+
 
 INSERT INTO `wishlist` (`id`, `user_id`, `product_id`, `variant_id`, `added_at`) VALUES
 (1, 1, 22, NULL, '2025-11-05 16:20:00'),
@@ -976,21 +842,13 @@ INSERT INTO `wishlist` (`id`, `user_id`, `product_id`, `variant_id`, `added_at`)
 (15, 10, 5, 13, '2025-11-11 15:55:00'),
 (16, 10, 8, NULL, '2025-11-12 08:30:00');
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `addresses`
---
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `country_idx` (`country`,`state`,`city`);
 
---
--- Indexes for table `carts`
---
+
 ALTER TABLE `carts`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
@@ -998,9 +856,7 @@ ALTER TABLE `carts`
   ADD KEY `status` (`status`),
   ADD KEY `shipping_method_id` (`shipping_method_id`);
 
---
--- Indexes for table `cart_items`
---
+
 ALTER TABLE `cart_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `cart_id` (`cart_id`),
@@ -1008,9 +864,7 @@ ALTER TABLE `cart_items`
   ADD KEY `variant_id` (`variant_id`),
   ADD KEY `cart_item_lookup` (`cart_id`,`product_id`,`variant_id`);
 
---
--- Indexes for table `comments`
---
+
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
@@ -1018,9 +872,7 @@ ALTER TABLE `comments`
   ADD KEY `target_type_id` (`target_type`,`target_id`),
   ADD KEY `status` (`status`);
 
---
--- Indexes for table `communications`
---
+
 ALTER TABLE `communications`
   ADD PRIMARY KEY (`id`),
   ADD KEY `channel` (`channel`),
@@ -1028,17 +880,13 @@ ALTER TABLE `communications`
   ADD KEY `from_email` (`from_email`),
   ADD KEY `related_type_id` (`related_type`,`related_id`);
 
---
--- Indexes for table `moderation_logs`
---
+
 ALTER TABLE `moderation_logs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_admin_id` (`admin_id`),
   ADD KEY `idx_comment_id` (`comment_id`);
 
---
--- Indexes for table `orders`
---
+
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `order_number` (`order_number`),
@@ -1052,24 +900,18 @@ ALTER TABLE `orders`
   ADD KEY `shipping_method_id` (`shipping_method_id`),
   ADD KEY `idx_stripe_payment_intent` (`stripe_payment_intent_id`(191));
 
---
--- Indexes for table `order_items`
---
+
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`),
   ADD KEY `variant_id` (`variant_id`);
 
---
--- Indexes for table `payments`
---
+
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `posts`
---
+
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`),
@@ -1078,37 +920,27 @@ ALTER TABLE `posts`
 ALTER TABLE `posts` ADD FULLTEXT KEY `ft_posts` (`title`,`excerpt`,`content`);
 ALTER TABLE `posts` ADD FULLTEXT KEY `ft_posts_all` (`title`,`excerpt`,`content`);
 
---
--- Indexes for table `post_categories`
---
+
 ALTER TABLE `post_categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`);
 
---
--- Indexes for table `post_tags`
---
+
 ALTER TABLE `post_tags`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`);
 
---
--- Indexes for table `post_to_category`
---
+
 ALTER TABLE `post_to_category`
   ADD PRIMARY KEY (`post_id`,`category_id`),
   ADD KEY `ptc_category_id` (`category_id`);
 
---
--- Indexes for table `post_to_tag`
---
+
 ALTER TABLE `post_to_tag`
   ADD PRIMARY KEY (`post_id`,`tag_id`),
   ADD KEY `ptt_tag_id` (`tag_id`);
 
---
--- Indexes for table `products`
---
+
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `external_id` (`external_id`),
@@ -1116,9 +948,7 @@ ALTER TABLE `products`
   ADD UNIQUE KEY `slug` (`slug`);
 ALTER TABLE `products` ADD FULLTEXT KEY `ft_product_search` (`name`,`short_description`,`description`);
 
---
--- Indexes for table `product_option_definitions`
---
+
 ALTER TABLE `product_option_definitions`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uniq_product_active` (`product_id`,`is_active`),
@@ -1126,60 +956,44 @@ ALTER TABLE `product_option_definitions`
   ADD KEY `product_id` (`product_id`),
   ADD KEY `category` (`category`);
 
---
--- Indexes for table `product_variants`
---
+
 ALTER TABLE `product_variants`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `sku` (`sku`),
   ADD KEY `product_id_is_active` (`product_id`,`is_active`);
 
---
--- Indexes for table `shipments`
---
+
 ALTER TABLE `shipments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `tracking_number` (`tracking_number`);
 
---
--- Indexes for table `shipping_methods`
---
+
 ALTER TABLE `shipping_methods`
   ADD PRIMARY KEY (`id`),
   ADD KEY `zone_id` (`zone_id`);
 
---
--- Indexes for table `shipping_zones`
---
+
 ALTER TABLE `shipping_zones`
   ADD PRIMARY KEY (`id`),
   ADD KEY `country_region` (`country`,`region`),
   ADD KEY `active` (`active`);
 
---
--- Indexes for table `stripe_events`
---
+
 ALTER TABLE `stripe_events`
   ADD PRIMARY KEY (`event_id`);
 
---
--- Indexes for table `stripe_session_short`
---
+
 ALTER TABLE `stripe_session_short`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `short_token` (`short_token`);
 
---
--- Indexes for table `users`
---
+
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
---
--- Indexes for table `wishlist`
---
+
 ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uniq_wishlist` (`user_id`,`product_id`,`variant_id`),
@@ -1187,107 +1001,67 @@ ALTER TABLE `wishlist`
   ADD KEY `variant_id` (`variant_id`),
   ADD KEY `user_id` (`user_id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
 
---
--- AUTO_INCREMENT for table `addresses`
---
 ALTER TABLE `addresses`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
---
--- AUTO_INCREMENT for table `carts`
---
+
 ALTER TABLE `carts`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
 
---
--- AUTO_INCREMENT for table `cart_items`
---
+
 ALTER TABLE `cart_items`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
---
--- AUTO_INCREMENT for table `comments`
---
+
 ALTER TABLE `comments`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
---
--- AUTO_INCREMENT for table `communications`
---
+
 ALTER TABLE `communications`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
---
--- AUTO_INCREMENT for table `moderation_logs`
---
+
 ALTER TABLE `moderation_logs`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `orders`
---
+
 ALTER TABLE `orders`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
---
--- AUTO_INCREMENT for table `order_items`
---
+
 ALTER TABLE `order_items`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
---
--- AUTO_INCREMENT for table `payments`
---
+
 ALTER TABLE `payments`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
---
--- AUTO_INCREMENT for table `posts`
---
+
 ALTER TABLE `posts`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT for table `post_categories`
---
+
 ALTER TABLE `post_categories`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
---
--- AUTO_INCREMENT for table `post_tags`
---
+
 ALTER TABLE `post_tags`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT for table `products`
---
+
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
---
--- AUTO_INCREMENT for table `stripe_session_short`
---
+
 ALTER TABLE `stripe_session_short`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- Constraints for dumped tables
---
 
---
--- Constraints for table `orders`
---
+
+
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`shipping_address_id`) REFERENCES `addresses` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`billing_address_id`) REFERENCES `addresses` (`id`) ON DELETE SET NULL;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
