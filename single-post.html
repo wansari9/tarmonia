@@ -11,12 +11,13 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext&display=swap' type='text/css' media='all' />
     <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
-    <link rel="preload" href="css/style.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="css/style.css" as="style" onload="this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
-    <link rel='stylesheet' href='js/vendor/woo/plugin.woocommerce.css' type='text/css' media='all' />
+    <!-- Consolidated WooCommerce compatibility CSS (local) -->
+    <link rel='stylesheet' href='css/woo-compat.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='js/vendor/prettyPhoto/prettyPhoto.css' type='text/css' media='all' />
@@ -90,6 +91,37 @@
                     </div>
                 </div>
             </header>
+            <div class="header_mobile">
+                <div class="content_wrap">
+                    <div class="menu_button icon-menu"></div>
+                    <div class="logo" style="display:flex;align-items:center;gap:15px;">
+                        <a href="index.html" style="flex-shrink:0;">
+                            <img src="images/big-logo.png" class="logo_main" alt="" width="74" height="74">
+                        </a>
+                        <div class="logo-text-box">
+                            <span>TARMONIA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="side_wrap">
+                    <div class="close">Close</div>
+                    <div class="panel_top">
+                        <nav class="menu_main_nav_area">
+                            <ul id="menu_mobile" class="menu_main_nav">
+                                <li class="menu-item"><a href="index.html"><span>Home</span></a></li>
+                                <li class="menu-item"><a href="about-2.html"><span>About us</span></a></li>
+                                <li class="menu-item"><a href="farm.html"><span>Farm</span></a></li>
+                                <li class="menu-item"><a href="classic.html"><span>Blog</span></a></li>
+                                <li class="menu-item current-menu-ancestor current-menu-parent"><a href="classic.html"><span>News</span></a></li>
+                                <li class="menu-item"><a href="shop.html"><span>Products</span></a></li>
+                                <li class="menu-item"><a href="contacts.html"><span>Contacts</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="panel_bottom"></div>
+                </div>
+                <div class="mask"></div>
+            </div>
 
             <div class="page_content_wrap page_paddings_yes">
                 <div class="content_wrap">

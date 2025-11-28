@@ -1,4 +1,0 @@
-<IfModule mod_headers.c>
-  Header unset X-Content-Type-Options
-  Header unset X-Frame-Options
-</IfModule>

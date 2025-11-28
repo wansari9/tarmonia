@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		s: '',
 		category: '',
 		tag: '',
-		month: ''
+		month: '',
+		day: ''
 	};
 
 	const cache = {
@@ -24,7 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		recent: null
 	};
 
+	// Client-side UI state for modern news layout
+	const clientState = {
+		pill: 'all',
+		category: ''
+	};
+
+	let cachedPostsPage = []; // posts returned from latest API page (client-side filtering will use this)
+
 	let calendarState = null;
+	let selectedCalendarDay = null; // { year, month, day }
 	let postsController = null;
 	const dateFormatter = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -41,7 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		loadArchives();
 		loadRecentPosts();
 		loadCalendar();
+		setupFilters(); // render pills and dropdown wiring
 		loadPosts();
+		// If the URL contains a specific day, perform the date search after initial posts load
+		if (state.month && state.day) {
+			const ms = parseMonthSlug(state.month);
+			if (ms) {
+				// run search asynchronously (don't block init)
+				setTimeout(() => {
+					searchPostsByDate(ms.year, ms.month, parseInt(state.day, 10));
+				}, 200);
+			}
+		}
 	}
 
 	function parseStateFromLocation() {
@@ -53,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		state.tag = (params.get('tag') || '').trim();
 		const monthCandidate = (params.get('month') || '').trim();
 		state.month = /^\d{4}-\d{2}$/.test(monthCandidate) ? monthCandidate : '';
+		const dayCandidate = (params.get('day') || '').trim();
+		state.day = /^\d{1,2}$/.test(dayCandidate) ? dayCandidate : '';
 	}
 
 	function parsePositiveInt(value) {
@@ -195,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function showInitialPlaceholders() {
-		setHtml('#blog-list', '<p class="loading">Loading posts…</p>');
+		setHtml('#tarmonia-post-grid', '<p class="loading">Loading posts…</p>');
 		setListPlaceholder('.widget_categories ul');
 		setListPlaceholder('.widget_archive ul');
 		setListPlaceholder('.widget_recent_entries ul');
@@ -263,6 +286,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		next.category = (next.category || '').trim();
 		next.tag = (next.tag || '').trim();
 		next.month = /^\d{4}-\d{2}$/.test(next.month || '') ? next.month : '';
+		// day is optional: 1-31
+		if (next.day !== undefined && next.day !== null && String(next.day).trim() !== '') {
+			const d = parseInt(String(next.day), 10);
+			next.day = Number.isInteger(d) && d >= 1 && d <= 31 ? String(d) : '';
+		} else {
+			next.day = '';
+		}
 		return next;
 	}
 
@@ -287,6 +317,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (st.month) {
 			params.set('month', st.month);
 		}
+		if (st.day) {
+			params.set('day', String(st.day));
+		}
 		return params.toString();
 	}
 
@@ -302,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	async function loadPosts(scrollToTop = false) {
-		const container = document.getElementById('blog-list');
+		const container = document.getElementById('tarmonia-post-grid');
 		if (!container) {
 			return;
 		}
@@ -329,13 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			const data = payload.data && typeof payload.data === 'object' ? payload.data : {};
 			const items = Array.isArray(data.items) ? data.items : [];
 
-			const totalPages = meta.total_pages ? parseInt(meta.total_pages, 10) : 0;
-			if (totalPages > 0 && state.page > totalPages) {
-				applyState({ page: totalPages }, { replaceHistory: true, scrollToTop: true });
-				return;
-			}
+			// store the received page of posts — filtering happens client-side
+			cachedPostsPage = items;
 
-			renderPosts(items);
+			// Apply client-side filters and render
+			applyClientFilterAndRender(scrollToTop);
+
+			// pagination still driven by server meta
 			renderPagination(meta);
 
 			if (items.length === 0) {
@@ -349,7 +382,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (error.name === 'AbortError') {
 				return;
 			}
-			container.innerHTML = `<p class="error">${escapeHtml(error.message || 'Failed to load posts.')}</p>`;
+			const containerElm = document.getElementById('tarmonia-post-grid');
+			if (containerElm) {
+				containerElm.innerHTML = `<p class="error">${escapeHtml(error.message || 'Failed to load posts.')}</p>`;
+			}
 			renderPagination(null);
 		}
 	}
@@ -414,10 +450,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function renderPosts(items) {
-		const container = document.getElementById('blog-list');
-		if (!container) {
-			return;
-		}
+		const container = document.getElementById('tarmonia-post-grid');
+		if (!container) return;
 		if (!Array.isArray(items) || items.length === 0) {
 			container.innerHTML = '<p class="empty">No posts found.</p>';
 			return;
@@ -425,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	    const html = items.map((post) => {
 			const postUrl = `single-post.html?slug=${encodeURIComponent(post.slug)}`;
+			const img = post.featured_image ? escapeHtml(post.featured_image) : fallback;
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
 				// Build card markup
 				const featuredImage = post.featured_image ? `<img src="${escapeHtml(post.featured_image)}" alt="${escapeHtml(post.title || '')}">` : `<div style="background:#f3f4f6;height:180px"></div>`;

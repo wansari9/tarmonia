@@ -23,21 +23,13 @@ if ($order_id <= 0) {
 
 try {
     // Get order - ensure it belongs to the logged-in user
-    $stmt = $pdo->prepare("
-        SELECT 
-            id, user_id, order_number, status, shipping_status, payment_status, currency, subtotal, shipping_total, tax_total, 
-            discount_total, grand_total,
-            billing_first_name, billing_last_name, billing_email, billing_phone,
-            billing_address_line1, billing_address_line2,
-            billing_city, billing_state, billing_postal_code, billing_country,
-            shipping_first_name, shipping_last_name, shipping_email, shipping_phone,
-            shipping_address_line1, shipping_address_line2,
-            shipping_city, shipping_state, shipping_postal_code, shipping_country,
-            tracking_number, shipped_at, admin_confirmed_at, notes,
-            created_at, updated_at
+    $stmt = $pdo->prepare(
+        "SELECT id, user_id, order_number, status, shipping_status, payment_status, currency, subtotal, shipping_total, tax_total,
+            discount_total, grand_total, shipping_address_id, billing_address_id, tracking_number, shipped_at, admin_confirmed_at, notes,
+            placed_at, created_at, updated_at, payment_method, paid_at, fulfillment_status
         FROM orders
-        WHERE id = ? AND user_id = ?
-    ");
+        WHERE id = ? AND user_id = ?"
+    );
     $stmt->execute([$order_id, $user_id]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -83,6 +75,45 @@ try {
     // Ensure payment_status and shipping_status keys exist for frontend logic
     if (!isset($order['payment_status'])) $order['payment_status'] = 'unpaid';
     if (!isset($order['shipping_status'])) $order['shipping_status'] = '';
+
+    // Resolve billing/shipping address snapshots (orders reference address IDs)
+    $addrStmt = $pdo->prepare('SELECT * FROM addresses WHERE id = ?');
+    // billing
+    if (!empty($order['billing_address_id'])) {
+        $addrStmt->execute([$order['billing_address_id']]);
+        $billing = $addrStmt->fetch(PDO::FETCH_ASSOC);
+        if ($billing) {
+            $nameParts = preg_split('/\s+/', trim((string)($billing['recipient_name'] ?? '')), 2);
+            $order['billing_first_name'] = $nameParts[0] ?? '';
+            $order['billing_last_name'] = $nameParts[1] ?? '';
+            $order['billing_email'] = $order['billing_email'] ?? null;
+            $order['billing_phone'] = $billing['phone'] ?? null;
+            $order['billing_address_line1'] = $billing['line1'] ?? null;
+            $order['billing_address_line2'] = $billing['line2'] ?? null;
+            $order['billing_city'] = $billing['city'] ?? null;
+            $order['billing_state'] = $billing['state'] ?? null;
+            $order['billing_postal_code'] = $billing['postal_code'] ?? null;
+            $order['billing_country'] = $billing['country'] ?? null;
+        }
+    }
+    // shipping
+    if (!empty($order['shipping_address_id'])) {
+        $addrStmt->execute([$order['shipping_address_id']]);
+        $shipping = $addrStmt->fetch(PDO::FETCH_ASSOC);
+        if ($shipping) {
+            $nameParts = preg_split('/\s+/', trim((string)($shipping['recipient_name'] ?? '')), 2);
+            $order['shipping_first_name'] = $nameParts[0] ?? '';
+            $order['shipping_last_name'] = $nameParts[1] ?? '';
+            $order['shipping_email'] = $order['shipping_email'] ?? null;
+            $order['shipping_phone'] = $shipping['phone'] ?? null;
+            $order['shipping_address_line1'] = $shipping['line1'] ?? null;
+            $order['shipping_address_line2'] = $shipping['line2'] ?? null;
+            $order['shipping_city'] = $shipping['city'] ?? null;
+            $order['shipping_state'] = $shipping['state'] ?? null;
+            $order['shipping_postal_code'] = $shipping['postal_code'] ?? null;
+            $order['shipping_country'] = $shipping['country'] ?? null;
+        }
+    }
 
     echo json_encode([
         'success' => true,
