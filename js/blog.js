@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 	const API = {
 		list: 'api/posts/list.php',
 		recent: 'api/posts/recent.php',
@@ -33,12 +33,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	let cachedPostsPage = []; // posts returned from latest API page (client-side filtering will use this)
 
+	// Boot-time client-side state required by the requested fix
+	let allPosts = [];
+	let filteredPosts = [];
+
 	let calendarState = null;
 	let selectedCalendarDay = null; // { year, month, day }
 	let postsController = null;
 	const dateFormatter = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 
-	init();
+	try {
+		init();
+	} catch (err) {
+		console.error('[blog] init() failed, continuing safely', err);
+	}
+
+	// Boot sequence: fetch posts once (await) and render using the same renderer
+	try {
+		const container = getPostsContainer();
+		if (!container) {
+			console.error('[blog boot] posts container not found for selector #blog-list or #tarmonia-post-grid');
+		}
+
+		// fetchPosts uses the same API list endpoint and current state
+		allPosts = await fetchPosts();
+		if (!Array.isArray(allPosts) || allPosts.length === 0) {
+			console.warn('[blog boot] fetched posts array is empty', allPosts);
+		}
+		// keep cached page in sync so other code paths behave the same
+		cachedPostsPage = Array.isArray(allPosts) ? allPosts : [];
+
+		filteredPosts = cachedPostsPage;
+		clientState.pill = 'all';
+		// Render posts immediately on load using the existing renderer
+		renderPosts(filteredPosts);
+	} catch (err) {
+		console.error('[blog boot] failed to fetch posts on load', err);
+	}
 
 	function init() {
 		parseStateFromLocation();
@@ -52,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		loadRecentPosts();
 		loadCalendar();
 		setupFilters(); // render pills and dropdown wiring
-		loadPosts();
+		// Initial posts loading now handled by the boot sequence on DOMContentLoaded
+		// (avoids races — boot will `await fetchPosts()` then call `renderPosts`)
 		// If the URL contains a specific day, perform the date search after initial posts load
 		if (state.month && state.day) {
 			const ms = parseMonthSlug(state.month);
@@ -61,6 +93,65 @@ document.addEventListener('DOMContentLoaded', () => {
 				setTimeout(() => {
 					searchPostsByDate(ms.year, ms.month, parseInt(state.day, 10));
 				}, 200);
+			}
+
+			// Fetch posts helper used by the boot logic. Returns an array of post items
+			// (keeps implementation lightweight and mirrors the server-driven loadPosts flow).
+			async function fetchPosts(attempt = 0) {
+				const params = new URLSearchParams();
+				params.set('page', String(state.page));
+				params.set('per_page', String(state.perPage));
+				if (state.s) params.set('s', state.s);
+				if (state.category) params.set('category', state.category);
+				if (state.tag) params.set('tag', state.tag);
+				if (state.month) params.set('month', state.month);
+
+				try {
+					console.debug('[blog] fetchPosts start', { page: state.page, perPage: state.perPage, category: state.category, tag: state.tag, month: state.month, attempt });
+					const payload = await fetchJson(`${API.list}?${params.toString()}`);
+					const data = payload && payload.data && typeof payload.data === 'object' ? payload.data : {};
+					const items = Array.isArray(data.items) ? data.items : [];
+					console.debug('[blog] fetchPosts received items', items.length);
+					return items;
+				} catch (err) {
+					console.error('[blog] fetchPosts error', err);
+					// On error return empty array (caller will handle warnings)
+					return [];
+				}
+			}
+
+			// Compute filteredPosts from `allPosts` (or fallback to cachedPostsPage)
+			function computeFilteredPosts() {
+				const source = Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : cachedPostsPage;
+				if (!Array.isArray(source)) return [];
+
+				return source.filter((post) => {
+					// text search
+					if (state.s) {
+						const needle = state.s.toLowerCase();
+						const hay = `${post.title || ''} ${post.excerpt || ''}`.toLowerCase();
+						if (!hay.includes(needle)) return false;
+					}
+					// category
+					if (state.category) {
+						const cats = Array.isArray(post.categories) ? post.categories.map(c => c.slug) : [];
+						if (!cats.includes(state.category)) return false;
+					}
+					// tag
+					if (state.tag) {
+						const tags = Array.isArray(post.tags) ? post.tags.map(t => t.slug) : [];
+						if (!tags.includes(state.tag)) return false;
+					}
+					// month/day
+					if (state.month) {
+						if (!post.published_at || !post.published_at.startsWith(state.month)) return false;
+						if (state.day) {
+							const day = String(new Date(post.published_at.replace(' ', 'T')).getDate());
+							if (String(state.day) !== day) return false;
+						}
+					}
+					return true;
+				});
 			}
 		}
 	}
@@ -135,6 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
 				const currentValue = state[filter] || '';
 				updates[filter] = currentValue === rawValue ? '' : rawValue;
 				applyState(updates, { scrollToTop: true });
+				// Also attempt an immediate client-side render using cached/all posts
+				try {
+					filteredPosts = computeFilteredPosts();
+					renderPosts(filteredPosts);
+				} catch (e) {
+					console.debug('[blog] client-side render after filter click failed', e);
+				}
 			});
 		});
 
@@ -159,6 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
 					const value = (filterLink.dataset.value || '').trim();
 					if (filter === 'month') {
 						applyState({ month: value, page: 1 }, { scrollToTop: true });
+						// immediate client-side render attempt
+						try {
+							filteredPosts = computeFilteredPosts();
+							renderPosts(filteredPosts);
+						} catch (e) {
+							console.debug('[blog] client-side render after calendar filter failed', e);
+						}
 					}
 				}
 			});
@@ -193,6 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				const action = btn.dataset.filterAction;
 				if (action === 'all') {
 					applyState({ category: '', tag: '', month: '', page: 1 }, { scrollToTop: true });
+					try {
+						filteredPosts = Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : cachedPostsPage;
+						renderPosts(filteredPosts);
+					} catch (e) {
+						console.debug('[blog] render all on pill click failed', e);
+					}
 					return;
 				}
 				// open dropdown toggles
@@ -218,7 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function showInitialPlaceholders() {
-		setHtml('#tarmonia-post-grid', '<p class="loading">Loading posts…</p>');
+		// Intentionally leave the posts container empty until posts are rendered
+		setHtml('#blog-list', '');
 		setListPlaceholder('.widget_categories ul');
 		setListPlaceholder('.widget_archive ul');
 		setListPlaceholder('.widget_recent_entries ul');
@@ -334,8 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		return query ? `${window.location.pathname}?${query}` : window.location.pathname;
 	}
 
-	async function loadPosts(scrollToTop = false) {
-		const container = document.getElementById('tarmonia-post-grid');
+	function getPostsContainer() {
+		return document.getElementById('blog-list') || document.getElementById('tarmonia-post-grid');
+	}
+
+	async function loadPosts(scrollToTop = false, attempt = 0) {
+		const container = getPostsContainer();
 		if (!container) {
 			return;
 		}
@@ -345,7 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 		postsController = new AbortController();
 
-		container.innerHTML = '<p class="loading">Loading posts…</p>';
+		// Do not show a visible loading placeholder here — leave container
+		// empty so posts appear only after data is ready.
+		// container intentionally left blank
 		setHtml('#pagination', '');
 
 		const params = new URLSearchParams();
@@ -357,10 +475,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (state.month) params.set('month', state.month);
 
 		try {
+			console.debug('[blog] loadPosts start', { page: state.page, perPage: state.perPage, category: state.category, tag: state.tag, month: state.month, attempt });
 			const payload = await fetchJson(`${API.list}?${params.toString()}`, postsController.signal);
+			console.debug('[blog] loadPosts response received', payload && payload.meta ? payload.meta : payload);
 			const meta = payload.meta || {};
 			const data = payload.data && typeof payload.data === 'object' ? payload.data : {};
 			const items = Array.isArray(data.items) ? data.items : [];
+			console.debug('[blog] items length', items.length, 'meta', meta, 'attempt', attempt);
 
 			// store the received page of posts — filtering happens client-side
 			cachedPostsPage = items;
@@ -371,6 +492,27 @@ document.addEventListener('DOMContentLoaded', () => {
 			// pagination still driven by server meta
 			renderPagination(meta);
 
+			// If server reports posts but returned page is empty, retry a few times
+			// with exponential backoff to recover from transient issues.
+			const maxAttempts = 3;
+			if (items.length === 0 && meta && Number(meta.total) > 0 && attempt < maxAttempts) {
+				const nextAttempt = attempt + 1;
+				const delay = 150 * Math.pow(2, attempt); // 150, 300, 600 ms
+				console.debug('[blog] empty page but meta.total>0 — retrying', { attempt: nextAttempt, delay });
+				// Do not display retry UI text; keep the container empty and retry silently
+				setTimeout(() => loadPosts(scrollToTop, nextAttempt), delay);
+				return;
+			}
+
+			// If payload looks malformed (no meta & no items) and we have attempts left, retry.
+			if (items.length === 0 && (!meta || (meta && Number(meta.total_pages) === 0)) && attempt < maxAttempts && attempt === 0) {
+				const nextAttempt = attempt + 1;
+				console.debug('[blog] malformed or empty payload — retrying', { attempt: nextAttempt });
+				// keep container empty while retrying
+				setTimeout(() => loadPosts(scrollToTop, nextAttempt), 200);
+				return;
+			}
+
 			if (items.length === 0) {
 				container.innerHTML = '<p class="empty">No posts found.</p>';
 			}
@@ -379,12 +521,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			}
 		} catch (error) {
-			if (error.name === 'AbortError') {
-				return;
-			}
-			const containerElm = document.getElementById('tarmonia-post-grid');
+			// If the fetch was aborted, restore a friendly loading placeholder
+			// so the UI doesn't remain stuck showing the loading spinner forever.
+			const containerElm = getPostsContainer();
 			if (containerElm) {
-				containerElm.innerHTML = `<p class="error">${escapeHtml(error.message || 'Failed to load posts.')}</p>`;
+				// On abort or other errors, keep the container empty (no visible loader)
+				containerElm.innerHTML = '';
 			}
 			renderPagination(null);
 		}
@@ -450,34 +592,68 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function renderPosts(items) {
-		const container = document.getElementById('tarmonia-post-grid');
+		const container = document.getElementById('blog-list');
 		if (!container) return;
 		if (!Array.isArray(items) || items.length === 0) {
 			container.innerHTML = '<p class="empty">No posts found.</p>';
 			return;
 		}
 
-	    const html = items.map((post) => {
+		// Build markup: image (img tag with fallback), category pill, date, title inside card-body, excerpt
+		const html = items.map((post) => {
 			const postUrl = `single-post.html?slug=${encodeURIComponent(post.slug)}`;
-			const img = post.featured_image ? escapeHtml(post.featured_image) : fallback;
+			const imgSrc = post.featured_image ? escapeHtml(post.featured_image) : fallback;
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
-				// Build card markup
-				const featuredImage = post.featured_image ? `<img src="${escapeHtml(post.featured_image)}" alt="${escapeHtml(post.title || '')}">` : `<div style="background:#f3f4f6;height:180px"></div>`;
-				const catName = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
-				const dateIso = post.published_at ? new Date(post.published_at.replace(' ', 'T')).toISOString().slice(0,10) : '';
-				return `
-					<a class="card" href="${postUrl}" data-date="${dateIso}">
-						<div class="card-media">${featuredImage}</div>
-						<div class="card-body">
-							${catName ? `<span class="cat-badge">${catName}</span>` : ''}
-							<span class="meta">${dateLabel}</span>
-							<h3>${escapeHtml(post.title || '')}</h3>
-							<p class="excerpt">${escapeHtml(post.excerpt || '')}</p>
-						</div>
-					</a>`;
+			const catName = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
+			const dateIso = post.published_at ? new Date(post.published_at.replace(' ', 'T')).toISOString().slice(0,10) : '';
+
+			return `
+				<a class="card" href="${postUrl}" data-date="${dateIso}">
+					<div class="card-media">
+						<img src="${imgSrc}" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/news/placeholder.jpg';" />
+					</div>
+					<div class="card-body">
+						${catName ? `<span class="cat-badge">${catName}</span>` : ''}
+						<span class="meta">${dateLabel}</span>
+						<h3 class="card-title">${escapeHtml(post.title || '')}</h3>
+						<p class="excerpt">${escapeHtml(post.excerpt || '')}</p>
+					</div>
+				</a>`;
 		}).join('');
 
-			container.innerHTML = html || '<p class="empty">No posts found.</p>';
+		container.innerHTML = html || '<p class="empty">No posts found.</p>';
+
+		// Cleanup stray nodes that may have been added by other templates/scripts
+		try {
+			container.querySelectorAll('.card').forEach((card) => {
+				Array.from(card.childNodes).forEach((node) => {
+					if (node.nodeType === Node.TEXT_NODE) {
+						if (!node.textContent.trim()) {
+							node.textContent = '';
+						} else {
+							const txt = node.textContent.trim();
+							const h3 = card.querySelector('h3');
+							if (h3 && txt === h3.textContent.trim()) {
+								node.textContent = '';
+							}
+						}
+					}
+					if (node.nodeType === Node.ELEMENT_NODE) {
+						const el = node;
+						if (!el.classList.contains('card-media') && !el.classList.contains('card-body')) {
+							// remove unexpected direct children (best-effort)
+							el.remove();
+						}
+					}
+				});
+			});
+		} catch (e) {
+			console.debug('[blog] post cleanup failed', e);
+		}
+
+		// After render: update pill active UI and filter chips
+		try { renderFilterPills(); } catch (e) { /* ignore */ }
+		try { renderFilterChips(); } catch (e) { /* ignore */ }
 	}
 
 	function renderPagination(meta) {
@@ -673,6 +849,115 @@ document.addEventListener('DOMContentLoaded', () => {
 		// nothing needed here for now since individual renderers populate menus
 	}
 
+	// Update pill/button active states in the news header
+	function renderFilterPills() {
+		const newsRoot = document.querySelector('.tarmonia-news');
+		if (!newsRoot) return;
+		// clear
+		newsRoot.querySelectorAll('.pill, .categories-btn').forEach(el => el.classList.remove('active'));
+
+		// If no filters active -> All
+		if (!state.category && !state.tag && !state.month && !state.s) {
+			const allBtn = newsRoot.querySelector('[data-filter-action="all"]');
+			if (allBtn) allBtn.classList.add('active');
+			return;
+		}
+
+		if (state.category) {
+			const catBtn = newsRoot.querySelector('.categories-btn');
+			if (catBtn) catBtn.classList.add('active');
+		}
+		if (state.tag) {
+			const tagBtn = newsRoot.querySelector('[data-filter-action="tags"]');
+			if (tagBtn) tagBtn.classList.add('active');
+		}
+		if (state.month) {
+			const archBtn = newsRoot.querySelector('[data-filter-action="archives"]');
+			if (archBtn) archBtn.classList.add('active');
+		}
+	}
+
+	// Render small filter chips (Category: X × ) in the news header
+	function renderFilterChips() {
+		const row = document.querySelector('.tarmonia-news .filter-row');
+		if (!row) return;
+		let wrap = row.querySelector('.filter-chips');
+		if (!wrap) {
+			wrap = document.createElement('div');
+			wrap.className = 'filter-chips';
+			// insert after pills group if present
+			const pills = row.querySelector('.pills');
+			if (pills && pills.nextSibling) {
+				row.insertBefore(wrap, pills.nextSibling);
+			} else {
+				row.appendChild(wrap);
+			}
+		}
+		wrap.innerHTML = '';
+
+		const makeChip = (label, key) => {
+			const span = document.createElement('span');
+			span.className = 'filter-chip';
+			span.innerHTML = `${escapeHtml(label)} <button class="chip-clear" data-clear="${escapeHtml(key)}" aria-label="Clear ${escapeHtml(key)}">×</button>`;
+			span.querySelector('.chip-clear')?.addEventListener('click', (ev) => {
+				ev.preventDefault();
+				const updates = { page: 1 };
+				updates[key] = '';
+				applyState(updates, { scrollToTop: true });
+			});
+			return span;
+		};
+
+		if (state.category) {
+			const cat = (cache.categories || []).find(c => c.slug === state.category);
+			wrap.appendChild(makeChip(`Category: ${cat ? cat.name : state.category}`, 'category'));
+		}
+		if (state.tag) {
+			const tag = (cache.tags || []).find(t => t.slug === state.tag);
+			wrap.appendChild(makeChip(`Tag: ${tag ? tag.name : state.tag}`, 'tag'));
+		}
+		if (state.month) {
+			const arch = (cache.archives || []).find(a => a.slug === state.month);
+			wrap.appendChild(makeChip(`Month: ${arch ? arch.label : state.month}`, 'month'));
+		}
+	}
+
+	// small defaults and helper functions to avoid runtime ReferenceErrors
+	const fallback = 'images/news-placeholder.jpg';
+
+	function applyClientFilterAndRender(scrollToTop = false) {
+		// No advanced client-side filtering yet; render server page as-is
+		renderPosts(cachedPostsPage);
+		if (scrollToTop) {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	}
+
+	// If other scripts replace the posts container after our initial render,
+	// run a silent reload once the full page has loaded. This ensures posts
+	// appear after hard refresh without showing loading UI.
+	window.addEventListener('load', () => {
+		setTimeout(() => {
+			try {
+				if (Array.isArray(cachedPostsPage) && cachedPostsPage.length > 0) {
+					// we already have posts — render again to be safe
+					renderPosts(cachedPostsPage);
+					return;
+				}
+				// otherwise silently try to load posts once more
+				loadPosts(false, 0);
+			} catch (e) {
+				console.debug('[blog] load on window.load failed', e);
+			}
+		}, 120);
+	});
+
+	function searchPostsByDate(year, month, day) {
+		// Build month slug and update state so loadPosts runs with the correct filters
+		const monthSlug = `${year}-${String(month).padStart(2, '0')}`;
+		applyState({ month: monthSlug, day: String(day), page: 1 }, { scrollToTop: true });
+	}
+
 
 	function renderRecentPosts(items) {
 		const list = document.querySelector('.widget_recent_entries ul');
@@ -817,9 +1102,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	async function fetchJson(url, signal) {
 		const response = await fetch(url, { signal });
 		if (!response.ok) {
-			throw new Error(`Request failed with status ${response.status}`);
+			const text = await response.text().catch(() => '');
+			throw new Error(`Request failed with status ${response.status}. Response: ${String(text).slice(0,200)}`);
 		}
-		const payload = await response.json();
+
+		const contentType = (response.headers.get('content-type') || '').toLowerCase();
+		let payload;
+		if (!contentType.includes('application/json')) {
+			const text = await response.text().catch(() => '');
+			console.error('[blog] Expected JSON response but received:', contentType, ' — first chars:', String(text).slice(0,200));
+			throw new Error('Expected JSON response from server.');
+		}
+
+		try {
+			payload = await response.json();
+		} catch (err) {
+			const text = await response.text().catch(() => '');
+			console.error('[blog] JSON parse failed. Response text:', String(text).slice(0,1000));
+			throw err;
+		}
+
 		if (!payload || typeof payload !== 'object') {
 			throw new Error('Malformed server response.');
 		}

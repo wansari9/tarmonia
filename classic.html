@@ -41,6 +41,22 @@
             width: 100%;
         }
     }
+    /* Position news filter pills higher and centered (matches requested layout) */
+    .tarmonia-news { position: relative; }
+    .tarmonia-news .filter-row {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: -60px; /* lifts the pills up — tweak if needed */
+        position: relative;
+        z-index: 3;
+    }
+    @media (max-width: 992px) {
+        .tarmonia-news .filter-row { margin-top: -30px; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+        .tarmonia-news .filter-row { margin-top: 0; flex-wrap: wrap; }
+    }
     </style>
 </head>
 
@@ -182,17 +198,7 @@
                 <div class="content">
                     <div class="tarmonia-news-outer">
                         <main class="tarmonia-news">
-                        <div class="news-hero">
-                            <div class="hero-left">
-                                <h1>Our News & Insights</h1>
-                                <p>Announcements, events, and fresh ideas from the farm — stories about our people, practices, and products.</p>
-                            </div>
-                            <div class="hero-right">
-                                <div class="hero-illustration">
-                                    <img src="images/big-logo.png" alt="Tarmonia" style="max-width:100%;height:auto;opacity:.95;">
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <div class="filter-row">
                             <div class="pills" role="tablist" aria-label="News filters">
@@ -413,6 +419,76 @@
 
 <a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
 <div class="custom_html_section"></div>
+<script>
+// Global error/debug overlay to catch runtime errors that might hide the page.
+(function(){
+    function createOverlay() {
+        var existing = document.getElementById('js-error-overlay');
+        if (existing) return existing;
+        var o = document.createElement('div');
+        o.id = 'js-error-overlay';
+        o.style.position = 'fixed';
+        o.style.zIndex = 999999;
+        o.style.left = '12px';
+        o.style.right = '12px';
+        o.style.top = '12px';
+        o.style.padding = '12px';
+        o.style.background = 'rgba(255,255,255,0.98)';
+        o.style.color = '#900';
+        o.style.border = '2px solid #900';
+        o.style.borderRadius = '6px';
+        o.style.boxShadow = '0 6px 24px rgba(0,0,0,0.2)';
+        o.style.maxHeight = '60vh';
+        o.style.overflow = 'auto';
+        o.style.fontFamily = 'monospace';
+        o.style.fontSize = '13px';
+        o.style.display = 'none';
+        var close = document.createElement('button');
+        close.textContent = 'Close';
+        close.style.float = 'right';
+        close.style.marginLeft = '12px';
+        close.addEventListener('click', function(){ o.style.display = 'none'; });
+        o.appendChild(close);
+        var pre = document.createElement('pre');
+        pre.id = 'js-error-overlay-pre';
+        pre.style.whiteSpace = 'pre-wrap';
+        pre.style.margin = '6px 0 0 0';
+        o.appendChild(pre);
+        document.body.appendChild(o);
+        return o;
+    }
+
+    function showError(msg) {
+        try {
+            var o = createOverlay();
+            var pre = document.getElementById('js-error-overlay-pre');
+            if (pre) pre.textContent = (new Date()).toISOString() + '\n' + msg;
+            o.style.display = 'block';
+            console.error('[JS Overlay]', msg);
+        } catch (e) {
+            console.error('[JS Overlay error]', e);
+        }
+    }
+
+    window.addEventListener('error', function(ev){
+        var msg = ev.message + ' at ' + (ev.filename || '') + ':' + (ev.lineno || '') + ':' + (ev.colno || '');
+        showError(msg + '\n\n' + (ev.error && ev.error.stack ? ev.error.stack : ''));
+    });
+    window.addEventListener('unhandledrejection', function(ev){
+        var reason = ev.reason && ev.reason.stack ? ev.reason.stack : String(ev.reason);
+        showError('Unhandled promise rejection:\n' + reason);
+    });
+
+    // protect common destructive APIs (temporary)
+    try{
+        var _open = document.open;
+        document.open = function(){
+            showError('Blocked document.open() call');
+            return _open.apply(document, arguments);
+        };
+    }catch(e){}
+})();
+</script>
 
 <script defer type='text/javascript' src='js/vendor/jquery/jquery.js'></script>
 <script defer type='text/javascript' src='js/vendor/jquery/jquery-migrate.min.js'></script>

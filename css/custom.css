@@ -4812,6 +4812,8 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 .tarmonia-news .hero-illustration { width:220px; height:160px; background:#F5E6C4; border-radius:12px; display:flex; align-items:center; justify-content:center; }
 .tarmonia-news .filter-row { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:24px; }
 .tarmonia-news .pills { display:flex; gap:10px; flex-wrap:wrap; }
+.tarmonia-news .filter-row .pills { margin-right: auto; }
+.tarmonia-news .filter-row .categories-dropdown { margin-left: auto; }
 .tarmonia-news .pill { background:#fff; border:1px solid #e7e7e7; padding:8px 14px; border-radius:999px; cursor:pointer; color:#111827; font-weight:600; box-shadow:0 6px 18px rgba(12,26,58,0.06); }
 .tarmonia-news .pill.active { background:#FEC321; color:#111827; border-color:transparent; }
 .tarmonia-news .categories-btn { background:#fff; border:1px solid #e7e7e7; padding:8px 12px; border-radius:999px; display:flex; gap:8px; align-items:center; cursor:pointer; }
@@ -4821,6 +4823,37 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 .tarmonia-news .menu button { display:block; width:100%; text-align:left; padding:8px 10px; border:none; background:transparent; cursor:pointer; color:#111827; border-radius:6px; }
 .tarmonia-news .menu button:hover { background:#f3f4f6; }
 .tarmonia-news .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.tarmonia-news .cards .card > :not(.card-media):not(.card-body) { display: none; }
+
+/* Card image sizing and layout fixes */
+.tarmonia-news .card { display:flex; flex-direction:column; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(17,24,39,0.06); text-decoration:none; color:inherit; }
+.tarmonia-news .card-media { width:100%; height:200px; background:#f3f4f6; display:block; }
+.tarmonia-news .card-media img { width:100%; height:100%; object-fit:cover; display:block; }
+.tarmonia-news .card-body { padding:18px; display:flex; flex-direction:column; gap:8px; }
+.tarmonia-news .card .cat-badge { display:inline-block; background:#fff6e6; color:#5A8F3D; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; border:1px solid rgba(90,143,61,0.08); }
+.tarmonia-news .card .meta { font-size:13px; color:#6b7280; }
+.tarmonia-news .card .card-title { margin:6px 0 0; font-size:18px; color:#111827; font-weight:700; }
+.tarmonia-news .card p.excerpt { margin:0; color:#4b5563; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* Filter pill active state */
+.tarmonia-news .pill.active,
+.tarmonia-news .categories-btn.active { background:#FEC321; color:#111827; border-color:transparent; }
+
+/* Filter chips */
+.tarmonia-news .filter-chips { display:flex; gap:8px; align-items:center; margin-left:12px; }
+.tarmonia-news .filter-chip { background:#fff; border:1px solid #e7e7e7; padding:6px 10px; border-radius:999px; font-size:13px; display:inline-flex; gap:8px; align-items:center; }
+.tarmonia-news .filter-chip .chip-clear { background:transparent; border:0; font-size:14px; cursor:pointer; padding:0 4px; }
+
+/* Hide any heading accidentally placed directly inside the card
+   (preserve the intended heading inside .card-body) */
+.tarmonia-news .cards .card > h1,
+.tarmonia-news .cards .card > h2,
+.tarmonia-news .cards .card > h3,
+.tarmonia-news .cards .card > h4,
+.tarmonia-news .cards .card > h5,
+.tarmonia-news .cards .card > h6 {
+	display: none;
+}
 .tarmonia-news .card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(17,24,39,0.06); transition:transform .18s ease, box-shadow .18s ease; text-decoration:none; color:inherit; display:flex; flex-direction:column; }
 .tarmonia-news .card:hover { transform:translateY(-6px); box-shadow:0 18px 50px rgba(17,24,39,0.12); }
 .tarmonia-news .card img { width:100%; height:180px; object-fit:cover; display:block; }
