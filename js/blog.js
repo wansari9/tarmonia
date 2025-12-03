@@ -42,6 +42,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 	let postsController = null;
 	const dateFormatter = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 
+	// Estimate reading time (fallback-friendly): count words from available fields
+	function estimateReadTimeFromPost(post, wpm = 200) {
+		try {
+			// Prefer full content if available, then excerpt, then title
+			const raw = String(post.content || post.content_rendered || post.excerpt || post.title || '');
+			// Strip HTML tags if present
+			const text = raw.replace(/<[^>]*>/g, '').trim();
+			if (!text) return '1 min read';
+			const words = text.split(/\s+/).filter(Boolean).length;
+			const minutes = Math.max(1, Math.round(words / wpm));
+			return `${minutes} min read`;
+		} catch (e) {
+			return '1 min read';
+		}
+	}
+
 	try {
 		init();
 	} catch (err) {
@@ -606,6 +622,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
 			const catName = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
 			const dateIso = post.published_at ? new Date(post.published_at.replace(' ', 'T')).toISOString().slice(0,10) : '';
+			const readTimeLabel = estimateReadTimeFromPost(post);
 
 			return `
 				<a class="card" href="${postUrl}" data-date="${dateIso}">
@@ -614,7 +631,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 					</div>
 					<div class="card-body">
 						${catName ? `<span class="cat-badge">${catName}</span>` : ''}
-						<span class="meta">${dateLabel}</span>
+						<span class="meta">${dateLabel ? escapeHtml(dateLabel) + ' • ' : ''}${escapeHtml(readTimeLabel)}</span>
 						<h3 class="card-title">${escapeHtml(post.title || '')}</h3>
 						<p class="excerpt">${escapeHtml(post.excerpt || '')}</p>
 					</div>

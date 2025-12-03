@@ -4982,3 +4982,113 @@ table.shop_table.cart th:nth-child(4), table.shop_table.cart td:nth-child(4) {
 	transform: translateX(0) !important;
 }
 
+/* === Page-specific: Fix white gap above news hero ===
+	 The theme applies ~6.65em top padding to .page_content_wrap (~100px).
+	 `news-modern.css` pulls the hero up by -86px; that can leave a small gap.
+	 This page-targeted override increases the negative pull slightly so the
+	 hero sits flush under the header without affecting other pages.
+*/
+body.blog .tarmonia-news .news-hero {
+	margin-top: -100px !important;
+}
+@media (max-width: 768px) {
+	body.blog .tarmonia-news .news-hero {
+		margin-top: 0 !important;
+	}
+}
+
+/* Remove layout-added spacing above the news block so the hero can sit flush */
+body.blog .tarmonia-news-outer {
+	padding-top: 0 !important;
+}
+body.blog .tarmonia-news {
+	margin-top: 0 !important;
+}
+
+/* === Match About page hero sizing ===
+	 Make the News hero match About's header height and scale so both pages
+	 feel consistent. We match the theme's `.top_panel_image` height (45em)
+	 and scale the title accordingly. Scoped to blog/news pages only.
+*/
+body.blog .tarmonia-news .news-hero {
+	min-height: 520px !important;
+	padding: 96px 28px !important;
+	display:flex !important;
+	flex-direction: column !important;
+	align-items:center !important;
+	justify-content:center !important;
+	text-align:center !important;
+}
+body.blog .tarmonia-news .news-hero__title,
+body.blog .tarmonia-news .news-hero h1,
+body.blog .tarmonia-news .news-hero .news-hero__title {
+	font-size: 56px !important;
+	font-weight: 300 !important;
+	letter-spacing: 4px !important;
+	text-transform: uppercase !important;
+	font-family: 'Raleway', sans-serif !important;
+	line-height: 1.2 !important;
+	text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
+}
+body.blog .tarmonia-news .news-hero__subtitle,
+body.blog .tarmonia-news .news-hero p {
+	font-size: 16px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0.5px !important;
+	color: #ffffff !important;
+	margin-top: 10px !important;
+}
+
+body.blog .tarmonia-news .news-hero__content {
+	max-width: none !important;
+	width: 100% !important;
+}
+
+@media (max-width: 1200px) {
+	body.blog .tarmonia-news .news-hero { min-height: 420px !important; padding: 72px 20px !important; }
+	body.blog .tarmonia-news .news-hero__title { font-size: 42px !important; letter-spacing: 3px !important; }
+}
+@media (max-width: 768px) {
+	body.blog .tarmonia-news .news-hero { min-height: 260px !important; padding: 48px 16px !important; }
+	body.blog .tarmonia-news .news-hero__title { font-size: 28px !important; letter-spacing: 2px !important; }
+	body.blog .tarmonia-news .news-hero__subtitle { font-size: 14px !important; }
+}
+
+/* ============================================
+   CUSTOM ANIMATIONS FOR NEWS HERO & OVERLAYS
+   ============================================ */
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 40px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes scaleAccent {
+	from {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes glow {
+	0%, 100% {
+		text-shadow: 0 0 10px rgba(254, 195, 33, 0), 0 0 20px rgba(254, 195, 33, 0.3);
+	}
+	50% {
+		text-shadow: 0 0 15px rgba(254, 195, 33, 0.5), 0 0 30px rgba(254, 195, 33, 0.6);
+	}
+}
+
+
+
+
