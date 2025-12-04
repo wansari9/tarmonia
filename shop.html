@@ -41,12 +41,7 @@
             width: 100%;
         }
     }
-    body.archive.shoppg {
-      background: #F5E6C4 !important;
-    }
-    .body_wrap, .page_wrap, .page_content_wrap {
-      background: transparent !important;
-    }
+        /* Use theme default background for the shop page */
 
     /* Remove outer box styling for .list_products */
     .list_products {
@@ -60,109 +55,10 @@
       border: none !important;
       display: block !important;
     }
-    .shop-filters, .products {
-      max-width: 1800px;
-      margin: 0 auto;
-    }
-        .products {
-            width: 100%;
-            max-width: 1000px;
+        .shop-filters {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 48px 36px;
-            /* Ensure the grid starts at the first column and items align to the start of their cells */
-            justify-content: start;
-            justify-items: start;
-            grid-auto-flow: row;
-            list-style: none;
         }
-        .products .product {
-            max-width: 320px;
-            min-width: 260px;
-            min-height: 440px;
-            margin: 0;
-      font-size: 1.12em;
-      padding: 38px 24px 46px 24px;
-      background: #fffbe6;
-      border: 2.5px solid #fec321;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(166,124,0,0.12);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: box-shadow 0.2s, border 0.2s, transform 0.2s;
-      position: relative;
-      cursor: pointer;
-      font-family: 'Average', serif;
-    }
-    .products .product:hover {
-      box-shadow: 0 16px 40px rgba(166,124,0,0.18);
-      border-color: #a67c00;
-      transform: translateY(-8px) scale(1.03);
-      z-index: 2;
-    }
-    .products .product-card-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      height: 100%;
-    }
-    .products .product img {
-      width: 100%;
-      max-width: 220px;
-      height: 190px;
-      object-fit: cover;
-      margin: 0 auto 22px auto;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.10);
-      border: 2px solid #fec321;
-      display: block;
-    }
-    .products .product .woocommerce-loop-product__title {
-      font-size: 1.32em;
-      min-height: 2.7em;
-      font-family: 'Libre Baskerville', serif;
-      color: #231f20;
-      margin-bottom: 14px;
-      font-weight: 700;
-      letter-spacing: 0.7px;
-      text-shadow: 0 1px 0 #fffbe6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .products .product .price {
-      color: #a67c00;
-      font-size: 1.22em;
-      font-family: 'Average', serif;
-      margin-bottom: 18px;
-      display: block;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      background: #fff3d3;
-      border-radius: 8px;
-      padding: 6px 0;
-      width: 90%;
-      box-shadow: 0 1px 4px rgba(166,124,0,0.07);
-    }
-    .products .product .post_item_wrap {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .products .product .post_content {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-    }
     .shop-pagination {
       display: flex;
       gap: 10px;
@@ -193,50 +89,89 @@
       background: #ffd966;
       color: #231f20;
     }
-    .shop-filters {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto 32px auto;
-      background: #fffbe6;
-      border: 2px solid #fec321;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(166,124,0,0.08);
-      padding: 28px 32px 18px 32px;
-      display: flex;
-      gap: 36px;
-      align-items: center;
-      flex-wrap: wrap;
-      font-family: 'Libre Baskerville', serif;
-    }
+        .shop-filters {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 28px auto;
+            background: #fffbe6; /* single-color strip */
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 18px 24px;
+            display: flex;
+            gap: 56px; /* increased gap between groups */
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-family: 'Open Sans', sans-serif;
+        }
+        /* Each filter group: label + control alignment and inner gap */
+        .shop-filters > div {
+            display: flex;
+            align-items: center;
+            gap: 18px; /* space between label and input/select */
+        }
     .shop-filters label {
       color: #a67c00;
-      font-size: 1.08em;
+      font-size: 14px;
       font-weight: 700;
       margin-right: 8px;
       letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
     .shop-filters select, .shop-filters input {
-      border: 2px solid #a67c00;
-      border-radius: 8px;
-      padding: 10px 18px;
-      font-size: 1.08em;
+      border: 1px solid rgba(166,124,0,.2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 14px;
       background: #fff;
       color: #231f20;
       font-family: inherit;
-      margin-right: 6px;
-      transition: border 0.2s, box-shadow 0.2s;
-      box-shadow: 0 1px 4px rgba(166,124,0,0.07);
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    }
+    .shop-filters select:hover, .shop-filters input:hover {
+      border-color: rgba(254,195,33,.4);
+      box-shadow: 0 4px 10px rgba(166,124,0,.08);
     }
     .shop-filters select:focus, .shop-filters input:focus {
       border-color: #fec321;
       outline: none;
-      box-shadow: 0 2px 8px rgba(166,124,0,0.12);
+      box-shadow: 0 4px 12px rgba(254,195,33,.2);
+      background: #fffce6;
     }
-    .shop-filters select {
-      min-width: 120px;
+        .shop-filters select {
+            min-width: 140px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a67c00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 18px;
+      padding-right: 32px;
     }
+        /* Make only the Sort by select a bit wider */
+        #sortOrder{
+            min-width: 190px;
+        }
     .shop-filters input[type="number"] {
-      min-width: 120px;
+      min-width: 130px;
+    }
+    @media (max-width:900px){
+      .shop-filters{
+        gap:16px;
+        padding:18px 24px;
+      }
+    }
+    @media (max-width:600px){
+      .shop-filters{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+      }
+      .shop-filters select, .shop-filters input{
+        width:100%;
+      }
     }
         /* Center the shop filters and product grid inside the main content area */
         .content .list_products {
@@ -341,7 +276,418 @@
             margin-left: 8px !important;
             padding-left: 8px !important;
         }
+                .tarmonia-products{
+                    background:transparent;
+                    padding:40px 0 64px;
+                    position:relative;
+                }
+                .tarmonia-products::before{ display:none; }
+        .tp-wrap{ width:min(1200px, 94%); margin:0 auto; position:relative; z-index:1; }        .tp-grid{
+          display:grid;
+          grid-template-columns:repeat(auto-fill, minmax(245px, 1fr));
+          gap:32px;
+        }
+        @media (max-width:1100px){
+          .tp-grid{
+            grid-template-columns:repeat(auto-fill, minmax(225px, 1fr));
+            gap:28px;
+          }
+        }
+        @media (max-width:820px){
+          .tp-grid{
+            grid-template-columns:repeat(auto-fill, minmax(185px, 1fr));
+            gap:24px;
+          }
+        }
+        @media (max-width:520px){
+          .tp-grid{
+            grid-template-columns:1fr;
+            gap:20px;
+          }
+        }        .tp-card{
+          background:#F5E6C4;
+          border:1px solid rgba(17,24,39,.1);
+          border-radius:0;
+          overflow:hidden;
+          box-shadow:0 2px 8px rgba(17,24,39,.08), 0 8px 20px rgba(17,24,39,.06);
+          transition:all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          cursor:pointer;
+          position:relative;
+        }
+        .tp-card:hover{
+          transform:translateY(-8px);
+          box-shadow:0 4px 16px rgba(17,24,39,.12), 0 24px 56px rgba(17,24,39,.18), 0 0 0 2px rgba(254,195,33,.15);
+          border-color:rgba(254,195,33,.25);
+        }
+
+        .tp-media{
+          position:relative;
+          background:#fff;
+          border-bottom:3px solid rgba(254,195,33,.15);
+          height:220px;
+          overflow:hidden;
+        }
+                .tp-img{
+          display:block;
+          width:100%;
+          height:220px;
+          object-fit:cover;
+          object-position:center;
+          transition:transform .3s ease;
+          background:#f0f0f0;
+        }
+        .tp-card:hover .tp-img{
+          transform:scale(1.02);
+        }
+                .tp-price-row{
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:8px;
+                    margin-top:4px;
+                }
+                .tp-quickadd-inline{
+                    border:none;
+                    padding:0;
+                    background:transparent;
+                    cursor:pointer;
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:inherit;
+                    font-size:30px;
+                }
+                .tp-quickadd-inline .contact_icon{
+                    width:34px !important;
+                    height:34px !important;
+                    line-height:34px !important;
+                    background:none !important;
+                    border:none !important;
+                    box-shadow:none !important;
+                    color:inherit !important;
+                }
+                .tp-quickadd-inline:focus{ outline:none; }
+        .tp-body{
+          padding:30px 16px 40px;
+          background:linear-gradient(to bottom, #F5E6C4 0%, rgba(245,230,196,.95) 100%);
+        }
+        .tp-title{
+          margin:0 0 6px;
+          font-size:16px;
+          font-weight:900;
+          color:#111827;
+          line-height:1.25;
+          letter-spacing:.2px;
+        }
+        .tp-price{
+          font-size:18px;
+          font-weight:900;
+          color:#73A942;
+          margin:0;
+          letter-spacing:.4px;
+        }
+
+                .tp-fields{ display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; }
+                .tp-field{
+                    width:100%; text-align:left; border-radius:0;
+                    border:1px solid rgba(17,24,39,.14);
+                    background:rgba(255,255,255,.55);
+                    padding:10px; cursor:pointer;
+                }
+
+                .tp-overlay{
+                    position:fixed; inset:0;
+                    background:rgba(17,24,39,.55);
+                    z-index:9998;
+                }
+                .tp-modal{
+                    position:fixed; inset:0; z-index:9999;
+                    display:flex; align-items:center; justify-content:center;
+                    padding:18px;
+                }
+                .tp-modal[hidden], .tp-overlay[hidden]{ display:none !important; }
+                .tp-modal__panel{
+          width:min(1000px, 95vw);
+          max-height:min(88vh, 920px);
+          overflow:auto;
+          background:linear-gradient(135deg, #fff 0%, #faf9f7 50%, #f5f2ee 100%);
+          border:2px solid rgba(254,195,33,.2);
+          border-radius:0;
+          box-shadow:0 50px 140px rgba(0,0,0,.45), 0 0 1px rgba(254,195,33,.3) inset, 0 1px 2px rgba(255,255,255,.6) inset;
+          position:relative;
+          animation:slideUp .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes slideUp{
+          from{ opacity:0; transform:translateY(50px); }
+          to{ opacity:1; transform:translateY(0); }
+        }
+        .tp-modal__close{
+          position:absolute; top:18px; right:18px;
+          width:40px; height:40px; border:0;
+          border-radius:0; background:transparent; cursor:pointer;
+          font-size:20px; font-weight:900;
+          color:#111827;
+          box-shadow:none;
+          transition:all .2s ease;
+          z-index:20;
+          display:flex; align-items:center; justify-content:center;
+        }
+        .tp-modal__close:hover{
+          transform:rotate(90deg) scale(1.1);
+          color:#73A942;
+        }                .tp-modal__layout{
+                    display:grid;
+                    grid-template-columns:1.3fr 1fr;
+                }
+                @media (max-width:820px){ .tp-modal__layout{ grid-template-columns:1fr; } }
+
+        .tp-modal__left{
+          background:#fff;
+          border-right:2px solid rgba(254,195,33,.15);
+        }
+        .tp-modal__img{
+          display:block;
+          width:100%;
+          height:100%;
+          min-height:480px;
+          max-height:600px;
+          object-fit:cover;
+          object-position:center;
+          transition:transform .3s ease;
+          background:#f0f0f0;
+        }
+        .tp-modal:not([hidden]) .tp-modal__img{
+          animation:imageZoom .5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes imageZoom{
+          from{ transform:scale(0.95); opacity:0; }
+          to{ transform:scale(1); opacity:1; }
+        }
+        @media (max-width:820px){
+          .tp-modal__left{ border-right:none; border-bottom:2px solid rgba(254,195,33,.15); }
+          .tp-modal__img{ max-height:320px; }
+        }
+
+        /* Product Badge and Stock Indicators */
+        .tp-badge{
+          position:absolute;
+          top:12px;
+          left:12px;
+          background:#73A942;
+          color:#fff;
+          padding:6px 12px;
+          font-size:11px;
+          font-weight:900;
+          letter-spacing:.3px;
+          text-transform:uppercase;
+          border-radius:0;
+          z-index:5;
+          box-shadow:0 4px 12px rgba(115,169,66,.3);
+        }
+        .tp-badge.badge-new{
+          background:linear-gradient(135deg, #73A942 0%, #6a9a3c 100%);
+        }
+        .tp-badge.badge-popular{
+          background:linear-gradient(135deg, #FEC321 0%, #FFD700 100%);
+          color:#111827;
+        }
+        .tp-badge.badge-sale{
+          background:linear-gradient(135deg, #E63946 0%, #D62828 100%);
+        }
+
+        .tp-accent-line{
+          position:absolute;
+          bottom:0;
+          left:0;
+          right:0;
+          height:5px;
+          background:linear-gradient(90deg, #73A942 0%, #6a9a3c 100%);
+          box-shadow:0 -3px 12px rgba(115,169,66,.2);
+        }
+          position:absolute;
+          bottom:0;
+          left:0;
+          right:0;
+          height:4px;
+          background:rgba(115,169,66,.2);
+          overflow:hidden;
+        }
+        .tp-stock-bar__fill{
+          height:100%;
+          background:linear-gradient(90deg, #73A942 0%, #6a9a3c 100%);
+          transition:width .6s ease;
+        }
+        .tp-stock-bar__fill.low{
+          background:linear-gradient(90deg, #E63946 0%, #D62828 100%);
+        }
+
+        .tp-rating{
+          display:flex;
+          align-items:center;
+          gap:6px;
+          margin-bottom:8px;
+          font-size:12px;
+          font-weight:900;
+          color:#73A942;
+        }
+        .tp-stars{
+          display:inline-flex;
+          gap:2px;
+          color:#FEC321;
+          font-size:13px;
+        }
+
+        @keyframes shimmer{
+          0%{ background-position:-1000px 0; }
+          100%{ background-position:1000px 0; }
+        }
+        .tp-img.loading{
+          background:linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size:1000px 100%;
+          animation:shimmer 2s infinite;
+        }
+
+                .tp-modal__right{ padding:32px; }
+        .tp-modal__title{ margin:0 0 8px; font-weight:900; color:#111827; font-size:28px; line-height:1.2; letter-spacing:-.5px; }
+        .tp-modal__price{ 
+          font-weight:900; 
+          margin:0 0 28px; 
+          color:#fff;
+          background:linear-gradient(135deg, #73A942 0%, #6a9a3c 100%);
+          font-size:32px; 
+          letter-spacing:.5px;
+          padding:12px 16px;
+          display:inline-block;
+          box-shadow:0 8px 20px rgba(115,169,66,.3);
+        }        .tp-modal__section{ 
+          margin-bottom:24px;
+          padding-bottom:20px;
+          border-bottom:1px solid rgba(17,24,39,.08);
+        }
+        .tp-modal__section:last-of-type{
+          border-bottom:none;
+        }
+        .tp-modal__label{
+          font-size:13px;
+          font-weight:900;
+          text-transform:uppercase;
+          letter-spacing:.6px;
+          margin-bottom:12px;
+          color:#111827;
+          display:block;
+        }        .tp-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+        .tp-chip{
+          border:2px solid rgba(17,24,39,.12);
+          background:#fff;
+          border-radius:24px;
+          padding:11px 18px;
+          cursor:pointer;
+          font-weight:700;
+          color:#111827;
+          transition:all .2s cubic-bezier(.34,1.56,.64,1);
+          font-size:13px;
+          letter-spacing:.3px;
+        }
+        .tp-chip:hover:not(.is-active){
+          border-color:#FEC321;
+          background:rgba(254,195,33,.12);
+          transform:translateY(-2px);
+          box-shadow:0 4px 12px rgba(254,195,33,.15);
+        }
+        .tp-chip.is-active{
+          background:#FEC321;
+          border-color:#FEC321;
+          color:#111827;
+          box-shadow:0 6px 16px rgba(254,195,33,.35);
+          transform:scale(1.05);
+          font-weight:900;
+        }        .tp-stepper{ display:flex; gap:8px; align-items:center; border:none; background:transparent; border-radius:0; overflow:visible; }
+        .tp-step{
+          width:10px; height:36px; border:0; border-radius:0;
+          background:#FEC321; font-size:18px; cursor:pointer;
+          font-weight:900; color:#111827;
+          transition:all .2s cubic-bezier(.34,1.56,.64,1);
+          flex-shrink:0;
+          border-right:none;
+          display:flex; align-items:center; justify-content:center;
+        }
+        .tp-step:last-child{ border-right:none; }
+        .tp-step:hover{
+          background:#FFD700;
+          transform:scale(1.1);
+          box-shadow:0 4px 12px rgba(254,195,33,.3);
+        }
+        .tp-step:active{
+          transform:scale(0.95);
+        }
+        .tp-qty{
+          flex:0 0 14px; height:36px; border:0; border-radius:0;
+          padding:0 1px;
+          font-weight:700;
+          font-size:9px;
+          text-align:center;
+          color:#111827;
+          background:#fff;
+          border:2px solid rgba(17,24,39,.12);
+        }
+        /* Hide browser number input arrows */
+        .tp-qty::-webkit-outer-spin-button,
+        .tp-qty::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        .tp-qty[type=number] {
+          -moz-appearance: textfield;
+        }                .tp-btn{
+          width:100%; height:40px;
+          border:0; border-radius:0;
+          font-weight:900; cursor:pointer;
+          transition:all .25s cubic-bezier(.34,1.56,.64,1);
+          font-size:13px;
+          letter-spacing:.4px;
+          text-transform:uppercase;
+        }
+        .tp-btn--primary{
+          background:#73A942;
+          color:#fff;
+          box-shadow:0 12px 28px rgba(115,169,66,.3);
+          position:relative;
+          overflow:hidden;
+        }
+        .tp-btn--primary::before{
+          content:'';
+          position:absolute;
+          inset:0;
+          background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.2) 0%, transparent 70%);
+          opacity:0;
+        }
+        .tp-btn--primary:hover{
+          background:#6a9a3c;
+          box-shadow:0 16px 40px rgba(115,169,66,.4);
+          transform:translateY(-2px);
+        }
+        .tp-btn--primary:hover::before{
+          opacity:1;
+        }
+        .tp-btn--primary:active{
+          transform:translateY(0);
+          box-shadow:0 8px 16px rgba(115,169,66,.3);
+        }
+        .tp-toast{ margin-top:12px; font-weight:900; color:#73A942; min-height:20px; font-size:14px; letter-spacing:.3px; }
+        .tp-toast--floating{
+          position:fixed; bottom:28px; right:28px;
+          background:#73A942; color:#fff;
+          padding:14px 20px; border:2px solid rgba(255,255,255,.3);
+          border-radius:0; box-shadow:0 16px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.2);
+          font-weight:900; letter-spacing:.5px;
+          display:none; z-index:10000;
+          opacity:0;
+          transition:opacity .2s ease;
+        }
+        .tp-toast--floating.is-visible{ display:block; opacity:1; }
+                /* badge replaced by moving the existing floating toast into the product image */
     </style>
+    <link rel='stylesheet' href='css/product-cards.css' type='text/css' media='all' />
 
 </head>
 
@@ -488,7 +834,7 @@
                             <!-- Categories Filter -->
                             <div>
                                 <label for="filter-category" style="font-weight:600;margin-right:8px;">Category:</label>
-                                <select id="filter-category" onchange="filterByCategorySelect(this.value)" style="padding:6px 12px;">
+                                <select id="filter-category" style="padding:6px 12px;">
                                     <option value="all">All</option>
                                     <option value="cheese">Cheese</option>
                                     <option value="butter">Butter</option>
@@ -501,7 +847,7 @@
                             <!-- Price Filter -->
                             <div>
                                 <label for="filter-price" style="font-weight:600;margin-right:8px;">Max Price:</label>
-                                <input type="number" id="filter-price" min="0" max="1000" placeholder="Enter max price" style="padding:6px 12px;width:120px;" oninput="filterByPrice(this.value)" />
+                                <input type="number" id="filter-price" min="0" max="1000" placeholder="Enter max price" style="padding:6px 12px;width:120px;" />
                             </div>
                             <!-- Sort by Price -->
                             <div>
@@ -515,41 +861,14 @@
                         <nav class="woocommerce-breadcrumb">
                             <a href="index.html">Home</a>&nbsp;&#47;&nbsp;Shop
                         </nav>
-                        <header class="woocommerce-products-header"></header>
-                        <div class="mode_buttons">
-                            <form action="#" method="post">
-                                <a href="shop.html" class="woocommerce_thumbs icon-th" title="Show products as thumbs"></a>
-                                <a href="shop-list.html" class="woocommerce_list icon-th-list" title="Show products as list"></a>
-                            </form>
-                        </div>
-                        <p class="woocommerce-result-count">
-                            Showing all 9 results</p>
-                        
-                    
-                        <ul class="products">
-                            <!-- Product list populated dynamically by `js/shop-dynamic.js` using `includes/products_list.php` -->
-                        </ul>
-                        <script>
-                            // Category filter for select
-                            function filterByCategorySelect(category) {
-                                filterByCategory(category);
-                            }
-                            // Price filter
-                            function filterByPrice(maxPrice) {
-                                const products = document.querySelectorAll('.products .product');
-                                products.forEach(product => {
-                                    const priceEl = product.querySelector('.price');
-                                    if (!priceEl) return;
-                                    const priceText = priceEl.textContent.replace(/[^\d.]/g, '');
-                                    const price = parseFloat(priceText);
-                                    if (!maxPrice || price <= maxPrice) {
-                                        product.style.display = 'block';
-                                    } else {
-                                        product.style.display = 'none';
-                                    }
-                                });
-                            }
-                        </script>
+
+                        <main class="tarmonia-products">
+                            <div class="tp-wrap">
+                                <div class="tp-grid" id="tpGrid">
+                                    <!-- Cards rendered dynamically by js/shop-dynamic.js -->
+                                </div>
+                            </div>
+                        </main>
                     </div>
                 </div>
                 <div class="sidebar widget_area scheme_light" role="complementary">
@@ -695,6 +1014,57 @@
     </div>
 </div>
 
+<div id="tpOverlay" class="tp-overlay" hidden></div>
+
+<div id="tpModal" class="tp-modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+    <div class="tp-modal__panel" role="document">
+        <button type="button" class="tp-modal__close" data-modal-close aria-label="Close">X</button>
+
+        <div class="tp-modal__layout">
+            <div class="tp-modal__left">
+                <img id="tpModalImg" class="tp-modal__img" src="images/placeholder.png" alt="" loading="lazy">
+            </div>
+
+            <div class="tp-modal__right">
+                <h2 id="tpModalTitle" class="tp-modal__title">Product</h2>
+                <div id="tpModalPrice" class="tp-modal__price">RM 0.00</div>
+
+                <div class="tp-modal__section" id="secPack" hidden>
+                    <div class="tp-modal__label">Pack Size</div>
+                    <div class="tp-chips" id="optPack" data-opt="quantity_option"></div>
+                </div>
+
+                <div class="tp-modal__section" id="secSize" hidden>
+                    <div class="tp-modal__label">Size</div>
+                    <div class="tp-chips" id="optSize" data-opt="size"></div>
+                </div>
+
+                <div class="tp-modal__section" id="secWeight" hidden>
+                    <div class="tp-modal__label">Weight</div>
+                    <div class="tp-chips" id="optWeight" data-opt="weight"></div>
+                </div>
+
+                <div class="tp-modal__section" id="secFat" hidden>
+                    <div class="tp-modal__label">Fat</div>
+                    <div class="tp-chips" id="optFat" data-opt="fat"></div>
+                </div>
+
+                <div class="tp-modal__section">
+                    <div class="tp-modal__label">Quantity</div>
+                    <div class="tp-stepper">
+                        <button type="button" class="tp-step" data-step="-1">-</button>
+                        <input id="tpQty" class="tp-qty" type="number" min="1" value="1" />
+                        <button type="button" class="tp-step" data-step="1">+</button>
+                    </div>
+                </div>
+
+                <button type="button" id="tpAddBtn" class="tp-btn tp-btn--primary">Add to Cart</button>
+                <div id="tpToast" class="tp-toast" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <a href="#" class="scroll_to_top icon-up" title="Scroll to top"></a>
 <div class="custom_html_section"></div>
 
@@ -777,36 +1147,6 @@
         } catch (err) {
             console.error('DEBUG: error while computing ancestor styles', err);
         }
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const sortOrder = document.getElementById('sortOrder');
-        const productList = document.querySelector('.products');
-        
-        sortOrder.addEventListener('change', function (event) {
-            event.preventDefault();
-            const selectedValue = sortOrder.value;
-            const products = Array.from(productList.children);
-
-            products.sort((a, b) => {
-                const aMin = parseFloat(a.dataset.lowestPrice || '0');
-                const aMax = parseFloat(a.dataset.highestPrice || aMin || '0');
-                const bMin = parseFloat(b.dataset.lowestPrice || '0');
-                const bMax = parseFloat(b.dataset.highestPrice || bMin || '0');
-
-                if (selectedValue === 'price') {
-                    // Sort by min price: low to high
-                    return aMin - bMin;
-                } else if (selectedValue === 'price-desc') {
-                    // Sort by max price: high to low
-                    return bMax - aMax;
-                }
-                return 0;
-            });
-
-        // Clear the product list and re-append products with updated classes
-        productList.innerHTML = '';
-        products.forEach(product => productList.appendChild(product));
-        });
     });
 </script>
 </body>

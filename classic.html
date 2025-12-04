@@ -184,23 +184,23 @@
                         <main class="tarmonia-news">
                         <!-- News modern stylesheet -->
                         <link rel="stylesheet" href="css/news-modern.css">
-                        <div class="filter-row">
+                        <div class="filter-row" data-filter-enhanced="false">
                             <div class="pills" role="tablist" aria-label="News filters">
-                                <button class="pill" data-filter-action="all" type="button">All</button>
+                                <button class="pill" data-filter-action="all" type="button" aria-pressed="true">All</button>
 
-                                <div class="dropdown" id="archives-dropdown">
-                                    <button class="pill" data-filter-action="archives" type="button">Archives ▾</button>
+                                <div class="dropdown" data-filter-dropdown="archives">
+                                    <button class="pill" data-dropdown="archives" type="button" aria-haspopup="true" aria-expanded="false">Archives ▾</button>
                                     <div class="menu" data-menu-for="archives" aria-hidden="true"></div>
                                 </div>
 
-                                <div class="dropdown" id="tags-dropdown">
-                                    <button class="pill" data-filter-action="tags" type="button">Tags ▾</button>
+                                <div class="dropdown" data-filter-dropdown="tags">
+                                    <button class="pill" data-dropdown="tags" type="button" aria-haspopup="true" aria-expanded="false">Tags ▾</button>
                                     <div class="menu" data-menu-for="tags" aria-hidden="true"></div>
                                 </div>
                             </div>
 
-                            <div class="dropdown categories-dropdown">
-                                <button class="categories-btn" aria-haspopup="true" aria-expanded="false" type="button">Categories ▾</button>
+                            <div class="dropdown categories-dropdown" data-filter-dropdown="categories">
+                                <button class="categories-btn" data-dropdown="categories" aria-haspopup="true" aria-expanded="false" type="button">Categories ▾</button>
                                 <div class="menu" data-menu-for="categories" aria-hidden="true"></div>
                             </div>
                         </div>
