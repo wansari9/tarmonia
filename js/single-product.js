@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // First, check session
-        fetch(includeUrl('auth_session.php'), { credentials: 'same-origin' })
+        fetch(includeUrl('auth_session.php'), { credentials: 'same-origin', cache: 'no-store' })
             .then(function(r){ 
                 if (!r.ok) {
                     console.error('[review-gate] auth_session.php returned', r.status);

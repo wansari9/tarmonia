@@ -126,85 +126,128 @@
             <div class="page_content_wrap page_paddings_yes">
                 <div class="content_wrap">
                     <div class="content">
-                        <article class="post_item post_item_single post_featured_default post_format_standard post type-post format-standard has-post-thumbnail hentry">
-                            <section class="post_featured">
-                                <div class="post_thumb" data-image="images/2000x1600.png">
+                        <article class="post_item post_item_single post_featured_default post_format_standard post type-post format-standard has-post-thumbnail hentry bbc-post">
+                            <section class="post_featured bbc-hero">
+                                <div class="post_thumb bbc-hero-media" data-image="images/2000x1600.png">
                                     <a class="hover_icon hover_icon_view" href="images/2000x1600.png" title="">
                                         <img alt="" src="images/2000x1400.png">
                                     </a>
                                 </div>
                             </section>
-                            <section class="post_content">
-                                <div class="post_info">
-                                    <span class="post_info_item post_info_posted">
-                                        <a href="single-post.html" class="post_info_date date updated" content="">Default Date</a>
-                                    </span>
-                                    <span class="post_info_item icon-user-1 post_info_posted_by vcard">
-                                        <a href="classic.html" class="post_info_author"></a>
-                                    </span>
-                                    <span class="post_info_item post_info_counters">
-                                        <span class="post_counters_item post_counters_views icon-eye-1" title="Views">
-                                            <span class="post_counters_number"></span>
-                                        </span>
-                                        <a class="post_counters_item post_counters_comments icon-comment-1" title="Comments" href="single-post.html#comments">
-                                            <span class="post_counters_number"></span>
-                                        </a>
-                                    </span>
-                                </div>
-                                <section class="post_content">
-                                    <div id="dynamic-content"></div>
-                                </section>
-                                <div class="post_info post_info_bottom">
-                                    <div class="post_info post_info_bottom post_info_share post_info_share_horizontal">
-                                        <div class="sc_socials sc_socials_type_icons sc_socials_shape_round sc_socials_size_tiny sc_socials_share sc_socials_dir_horizontal"><span class="share_caption">Share:</span>
-                                            <div class="sc_socials_item social_item_popup"><a href="#" class="social_icons social_twitter" data-link=""><span class="icon-twitter"></span></a></div>
-                                            <div class="sc_socials_item social_item_popup"><a href="#" class="social_icons social_facebook" data-link=""><span class="icon-facebook"></span></a></div>
-                                            <div class="sc_socials_item social_item_popup"><a href="#" class="social_icons social_gplus-1" data-link=""><span class="icon-gplus-1"></span></a></div>
-                                            <div class="sc_socials_item social_item_popup"><a href="#" class="social_icons social_rss" data-link=""><span class="icon-rss"></span></a></div>
+                            <div class="bbc-two-column">
+                                <div class="bbc-main-column">
+                                    <div class="bbc-breadcrumb" id="dynamic-breadcrumb">
+                                        <a href="index.html">Home</a>
+                                        <span class="breadcrumb-sep">/</span>
+                                        <a href="classic.html">News</a>
+                                        <span class="breadcrumb-sep">/</span>
+                                        <span class="breadcrumb-current">Article</span>
+                                    </div>
+                                    <section class="post_content">
+                                        <header class="bbc-article-header">
+                                            <h1 id="dynamic-title" class="bbc-article-title">Dairy Nutrition and Profitability Optimization</h1>
+                                            <div class="post_info bbc-meta" aria-label="Post details">
+                                                <span class="bbc-meta-item meta-author">
+                                                    <span class="meta-icon icon-user-1" aria-hidden="true"></span>
+                                                    <a href="classic.html" class="post_info_author">Tarmonia Farm</a>
+                                                </span>
+                                                <span class="bbc-meta-sep" aria-hidden="true"></span>
+                                                <span class="bbc-meta-item meta-date">
+                                                    <span class="meta-icon icon-clock-1" aria-hidden="true"></span>
+                                                    <span class="meta-date-text">
+                                                        <span class="meta-label">Posted</span>
+                                                        <a href="single-post.html" class="post_info_date date updated" content="">Nov 8, 2025</a>
+                                                        <span class="post_info_time" title="11:59 AM">11:59 AM</span>
+                                                    </span>
+                                                </span>
+                                                <span class="bbc-meta-sep" aria-hidden="true"></span>
+                                                <span class="bbc-meta-item meta-comments">
+                                                    <a class="post_counters_item post_counters_comments" title="Comments" href="#comments">
+                                                        <span class="meta-icon icon-comment-1" aria-hidden="true"></span>
+                                                        <span class="meta-comments-text"><span class="post_counters_number">0</span> Comments</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </header>
+                                        <div class="bbc-article-body" id="dynamic-content"></div>
+                                        <div class="post_info post_info_bottom meta_cluster">
+                                            <div class="post_meta_divider" aria-hidden="true"></div>
+                                            <div class="meta_cluster_content">
+                                                <div class="meta_chip_group">
+                                                    <div class="meta_group meta_group_categories">
+                                                        <span class="meta_label">Categories</span>
+                                                        <div class="meta_chip_list" id="post-category-chips"></div>
+                                                    </div>
+                                                    <div class="meta_group meta_group_tags" id="post-tags-group" hidden>
+                                                        <span class="meta_label">Tags</span>
+                                                        <div class="meta_chip_list" id="post-tag-chips"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="meta_share_group">
+                                                    <span class="meta_label">Share</span>
+                                                    <div class="meta_share_icons">
+                                                        <a class="share_icon social_icons social_twitter" href="#" data-link="" aria-label="Share on Twitter"><span class="icon-twitter"></span></a>
+                                                        <a class="share_icon social_icons social_facebook" href="#" data-link="" aria-label="Share on Facebook"><span class="icon-facebook"></span></a>
+                                                        <a class="share_icon social_icons social_gplus-1" href="#" data-link="" aria-label="Share on Google"><span class="icon-gplus-1"></span></a>
+                                                        <a class="share_icon social_icons social_rss" href="#" data-link="" aria-label="Copy link"><span class="icon-rss"></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </section>
+                                    <section class="related_wrap related_wrap_empty"></section>
+                                    <section class="comments_wrap">
+                                        <div id="comments" class="comments_list_wrap">
+                                            <h2 class="section_title comments_list_title">0 Comments</h2>
+                                            <ul class="comments_list"></ul>
+                                            <div class="comments_pagination"></div>
+                                        </div>
+                                        <div class="comments_section_divider" aria-hidden="true"><span></span></div>
+                                        <div class="comments_form_wrap">
+                                            <h2 class="section_title comments_form_title">Add Comment</h2>
+                                            <div id="comment-login-prompt" class="comment-login-prompt">
+                                                <div class="comment-login-content">
+                                                    <div class="comment-login-info">
+                                                        <span class="comment-login-icon" aria-hidden="true"></span>
+                                                        <div class="comment-login-copy">
+                                                            <span class="comment-login-label">Member access</span>
+                                                            <p>Please log in to comment.</p>
+                                                        </div>
+                                                    </div>
+                                                    <a class="comment-login-button" href="login.html">Log In</a>
+                                                </div>
+                                            </div>
+                                            <div class="comments_form comment-form-card" id="comment-form-card" hidden>
+                                                <div id="respond" class="comment-respond">
+                                                    <form action="#" method="post" id="commentform" class="comment-form sc_input_hover_default comment-form-modern">
+                                                        <p class="commenting-as-line" id="commenting-as-line" hidden></p>
+                                                        <div class="comments_field comments_message">
+                                                            <textarea id="comment" name="comment" placeholder="Share your thoughts..." rows="5" aria-required="true"></textarea>
+                                                        </div>
+                                                        <input id="author" name="author" type="hidden" value="" />
+                                                        <input id="email" name="email" type="hidden" value="" />
+                                                        <input id="url" name="url" type="hidden" value="" />
+                                                        <p class="form-submit">
+                                                            <input name="submit" type="submit" id="send_comment" class="submit" value="Post Comment" />
+                                                            <input type='hidden' name='comment_post_ID' value='' id='comment_post_ID' />
+                                                            <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+                                                        </p>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <aside class="bbc-sidebar">
+                                    <div class="bbc-sidebar-card">
+                                        <h3>More From The Farm</h3>
+                                        <ul class="bbc-top-stories" id="more-from-farm">
+                                            <li class="bbc-top-placeholder">Gathering fresh stories…</li>
+                                        </ul>
                                     </div>
-                                    <span class="post_info_item post_info_cat"><span class="b-tag">Categories:</span><a class="category_link" href="#"></a></span>
-                                    <span class="post_info_item post_info_tags"><span class="b-tag">Tags:</span><a class="post_tag_link" href="#"></a>, <a class="post_tag_link" href="#"></a></span>
-                                    <br>
-                                </div>
-                            </section>
-                            <section class="post_author author vcard">
-                                <div class="post_author_avatar">
-                                    <a href="classic.html"><img alt="" src="" class="avatar avatar-105 photo" height="105" width="105" /></a>
-                                </div>
-                                <span class="about-author">About author</span>
-                                <h4 class="post_author_title"><span><a href="classic.html" class="fn"></a></span></h4>
-                                <div class="post_author_info" id="dynamic-authorinfo"></div>
-                            </section>
-                            <section class="related_wrap related_wrap_empty"></section>
+                                </aside>
+                            </div>
                         </article>
-
-                        <section class="comments_wrap">
-                            <div id="comments" class="comments_list_wrap">
-                                <h2 class="section_title comments_list_title">0 Comments</h2>
-                                <ul class="comments_list"></ul>
-                                <div class="comments_pagination"></div>
-                            </div>
-                            <div class="comments_form_wrap">
-                                <h2 class="section_title comments_form_title">Add Comment</h2>
-                                <div class="comments_form">
-                                    <div id="respond" class="comment-respond">
-                                        <form action="#" method="post" id="commentform" class="comment-form sc_input_hover_default">
-                                            <p class="comments_notes">Your email address will not be published. Required fields are marked *</p>
-                                            <div class="comments_field comments_author"><input id="author" name="author" type="text" placeholder="Name *" value="" size="30" aria-required="true" /></div>
-                                            <div class="comments_field comments_email"><input id="email" name="email" type="text" placeholder="Email *" value="" size="30" aria-required="true" /></div>
-                                            <div class="comments_field comments_site"><input id="url" name="url" type="text" placeholder="Website" value="" size="30" aria-required="true" /></div>
-                                            <div class="comments_field comments_message"><textarea id="comment" name="comment" placeholder="Comment" aria-required="true"></textarea></div>
-                                            <p class="form-submit">
-                                                <input name="submit" type="submit" id="send_comment" class="submit" value="Post Comment" />
-                                                <input type='hidden' name='comment_post_ID' value='' id='comment_post_ID' />
-                                                <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-                                            </p>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
 
                     </div>
                 </div>

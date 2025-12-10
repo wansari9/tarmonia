@@ -487,9 +487,20 @@
     var optSize = document.getElementById('optSize');
     var optWeight = document.getElementById('optWeight');
     var optFat = document.getElementById('optFat');
+    var scrollablePanel = modal ? modal.querySelector('.tp-modal__details') : null;
 
     if (!grid || !overlay || !modal || !elImg || !elTitle || !elPrice || !elQty || !elAdd) return;
     modalBound = true;
+
+    function blockBackgroundScroll(e){
+      if (modal.hidden) return;
+      if (scrollablePanel && scrollablePanel.contains(e.target)) return;
+      e.preventDefault();
+    }
+    if (modal){
+      modal.addEventListener('wheel', blockBackgroundScroll, { passive:false });
+      modal.addEventListener('touchmove', blockBackgroundScroll, { passive:false });
+    }
 
     function buildUrl(fragment){
       var clean = String(fragment || '').replace(/^\/+/, '');
@@ -962,7 +973,7 @@
       reviewGateToken++;
       var token = reviewGateToken;
       reviewFormWrapper.innerHTML = '<p class="tp-reviews__loading">Checking review access…</p>';
-      fetch(includeUrl('auth_session.php'), { credentials:'same-origin' })
+      fetch(includeUrl('auth_session.php'), { credentials:'same-origin', cache:'no-store' })
         .then(function(r){ if (!r.ok) throw new Error('session'); return r.json(); })
         .then(function(sess){
           if (token !== reviewGateToken) throw new Error('stale');

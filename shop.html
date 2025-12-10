@@ -412,12 +412,14 @@
                     position:fixed; inset:0; z-index:9999;
                     display:flex; align-items:center; justify-content:center;
                     padding:18px;
+                    overscroll-behavior:contain;
                 }
                 .tp-modal[hidden], .tp-overlay[hidden]{ display:none !important; }
                                 .tp-modal__panel{
                                     width:min(960px, 92vw);
                                     max-width:960px;
-                                    max-height:min(74vh, 660px);
+                                    max-height:min(80vh, 700px);
+                                    height:min(80vh, 700px);
                                     overflow:hidden;
                                     background:#fff;
                                     border:none;
@@ -426,6 +428,8 @@
                                     position:relative;
                                     animation:slideUp .36s cubic-bezier(0.34, 1.56, 0.64, 1);
                                     padding:0;
+                                    display:flex;
+                                    flex-direction:column;
                                 }
         @keyframes slideUp{
           from{ opacity:0; transform:translateY(50px); }
@@ -454,6 +458,9 @@
                     /* slightly wider overall modal, small column tweak */
                     grid-template-columns:0.95fr 1.05fr;
                     min-height:420px;
+                    height:100%;
+                    flex:1;
+                    overscroll-behavior:contain;
                 }
                 @media (max-width:1100px){ .tp-modal__layout{ grid-template-columns:1fr 1fr; } }
                 @media (max-width:900px){ .tp-modal__layout{ grid-template-columns:1fr; } }
@@ -465,6 +472,8 @@
                     display:flex;
                     flex-direction:column;
                     gap:10px;
+                    min-height:0;
+                    overscroll-behavior:contain;
                 }
                 @media (max-width:900px){
                     .tp-modal__gallery{ border-right:none; border-bottom:1px solid #e5e7eb; }
@@ -538,10 +547,11 @@
 
                 .tp-modal__details{
                     background:#fff;
-                    padding:20px 22px 24px;
-                    display:flex;
-                    flex-direction:column;
-                    overflow:auto;
+                    padding:20px 22px 32px;
+                    overflow-y:auto;
+                    height:100%;
+                    min-height:0;
+                    overscroll-behavior:contain;
                 }
                 .tp-modal__header{ margin-bottom:18px; }
                 .tp-modal__eyebrow{
@@ -793,6 +803,8 @@
                     border:1px solid rgba(35,31,32,.18);
                     padding:14px 16px;
                     font-size:14px;
+                    margin-top:18px;
+                    margin-bottom:24px;
                 }
                 /* Product Badge and Stock Indicators */
         .tp-badge{
@@ -837,7 +849,7 @@
           height:4px;
           background:rgba(115,169,66,.2);
           overflow:hidden;
-        }
+        } 
         .tp-stock-bar__fill{
           height:100%;
           background:linear-gradient(90deg, #73A942 0%, #6a9a3c 100%);
@@ -889,11 +901,12 @@
           background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.2) 0%, transparent 70%);
           opacity:0;
         }
-        .tp-btn--primary:hover{
-          background:#6a9a3c;
-          box-shadow:0 16px 40px rgba(115,169,66,.4);
-          transform:translateY(-2px);
-        }
+                .tp-btn--primary:hover{
+                    background:linear-gradient(135deg, #0C1A3A 0%, #16284D 100%);
+                    color:#FEC321 !important;
+                    box-shadow:0 12px 40px rgba(12,26,58,.45), 0 5px 15px rgba(254,195,33,.35);
+                    transform:translateY(-2px) scale(1.01);
+                }
         .tp-btn--primary:hover::before{
           opacity:1;
         }

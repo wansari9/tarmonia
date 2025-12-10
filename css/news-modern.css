@@ -23,7 +23,7 @@
 .tarmonia-news .pills { display:flex; gap:12px; align-items:center; }
 .tarmonia-news .pill,
 .tarmonia-news .categories-btn {
-  display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:999px; border:2px solid rgba(0,0,0,0.1);
+  display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:6px; border:2px solid rgba(0,0,0,0.1);
   background:#fff; cursor:pointer; font-weight:700; color:#2b2b2b; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; font-size:14px;
 }
 .tarmonia-news .pill:hover,
@@ -39,7 +39,7 @@
 
 /* Filter chips area (small removable chips) */
 .tarmonia-news .filter-chips { display:flex; gap:10px; margin-left:12px; }
-.tarmonia-news .filter-chip { background:#fff; padding:8px 12px; border-radius:999px; box-shadow: 0 6px 18px rgba(10,10,10,0.04); font-weight:600; color:#333; }
+.tarmonia-news .filter-chip { background:#fff; padding:8px 12px; border-radius:6px; box-shadow: 0 6px 18px rgba(10,10,10,0.04); font-weight:600; color:#333; }
 .tarmonia-news .filter-chip .chip-clear { border:none; background:transparent; margin-left:8px; font-weight:700; cursor:pointer; }
 
 /* POSTS GRID AREA */

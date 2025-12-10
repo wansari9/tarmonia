@@ -15,6 +15,44 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
     (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https') ||
     (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
 
+// Enforce a single canonical host when provided via environment variables so
+// that cookies/sessions are scoped to one origin only.
+$canonicalHost = null;
+$canonicalScheme = null;
+$appUrl = getenv('APP_URL') ?: '';
+if ($appUrl !== '') {
+    $parts = @parse_url($appUrl);
+    if (is_array($parts)) {
+        if (!empty($parts['host'])) {
+            $canonicalHost = strtolower($parts['host']);
+            if (!empty($parts['port'])) {
+                $canonicalHost .= ':' . $parts['port'];
+            }
+        }
+        if (!empty($parts['scheme'])) {
+            $canonicalScheme = strtolower($parts['scheme']);
+        }
+    }
+}
+
+if ($canonicalHost === null) {
+    $envHost = getenv('APP_CANONICAL_HOST') ?: getenv('APP_HOST') ?: '';
+    if ($envHost !== '') {
+        $envHost = preg_replace('#^https?://#i', '', trim($envHost));
+        $envHost = strtolower(rtrim($envHost, '/'));
+        if ($envHost !== '') {
+            $canonicalHost = $envHost;
+        }
+    }
+}
+
+if ($canonicalHost !== null && strtolower($host) !== $canonicalHost) {
+    $scheme = $canonicalScheme ?: ($isHttps ? 'https' : 'http');
+    $target = $scheme . '://' . $canonicalHost . $uri;
+    header('Location: ' . $target, true, 301);
+    exit;
+}
+
 // Redirect to HTTPS in non-local environments
 if (!$isHttps && !$isLocalHost) {
     $url = 'https://' . $host . $uri;

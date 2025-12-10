@@ -34,6 +34,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 	let currentRequestKey = null;
 	let filterOutsideClickBound = false;
 	const dateFormatter = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+	const fallback = 'images/news/dairy-nutrition.jpg';
+	const NEWS_IMAGES_BY_SLUG = {
+		'dairy-nutrition-profitability': 'images/news/dairy-nutrition.jpg',
+		'milk-cheese-against-allergies': 'images/news/milk-cheese-allergies.jpg',
+		'the-butter-business-growth': 'images/news/butter-business-growth.jpg',
+		'sustainable-dairy-practices': 'images/news/sustainable-dairy-farming.jpg',
+		'global-trends-world-dairy': 'images/news/global-dairy-markets.jpg',
+		'debunking-unhealthy-myths': 'images/news/unhealthy-myths.jpg'
+	};
+	const LEGACY_IMAGE_MAP = {
+		'images/blog1.jpg': NEWS_IMAGES_BY_SLUG['dairy-nutrition-profitability'],
+		'blog1.jpg': NEWS_IMAGES_BY_SLUG['dairy-nutrition-profitability'],
+		'images/blog2.jpg': NEWS_IMAGES_BY_SLUG['milk-cheese-against-allergies'],
+		'blog2.jpg': NEWS_IMAGES_BY_SLUG['milk-cheese-against-allergies'],
+		'images/blog3.jpg': NEWS_IMAGES_BY_SLUG['the-butter-business-growth'],
+		'blog3.jpg': NEWS_IMAGES_BY_SLUG['the-butter-business-growth'],
+		'images/blog4.jpg': NEWS_IMAGES_BY_SLUG['sustainable-dairy-practices'],
+		'blog4.jpg': NEWS_IMAGES_BY_SLUG['sustainable-dairy-practices'],
+		'images/blog5.jpg': NEWS_IMAGES_BY_SLUG['global-trends-world-dairy'],
+		'blog5.jpg': NEWS_IMAGES_BY_SLUG['global-trends-world-dairy'],
+		'images/blog6.jpg': NEWS_IMAGES_BY_SLUG['debunking-unhealthy-myths'],
+		'blog6.jpg': NEWS_IMAGES_BY_SLUG['debunking-unhealthy-myths']
+	};
 
 	// Estimate reading time (fallback-friendly): count words from available fields
 	function estimateReadTimeFromPost(post, wpm = 200) {
@@ -625,6 +648,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 		renderFilterMenus();
 	}
 
+	function resolvePostImage(post) {
+		const slugImage = post && post.slug ? NEWS_IMAGES_BY_SLUG[post.slug] : '';
+		const rawPath = typeof post?.featured_image === 'string' ? post.featured_image.trim() : '';
+		const normalizedPath = rawPath ? rawPath.replace(/^\.?\/+/, '').toLowerCase() : '';
+		if (normalizedPath && LEGACY_IMAGE_MAP[normalizedPath]) {
+			return LEGACY_IMAGE_MAP[normalizedPath];
+		}
+		if (slugImage) {
+			return slugImage;
+		}
+		if (rawPath) {
+			return rawPath;
+		}
+		return fallback;
+	}
+
 	function renderPosts(items) {
 		const container = document.getElementById('blog-list');
 		if (!container) return;
@@ -636,7 +675,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		// Build markup: image (img tag with fallback), category pill, date, title inside card-body, excerpt
 		const html = items.map((post) => {
 			const postUrl = `single-post.html?slug=${encodeURIComponent(post.slug)}`;
-			const imgSrc = post.featured_image ? escapeHtml(post.featured_image) : fallback;
+			const imgSrc = escapeHtml(resolvePostImage(post));
 			const dateLabel = post.published_at ? dateFormatter.format(new Date(post.published_at.replace(' ', 'T'))) : '';
 			const catName = (post.categories && post.categories[0] && post.categories[0].name) ? escapeHtml(post.categories[0].name) : '';
 			const dateIso = post.published_at ? new Date(post.published_at.replace(' ', 'T')).toISOString().slice(0,10) : '';
@@ -958,9 +997,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 			wrap.appendChild(makeChip(`Month: ${arch ? arch.label : state.month}`, 'month'));
 		}
 	}
-
-	// small defaults and helper functions to avoid runtime ReferenceErrors
-	const fallback = 'images/news-placeholder.jpg';
 
 	// If other scripts replace the posts container after our initial render,
 	// run a silent reload once the full page has loaded. This ensures posts

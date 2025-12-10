@@ -3,6 +3,56 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../_db.php';
 
+function normalize_featured_image_path(?string $path): ?string {
+    if ($path === null) return null;
+    $trimmed = trim($path);
+    if ($trimmed === '') return null;
+
+    $legacyMap = [
+        'images/blog1.jpg' => 'images/news/dairy-nutrition.jpg',
+        'images/blog2.jpg' => 'images/news/milk-cheese-allergies.jpg',
+        'images/blog3.jpg' => 'images/news/butter-business-growth.jpg',
+        'images/blog4.jpg' => 'images/news/sustainable-dairy-farming.jpg',
+        'images/blog5.jpg' => 'images/news/global-dairy-markets.jpg',
+        'images/blog6.jpg' => 'images/news/unhealthy-myths.jpg',
+        'images/dairy-nutrition.jpg' => 'images/news/dairy-nutrition.jpg',
+        'images/milk-cheese-allergies.jpg' => 'images/news/milk-cheese-allergies.jpg',
+        'images/butter-business-growth.jpg' => 'images/news/butter-business-growth.jpg',
+        'images/sustainable-dairy-farming.jpg' => 'images/news/sustainable-dairy-farming.jpg',
+        'images/global-dairy-markets.jpg' => 'images/news/global-dairy-markets.jpg',
+        'images/unhealthy-myths.jpg' => 'images/news/unhealthy-myths.jpg',
+        'blog1.jpg' => 'images/news/dairy-nutrition.jpg',
+        'blog2.jpg' => 'images/news/milk-cheese-allergies.jpg',
+        'blog3.jpg' => 'images/news/butter-business-growth.jpg',
+        'blog4.jpg' => 'images/news/sustainable-dairy-farming.jpg',
+        'blog5.jpg' => 'images/news/global-dairy-markets.jpg',
+        'blog6.jpg' => 'images/news/unhealthy-myths.jpg',
+    ];
+
+    if (isset($legacyMap[$trimmed])) {
+        return $legacyMap[$trimmed];
+    }
+
+    $baseDir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
+    $relative = ltrim($trimmed, '/');
+    if ($relative !== '') {
+        $directPath = $baseDir . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relative);
+        if (file_exists($directPath)) {
+            return $trimmed;
+        }
+
+        if (strpos($relative, 'images/news/') !== 0 && strpos($relative, 'images/') === 0) {
+            $newsRelative = 'images/news/' . basename($relative);
+            $newsPath = $baseDir . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $newsRelative);
+            if (file_exists($newsPath)) {
+                return $newsRelative;
+            }
+        }
+    }
+
+    return $trimmed;
+}
+
 $pdo = api_get_pdo();
 
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' => ['default' => 1]]);
@@ -160,7 +210,7 @@ foreach ($rows as $row) {
         'title' => $row['title'],
         'slug' => $row['slug'],
         'excerpt' => $row['excerpt'],
-        'featured_image' => $row['featured_image'],
+        'featured_image' => normalize_featured_image_path($row['featured_image'] ?? null),
         'published_at' => $row['published_at'],
         'categories' => $categoryMap[$postId] ?? [],
         'tags' => $tagMap[$postId] ?? [],

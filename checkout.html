@@ -28,7 +28,7 @@
     <script>
         (function() {
             // Check authentication immediately before page loads
-            fetch('includes/auth_session.php', { credentials: 'same-origin' })
+            fetch('includes/auth_session.php', { credentials: 'same-origin', cache: 'no-store' })
                 .then(function(r) { return r.json(); })
                 .then(function(session) {
                     if (!session || !session.authenticated) {

@@ -63,6 +63,12 @@ try {
     $_SESSION['user_first_name'] = $first;
     $_SESSION['user_last_name'] = $last;
     $_SESSION['user_role'] = $role;
+    if (!isset($_SESSION['canonical_host']) || !$_SESSION['canonical_host']) {
+        $_SESSION['canonical_host'] = $_SERVER['HTTP_HOST'] ?? null;
+        if (function_exists('tarmonia_is_https')) {
+            $_SESSION['canonical_scheme'] = tarmonia_is_https() ? 'https' : 'http';
+        }
+    }
 
     echo json_encode([
         'success' => true,

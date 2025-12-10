@@ -8,7 +8,26 @@ declare(strict_types=1);
 require_once __DIR__ . '/security.php';
 require_once __DIR__ . '/env.php';
 
+if (!defined('TARMONIA_SESSION_NAME')) {
+    define('TARMONIA_SESSION_NAME', 'tarmonia_session');
+}
+
 if (session_status() === PHP_SESSION_NONE) {
+    // Ensure session files are stored in a writable path, configurable via env.
+    $sessionDir = getenv('SESSION_SAVE_PATH');
+    if (!$sessionDir || !is_string($sessionDir)) {
+        $sessionDir = __DIR__ . '/../storage/sessions';
+    }
+    if (!is_dir($sessionDir)) {
+        @mkdir($sessionDir, 0775, true);
+    }
+    if (is_dir($sessionDir) && is_writable($sessionDir)) {
+        session_save_path($sessionDir);
+    }
+
+    if (session_name() !== TARMONIA_SESSION_NAME) {
+        session_name(TARMONIA_SESSION_NAME);
+    }
     $hostRaw = $_SERVER['HTTP_HOST'] ?? '';
     // Strip port if present (e.g. example.com:2083) to avoid invalid cookie domain values
     $host = is_string($hostRaw) ? preg_replace('/:\\d+$/', '', $hostRaw) : '';

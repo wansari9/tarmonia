@@ -4,20 +4,32 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlParams.get(param);
     }
 
+    const includeUrl = (file) => (window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/' + file) : 'includes/' + file);
+
     const slugParam = getQueryParam('slug') || getQueryParam('content') || getQueryParam('id');
     const isNumeric = slugParam && /^\d+$/.test(slugParam);
     const apiUrl = 'api/posts/get.php' + (slugParam ? (isNumeric ? '?id=' + encodeURIComponent(slugParam) : '?slug=' + encodeURIComponent(slugParam)) : '');
 
     const dynamicContent = document.getElementById('dynamic-content');
     const dynamicImage = document.querySelector('.post_thumb img');
+    const heroMedia = document.querySelector('.bbc-hero-media');
+    const heroAnchor = heroMedia ? heroMedia.querySelector('.hover_icon') : null;
     const authorElement = document.querySelector('.post_info_author');
     const viewsElement = document.querySelector('.post_counters_views .post_counters_number');
     const commentsCountElement = document.querySelector('.post_counters_comments .post_counters_number');
     const dateElement = document.querySelector('.post_info_date');
+    const timeElement = document.querySelector('.post_info_time');
     const titleElement = document.getElementById('dynamic-title');
     const breadcrumbElement = document.getElementById('dynamic-breadcrumb');
     const topPanelInnerContainer = document.querySelector('.top_panel_title_inner');
-    const categoryLink = document.querySelector('.post_info_cat .category_link');
+    const categoriesGroup = document.querySelector('.meta_group_categories');
+    const categoryChipContainer = document.getElementById('post-category-chips');
+    const tagsGroup = document.getElementById('post-tags-group');
+    const tagChipContainer = document.getElementById('post-tag-chips');
+    const shareTwitter = document.querySelector('.meta_share_icons .social_twitter');
+    const shareFacebook = document.querySelector('.meta_share_icons .social_facebook');
+    const shareGoogle = document.querySelector('.meta_share_icons .social_gplus-1');
+    const shareCopy = document.querySelector('.meta_share_icons .social_rss');
     const tagCloudContainer = document.querySelector('.widget_tag_cloud .tagcloud');
     const categoriesList = document.querySelector('.widget_categories ul');
     const recentList = document.querySelector('.widget_recent_entries ul');
@@ -25,6 +37,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const calendarWrap = document.getElementById('calendar_wrap');
     const commentsWrap = document.getElementById('comments');
     const authorInfoElement = document.getElementById('dynamic-authorinfo');
+    const commentFormCard = document.getElementById('comment-form-card');
+    const commentLoginPrompt = document.getElementById('comment-login-prompt');
+    const commentingAsLine = document.getElementById('commenting-as-line');
+    const commentForm = document.getElementById('commentform');
+    const hiddenAuthorField = document.getElementById('author');
+    const hiddenEmailField = document.getElementById('email');
+    const hiddenUrlField = document.getElementById('url');
+    const moreStoriesList = document.getElementById('more-from-farm') || document.querySelector('.bbc-top-stories');
+    const moreStoriesTitle = document.querySelector('.bbc-sidebar-card h3');
 
     if (!slugParam) {
         if (dynamicContent) dynamicContent.innerHTML = '<h1>Content Not Found</h1><p>No post specified.</p>';
@@ -32,6 +53,230 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function safeText(s) { return s ? String(s) : ''; }
+
+    function slugify(value) {
+        if (!value) return '';
+        return String(value)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    function createMetaChip(label, href, type) {
+        const chip = document.createElement('a');
+        chip.className = 'meta_chip' + (type ? ' meta_chip_' + type : '');
+        chip.href = href || '#';
+        chip.textContent = label || '';
+        return chip;
+    }
+
+    const sidebarLabelFallbacks = ['Farm Update', 'Herd Health', 'Milk & Nutrition', 'Pasture Notes'];
+
+    // Resolve legacy or missing featured_image paths to real assets
+    const SIDEBAR_FALLBACK_IMAGE = 'images/news/dairy-nutrition.jpg';
+    const LEGACY_IMAGE_MAP = {
+        'images/blog1.jpg': 'images/news/dairy-nutrition.jpg',
+        'blog1.jpg': 'images/news/dairy-nutrition.jpg',
+        'images/blog2.jpg': 'images/news/milk-cheese-allergies.jpg',
+        'blog2.jpg': 'images/news/milk-cheese-allergies.jpg',
+        'images/blog3.jpg': 'images/news/butter-business-growth.jpg',
+        'blog3.jpg': 'images/news/butter-business-growth.jpg',
+        'images/blog4.jpg': 'images/news/sustainable-dairy-farming.jpg',
+        'blog4.jpg': 'images/news/sustainable-dairy-farming.jpg',
+        'images/blog5.jpg': 'images/news/global-dairy-markets.jpg',
+        'blog5.jpg': 'images/news/global-dairy-markets.jpg',
+        'images/blog6.jpg': 'images/news/unhealthy-myths.jpg',
+        'blog6.jpg': 'images/news/unhealthy-myths.jpg'
+    };
+
+    function resolveFeaturedImage(raw) {
+        if (!raw) return SIDEBAR_FALLBACK_IMAGE;
+        const clean = String(raw).trim();
+        if (LEGACY_IMAGE_MAP[clean]) return LEGACY_IMAGE_MAP[clean];
+        return clean;
+    }
+
+    function normalizePostItems(payload) {
+        if (!payload) return [];
+        if (Array.isArray(payload.items)) return payload.items;
+        if (payload.ok === true && payload.data) {
+            if (Array.isArray(payload.data.items)) return payload.data.items;
+            if (Array.isArray(payload.data)) return payload.data;
+        }
+        return [];
+    }
+
+    function formatSidebarDate(dateStr) {
+        if (!dateStr) return '';
+        const dt = new Date(dateStr);
+        if (isNaN(dt.getTime())) return '';
+        return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+
+    function formatPostDateTime(dateStr) {
+        if (!dateStr) return null;
+        const dt = new Date(dateStr);
+        if (isNaN(dt.getTime())) {
+            return {
+                dateText: dateStr,
+                timeText: '',
+                tooltip: dateStr
+            };
+        }
+        const dateText = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        const timeText = dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        return {
+            dateText,
+            timeText,
+            tooltip: dateText + ' • ' + timeText
+        };
+    }
+
+    function friendlySidebarLabel(item) {
+        if (item && Array.isArray(item.categories) && item.categories.length) {
+            return item.categories[0].name || sidebarLabelFallbacks[0];
+        }
+        if (item && Array.isArray(item.tags) && item.tags.length) {
+            return item.tags[0].name || sidebarLabelFallbacks[1];
+        }
+        return sidebarLabelFallbacks[Math.floor(Math.random() * sidebarLabelFallbacks.length)];
+    }
+
+    function buildSidebarItem(item) {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = 'single-post.html?slug=' + encodeURIComponent(item.slug || '');
+        const img = document.createElement('img');
+        img.src = resolveFeaturedImage(item.featured_image);
+        img.alt = item.title || '';
+        img.loading = 'lazy';
+        const textWrap = document.createElement('div');
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'bbc-top-title';
+        titleSpan.textContent = item.title || 'Farm story';
+        const metaSpan = document.createElement('span');
+        metaSpan.className = 'bbc-top-meta';
+        const label = friendlySidebarLabel(item);
+        const dateText = formatSidebarDate(item.published_at);
+        metaSpan.textContent = dateText ? label + ' • ' + dateText : label;
+        textWrap.appendChild(titleSpan);
+        textWrap.appendChild(metaSpan);
+        link.appendChild(img);
+        link.appendChild(textWrap);
+        li.appendChild(link);
+        return li;
+    }
+
+    function fetchPostList(params) {
+        const query = new URLSearchParams(Object.assign({ per_page: 6 }, params || {}));
+        return fetch('api/posts/list.php?' + query.toString(), { credentials: 'same-origin' })
+            .then(res => res.json())
+            .then(normalizePostItems)
+            .catch(() => []);
+    }
+
+    function renderMoreFromFarm(post) {
+        if (!moreStoriesList) return;
+        if (moreStoriesTitle) moreStoriesTitle.textContent = 'More From The Farm';
+        moreStoriesList.innerHTML = '<li class="bbc-top-placeholder">Gathering fresh stories…</li>';
+
+        const excludeSlug = (post.slug || '').toLowerCase();
+        const seen = new Set();
+        if (excludeSlug) seen.add(excludeSlug);
+        const collected = [];
+        const targetCount = 4;
+        const maxCount = 4; // enforce a hard limit of 4 items in the sidebar
+
+        function collect(items) {
+            if (!Array.isArray(items)) return;
+            items.forEach(item => {
+                if (!item || !item.slug) return;
+                const slug = String(item.slug).toLowerCase();
+                if (!slug || seen.has(slug)) return;
+                seen.add(slug);
+                collected.push(item);
+            });
+        }
+
+        const categorySlugs = (post.categories || []).map(cat => cat.slug).filter(Boolean);
+        const tagSlugs = (post.tags || []).map(tag => tag.slug).filter(Boolean);
+        const sources = [];
+
+        if (categorySlugs.length) {
+            sources.push(() => fetchPostList({ category: categorySlugs[0], per_page: 8 }).then(collect));
+        }
+        if (tagSlugs.length) {
+            sources.push(() => fetchPostList({ tag: tagSlugs[0], per_page: 8 }).then(collect));
+        }
+        sources.push(() => fetchPostList({ per_page: 8 }).then(collect));
+
+        function runSources(index) {
+            if (index >= sources.length || collected.length >= targetCount) {
+                return Promise.resolve();
+            }
+            return Promise.resolve()
+                .then(() => sources[index]())
+                .catch(() => {})
+                .then(() => runSources(index + 1));
+        }
+
+        runSources(0).finally(() => {
+            // always show up to `maxCount` items (4) — fall back to whatever is available
+            const finalItems = collected.slice(0, Math.min(maxCount, collected.length));
+            moreStoriesList.innerHTML = '';
+            if (!finalItems.length) {
+                moreStoriesList.innerHTML = '<li class="bbc-top-placeholder">More farm stories coming soon.</li>';
+                return;
+            }
+            finalItems.forEach(item => moreStoriesList.appendChild(buildSidebarItem(item)));
+        });
+    }
+
+    function getUserDisplayName(user) {
+        if (!user) return '';
+        const parts = [];
+        if (user.first_name) parts.push(user.first_name);
+        if (user.last_name) parts.push(user.last_name);
+        if (parts.length) return parts.join(' ').trim();
+        return user.email || '';
+    }
+
+    function showLoggedOutPrompt() {
+        if (commentLoginPrompt) commentLoginPrompt.hidden = false;
+        if (commentFormCard) commentFormCard.hidden = true;
+    }
+
+    function showLoggedInForm(user) {
+        if (commentLoginPrompt) commentLoginPrompt.hidden = true;
+        if (commentFormCard) commentFormCard.hidden = false;
+        if (commentingAsLine) {
+            const displayName = getUserDisplayName(user);
+                commentingAsLine.textContent = displayName ? 'Commenting as: ' + displayName : 'You\'re signed in.';
+            commentingAsLine.hidden = false;
+        }
+        if (hiddenAuthorField) {
+            const name = getUserDisplayName(user) || 'Member';
+            hiddenAuthorField.value = name;
+        }
+        if (hiddenEmailField) hiddenEmailField.value = (user && user.email) ? user.email : '';
+        if (hiddenUrlField) hiddenUrlField.value = '';
+    }
+
+    function hydrateCommentAccess() {
+        if (!commentFormCard && !commentLoginPrompt) return;
+        fetch(includeUrl('auth_session.php'), { credentials: 'same-origin', cache: 'no-store' })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                if (data && data.authenticated) {
+                    showLoggedInForm(data.user || null);
+                } else {
+                    showLoggedOutPrompt();
+                }
+            })
+            .catch(() => {
+                showLoggedOutPrompt();
+            });
+    }
 
     function renderSidebarWidgets(postPublishedAt) {
         // Categories
@@ -168,27 +413,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 function renderNode(node) {
                     const li = document.createElement('li');
-                    li.className = 'comment_item';
+                    li.className = 'comment_item modern_comment_item';
+
+                    const card = document.createElement('div');
+                    card.className = 'comment_card';
+
                     const avatar = document.createElement('div');
-                    avatar.className = 'comment_author_avatar';
+                    avatar.className = 'comment_card_avatar';
                     avatar.innerHTML = '<img alt="" src="https://www.gravatar.com/avatar/?d=mm&s=64" class="avatar"/>';
-                    const content = document.createElement('div');
-                    content.className = 'comment_content';
-                    const info = document.createElement('div');
-                    info.className = 'comment_info';
-                    info.innerHTML = 'by <span class="comment_author">' + safeText(node.author) + '</span> <span class="comment_date_value">' + safeText(node.created_at) + '</span>';
-                    const textWrap = document.createElement('div');
-                    textWrap.className = 'comment_text_wrap';
+
+                    const body = document.createElement('div');
+                    body.className = 'comment_card_body';
+
+                    const meta = document.createElement('div');
+                    meta.className = 'comment_card_meta';
+                    const authorSpan = document.createElement('span');
+                    authorSpan.className = 'comment_card_author';
+                    authorSpan.textContent = safeText(node.author) || 'Guest';
+                    meta.appendChild(authorSpan);
+                    const dateText = safeText(node.created_at);
+                    if (dateText) {
+                        const divider = document.createElement('span');
+                        divider.className = 'comment_card_divider';
+                        divider.textContent = '•';
+                        meta.appendChild(divider);
+                        const dateSpan = document.createElement('span');
+                        dateSpan.className = 'comment_card_date';
+                        dateSpan.textContent = dateText;
+                        meta.appendChild(dateSpan);
+                    }
+
                     const text = document.createElement('div');
-                    text.className = 'comment_text';
+                    text.className = 'comment_card_text';
                     text.innerHTML = safeText(node.content);
-                    textWrap.appendChild(text);
-                    content.appendChild(info);
-                    content.appendChild(textWrap);
-                    li.appendChild(avatar);
-                    li.appendChild(content);
+
+                    body.appendChild(meta);
+                    body.appendChild(text);
+
+                    card.appendChild(avatar);
+                    card.appendChild(body);
+                    li.appendChild(card);
+
                     if (node.children && node.children.length) {
                         const ul = document.createElement('ul');
+                        ul.className = 'comment_children';
                         node.children.forEach(child => {
                             ul.appendChild(renderNode(child));
                         });
@@ -198,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const list = commentsWrap.querySelector('.comments_list') || document.createElement('ul');
-                list.className = 'comments_list';
+                list.className = 'comments_list modern_comment_list';
                 list.innerHTML = '';
                 roots.forEach(r => list.appendChild(renderNode(r)));
                 // attach
@@ -210,8 +478,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 // update counter in header
                 if (commentsCountElement) commentsCountElement.textContent = String(items.length);
             })
-            .catch(err => { console.error('Comments load error', err); });
+                .catch(err => { console.error('Comments load error', err); });
     }
+
+            hydrateCommentAccess();
 
     fetch(apiUrl, { credentials: 'same-origin' })
         .then(function (res) {
@@ -231,30 +501,91 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             const post = payload.data.post;
+            // Allow a client-side content override for this specific post slug
+            if (post && (post.slug === 'dairy-nutrition-profitability' || (post.title && post.title.indexOf('Dairy Nutrition and Profitability') !== -1))) {
+                post.title = 'Dairy Nutrition and Profitability Optimization';
+                post.content = '\n<p>Feed is your biggest cost on a dairy farm, but it\'s also your biggest chance to improve profit. The goal isn\'t just “cheaper feed” — it\'s better return per kg of dry matter. A ration that keeps intake steady, protects the rumen, and improves components often earns more money than a ration that only chases higher liters.</p>\n\n<p>Start by watching the numbers that actually matter: milk components (fat/protein), feed efficiency, and margin over feed cost. Many profit losses come from hidden issues like inconsistent silage dry matter, sorting at the bunk, too much fast starch, or protein levels that cost more without improving milk. Fixing consistency (mixing order, delivery timing, push-ups, clean water, refusal control) can improve performance quickly without changing many ingredients.</p>\n\n<p>Forage quality is the foundation. Test forage often, adjust for dry matter changes, and reduce shrink. Then fine-tune the ration for stability: enough effective fiber for rumen health, balanced energy for production, and minerals that support strong transitions and fertility. The best “profit ration” is usually the one cows can eat consistently every day.</p>\n';
+            }
             if (!post) {
                 if (dynamicContent) dynamicContent.innerHTML = '<h1>Content Not Found</h1>';
                 return;
             }
 
             // Render content
-            if (dynamicContent) dynamicContent.innerHTML = '<h1>' + safeText(post.title) + '</h1>' + (post.content || post.excerpt || '');
+            if (dynamicContent) {
+                const bodyHtml = post.content || post.excerpt || '';
+                dynamicContent.innerHTML = bodyHtml;
+            }
             if (dynamicImage && post.featured_image) {
-                dynamicImage.src = post.featured_image;
+                dynamicImage.src = resolveFeaturedImage(post.featured_image);
                 dynamicImage.alt = post.title || '';
+                dynamicImage.style.display = 'block';
+                if (heroMedia) heroMedia.classList.remove('hero--fallback');
+                if (heroAnchor) heroAnchor.style.display = '';
+            } else {
+                if (dynamicImage) dynamicImage.style.display = 'none';
+                if (heroMedia) heroMedia.classList.add('hero--fallback');
+                if (heroAnchor) heroAnchor.style.display = 'none';
             }
             if (authorElement) authorElement.textContent = (post.author && post.author.name) ? post.author.name : '';
             if (viewsElement) viewsElement.textContent = '';
             if (commentsCountElement) commentsCountElement.textContent = '';
-            if (dateElement) dateElement.textContent = post.published_at || '';
+            const formattedMeta = formatPostDateTime(post.published_at);
+            if (dateElement) {
+                dateElement.textContent = formattedMeta ? formattedMeta.dateText : (post.published_at || '');
+                if (formattedMeta && formattedMeta.tooltip) {
+                    dateElement.title = formattedMeta.tooltip;
+                } else {
+                    dateElement.removeAttribute('title');
+                }
+            }
+            if (timeElement) {
+                if (formattedMeta && formattedMeta.timeText) {
+                    timeElement.textContent = formattedMeta.timeText;
+                    timeElement.hidden = false;
+                    timeElement.title = formattedMeta.tooltip || '';
+                } else {
+                    timeElement.textContent = '';
+                    timeElement.hidden = true;
+                    timeElement.removeAttribute('title');
+                }
+            }
             if (titleElement) titleElement.textContent = post.title || '';
-            if (breadcrumbElement) breadcrumbElement.textContent = post.title || '';
+            if (breadcrumbElement) {
+                const currentCrumb = breadcrumbElement.querySelector('.breadcrumb-current');
+                if (currentCrumb) currentCrumb.textContent = post.title || '';
+            }
             if (topPanelInnerContainer && post.cssClass) {
                 topPanelInnerContainer.className = topPanelInnerContainer.className.replace(/\bbg_cust_\d+\b/g, '');
                 topPanelInnerContainer.classList.add(post.cssClass);
             }
-            if (categoryLink && post.categories && post.categories.length) {
-                categoryLink.textContent = post.categories[0].name || post.categories[0].slug || '';
-                categoryLink.href = 'classic.html?category=' + encodeURIComponent(post.categories[0].slug || '');
+            if (categoryChipContainer) {
+                const categories = Array.isArray(post.categories) ? post.categories : [];
+                categoryChipContainer.innerHTML = '';
+                if (categories.length) {
+                    categories.forEach(cat => {
+                        const slug = cat.slug || slugify(cat.name);
+                        const href = slug ? 'classic.html?category=' + encodeURIComponent(slug) : 'classic.html';
+                        categoryChipContainer.appendChild(createMetaChip(cat.name || cat.slug || 'Category', href, 'category'));
+                    });
+                    if (categoriesGroup) categoriesGroup.hidden = false;
+                } else if (categoriesGroup) {
+                    categoriesGroup.hidden = true;
+                }
+            }
+            if (tagChipContainer) {
+                const tags = Array.isArray(post.tags) ? post.tags : [];
+                tagChipContainer.innerHTML = '';
+                if (tags.length) {
+                    if (tagsGroup) tagsGroup.hidden = false;
+                    tags.forEach(tag => {
+                        const slug = tag.slug || slugify(tag.name);
+                        const href = slug ? 'classic.html?tag=' + encodeURIComponent(slug) : '#';
+                        tagChipContainer.appendChild(createMetaChip(tag.name || tag.slug || 'Tag', href, 'tag'));
+                    });
+                } else if (tagsGroup) {
+                    tagsGroup.hidden = true;
+                }
             }
             if (authorInfoElement && post.author) {
                 authorInfoElement.textContent = post.author.name || '';
@@ -274,18 +605,41 @@ document.addEventListener('DOMContentLoaded', function () {
             // set share links dynamically to current post
             try {
                 const pageUrl = window.location.href;
-                const twitter = document.querySelector('.social_icons.social_twitter');
-                const facebook = document.querySelector('.social_icons.social_facebook');
-                if (twitter) twitter.dataset.link = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(post.title || '') + '&url=' + encodeURIComponent(pageUrl);
-                if (facebook) facebook.dataset.link = 'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(pageUrl);
+                const title = encodeURIComponent(post.title || '');
+                const encodedUrl = encodeURIComponent(pageUrl);
+                const twitterLink = 'https://twitter.com/intent/tweet?text=' + title + '&url=' + encodedUrl;
+                const facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl;
+                const googleLink = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodedUrl + '&title=' + title;
+                if (shareTwitter) {
+                    shareTwitter.dataset.link = twitterLink;
+                    shareTwitter.href = twitterLink;
+                    shareTwitter.target = '_blank';
+                    shareTwitter.rel = 'noopener';
+                }
+                if (shareFacebook) {
+                    shareFacebook.dataset.link = facebookLink;
+                    shareFacebook.href = facebookLink;
+                    shareFacebook.target = '_blank';
+                    shareFacebook.rel = 'noopener';
+                }
+                if (shareGoogle) {
+                    shareGoogle.dataset.link = googleLink;
+                    shareGoogle.href = googleLink;
+                    shareGoogle.target = '_blank';
+                    shareGoogle.rel = 'noopener';
+                }
+                if (shareCopy) {
+                    shareCopy.dataset.link = pageUrl;
+                    shareCopy.href = pageUrl;
+                }
             } catch (e) {}
 
-            // populate sidebar widgets and comments
+            // populate sidebar widgets + related stories and comments
             renderSidebarWidgets(post.published_at);
+            renderMoreFromFarm(post);
             if (post.id) renderComments(post.id);
 
             // Wire comment form submit to server endpoint
-            const commentForm = document.getElementById('commentform');
             if (commentForm) {
                 commentForm.addEventListener('submit', function (ev) {
                     ev.preventDefault();
@@ -296,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Ensure post id is present
                     if (!fd.get('comment_post_ID') && post.id) fd.append('comment_post_ID', post.id);
 
-                    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/comment_submit.php') : 'includes/comment_submit.php'), { method: 'POST', credentials: 'same-origin', body: fd })
+                    fetch(includeUrl('comment_submit.php'), { method: 'POST', credentials: 'same-origin', body: fd })
                         .then(r => r.json().catch(() => null))
                         .then(res => {
                             if (!res || res.success !== true) {

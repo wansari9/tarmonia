@@ -35,13 +35,51 @@
     });
   }
 
+  function renderSessionDebug(data){
+    try {
+      var payload = data || {};
+      var sid = payload.session_id || 'n/a';
+      var userDescriptor = 'guest';
+      if (payload.user && payload.user.id) {
+        userDescriptor = 'user_id=' + payload.user.id;
+      }
+      var text = 'Session ID: ' + sid + ' | ' + userDescriptor;
+
+      var render = function(){
+        var banner = document.getElementById('session-debug-banner');
+        if (!banner) {
+          banner = document.createElement('div');
+          banner.id = 'session-debug-banner';
+          banner.style.cssText = 'position:fixed;bottom:12px;right:12px;padding:8px 12px;border-radius:8px;background:rgba(12,26,58,0.9);color:#fff;font-size:12px;font-family:monospace;z-index:9999;box-shadow:0 6px 16px rgba(0,0,0,0.25);';
+          banner.textContent = text;
+          document.body.appendChild(banner);
+        } else {
+          banner.textContent = text;
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        var once = function(){
+          document.removeEventListener('DOMContentLoaded', once);
+          render();
+        };
+        document.addEventListener('DOMContentLoaded', once);
+      } else if (document.body) {
+        render();
+      }
+    } catch (err) {
+      // debug banner is optional
+    }
+  }
+
   function init(){
-    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin' })
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin', cache: 'no-store' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(data => {
         if (data && data.csrf_token) {
           try { window.CSRF_TOKEN = data.csrf_token; } catch(e){}
         }
+        renderSessionDebug(data);
         if (!data || !data.authenticated) return;
         applyAuthenticatedUI(data);
       })

@@ -84,21 +84,10 @@
             background: transparent !important; /* ensure parent full-bleed image is visible */
         }
 
-        /* Full-bleed background image behind contact section */
+        /* Full-bleed background image behind contact section (removed) */
         .contact-main-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100vw; /* span entire viewport width */
-            height: 100%;
-            background-image: url('images/contact_form_background.png?v=2');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            z-index: 0;
-            pointer-events: none;
+            display: none !important;
+            content: none !important;
         }
 
         /* Remove decorative shapes defined in global CSS that add a pale center */
@@ -129,23 +118,85 @@
 
         /* Make each contact card a square and keep consistent padding */
         .contact-info-card {
-            background: #fff3d3;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            padding: 22px; /* larger card padding */
+            background: #F3E2C4;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(12, 26, 58, 0.08);
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center; /* center horizontally */
-            text-align: center; /* center text inside */
-            min-height: 230px; /* increased size */
+            align-items: center;
+            text-align: center;
+            min-height: 260px;
             position: relative;
-            z-index: auto; /* ensure cards don't forcibly sit on top */
-            transform: none; /* grid handles the lift now */
+            z-index: auto;
+            transform: none;
             width: 100%;
-            justify-self: center; /* keep card centered in its grid column */
+            justify-self: center;
             box-sizing: border-box;
-            transition: transform .2s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(12, 26, 58, 0.15);
+        }
+
+        /* Icon circle: dark navy gradient, centered, NO shadow */
+        .contact-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0C1A3A 0%, #16284d 100%);
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: none !important;
+            filter: none !important;
+            text-shadow: none !important;
+        }
+
+        .contact-info-card:hover .contact-icon-wrapper {
+            box-shadow: none !important;
+            filter: none !important;
+        }
+
+        /* Icon color: yellow */
+        .contact-icon {
+            font-size: 36px;
+            color: #FEC321 !important;
+            box-shadow: none !important;
+            filter: none !important;
+            text-shadow: none !important;
+        }
+
+        .contact-info-card:hover .contact-icon {
+            color: #FEC321 !important;
+            box-shadow: none !important;
+        }
+
+        /* Title: yellow, uppercase, bold, letter spacing */
+        .contact-card-title {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #FEC321 !important;
+            letter-spacing: 0.14em;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Body text: dark/near black */
+        .contact-card-text {
+            margin: 0;
+            font-size: 15px;
+            color: #1A1A1A;
+            text-align: center;
+            width: 100%;
+            line-height: 1.7;
+            font-weight: 500;
         }
 
         /* Reorder: Phone + Email on top row; Address spans full width below */
@@ -153,21 +204,7 @@
         .contact_info_grid .contact-info-card:nth-child(3) { order: 2; } /* Email */
         .contact_info_grid .contact-info-card:nth-child(1) { order: 3; grid-column: 1 / -1; } /* Address full width */
 
-        .contact-icon-wrapper {
-            width: 60px; /* larger icon badge */
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f3f3f3;
-            border-radius: 50%;
-            margin-bottom: 12px;
-        }
 
-        .contact-icon { font-size: 26px; color: #ffa500; }
-
-        .contact-card-title { margin: 6px 0 4px; font-size: 20px; text-align: center; width: 100%; }
-        .contact-card-text { margin: 0; font-size: 15px; color: #555; text-align: center; width: 100%; }
 
         /* Contact form becomes a distinct container under the cards */
         .contact_form_section {

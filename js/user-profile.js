@@ -341,7 +341,7 @@
   // Initialize on page load
   function init(){
     // Check authentication
-    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin' })
+    fetch((window.AppPaths && typeof window.AppPaths.join === 'function' ? window.AppPaths.join('includes/auth_session.php') : 'includes/auth_session.php'), { credentials: 'same-origin', cache: 'no-store' })
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(data => {
         if(!data || !data.authenticated) {
