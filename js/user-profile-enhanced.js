@@ -6,6 +6,19 @@
   let currentUser = null;
   let currentPage = 1;
   const ordersPerPage = 10;
+  const COMPLETED_STATUSES = new Set(['delivered', 'canceled', 'refunded']);
+  const DEFAULT_ORDERS_TREND = 'Keep exploring seasonal boxes';
+  const STATUS_META = {
+    awaiting_confirmation: { progress: 15, copy: 'Awaiting confirmation' },
+    pending: { progress: 25, copy: 'Pending payment' },
+    paid: { progress: 40, copy: 'Payment received' },
+    packed: { progress: 55, copy: 'Packing your order' },
+    shipped: { progress: 80, copy: 'On the way' },
+    delivered: { progress: 100, copy: 'Delivered' },
+    canceled: { progress: 0, copy: 'Order canceled' },
+    refunded: { progress: 0, copy: 'Order refunded' },
+    default: { progress: 30, copy: 'Processing' }
+  };
 
   // Alert system
   function showAlert(message, type = 'error'){
@@ -21,6 +34,31 @@
       container.insertBefore(alert, container.firstChild);
       setTimeout(() => alert.remove(), 5000);
     }
+  }
+
+  function updateOrderStats({ total = 0, active = 0, lastOrderedAt = null } = {}){
+    const totalEl = document.querySelector('[data-stat-orders]');
+    const activeEl = document.querySelector('[data-stat-active]');
+    const trendEl = document.querySelector('[data-stat-orders-trend]');
+
+    if(totalEl) totalEl.textContent = total;
+    if(activeEl) activeEl.textContent = active;
+    if(trendEl) trendEl.textContent = lastOrderedAt ? `Last order on ${formatDate(lastOrderedAt)}` : DEFAULT_ORDERS_TREND;
+  }
+
+  function getLatestOrderDate(orders){
+    if(!orders || !orders.length) return null;
+    return orders.reduce((latest, order) => {
+      const dateString = order.updated_at || order.created_at;
+      if(!dateString) return latest;
+      if(!latest) return dateString;
+      return new Date(dateString) > new Date(latest) ? dateString : latest;
+    }, null);
+  }
+
+  function getStatusMeta(status){
+    const key = (status || '').toLowerCase();
+    return STATUS_META[key] || STATUS_META.default;
   }
 
   // API helpers with proper response format
@@ -64,81 +102,132 @@
   function initTabs(){
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.profile-tab-content');
+    const highlight = document.querySelector('[data-tab-highlight]');
+    if(!tabButtons.length) return;
+
+    const moveHighlight = (target) => {
+      if(!highlight || !target) return;
+      const parent = target.parentElement;
+      if(!parent) return;
+      const parentRect = parent.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      highlight.style.width = `${targetRect.width}px`;
+      highlight.style.transform = `translateX(${targetRect.left - parentRect.left}px)`;
+    };
+
+    const activateTab = (btn) => {
+      const tabName = btn.dataset.tab;
+      tabButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const targetContent = document.querySelector(`[data-tab-content="${tabName}"]`);
+      if(targetContent) targetContent.classList.add('active');
+      moveHighlight(btn);
+
+      if(tabName === 'orders') loadOrders();
+      if(tabName === 'addresses') loadAddresses();
+    };
 
     tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tabName = btn.dataset.tab;
-        
-        tabButtons.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        
-        btn.classList.add('active');
-        const targetContent = document.querySelector(`[data-tab-content="${tabName}"]`);
-        if(targetContent) targetContent.classList.add('active');
+      btn.setAttribute('aria-selected', btn.classList.contains('active') ? 'true' : 'false');
+      btn.addEventListener('click', () => activateTab(btn));
+    });
 
-        if(tabName === 'orders') loadOrders();
-        if(tabName === 'addresses') loadAddresses();
-      });
+    const activeTab = document.querySelector('.tab-button.active') || tabButtons[0];
+    if(activeTab) {
+      activeTab.setAttribute('aria-selected', 'true');
+      moveHighlight(activeTab);
+    }
+
+    window.addEventListener('resize', () => {
+      const current = document.querySelector('.tab-button.active');
+      if(current) moveHighlight(current);
     });
   }
 
   // Load orders
   async function loadOrders(page = 1){
     currentPage = page;
-    const container = document.querySelector('[data-tab-content="orders"]');
-    if(!container) return;
+    const ordersList = document.querySelector('[data-orders-list]');
+    const paginationEl = document.querySelector('[data-orders-pagination]');
+    if(!ordersList) return;
 
-    container.innerHTML = '<div style="text-align:center;padding:40px;">Loading orders...</div>';
+    ordersList.innerHTML = '<div class="loading-state">Loading orders...</div>';
+    if(paginationEl) paginationEl.innerHTML = '';
 
     try {
       const data = await apiGet(`${API_BASE}orders.php?page=${page}&limit=${ordersPerPage}`);
       const orders = data.orders || [];
-      const total = data.total || 0;
+      const total = typeof data.total === 'number' ? data.total : orders.length;
       const totalPages = data.total_pages || 1;
 
+      updateOrderStats({
+        total,
+        active: orders.filter(order => !COMPLETED_STATUSES.has((order.status || '').toLowerCase())).length,
+        lastOrderedAt: getLatestOrderDate(orders)
+      });
+
       if(orders.length === 0){
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">📦</div>
-            <div class="empty-state-text">No orders yet</div>
-            <p>Your order history will appear here</p>
+        ordersList.innerHTML = `
+          <div class="empty-state empty-state--orders">
+            <div class="empty-graphic" aria-hidden="true"></div>
+            <h3>No orders yet</h3>
+            <p>Your order history will appear here once you place your first order.</p>
+            <a href="shop.html" class="btn btn-primary">Browse products</a>
           </div>
         `;
         return;
       }
 
-      container.innerHTML = `
-        <div class="orders-list">
-          ${orders.map(order => renderOrderCard(order)).join('')}
-        </div>
-        ${totalPages > 1 ? renderPagination(currentPage, totalPages) : ''}
-      `;
+      ordersList.innerHTML = orders.map(order => renderOrderCard(order)).join('');
+      if(paginationEl){
+        paginationEl.innerHTML = totalPages > 1 ? renderPagination(currentPage, totalPages) : '';
+      }
 
-      // Attach event listeners
       attachOrderActions();
     } catch (error) {
-      container.innerHTML = `<div class="alert alert-error">Failed to load orders: ${error.message}</div>`;
+      ordersList.innerHTML = `<div class="alert alert-error">Failed to load orders: ${error.message}</div>`;
     }
   }
 
   // Render order card
   function renderOrderCard(order){
-    const statusClass = `status-${order.status.replace(/ /g, '_')}`;
+    const statusKey = (order.status || 'pending').toString();
+    const statusClass = `status-${statusKey.toLowerCase().replace(/\s+/g, '_')}`;
     const canModify = order.can_modify || false;
     const currency = order.currency || 'RM';
+    const statusMeta = getStatusMeta(statusKey);
 
     return `
-      <div class="order-card" data-order-id="${order.id}">
-        <div class="order-header">
-          <div class="order-info">
-            <h3>Order #${order.order_number || order.id}</h3>
-            <div class="order-meta">
-              <span>📅 ${formatDate(order.created_at)}</span>
-              <span>📦 ${order.item_count} item(s)</span>
-            </div>
+      <article class="order-card" data-order-id="${order.id}">
+        <header class="order-card-header">
+          <div class="order-card-title">
+            <span class="order-card-label">Order</span>
+            <span class="order-card-number">#${order.order_number || order.id}</span>
           </div>
-          <div class="order-status-badge ${statusClass}">
-            ${formatStatus(order.status)}
+          <div class="order-card-status">
+            <span class="order-status-badge ${statusClass}">
+              ${formatStatus(order.status)}
+            </span>
+            <span class="order-card-date">${formatDate(order.created_at)}</span>
+          </div>
+        </header>
+
+        <div class="order-card-body">
+          <div class="order-meta-pills">
+            <span class="order-pill">${order.item_count || 0} item(s)</span>
+            <span class="order-pill">Total ${currency} ${parseFloat(order.grand_total || 0).toFixed(2)}</span>
+            ${order.tracking_number ? `<span class="order-pill">Tracking ${order.tracking_number}</span>` : ''}
+          </div>
+          <div class="order-progress">
+            <div class="order-progress-track">
+              <span class="order-progress-bar" style="--progress:${statusMeta.progress}%"></span>
+            </div>
+            <p class="order-progress-label">${statusMeta.copy}</p>
           </div>
         </div>
 
@@ -152,7 +241,7 @@
             <div class="detail-value">${currency} ${parseFloat(order.shipping_total || 0).toFixed(2)}</div>
           </div>
           <div class="detail-item">
-            <div class="detail-label">Total</div>
+            <div class="detail-label">Grand Total</div>
             <div class="detail-value">${currency} ${parseFloat(order.grand_total || 0).toFixed(2)}</div>
           </div>
           ${order.tracking_number ? `
@@ -171,7 +260,7 @@
             <div class="order-notes-text">${escapeHtml(order.notes)}</div>
           </div>
         ` : canModify ? `
-          <div class="order-notes">
+          <div class="order-notes order-notes--empty">
             <div class="order-notes-empty">No shipping notes yet</div>
           </div>
         ` : ''}
@@ -189,7 +278,7 @@
             </button>
           ` : ''}
         </div>
-      </div>
+      </article>
     `;
   }
 
@@ -366,6 +455,15 @@
     });
   }
 
+  function formatMemberSince(dateString){
+    if(!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-MY', {
+      year: 'numeric',
+      month: 'short'
+    });
+  }
+
   function formatStatus(status){
     const statusMap = {
       'awaiting_confirmation': 'Awaiting Confirmation',
@@ -412,6 +510,8 @@
         const profileTitle = document.querySelector('.profile-title h1');
         const profileEmail = document.querySelector('.profile-email');
         const avatarInitial = document.querySelector('.avatar-initial');
+        const joinedPill = document.querySelector('[data-user-joined]');
+        const memberStat = document.querySelector('[data-stat-member]');
         
         if(profileTitle){
           profileTitle.textContent = `${data.user.first_name} ${data.user.last_name}`.trim() || 'My Profile';
@@ -422,6 +522,14 @@
         if(avatarInitial){
           const initial = (data.user.first_name || 'U').charAt(0).toUpperCase();
           avatarInitial.textContent = initial;
+        }
+        if(joinedPill){
+          const memberSince = formatMemberSince(data.user.created_at);
+          joinedPill.textContent = memberSince ? `Member since ${memberSince}` : 'Member';
+        }
+        if(memberStat){
+          const memberSince = formatMemberSince(data.user.created_at);
+          memberStat.textContent = memberSince || '—';
         }
       }
     } catch (error) {
@@ -435,6 +543,7 @@
     const editBtn = document.querySelector('[data-action="edit-account"]');
     const cancelBtn = document.querySelector('[data-action="cancel-account"]');
     const formActions = document.querySelector('[data-form-actions="account"]');
+    const accountCard = accountForm ? accountForm.closest('.profile-card') : null;
 
     if(editBtn){
       editBtn.addEventListener('click', () => {
@@ -444,6 +553,7 @@
         });
         formActions.style.display = 'flex';
         editBtn.style.display = 'none';
+        if(accountCard) accountCard.classList.add('is-editing');
       });
     }
 
@@ -456,6 +566,7 @@
         });
         formActions.style.display = 'none';
         editBtn.style.display = 'block';
+        if(accountCard) accountCard.classList.remove('is-editing');
       });
     }
 
@@ -474,6 +585,7 @@
           });
           formActions.style.display = 'none';
           editBtn.style.display = 'block';
+          if(accountCard) accountCard.classList.remove('is-editing');
         } catch (error) {
           showAlert('Failed to update profile: ' + error.message, 'error');
         }
@@ -563,26 +675,46 @@
       const data = await window.apiGet(window.API_BASE + 'addresses.php');
 
       if(!data.addresses || data.addresses.length === 0) {
-        addressesList.innerHTML = '<div class="empty-state">No saved addresses</div>';
+        addressesList.innerHTML = `
+          <div class="empty-state empty-state--addresses">
+            <div class="empty-graphic" aria-hidden="true"></div>
+            <h3>No saved addresses</h3>
+            <p>Add an address to speed through checkout.</p>
+          </div>
+        `;
         return;
       }
 
-      addressesList.innerHTML = data.addresses.map(addr => `
-        <div class="address-card ${addr.is_default ? 'default' : ''}">
-          ${addr.is_default ? '<div class="address-badge">Default</div>' : ''}
-          <div class="address-content">
-            <div class="address-name">${window.escapeHtml(((addr.first_name || '') + ' ' + (addr.last_name || '')).trim())}</div>
-            <div class="address-line">${window.escapeHtml(addr.address_line1 || '')}</div>
-            ${addr.address_line2 ? `<div class="address-line">${window.escapeHtml(addr.address_line2)}</div>` : ''}
-            <div class="address-line">${window.escapeHtml(addr.city || '')}, ${window.escapeHtml(addr.state || '')} ${window.escapeHtml(addr.postal_code || '')}</div>
-            <div class="address-line">${window.escapeHtml(addr.country || '')}</div>
-            ${addr.phone ? `<div class="address-line">Phone: ${window.escapeHtml(addr.phone)}</div>` : ''}
-          </div>
-          <div class="address-actions">
-            <button class="btn-address-action" data-addr-id="${addr.id}" data-action="view">View</button>
-          </div>
-        </div>
-      `).join('');
+      addressesList.innerHTML = data.addresses.map(addr => {
+        const name = ((addr.recipient_name || '').trim()) || (((addr.first_name || '') + ' ' + (addr.last_name || '')).trim()) || 'Customer';
+        const cityLine = [addr.city, addr.state, addr.postal_code].filter(Boolean).join(', ');
+        const lines = [addr.address_line1, addr.address_line2, cityLine, addr.country]
+          .filter(Boolean)
+          .map(line => `<span>${window.escapeHtml(line)}</span>`)
+          .join('');
+
+        return `
+          <article class="address-card ${addr.is_default ? 'is-default' : ''}">
+            ${addr.is_default ? '<span class="address-card__badge">Primary</span>' : ''}
+            <div class="address-card__body">
+              <div class="address-card__icon">
+                <svg aria-hidden="true" focusable="false"><use href="#icon-pin"></use></svg>
+              </div>
+              <div class="address-card__info">
+                <p class="address-card__label">${window.escapeHtml(addr.label || (addr.is_default ? 'Home' : 'Saved location'))}</p>
+                <p class="address-card__name">${window.escapeHtml(name)}</p>
+                <div class="address-card__lines">
+                  ${lines}
+                  ${addr.phone ? `<span>Phone: ${window.escapeHtml(addr.phone)}</span>` : ''}
+                </div>
+              </div>
+              <div class="address-card__actions">
+                <button class="btn-address-action" data-addr-id="${addr.id}" data-action="view">View</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
 
       // attach view buttons
       addressesList.querySelectorAll('.btn-address-action').forEach(btn => {

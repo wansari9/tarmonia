@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
                 <div class="top_panel_top">
                     <div class="content_wrap clearfix">
-                        <div class="top_panel_top_contact_area icons icon-phone-1">1(800)-456-789 </div>
+                        <div class="top_panel_top_contact_area icons icon-phone-1">+234807999918</div>
                         <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
                         <div class="top_panel_top_user_area">
                             <div class="top_panel_top_socials">

@@ -46,39 +46,6 @@
         <div class="top_panel_fixed_wrap"></div>
         <header class="top_panel_wrap top_panel_style_1 scheme_original">
             <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
-                <div class="top_panel_top">
-                    <div class="content_wrap clearfix">
-                        <div class="top_panel_top_contact_area icons icon-phone-1">1(800)-456-789 </div>
-                        <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
-                        <div class="top_panel_top_user_area">
-                            <div class="top_panel_top_socials">
-                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_twitter">
-                                            <span class="icon-twitter"></span>
-                                        </a>
-                                    </div>
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_facebook">
-                                            <span class="icon-facebook"></span>
-                                        </a>
-                                    </div>
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_gplus-1">
-                                            <span class="icon-gplus-1"></span>
-                                        </a>
-                                    </div>
-                                    <div class="sc_socials_item">
-                                        <a href="#" target="_blank" class="social_icons social_linkedin">
-                                            <span class="icon-linkedin"></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul id="menu_user" class="menu_user_nav"></ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="top_panel_middle">
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
@@ -89,16 +56,11 @@
                                 </a>
                             </div>
                             <div class="column-1_5 contact_field contact_cart">
-                                <div class="header_actions" style="display:flex;align-items:center;gap:12px;justify-content:flex-end;">
-                                    <a href="#" class="top_panel_cart_button" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
+                                <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="RM0.00" style="flex-shrink:0;">
                                         <span class="contact_icon icon-1"></span>
-                                        <span class="contact_label contact_cart_label">cart:</span>
-                                        <span class="contact_cart_totals">
-                                            <span class="cart_items">0 Items</span>
-                                            <span class="cart_summa">RM0.00</span>
-                                        </span>
                                     </a>
-                                    <a href="login.html" class="top_panel_login_button sc_button sc_button_style_filled sc_button_size_small" style="padding:6px 14px;">Login / Register</a>
+                                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
                                     <a href="user-profile.php" class="user_icon_button" style="display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#72b16a;color:#fff;font-size:15px;text-decoration:none;" title="User">
                                         <span class="user_initial" style="font-weight:600;">U</span>
                                     </a>
@@ -157,27 +119,83 @@
                         <div class="post_content entry-content">
                             
                             <div class="profile-container">
-                                <div class="profile-header">
-                                    <div class="profile-avatar">
-                                        <span class="avatar-initial" data-user-initial>U</span>
-                                    </div>
-                                    <div class="profile-title">
-                                        <h1 data-user-name>My Profile</h1>
-                                        <p class="profile-email" data-user-email>user@example.com</p>
-                                    </div>
-                                    <button class="btn-logout" data-action="logout">
-                                        <span class="icon-logout"></span> Logout
-                                    </button>
-                                </div>
+                                <svg class="profile-icon-sprite" aria-hidden="true" focusable="false">
+                                    <symbol id="icon-profile-user" viewBox="0 0 24 24">
+                                        <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.42 0-8 2.07-8 4.63V21h16v-2.37C20 16.07 16.42 14 12 14z" />
+                                    </symbol>
+                                    <symbol id="icon-box" viewBox="0 0 24 24">
+                                        <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5zm2 .62v6.76l6 3V11.1zm14 0-6 2.98v6.78l6-3z" />
+                                    </symbol>
+                                    <symbol id="icon-pin" viewBox="0 0 24 24">
+                                        <path d="M12 2a7 7 0 0 0-7 7c0 4.25 7 13 7 13s7-8.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 2.5-2.5 2.5 2.5 0 0 1-2.5 2.5z" />
+                                    </symbol>
+                                </svg>
 
-                                <div class="profile-tabs">
-                                    <button class="tab-button" data-tab="account">Account Information</button>
-                                    <button class="tab-button active" data-tab="orders">Order History</button>
-                                    <button class="tab-button" data-tab="addresses">Addresses</button>
+                                <section class="profile-hero">
+                                    <div class="hero-canopy" aria-hidden="true"></div>
+                                    <div class="profile-header">
+                                        <div class="profile-avatar" data-avatar>
+                                            <span class="avatar-initial" data-user-initial>U</span>
+                                            <button class="avatar-upload" type="button" data-action="change-avatar">Change photo</button>
+                                        </div>
+                                        <div class="profile-title">
+                                            <p class="profile-eyebrow">Personal dashboard</p>
+                                            <h1 data-user-name>My Profile</h1>
+                                            <p class="profile-email" data-user-email>user@example.com</p>
+                                            <div class="profile-meta">
+                                                <span class="profile-pill" data-user-joined>Member since 2024</span>
+                                                <span class="profile-pill profile-pill--soft">Customer</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-quick-actions">
+                                            <button class="btn-logout" data-action="logout">
+                                                <span class="icon-logout"></span> Logout
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="profile-stats-grid">
+                                        <article class="profile-stat-card">
+                                            <div class="stat-label">Orders placed</div>
+                                            <div class="stat-value" data-stat-orders>0</div>
+                                            <div class="stat-trend" data-stat-orders-trend>Keep exploring seasonal boxes</div>
+                                        </article>
+                                        <article class="profile-stat-card">
+                                            <div class="stat-label">Active deliveries</div>
+                                            <div class="stat-value" data-stat-active>0</div>
+                                            <div class="stat-trend">Tracking updates in real time</div>
+                                        </article>
+                                        <article class="profile-stat-card">
+                                            <div class="stat-label">Member since</div>
+                                            <div class="stat-value" data-stat-member>&mdash;</div>
+                                            <div class="stat-trend">Thank you for supporting local farms</div>
+                                        </article>
+                                    </div>
+                                </section>
+
+                                <div class="profile-tabs" role="tablist">
+                                    <button class="tab-button" data-tab="account" type="button" role="tab" aria-controls="tab-account">
+                                        <span class="tab-icon">
+                                            <svg aria-hidden="true" focusable="false"><use href="#icon-profile-user"></use></svg>
+                                        </span>
+                                        <span class="tab-label">Account<small>Profile &amp; security</small></span>
+                                    </button>
+                                    <button class="tab-button active" data-tab="orders" type="button" role="tab" aria-controls="tab-orders">
+                                        <span class="tab-icon">
+                                            <svg aria-hidden="true" focusable="false"><use href="#icon-box"></use></svg>
+                                        </span>
+                                        <span class="tab-label">Orders<small>History &amp; tracking</small></span>
+                                    </button>
+                                    <button class="tab-button" data-tab="addresses" type="button" role="tab" aria-controls="tab-addresses">
+                                        <span class="tab-icon">
+                                            <svg aria-hidden="true" focusable="false"><use href="#icon-pin"></use></svg>
+                                        </span>
+                                        <span class="tab-label">Addresses<small>Saved locations</small></span>
+                                    </button>
+                                    <span class="tab-highlight" data-tab-highlight aria-hidden="true"></span>
                                 </div>
 
                                 <!-- Account Tab -->
-                                <div class="profile-tab-content" data-tab-content="account">
+                                <div class="profile-tab-content" id="tab-account" data-tab-content="account">
                                     <div class="profile-card">
                                         <div class="card-header">
                                             <h2>Account Information</h2>
@@ -236,10 +254,14 @@
                                 </div>
 
                                 <!-- Orders Tab -->
-                                <div class="profile-tab-content active" data-tab-content="orders">
+                                <div class="profile-tab-content active" id="tab-orders" data-tab-content="orders">
                                     <div class="profile-card">
-                                        <div class="card-header">
-                                            <h2>Order History</h2>
+                                    <div class="card-header">
+                                            <div>
+                                                <p class="card-eyebrow">Orders</p>
+                                                <h2>Order History</h2>
+                                            </div>
+                                            <a href="shop.html" class="card-cta">Shop new arrivals &rarr;</a>
                                         </div>
                                         <div class="orders-list" data-orders-list>
                                             <div class="loading-state">Loading orders...</div>
@@ -249,7 +271,7 @@
                                 </div>
 
                                 <!-- Addresses Tab -->
-                                <div class="profile-tab-content" data-tab-content="addresses">
+                                <div class="profile-tab-content" id="tab-addresses" data-tab-content="addresses">
                                     <div class="profile-card">
                                         <div class="card-header">
                                             <h2>Saved Addresses</h2>
