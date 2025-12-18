@@ -4,9 +4,15 @@
   <title>Login / Register – Tarmonia</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Average|Droid+Serif:400,700|Libre+Baskerville:400,400i,700|Open+Sans:300,400,600,700,800|Oswald:300,400,700|Raleway:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext&display=swap' type='text/css' media='all' />
   <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
   <link rel="stylesheet" href="css/style.css" as="style" onload="this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+  <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' />
   <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
@@ -22,15 +28,15 @@
       --auth-text: #2f2c27;
     }
     .auth-shell {
-      margin: 0 auto;
-      max-width: 1140px;
+      margin: -30px auto 2.5rem;
+      max-width: 900px;
       width: 100%;
-      padding: clamp(2rem, 4vw, 4rem) 0 4.5rem;
+      padding: clamp(1rem, 2.5vw, 2.5rem) 0 2.5rem;
     }
     .auth-section {
       display: flex;
       background: var(--auth-cream);
-      border-radius: 32px;
+      border-radius: 8px;
       overflow: hidden;
       border: 1px solid rgba(12, 26, 58, 0.06);
       box-shadow: var(--auth-shadow);
@@ -39,7 +45,7 @@
     }
     .auth-visual {
       flex: 1;
-      min-height: 520px;
+      min-height: 440px;
       background-image: linear-gradient(125deg, rgba(12, 26, 58, 0.94), rgba(22, 40, 77, 0.72)), url('images/nice-farm-with-chickens_198067-939696.avif');
       background-size: cover;
       background-position: center;
@@ -123,10 +129,11 @@
     }
     .auth-card {
       flex: 1;
-      padding: clamp(2rem, 4vw, 3.5rem);
+      padding: clamp(1rem, 2.5vw, 2.5rem);
       background: var(--auth-cream);
       display: flex;
       flex-direction: column;
+      border-radius: 6px;
     }
     .auth-tabs {
       display: grid;
@@ -273,16 +280,24 @@
     .primary-action {
       width: 100%;
       border: none;
-      border-radius: 20px;
-      padding: 0.95rem 1.25rem;
+      border-radius: 4px;
+      padding: 0.9rem 1.1rem;
       font-size: 1rem;
       font-weight: 600;
-      color: #fff;
+      color: #ffffff !important;
       background-image: linear-gradient(135deg, #0C1A3A 0%, #16284d 100%);
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 18px 30px rgba(12, 26, 58, 0.25);
       margin-top: 0.5rem;
+    }
+
+    /* Make all buttons inside the auth card have square corners */
+    .auth-card button,
+    .auth-card .auth-tab,
+    .auth-card .primary-action,
+    .auth-card .toggle-password {
+      border-radius: 4px !important;
     }
     .primary-action:hover {
       transform: translateY(-2px);
@@ -339,6 +354,11 @@
         transform: translateY(0);
       }
     }
+
+    /* Keep login header badges consistent with global styles */
+    .top_panel_top_socials .social_icons span {
+      font-size: 12px;
+    }
   </style>
 </head>
 <body class="page body_style_wide body_filled layout_single-standard top_panel_show top_panel_above">
@@ -346,6 +366,39 @@
     <div class="page_wrap">
       <header class="top_panel_wrap top_panel_style_1 scheme_original">
         <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+          <div class="top_panel_top">
+            <div class="content_wrap clearfix">
+              <div class="top_panel_top_contact_area icons icon-phone-1">+234807999918</div>
+              <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
+              <div class="top_panel_top_user_area">
+                <div class="top_panel_top_socials">
+                  <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
+                    <div class="sc_socials_item">
+                      <a href="#" target="_blank" class="social_icons social_twitter">
+                        <span class="icon-twitter"></span>
+                      </a>
+                    </div>
+                    <div class="sc_socials_item">
+                      <a href="#" target="_blank" class="social_icons social_facebook">
+                        <span class="icon-facebook"></span>
+                      </a>
+                    </div>
+                    <div class="sc_socials_item">
+                      <a href="#" target="_blank" class="social_icons social_gplus-1">
+                        <span class="icon-gplus-1"></span>
+                      </a>
+                    </div>
+                    <div class="sc_socials_item">
+                      <a href="#" target="_blank" class="social_icons social_linkedin">
+                        <span class="icon-linkedin"></span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <ul id="menu_user" class="menu_user_nav"></ul>
+              </div>
+            </div>
+          </div>
           <div class="top_panel_middle">
             <div class="content_wrap">
               <div class="columns_wrap columns_fluid">
@@ -357,7 +410,38 @@
                 </div>
                 <div class="column-1_5 contact_field contact_cart">
                   <div class="header_actions" style="display:flex;align-items:center;gap:35px;justify-content:flex-end;">
+                    <a href="#" class="top_panel_cart_button_simple" data-items="0" data-summa="&#036;0.00" style="flex-shrink:0;">
+                      <span class="contact_icon icon-1"></span>
+                    </a>
+                    <a href="login.html" class="top_panel_login_button_simple">LOGIN</a>
                   </div>
+                  <ul class="widget_area sidebar_cart sidebar">
+                    <li>
+                      <div class="widget woocommerce widget_shopping_cart">
+                        <div class="hide_cart_widget_if_empty">
+                          <div class="widget_shopping_cart_content">
+                            <div class="cart-header">
+                              <h3>Shopping Cart</h3>
+                              <span class="cart-count">0</span>
+                            </div>
+                            <div class="cart-body">
+                              <p class="woocommerce-mini-cart__empty-message">No products in the cart.</p>
+                            </div>
+                            <div class="cart-footer">
+                              <div class="cart-total">
+                                <span class="total-label">Total:</span>
+                                <span class="total-amount">$0.00</span>
+                              </div>
+                              <div class="cart-buttons">
+                                <a href="cart.html" class="view-cart-button">View Cart</a>
+                                <a href="checkout.html" class="checkout-button">Checkout</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -369,53 +453,7 @@
           <div class="content">
             <div class="auth-shell">
               <section class="auth-section" aria-label="Customer login and registration">
-                <div class="auth-visual">
-                  <div class="visual-content">
-                    <span class="visual-tag">Farm access</span>
-                    <h1 class="visual-headline">Ground yourself in the Tarmonia grove</h1>
-                    <p>Sign in to save rustic carts, unlock seasonal drops, and keep every delivery from our barns on track.</p>
-                    <ul class="visual-highlights">
-                      <li>
-                        <span class="visual-icon" aria-hidden="true">
-                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 11c6.5-4.5 10-4 12-9 1 7-4 12-9 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M5 17c0-4 3-7 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
-                          </svg>
-                        </span>
-                        <div>
-                          <strong>Members-only harvest crates</strong>
-                          <span>Reserve limited micro-lot dairy boxes before they hit the shop.</span>
-                        </div>
-                      </li>
-                      <li>
-                        <span class="visual-icon" aria-hidden="true">
-                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.5 15.5V8.3L10 3.5l6.5 4.8v7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M7 15.5V11h6v4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                          </svg>
-                        </span>
-                        <div>
-                          <strong>Single origin storytelling</strong>
-                          <span>See the herd, pasture, and feed story behind every product.</span>
-                        </div>
-                      </li>
-                      <li>
-                        <span class="visual-icon" aria-hidden="true">
-                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="7" cy="15.5" r="1.5" stroke="currentColor" stroke-width="1.6"></circle>
-                            <circle cx="14.5" cy="15.5" r="1.5" stroke="currentColor" stroke-width="1.6"></circle>
-                            <path d="M2.5 4.5h3l1.2 7.2a1 1 0 0 0 1 .85H15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M7 6.5h9.5l-1 4.5H7.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                          </svg>
-                        </span>
-                        <div>
-                          <strong>Synced carts everywhere</strong>
-                          <span>Hop between news, shop, or recipes and keep your cart intact.</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <div class="auth-visual"></div>
                 <div class="auth-card">
                   <div class="auth-tabs" role="tablist">
                     <button type="button" class="auth-tab active" id="tabLogin" data-target="loginForm" role="tab" aria-controls="loginForm" aria-selected="true">Login</button>

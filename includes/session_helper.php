@@ -5,9 +5,13 @@
 // Use central DB/session bootstrap
 require_once __DIR__ . '/db.php';
 
-// Helper function to check if user is authenticated
 function is_user_authenticated(): bool {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    // A logged-in user must have a valid positive user_id and email.
+    // user_id = 0 is always considered a guest/invalid.
+    if (!isset($_SESSION['user_id'], $_SESSION['user_email'])) {
+        return false;
+    }
+    return (int)$_SESSION['user_id'] >= 1;
 }
 
 // Helper function to get current user ID

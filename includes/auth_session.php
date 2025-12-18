@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$isAuth = isset($_SESSION['user_id']) && isset($_SESSION['user_email']);
+$isAuth = isset($_SESSION['user_id'], $_SESSION['user_email']) && (int)$_SESSION['user_id'] >= 1;
 $user = null;
 if ($isAuth) {
     $user = [

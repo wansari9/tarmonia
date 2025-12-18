@@ -10,10 +10,13 @@
     <link rel='stylesheet' href='css/layout.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/fontello/css/fontello.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/core.animation.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/shortcodes.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/theme.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/custom.css' type='text/css' media='all' /> 
     <link rel='stylesheet' href='css/responsive.css' type='text/css' media='all' />
     <link rel='stylesheet' href='css/user-profile.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/user-profile.v2.css' type='text/css' media='all' />
     <!-- REQUIRE LOGIN FOR PROFILE PAGE -->
     <script>
         (function() {
@@ -46,6 +49,39 @@
         <div class="top_panel_fixed_wrap"></div>
         <header class="top_panel_wrap top_panel_style_1 scheme_original">
             <div class="top_panel_wrap_inner top_panel_inner_style_1 top_panel_position_above">
+                <div class="top_panel_top">
+                    <div class="content_wrap clearfix">
+                        <div class="top_panel_top_contact_area icons icon-phone-1">+234807999918</div>
+                        <div class="top_panel_top_open_hours icons icon-clock-1">Mn-Fr: 8am - 8pm, St-Sn: 8am - 4pm</div>
+                        <div class="top_panel_top_user_area">
+                            <div class="top_panel_top_socials">
+                                <div class="sc_socials sc_socials_type_icons sc_socials_shape_square sc_socials_size_tiny">
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_twitter">
+                                            <span class="icon-twitter"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_facebook">
+                                            <span class="icon-facebook"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_gplus-1">
+                                            <span class="icon-gplus-1"></span>
+                                        </a>
+                                    </div>
+                                    <div class="sc_socials_item">
+                                        <a href="#" target="_blank" class="social_icons social_linkedin">
+                                            <span class="icon-linkedin"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul id="menu_user" class="menu_user_nav"></ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="top_panel_middle">
                     <div class="content_wrap">
                         <div class="columns_wrap columns_fluid">
@@ -118,7 +154,261 @@
                     <article class="post_item_single post_type_page">
                         <div class="post_content entry-content">
                             
-                            <div class="profile-container">
+                            <section class="profile-container profile-v2" data-profile-v2>
+                                <div class="profile-shell">
+                                    <aside class="profile-sidebar" data-profile-sidebar>
+                                        <div class="sidebar-brand">
+                                            <span class="brand-mark" aria-hidden="true"></span>
+                                            <div>
+                                                <p style="margin:0; line-height:1.4;">Account &amp; Settings</p>
+                                                <strong>Tarmonia</strong>
+                                            </div>
+                                        </div>
+                                        <div class="sidebar-user">
+                                            <div class="sidebar-avatar" data-sidebar-avatar>U</div>
+                                            <div style="min-width:0; flex:1;">
+                                                <p class="sidebar-name" data-sidebar-name>Loading...</p>
+                                                <p class="sidebar-email" data-sidebar-email>&mdash;</p>
+                                            </div>
+                                        </div>
+                                        <nav class="sidebar-nav" data-panel-nav>
+                                            <button class="sidebar-link is-active" type="button" data-panel-trigger="details">
+                                                <span>My Details</span>
+                                                <small>Profile &amp; contact info</small>
+                                            </button>
+                                            <button class="sidebar-link" type="button" data-panel-trigger="addresses">
+                                                <span>Addresses</span>
+                                                <small>Shipping destinations</small>
+                                            </button>
+                                            <button class="sidebar-link" type="button" data-panel-trigger="orders">
+                                                <span>Orders</span>
+                                                <small>History &amp; tracking</small>
+                                            </button>
+                                            <button class="sidebar-link" type="button" data-panel-trigger="security">
+                                                <span>Password &amp; Security</span>
+                                                <small>Protect your account</small>
+                                            </button>
+                                            <button class="sidebar-link" type="button" data-panel-trigger="preferences">
+                                                <span>Preferences</span>
+                                                <small>Local settings</small>
+                                            </button>
+                                            <button class="sidebar-link danger" type="button" data-panel-trigger="danger">
+                                                <span>Danger Zone</span>
+                                                <small>Account safety</small>
+                                            </button>
+                                        </nav>
+                                        <div class="sidebar-upgrade">
+                                            <h4>Need help?</h4>
+                                            <p>Reach our support team anytime for profile, orders, or shipping questions.</p>
+                                            <a class="sidebar-cta" href="contacts.html">Contact support</a>
+                                        </div>
+                                    </aside>
+                                    <div class="profile-main">
+                                        <div class="profile-banner" data-profile-banner hidden>
+                                            <span data-banner-message>Session expired — please login again.</span>
+                                            <button type="button" data-action="dismiss-banner">Dismiss</button>
+                                        </div>
+                                        <header class="profile-heading">
+                                            <div>
+                                                <h1 data-heading-name>Account Overview</h1>
+                                                <p class="heading-subtitle">Review personal info, deliveries, and security in one place.</p>
+                                            </div>
+                                        </header>
+                                        <div class="insight-grid">
+                                            <article class="insight-card">
+                                                <p class="insight-label">Total orders</p>
+                                                <p class="insight-value" data-stat-orders>0</p>
+                                                <span class="insight-hint">Keep discovering new farm boxes</span>
+                                            </article>
+                                            <article class="insight-card">
+                                                <p class="insight-label">Deliveries en route</p>
+                                                <p class="insight-value" data-stat-active>0</p>
+                                                <span class="insight-hint">Tracking updates refresh hourly</span>
+                                            </article>
+                                            <article class="insight-card">
+                                                <p class="insight-label">Member since</p>
+                                                <p class="insight-value" data-stat-member>&mdash;</p>
+                                                <span class="insight-hint">Thank you for supporting local farms</span>
+                                            </article>
+                                        </div>
+
+                                        <div class="panel-stack" data-panel-stack>
+                                            <section class="panel is-active" data-panel="details">
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Profile</p>
+                                                            <h2>Basic Details</h2>
+                                                        </div>
+                                                        <div class="card-actions">
+                                                            <button type="button" class="text-button" data-action="edit-details">Edit</button>
+                                                            <button type="button" class="text-button" data-action="cancel-details" hidden>Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                    <form class="form-grid" data-profile-form="details">
+                                                        <div class="form-field">
+                                                            <label for="details-first-name">First Name<span>*</span></label>
+                                                            <input id="details-first-name" name="first_name" type="text" data-field="first_name" required readonly>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="details-last-name">Last Name<span>*</span></label>
+                                                            <input id="details-last-name" name="last_name" type="text" data-field="last_name" required readonly>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="details-email">Email<span>*</span></label>
+                                                            <input id="details-email" name="email" type="email" data-field="email" required readonly>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="details-phone">Phone</label>
+                                                            <input id="details-phone" name="phone" type="tel" data-field="phone" readonly>
+                                                        </div>
+                                                        <div class="form-actions" data-form-actions>
+                                                            <button type="submit" class="btn-primary" disabled>Save Changes</button>
+                                                        </div>
+                                                    </form>
+                                                </article>
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Contact</p>
+                                                            <h2>Support Contacts</h2>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="support-list">
+                                                        <li>
+                                                            <div>
+                                                                <strong>Delivery hotline</strong>
+                                                                <p>Weekdays 8am&ndash;6pm</p>
+                                                            </div>
+                                                            <a href="tel:+60123456789">+60 12 345 6789</a>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <strong>Order support</strong>
+                                                                <p>orders@tarmonia.com</p>
+                                                            </div>
+                                                            <a href="mailto:orders@tarmonia.com">Email us</a>
+                                                        </li>
+                                                    </ul>
+                                                </article>
+                                            </section>
+
+                                            <section class="panel" data-panel="addresses">
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Addresses</p>
+                                                            <h2>Saved Locations</h2>
+                                                        </div>
+                                                        <button type="button" class="text-button" data-action="add-address">Add new</button>
+                                                    </div>
+                                                    <div class="card-body" data-addresses-list>
+                                                        <div class="empty-state">Loading saved addresses...</div>
+                                                    </div>
+                                                </article>
+                                            </section>
+
+                                            <section class="panel" data-panel="orders">
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Orders</p>
+                                                            <h2>Recent Activity</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body" data-orders-list>
+                                                        <div class="empty-state">Fetching your recent orders...</div>
+                                                    </div>
+                                                </article>
+                                            </section>
+
+                                            <section class="panel" data-panel="security">
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Security</p>
+                                                            <h2>Password &amp; Security</h2>
+                                                        </div>
+                                                    </div>
+                                                    <form class="form-vertical" data-profile-form="password">
+                                                        <label>Current Password<span>*</span>
+                                                            <input name="current_password" type="password" required>
+                                                        </label>
+                                                        <label>New Password<span>*</span>
+                                                            <input name="new_password" type="password" minlength="6" required>
+                                                        </label>
+                                                        <label>Confirm New Password<span>*</span>
+                                                            <input name="confirm_password" type="password" minlength="6" required>
+                                                        </label>
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn-primary">Update Password</button>
+                                                        </div>
+                                                    </form>
+                                                </article>
+                                            </section>
+
+                                            <section class="panel" data-panel="preferences">
+                                                <article class="card">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Preferences</p>
+                                                            <h2>Notification Settings</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="preference-list" data-preferences>
+                                                        <label class="preference-item">
+                                                            <div>
+                                                                <strong>Weekly harvest email</strong>
+                                                                <p>Highlights from partner farms every Friday.</p>
+                                                            </div>
+                                                            <input type="checkbox" data-pref="weeklyDigest">
+                                                        </label>
+                                                        <label class="preference-item">
+                                                            <div>
+                                                                <strong>Delivery SMS alerts</strong>
+                                                                <p>Heads up when your driver is 30 minutes away.</p>
+                                                            </div>
+                                                            <input type="checkbox" data-pref="smsAlerts">
+                                                        </label>
+                                                        <label class="preference-item">
+                                                            <div>
+                                                                <strong>Dark sidebar</strong>
+                                                                <p>Storefront preference saved only on this device.</p>
+                                                            </div>
+                                                            <input type="checkbox" data-pref="darkSidebar">
+                                                        </label>
+                                                    </div>
+                                                </article>
+                                            </section>
+
+                                            <section class="panel" data-panel="danger">
+                                                <article class="card danger-zone">
+                                                    <div class="card-header">
+                                                        <div>
+                                                            <p class="card-eyebrow">Danger Zone</p>
+                                                            <h2>Need to close your account?</h2>
+                                                        </div>
+                                                    </div>
+                                                    <p>This action cannot be completed automatically. Contact our support team and we will guide you through the process.</p>
+                                                    <button type="button" class="btn-danger" data-action="open-modal">Contact support</button>
+                                                </article>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-layer" data-modal hidden>
+                                    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="danger-modal-title">
+                                        <button class="modal-close" type="button" data-action="close-modal" aria-label="Close"></button>
+                                        <p class="modal-eyebrow">Account safety</p>
+                                        <h3 id="danger-modal-title">Talk with a specialist</h3>
+                                        <p>Our support desk will verify your identity before scheduling account deletion. Email support@tarmonia.com or call +60 10 927 7092.</p>
+                                        <a class="btn-primary" href="mailto:support@tarmonia.com?subject=Account%20Deletion%20Request">Email support</a>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="profile-container profile-legacy" data-profile-legacy>
                                 <svg class="profile-icon-sprite" aria-hidden="true" focusable="false">
                                     <symbol id="icon-profile-user" viewBox="0 0 24 24">
                                         <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.42 0-8 2.07-8 4.63V21h16v-2.37C20 16.07 16.42 14 12 14z" />
@@ -415,7 +705,8 @@
 <script src="js/auth-session.js"></script>
 <script src="js/mini-cart.js"></script>
 <script src="js/formatting-override.js"></script>
-<script src="js/user-profile-enhanced.js"></script>
+<script src="js/user-profile.v2.js"></script>
+<!-- <script src="js/user-profile-enhanced.js"></script> -->
 
 </body>
 </html>

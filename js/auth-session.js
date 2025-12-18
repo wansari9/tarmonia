@@ -1,6 +1,120 @@
 // auth-session.js
 // Fetch session status and toggle login button vs user icon in headers.
 (function(){
+  const PROFILE_PAGE_REGEX = /user-profile(?:\.php)?$/i;
+  const isProfilePage = PROFILE_PAGE_REGEX.test(window.location.pathname || '');
+
+  function joinAppPath(fragment) {
+    if (window.AppPaths && typeof window.AppPaths.join === 'function') {
+      try {
+        return window.AppPaths.join(fragment);
+      } catch (err) {
+        // fall through to default
+      }
+    }
+    return fragment;
+  }
+
+  const LOGOUT_ENDPOINT = joinAppPath('includes/auth_logout.php');
+  const dropdownState = {
+    wrappers: [],
+    docHandlerBound: false,
+  };
+
+  function closeAllDropdowns() {
+    dropdownState.wrappers.forEach(function(wrapper) {
+      wrapper.classList.remove('is-open');
+    });
+  }
+
+  function ensureDocumentHandler() {
+    if (dropdownState.docHandlerBound) {
+      return;
+    }
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.user-icon-dropdown')) {
+        closeAllDropdowns();
+      }
+    });
+    dropdownState.docHandlerBound = true;
+  }
+
+  function buildMenuActions(wrapper) {
+    if (wrapper.querySelector('.user-icon-menu')) {
+      return;
+    }
+    var menu = document.createElement('div');
+    menu.className = 'user-icon-menu';
+
+    if (!isProfilePage) {
+      var profileLink = document.createElement('a');
+      profileLink.href = 'user-profile.php';
+      profileLink.className = 'user-icon-item';
+      profileLink.textContent = 'View profile';
+      menu.appendChild(profileLink);
+    }
+
+    var logoutBtn = document.createElement('button');
+    logoutBtn.type = 'button';
+    logoutBtn.className = 'user-icon-item user-icon-logout';
+    logoutBtn.textContent = 'Log out';
+    logoutBtn.addEventListener('click', function() {
+      if (logoutBtn.disabled) {
+        return;
+      }
+      logoutBtn.disabled = true;
+      logoutBtn.classList.add('is-loading');
+      fetch(LOGOUT_ENDPOINT, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      }).finally(function() {
+        window.location.href = 'login.html';
+      });
+    });
+    menu.appendChild(logoutBtn);
+
+    wrapper.appendChild(menu);
+  }
+
+  function ensureDropdown(icon) {
+    icon.style.background = '#0C1A3A';
+    icon.style.color = '#ffffff';
+    icon.style.border = 'none';
+    icon.style.boxShadow = '0 8px 18px rgba(12,26,58,0.18)';
+
+    if (icon.dataset.dropdownReady === '1') {
+      return;
+    }
+    icon.dataset.dropdownReady = '1';
+
+    var wrapper = icon.closest('.user-icon-dropdown');
+    if (!wrapper) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'user-icon-dropdown';
+      icon.parentNode.insertBefore(wrapper, icon);
+      wrapper.appendChild(icon);
+    }
+
+    buildMenuActions(wrapper);
+    if (!dropdownState.wrappers.includes(wrapper)) {
+      dropdownState.wrappers.push(wrapper);
+    }
+
+    icon.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (wrapper.classList.contains('is-open')) {
+        wrapper.classList.remove('is-open');
+      } else {
+        closeAllDropdowns();
+        wrapper.classList.add('is-open');
+      }
+    });
+
+    ensureDocumentHandler();
+  }
+
   function applyAuthenticatedUI(data){
     // Add a body class and inject a strong CSS rule so the login link stays hidden
     // even if other scripts later toggle inline styles.
@@ -18,6 +132,9 @@
     // Show user icon placeholders and update them
     document.querySelectorAll('.user_icon_button').forEach(icon => {
       icon.style.display = 'inline-flex';
+      icon.style.alignItems = 'center';
+      icon.style.justifyContent = 'center';
+      icon.style.textDecoration = 'none';
       if (data && data.user && data.user.first_name) {
         icon.title = data.user.first_name + ' - My Profile';
         var letterSpan = icon.querySelector('.user_initial');
@@ -32,6 +149,8 @@
       if (!icon.href || icon.href.endsWith('#')) {
         icon.href = 'user-profile.php';
       }
+
+      ensureDropdown(icon);
     });
   }
 
@@ -40,7 +159,8 @@
       var payload = data || {};
       var sid = payload.session_id || 'n/a';
       var userDescriptor = 'guest';
-      if (payload.user && payload.user.id) {
+      // Only treat user_id values >= 1 as authenticated; 0 is always guest.
+      if (payload.user && typeof payload.user.id !== 'undefined' && payload.user.id !== null && Number(payload.user.id) >= 1) {
         userDescriptor = 'user_id=' + payload.user.id;
       }
       var text = 'Session ID: ' + sid + ' | ' + userDescriptor;
